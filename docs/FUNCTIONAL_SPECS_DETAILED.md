@@ -37,6 +37,59 @@ L'application est **internationale dès le premier commit**. Ces règles s'appli
 
 ---
 
+## 📱 DESIGN RESPONSIVE — PRINCIPE FONDATEUR
+
+L'application Android est **responsive dès le premier écran** :
+- Layouts en `ConstraintLayout` ou `LinearLayout` avec `wrap_content` / `match_parent`
+- Textes en `sp`, marges/paddings en `dp` (jamais en px)
+- Aucune taille fixe codée en dur pour les éléments UI
+- Testé sur : écrans compacts (360dp), standard (411dp), grands (600dp+)
+- Orientation portrait principale, paysage supporté sans crash
+
+---
+
+## 🧙 PRINCIPE DU WIZARD MINIMALISTE
+
+> **Règle d'or : moins on demande, plus on convertit.**
+
+### Philosophie
+- Le wizard d'inscription coach ET client demande **le strict minimum** pour créer un compte fonctionnel
+- Dès que les informations obligatoires sont saisies, l'utilisateur peut **sortir et finir plus tard**
+- Le profil incomplet est valide — l'app guide progressivement vers la complétion
+- Aucune information non critique ne bloque l'accès à l'application
+
+### Informations obligatoires (non différables)
+| Rôle | Obligatoire au premier lancement |
+|------|----------------------------------|
+| Coach | Prénom + Nom + Email + Password (ou Google) + CGU |
+| Client | Prénom + Nom + Email + Password (ou Google) + CGU |
+
+### Informations différables (complétables plus tard)
+| Champ | Coach | Client |
+|-------|-------|--------|
+| Téléphone | ✅ Plus tard | ✅ Plus tard |
+| Photo de profil | ✅ Plus tard | ✅ Plus tard |
+| Pays / Langue | Auto-détecté (modifiable plus tard) | Auto-détecté |
+| Biographie | ✅ Plus tard | — |
+| Spécialités | ✅ Plus tard | — |
+| Certifications | ✅ Plus tard | — |
+| Jours/horaires de travail | ✅ Plus tard | — |
+| Salles de sport | ✅ Plus tard | ✅ Plus tard |
+| Tarification | ✅ Plus tard | — |
+| Questionnaire fitness | — | ✅ Plus tard |
+| Objectif / Niveau | — | ✅ Plus tard |
+| Poids / Taille | — | ✅ Plus tard |
+
+### Comportement du wizard
+1. **Étape 1** : Prénom + Nom + Email + Password + CGU → bouton "Créer mon compte"
+2. Après création : l'utilisateur est connecté et voit son profil incomplet
+3. Un **bandeau de complétion** (barre de progression en haut du Dashboard) indique le % de profil rempli
+4. Chaque section manquante affiche un bouton "Compléter" avec une explication courte
+5. **Si l'utilisateur est au milieu du wizard** (étapes optionnelles) → bouton **"Terminer plus tard"** visible en permanence dans le header
+6. Aucune étape optionnelle n'affiche de message d'erreur si elle est ignorée
+
+---
+
 ## 🔐 DÉCISIONS TECHNIQUES ARRÊTÉES
 
 | Composant | Choix | Notes |
@@ -65,15 +118,19 @@ L'application est **internationale dès le premier commit**. Ces règles s'appli
 ### 1.1 Inscription Coach
 **Écran :** `RegisterScreen` (rôle = Coach)
 
-**Champs :**
-- Prénom (obligatoire, min 2 chars, max 50 chars)
-- Nom (obligatoire, min 2 chars, max 50 chars)
-- Email (obligatoire, format RFC5322, unicité vérifiée côté serveur)
-- Mot de passe (obligatoire, min 8 chars, au moins 1 majuscule, 1 chiffre, 1 caractère spécial)
-- Confirmation mot de passe (doit être identique)
-- Pays (sélecteur ISO 3166-1, pré-sélectionné depuis la locale système)
-- Langue / Culture (pré-sélectionnée depuis la locale système, ex: `fr-FR`) — modifiable
-- Case "J'accepte les CGU" (obligatoire)
+**Champs OBLIGATOIRES (unique étape bloquante) :**
+- Prénom (min 2 chars, max 50 chars)
+- Nom (min 2 chars, max 50 chars)
+- Email (format RFC5322, unicité vérifiée côté serveur)
+- Mot de passe (min 8 chars, au moins 1 majuscule + 1 chiffre)
+- Confirmation mot de passe
+- Case "J'accepte les CGU"
+
+**Champs AUTO-REMPLIS (non bloquants, modifiables plus tard) :**
+- Pays : auto-détecté depuis la locale système
+- Langue : auto-détectée depuis la locale système
+
+> ℹ️ Téléphone, photo, spécialités, salles, tarifs, horaires → tous différables, complétables depuis le profil.
 
 **Validations en temps réel :**
 - Email : vérification format à la sortie du champ
@@ -166,119 +223,163 @@ Après vérification email → redirect `ClientOnboardingScreen` (questionnaire,
 ---
 
 ## 2. ONBOARDING CLIENT (questionnaire)
+## 2. ONBOARDING CLIENT (questionnaire)
 
-### Écran 1/6 — Objectif principal
-- Titre : "Quel est votre objectif ?"
-- Choix unique (cards sélectionnables) :
-  - 🔥 Perte de poids
-  - 💪 Prise de masse musculaire
-  - 🏃 Endurance / Cardio
-  - 🌿 Remise en forme générale
-  - 🏆 Performance sportive
-  - ✨ Autre (champ texte libre activé)
-- Bouton "Suivant" (disabled si rien sélectionné)
-- Indicateur de progression (1/6)
-- Bouton "Passer" (les données sont optionnelles, programme moins personnalisé)
-
-### Écran 2/6 — Niveau sportif
-- Titre : "Quel est votre niveau ?"
-- Choix unique :
-  - 🌱 Débutant — Je m'entraîne depuis moins de 6 mois
-  - 🌿 Intermédiaire — 6 mois à 2 ans de pratique
-  - 🌳 Confirmé — Plus de 2 ans, je connais les exercices
-- Bouton "Précédent" / "Suivant"
-
-### Écran 3/6 — Fréquence
-- Titre : "À quelle fréquence voulez-vous vous entraîner ?"
-- Stepper : 1 à 7 séances / semaine (défaut = 3)
-- Sélecteur durée préférée : 30 min / 45 min / 60 min / 90 min
-
-### Écran 4/6 — Équipements
-- Titre : "Quel équipement avez-vous à disposition ?"
-- Multi-sélection :
-  - 🏋️ Salle de sport complète (machines + poids libres)
-  - 🚲 Salle cardio uniquement
-  - 🏠 Home gym (équipement maison)
-  - 🏋️ Poids libres uniquement (haltères / barres)
-  - 🤸 Aucun équipement (poids du corps)
-
-### Écran 5/6 — Zones à travailler
-- Titre : "Quelles zones voulez-vous cibler ?"
-- Multi-sélection :
-  - Épaules / Pectoraux / Dos / Biceps / Triceps
-  - Abdominaux / Lombaires / Fessiers
-  - Quadriceps / Ischio-jambiers / Mollets
-  - Corps entier (désactive les autres)
-
-### Écran 6/6 — Blessures
-- Titre : "Avez-vous des blessures ou contre-indications ?"
-- Toggle "Oui / Non"
-- Si Oui → multi-select zones : Dos / Genou / Épaule / Poignet / Cheville / Hanche / Cou / Autre
-- Zone texte libre : "Précisez si nécessaire (optionnel)"
-- Bouton "Terminer" → `POST /clients/questionnaire` → redirect `ClientDashboard`
+> **Philosophie : wizard minimaliste. Seule la création du compte est obligatoire.**
+> Le client accède au Dashboard immédiatement après inscription.
+> Le questionnaire est proposé à l'entrée mais entièrement passable.
+> Bouton **"Terminer plus tard"** présent à chaque étape optionnelle.
 
 ---
 
-## 3. ONBOARDING COACH (setup profil)
+### Étape 1/6 — Informations essentielles *(OBLIGATOIRE)*
+> Seule étape bloquante. Pré-remplie depuis l'inscription.
 
-### Écran 1/5 — Informations de base
-**Champs :**
-- Photo de profil (obligatoire)
-  - Tap → choix : Appareil photo / Galerie
-  - Validation : min 200×200px, max 5 MB, formats jpg/png/webp
-  - Recadrage circulaire proposé après sélection
-- Prénom / Nom (pré-remplis, modifiables)
-- Date de naissance (optionnel, datepicker, adulte requis ≥ 18 ans)
-- Biographie (obligatoire, min 100 chars, max 500 chars)
-  - Compteur de caractères visible en temps réel
-  - Placeholder : "Présentez votre approche, votre méthode, votre parcours..."
+**Champs obligatoires (pré-remplis) :** Prénom / Nom
 
-### Écran 2/5 — Spécialités
-**Multi-sélection (min 1) :**
+**Champs optionnels (différables) :**
+- Photo de profil *(avatar généré par défaut)*
+- **Numéro de téléphone** — format E.164, préfixe pays auto
+- Date de naissance *(optionnel)*
+
+**Bouton principal :** "Accéder à l'app →" → redirect Dashboard
+**Bouton secondaire :** "Remplir mon questionnaire" → passe à l'étape 2
+
+---
+
+### Étape 2/6 — Objectif principal *(optionnel)*
+> Bouton **"Terminer plus tard"** en header.
+
+- Choix unique (cards illustrées) :
+  - 🔥 Perte de poids / 💪 Prise de masse / 🏃 Endurance / 🌿 Remise en forme / 🏆 Performance / ✨ Autre
+
+---
+
+### Étape 3/6 — Niveau sportif *(optionnel)*
+- Choix unique :
+  - 🌱 Débutant (< 6 mois) / 🌿 Intermédiaire (6 mois–2 ans) / 🌳 Confirmé (> 2 ans)
+
+---
+
+### Étape 4/6 — Fréquence & durée *(optionnel)*
+- Stepper : 1 à 7 séances / semaine (défaut = 3)
+- Durée préférée : 30 / 45 / 60 / 90 min
+
+---
+
+### Étape 5/6 — Équipements & zones *(optionnel)*
+- Équipements (multi-select) : Salle complète / Cardio uniquement / Home gym / Poids libres / Poids du corps
+- Zones à cibler (multi-select) : Épaules / Pectoraux / Dos / Biceps / Triceps / Abdos / Fessiers / Quadriceps / Ischios / Mollets / Corps entier
+
+---
+
+### Étape 6/6 — Blessures *(optionnel)*
+- Toggle "J'ai des blessures ou contre-indications"
+  - Si Oui → multi-select zones + texte libre
+
+**Bouton :** "Terminer mon profil ✓" → `POST /clients/questionnaire` → Dashboard
+
+---
+
+### Bandeau de complétion (Dashboard Client)
+Affiché tant que le questionnaire est incomplet :
+```
+┌─────────────────────────────────────────────────────────┐
+│  💡 Complétez votre profil pour des suggestions précises │
+│  [🎯 Objectif] [📊 Niveau] [🏋 Équipements]             │
+│                                       [Compléter →]     │
+└─────────────────────────────────────────────────────────┘
+```
+
+
+> **Philosophie : wizard minimaliste. Seule l'étape 1 est obligatoire.**
+> Le coach peut accéder au Dashboard dès l'étape 1 validée.
+> Le header affiche toujours un bouton **"Terminer plus tard →"** à partir de l'étape 2.
+> Un bandeau de complétion (%) rappelle les sections manquantes sur le Dashboard.
+
+---
+
+### Étape 1/6 — Informations essentielles *(OBLIGATOIRE)*
+> Seule étape qui bloque l'accès au Dashboard. Les champs sont minimalistes.
+
+**Champs obligatoires (pré-remplis depuis l'inscription) :**
+- Prénom / Nom (modifiables)
+
+**Champs optionnels (différables) :**
+- Photo de profil *(avatar généré par défaut si non fournie)*
+  - Tap → Appareil photo / Galerie
+  - Validation : min 200×200px, max 5 MB, jpg/png/webp, recadrage circulaire
+- **Numéro de téléphone** — format E.164, aide saisie avec préfixe pays auto
+- Date de naissance *(datepicker, adulte requis ≥ 18 ans si renseigné)*
+- Biographie *(max 500 chars, compteur visible)*
+
+**Bouton principal :** "Accéder à mon espace →" → sauvegarde partielle + redirect Dashboard
+**Bouton secondaire :** "Continuer le setup" → passe à l'étape 2
+
+---
+
+### Étape 2/6 — Jours de travail & horaires *(optionnel)*
+> Header : bouton **"Terminer plus tard"** → redirect Dashboard
+
+**Structure :**
+- 7 toggles (Lun — Mar — Mer — Jeu — Ven — Sam — Dim)
+- Jours **activés** = jours de travail → déroulent les plages horaires
+- Jours **désactivés** = jours de repos → grisés, libellé "Repos 😴"
+- Pour chaque jour activé :
+  - Heure début (time picker, pas 15 min)
+  - Heure fin (doit être > heure début)
+  - Bouton "+ Ajouter une plage" (ex: matin 09h–12h + après-midi 14h–19h)
+  - Chaque plage supprimable par swipe
+- Bouton "Appliquer à tous les jours activés" (copie le premier créneau)
+- Résumé en bas : "Disponible : Lun–Ven 9h–19h · Sam 10h–14h · Dim repos"
+
+> Ces horaires alimentent directement le calendrier de réservation visible par les clients.
+
+---
+
+### Étape 3/6 — Spécialités *(optionnel)*
+- Multi-select chips (aucun minimum requis pour passer)
 - Musculation / Cardio / HIIT / Yoga / Pilates / CrossFit / Boxe / Running / Triathlon / Natation / Cyclisme / Nutrition sportive / Préparation mentale / Rééducation / Stretching / Autre
 
-### Écran 3/5 — Certifications
-- Liste initialement vide
-- Bouton "+ Ajouter une certification" → mini-formulaire :
-  - Nom de la certification (ex: BPJEPS, Personal Trainer ISSA...)
-  - Organisme (texte libre)
-  - Année d'obtention (sélecteur, max = année en cours)
-  - Photo du document (optionnel) → upload → flag `pending_verification`
-- Chaque certification affichée en carte avec statut : "En attente de vérification" / "Certifié ✓"
-- Tap sur une carte → modifier ou supprimer
-- Peut passer l'étape → certifications ajoutables plus tard depuis le profil
+---
 
-### Écran 4/5 — Salles de sport
-**Flux de sélection :**
-1. Sélection de la chaîne (dropdown : Fitness Park, Basic-Fit, etc.)
-2. Recherche par ville, CP ou nom de club
-3. Résultats en liste → tap pour sélectionner
-4. Club ajouté aux sélections (chips en haut, supprimable avec ×)
-5. Répéter pour d'autres chaînes
-- Min 1 club requis
+### Étape 4/6 — Certifications *(optionnel)*
+- Bouton "+ Ajouter une certification" → mini-formulaire : nom, organisme, année, photo document (optionnel)
+- Badge "Certifié ✓" après validation back-office
 
-### Écran 5/5 — Tarifs & disponibilités
-**Tarifs :**
-- Devise (pré-sélectionnée depuis le pays du coach, modifiable) : EUR / USD / GBP / CHF / CAD / BRL / AUD…
-- Tarif séance unitaire (montant, obligatoire, min 1 dans la devise choisie)
-- Forfaits (ajout dynamique de lignes) :
-  - Nom du forfait (ex : "Pack 10 séances", "Mensuel")
-  - Nb séances + Prix total → prix unitaire calculé et affiché automatiquement
-  - Durée de validité : 1 mois / 2 mois / 3 mois / 6 mois / Sans limite
-  - Visible publiquement : oui / non
-- Séance découverte : toggle "Proposer une séance découverte"
-  - Si oui : Gratuite / Payante (saisir le tarif)
-  - Durée de la découverte : 30 / 45 / 60 min
-- Durée standard d'une séance : 30 / 45 / 60 / 90 min
+---
 
-**Disponibilités récurrentes :**
-- Pour chaque jour de la semaine : toggle actif/inactif
-- Si actif : heure de début → heure de fin (plages de 30 min)
-- Plusieurs plages par jour possibles (bouton "+ Ajouter une plage")
-- Nb de places max par créneau (défaut = 1, max = 20 pour group coaching)
-- Horizon de réservation : 1 semaine / 2 semaines / 1 mois
+### Étape 5/6 — Salles de sport *(optionnel)*
+- Sélection chaîne → recherche ville/CP → multi-select clubs (chips supprimables)
+- Peut être fait plus tard depuis Profil → Mes salles
 
-**Bouton "Publier mon profil" → `POST /coaches/profile` → redirect `CoachDashboard`**
+---
+
+### Étape 6/6 — Tarification *(optionnel)*
+> Sans tarif renseigné, le profil est visible mais non réservable — un bandeau l'indique.
+
+- Devise (pré-sélectionnée depuis le pays du coach, modifiable)
+- Tarif séance unitaire (montant + devise)
+- Forfaits : lignes dynamiques (nom + nb séances + prix total + validité + visibilité publique)
+- Séance découverte : toggle + tarif (gratuite ou payante) + durée
+- Durée standard : 30 / 45 / 60 / 90 min
+
+**Bouton :** "Publier mon profil complet 🚀" → `POST /coaches/profile` → Dashboard
+
+---
+
+### Bandeau de complétion (Dashboard Coach)
+Affiché tant que le profil est incomplet :
+```
+┌────────────────────────────────────────────────────────┐
+│  🟡 Profil complété à 40%  ████░░░░░░                  │
+│  [📸 Photo] [⚡ Spécialités] [🏋 Salles] [💶 Tarifs] [🕐 Horaires] │
+│  Complétez votre profil pour être mieux référencé      │
+└────────────────────────────────────────────────────────┘
+```
+- Tap sur un badge → ouvre directement la section correspondante dans le profil
+- Disparaît quand le profil est à 100%
+
 
 ---
 
@@ -1259,6 +1360,7 @@ pending_coach_validation ──(24h expiration)──► auto_rejected
 | 1.0 | 25/02/2026 | Document initial — 24 modules complets |
 | 1.1 | 25/02/2026 | SQLite → PostgreSQL 16 · JWT → API Key SHA-256 · Tarification (unitaire + forfaits) · Réservation client + annulation pénalité + liste d'attente |
 | 1.2 | 25/02/2026 | i18n first : locale BCP 47 + pays ISO 3166-1 + devise ISO 4217 + unité poids + timezone sur tous les profils · Pays sur clubs · Chaînes internationales ajoutées |
+| 1.3 | 25/02/2026 | Téléphone (E.164) sur Coach et Client · Jours de travail + horaires multi-créneaux sur Coach · Wizard minimaliste (1 seule étape obligatoire, "Terminer plus tard" dès étape 2) · Design responsive obligatoire · Bandeau de complétion de profil |
 
 ---
 

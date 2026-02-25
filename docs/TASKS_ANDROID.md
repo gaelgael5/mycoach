@@ -176,12 +176,14 @@ android/
 | **A1-04** | `coach/data/CoachRepository.kt` : getProfile, updateProfile, searchGyms, createPricing, updatePricing, deletePricing, setAvailability, setCancellationPolicy, getClients (paginé), getClientDetail, updateClientRelation, updateClientNote | A1-01, A1-02 | 🔴 |
 | **A1-05** | `coach/data/PaymentRepository.kt` : createPackage, recordPayment, getPaymentHistory, getHoursSummary | A1-01 | 🔴 |
 | **A1-06** | `coach/di/CoachModule.kt` : Hilt bindings pour CoachRepository, PaymentRepository | A1-04, A1-05 | 🔴 |
-| **A1-07** | `coach/ui/onboarding/CoachOnboardingActivity.kt` : navigation entre 5 fragments avec barre de progression | A1-04 | 🔴 |
-| **A1-08** | Écran Coach 1/5 : photo profil (Camera + Galerie + crop circulaire), prénom/nom, bio (compteur chars) — `OnboardingStep1Fragment` + VM | A1-07 | 🔴 |
-| **A1-09** | Écran Coach 2/5 : spécialités multi-select (chips Material 3) — `OnboardingStep2Fragment` | A1-07 | 🔴 |
-| **A1-10** | Écran Coach 3/5 : certifications (liste ajoutables, upload photo optionnel) — `OnboardingStep3Fragment` | A1-07 | 🟡 |
-| **A1-11** | Écran Coach 4/5 : sélection salles (chaîne → pays → recherche ville/CP → multi-select clubs) — `OnboardingStep4Fragment` | A1-07, A1-04 | 🔴 |
-| **A1-12** | Écran Coach 5/5 : devise, tarif unitaire, forfaits (lignes dynamiques : nb séances + prix + validité + visibilité), découverte (toggle + tarif), durée standard, disponibilités (jours + plages horaires + nb places + horizon) — `OnboardingStep5Fragment` | A1-07 | 🔴 |
+| **A1-07** | `CoachOnboardingActivity.kt` : navigation entre 6 étapes, bouton **"Terminer plus tard"** dans le header dès l'étape 2 (sauvegarde partielle et redirect Dashboard), indicateur de progression | A1-04 | 🔴 |
+| **A1-08** | **Étape 1/6 OBLIGATOIRE** `OnboardingStep1Fragment` : prénom/nom (pré-remplis), photo (optionnel, avatar par défaut), **téléphone** (optionnel, champ E.164 avec sélecteur préfixe pays), date naissance (optionnel), bio (optionnel). Bouton "Accéder à mon espace →" + bouton "Continuer le setup" | A1-07 | 🔴 |
+| **A1-09** | **Étape 2/6** `OnboardingStep2Fragment` : **jours de travail & horaires** — 7 toggles (Lun→Dim), jours activés = travail (plages horaires start/end + multi-créneaux par jour), désactivés = repos "😴", bouton "Appliquer à tous", résumé texte en bas | A1-07 | 🔴 |
+| **A1-10** | **Étape 3/6** `OnboardingStep3Fragment` : spécialités multi-select chips (aucun minimum requis) | A1-07 | 🟡 |
+| **A1-11** | **Étape 4/6** `OnboardingStep4Fragment` : certifications (liste ajoutables, upload photo optionnel) | A1-07 | 🟡 |
+| **A1-12** | **Étape 5/6** `OnboardingStep5Fragment` : sélection salles (chaîne → pays → recherche → multi-select clubs avec chips) | A1-07, A1-04 | 🟡 |
+| **A1-12b** | **Étape 6/6** `OnboardingStep6Fragment` : devise, tarif unitaire, forfaits dynamiques (nom + nb séances + prix + validité + visibilité), séance découverte toggle, durée standard — Bouton "Publier mon profil 🚀" | A1-07 | 🟡 |
+| **A1-12c** | **Bandeau de complétion** sur `CoachDashboardFragment` : barre de progression (%), badges sections manquantes (tap → ouvre section dans profil), disparaît à 100% | A1-13 | 🔴 |
 | **A1-13** | `coach/ui/dashboard/CoachDashboardFragment.kt` + `CoachDashboardViewModel.kt` : KPIs (formatés via PriceFormatter + DateTimeFormatter), prochaines séances (3), réservations à valider (badge), alertes forfaits | A1-04 | 🔴 |
 | **A1-14** | `coach/ui/clients/ClientListFragment.kt` + VM : tabs (Tous/Actifs/En pause/Terminés), tri, recherche, scroll infini | A1-04 | 🔴 |
 | **A1-15** | `coach/ui/clients/ClientDetailFragment.kt` + VM : ViewPager2 avec 5 onglets (Profil, Séances, Programme, Performances, Paiements) | A1-04 | 🔴 |
@@ -206,13 +208,14 @@ android/
 | **A2-04** | `client/data/ClientRepository.kt` : createProfile, updateProfile, createQuestionnaire, searchCoaches (avec filtres paginés), getCoachPublicProfile, getCoachSlots | A2-01, A2-02 | 🔴 |
 | **A2-05** | `client/data/BookingRepository.kt` : createBooking, cancelBooking, getUpcomingBookings, getPastBookings, joinWaitlist, leaveWaitlist, confirmFromWaitlist | A2-01 | 🔴 |
 | **A2-06** | `client/di/ClientModule.kt` : Hilt bindings | A2-04, A2-05 | 🔴 |
-| **A2-07** | `client/ui/onboarding/ClientOnboardingActivity.kt` : navigation 6 fragments avec progress bar | A2-04 | 🔴 |
-| **A2-08** | Questionnaire 1/6 : objectif (cards sélectionnables) | A2-07 | 🔴 |
-| **A2-09** | Questionnaire 2/6 : niveau (Débutant / Intermédiaire / Confirmé) | A2-07 | 🔴 |
-| **A2-10** | Questionnaire 3/6 : fréquence (stepper 1-7) + durée préférée | A2-07 | 🔴 |
-| **A2-11** | Questionnaire 4/6 : équipements (multi-select chips) | A2-07 | 🔴 |
-| **A2-12** | Questionnaire 5/6 : zones corps (multi-select) | A2-07 | 🔴 |
-| **A2-13** | Questionnaire 6/6 : blessures (toggle + zones + texte libre) | A2-07 | 🔴 |
+| **A2-07** | `ClientOnboardingActivity.kt` : navigation 6 étapes, bouton **"Terminer plus tard"** dans le header dès l'étape 2 (sauvegarde partielle + redirect Dashboard), progress bar | A2-04 | 🔴 |
+| **A2-08** | **Étape 1/6 OBLIGATOIRE** : prénom/nom (pré-remplis), photo (optionnel), **téléphone** (optionnel, E.164 avec sélecteur préfixe pays), date naissance (optionnel). Bouton "Accéder à l'app →" + "Remplir mon questionnaire" | A2-07 | 🔴 |
+| **A2-09** | **Étape 2/6 OPTIONNEL** : objectif (cards illustrées sélectionnables, aucun minimum) | A2-07 | 🟡 |
+| **A2-10** | **Étape 3/6 OPTIONNEL** : niveau (Débutant / Intermédiaire / Confirmé) | A2-07 | 🟡 |
+| **A2-11** | **Étape 4/6 OPTIONNEL** : fréquence (stepper 1-7/semaine) + durée préférée (30/45/60/90 min) | A2-07 | 🟡 |
+| **A2-12** | **Étape 5/6 OPTIONNEL** : équipements multi-select + zones corps multi-select | A2-07 | 🟡 |
+| **A2-13** | **Étape 6/6 OPTIONNEL** : blessures (toggle + zones + texte libre). Bouton "Terminer mon profil ✓" | A2-07 | 🟡 |
+| **A2-13b** | **Bandeau de complétion** sur `ClientDashboardFragment` : suggestion de compléter le questionnaire (tap → reprend là où le client en était), disparaît quand questionnaire complet | A2-14 | 🔴 |
 | **A2-14** | `client/ui/dashboard/ClientDashboardFragment.kt` + VM : programme semaine (aperçu 3 jours), prochaines séances, accès rapide "Nouvelle séance +" | A2-04 | 🔴 |
 | **A2-15** | `client/ui/search/CoachSearchFragment.kt` + VM : barre recherche, filtres drawer (chaîne, spécialité, tarif max, découverte, certifié), résultats paginés | A2-04 | 🔴 |
 | **A2-16** | `client/ui/search/CoachPublicProfileFragment.kt` + VM : profil complet, bouton principal dynamique (Demander découverte / Réserver / Demande en cours / Votre coach) | A2-04 | 🔴 |

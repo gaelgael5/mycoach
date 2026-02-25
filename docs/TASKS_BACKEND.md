@@ -128,7 +128,7 @@ backend/
 | **B0-05** | `database.py` : engine async, session factory, Base declarative, `get_db` Depends | B0-04 | 🔴 |
 | **B0-06** | `docker-compose.yml` : service `db` (postgres:16-alpine, volumes, healthcheck), service `backend` (depends_on db) | B0-04 | 🔴 |
 | **B0-07** | Alembic : init, `env.py` configuré pour async SQLAlchemy | B0-05 | 🔴 |
-| **B0-08** | **Modèle** `users` : id UUID, email (unique), name, photo_url, role (enum: coach/client/admin), locale (BCP 47), timezone, country (ISO 3166-1), email_verified, password_hash, created_at, updated_at | B0-05 | 🔴 |
+| **B0-08** | **Modèle** `users` : id UUID, email (unique), name, photo_url, role (enum: coach/client/admin), **phone (E.164, nullable)**, locale (BCP 47), timezone, country (ISO 3166-1), email_verified, password_hash, **profile_completion_pct INT (0-100)**, created_at, updated_at | B0-05 | 🔴 |
 | **B0-09** | **Modèle** `api_keys` : id UUID, user_id FK→users, key_hash CHAR(64) UNIQUE INDEX, device_name, created_at, last_used_at, expires_at, revoked | B0-08 | 🔴 |
 | **B0-10** | **Modèle** `email_verification_tokens` : id, user_id FK, token CHAR(64), expires_at, used | B0-08 | 🔴 |
 | **B0-11** | **Modèle** `password_reset_tokens` : id, user_id FK, token CHAR(64), expires_at, used | B0-08 | 🔴 |
@@ -164,7 +164,8 @@ backend/
 | **B1-05** | **Modèle** `coach_certifications` : id, coach_id FK, name, organization, year, document_url, verified | B1-03 | 🔴 |
 | **B1-06** | **Modèle** `coach_gyms` (M-M) : coach_id FK, gym_id FK | B1-03, B1-02 | 🔴 |
 | **B1-07** | **Modèle** `coach_pricing` : id, coach_id FK, type (enum: per_session/package), name, session_count, price_cents, currency, validity_months, is_public | B1-03 | 🔴 |
-| **B1-08** | **Modèle** `coach_availability` : id, coach_id FK, day_of_week (0-6), start_time, end_time, max_slots, booking_horizon_days, active | B1-03 | 🔴 |
+| **B1-08** | **Modèle** `coach_work_schedule` : id, coach_id FK, day_of_week (0=Lun, 6=Dim), is_working_day BOOL, time_slots JSONB `[{start_time, end_time}]` (plusieurs créneaux par jour possibles) | B1-03 | 🔴 |
+| **B1-08b** | **Modèle** `coach_availability` : id, coach_id FK, day_of_week (0-6), start_time, end_time, max_slots (nb places par créneau), booking_horizon_days, active — dérivé de work_schedule | B1-08 | 🔴 |
 | **B1-09** | **Modèle** `cancellation_policies` : id, coach_id FK (1-1), threshold_hours, mode (auto/manual), noshow_is_due, client_message | B1-03 | 🔴 |
 | **B1-10** | **Modèle** `coaching_relations` : id, coach_id FK, client_id FK, status (enum: pending/discovery/active/paused/ended), created_at, updated_at | B1-03 | 🔴 |
 | **B1-11** | **Modèle** `coach_client_notes` : id, coach_id FK, client_id FK, content, updated_at | B1-10 | 🟡 |

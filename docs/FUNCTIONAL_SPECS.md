@@ -327,14 +327,23 @@ Toutes les requêtes API sont authentifiées via une **API Key** (SHA-256, 64 ch
 ```
 User (base commune coach/client)
   id, email, name, photo_url, role (coach|client)
-  locale (ex: fr-FR, en-US, es-ES)   ← culture de l'utilisateur
+  phone (E.164, ex: +33612345678, nullable)   ← numéro de téléphone
+  locale (ex: fr-FR, en-US, es-ES)            ← culture de l'utilisateur
   timezone (ex: Europe/Paris)
+  profile_completion_pct INT                  ← % de complétion du profil (0-100)
   created_at
 
 CoachProfile
   user_id, bio, specialties[], certifications[], gyms[]
   hourly_rate, currency (ISO 4217 : EUR, USD, GBP…)
   verified, country (ISO 3166-1 alpha-2 : FR, BE, US…)
+  session_duration_min, discovery_enabled, discovery_free, discovery_price_cents
+
+CoachWorkSchedule (jours de travail & horaires)
+  id, coach_id FK
+  day_of_week (0=Lun, 1=Mar, …, 6=Dim)
+  is_working_day (bool)                       ← false = jour de repos
+  slots: [{ start_time, end_time }]           ← plusieurs créneaux par jour possibles
 
 ClientProfile
   user_id, birth_date, weight_kg, height_cm, goal, level, injuries[]
@@ -434,4 +443,4 @@ Waitlist
 
 ---
 
-*Version 1.2 — 25/02/2026 (PostgreSQL + API Key auth + tarification + réservation/annulation/liste d'attente + i18n first : locale BCP 47, pays ISO 3166-1, devise ISO 4217, timezone, unité poids kg/lb)*
+*Version 1.3 — 25/02/2026 (+ téléphone E.164 coach+client, jours travail+horaires coach, wizard minimaliste + "Terminer plus tard", responsive, bandeau complétion)*
