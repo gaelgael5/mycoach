@@ -29,25 +29,60 @@ MyCoach connecte des coachs sportifs indépendants avec leurs clients. L'applica
 
 ---
 
+## 🌍 Internationalisation (i18n)
+
+L'application est **pensée internationale dès le premier commit**. Aucun texte codé en dur, aucune devise fixe, aucun format de date implicite.
+
+### Principes
+- Toutes les chaînes de l'UI sont externalisées dans des fichiers de ressources (Android : `strings.xml` par locale, Backend : fichiers i18n JSON)
+- La langue de l'interface suit la **culture du profil utilisateur** (`fr-FR`, `en-US`, `es-ES`, `pt-BR`…)
+- Les formats de date, heure, devise et unités (kg/lb) s'adaptent automatiquement à la locale
+- Le backend retourne les messages d'erreur et notifications dans la langue de l'utilisateur
+
+### Culture par défaut
+- Détectée à l'installation (locale système de l'appareil)
+- Modifiable dans le profil utilisateur à tout moment
+- Stockée côté serveur (persistée sur tous les appareils)
+
+### Locales supportées (Phase 1)
+| Code | Langue | Devise | Unité poids |
+|------|--------|--------|-------------|
+| `fr-FR` | Français (France) | EUR € | kg |
+| `fr-BE` | Français (Belgique) | EUR € | kg |
+| `fr-CH` | Français (Suisse) | CHF | kg |
+| `en-US` | English (US) | USD $ | lb |
+| `en-GB` | English (UK) | GBP £ | kg |
+| `es-ES` | Español (España) | EUR € | kg |
+| `pt-BR` | Português (Brasil) | BRL R$ | kg |
+| `de-DE` | Deutsch | EUR € | kg |
+
+> D'autres locales ajoutables sans refactoring grâce à l'architecture i18n first.
+
+---
+
 ## 🏋️ Salles de sport intégrées
 
-Sélection à l'inscription (coach ET client). Multi-sélection possible.
+Sélection à l'inscription (coach ET client). Multi-sélection possible. Filtrable par **pays**.
 
-| Chaîne | Clubs France |
-|--------|-------------|
-| Fitness Park | ~400 |
-| Basic-Fit | ~700 |
-| L'Orange Bleue | ~470 |
-| Keep Cool | ~250 |
-| Elancia | ~100 |
-| Neoness | ~50 |
-| GoFit | ~30 |
-| CMG Sports Club | ~20 (IDF) |
-| Wellness Sport Club | ~40 |
-| Moving | ~30 |
-| Anytime Fitness | International |
+| Chaîne | Pays | Clubs |
+|--------|------|-------|
+| Fitness Park | 🇫🇷 France, 🇬🇵 Guadeloupe, 🇲🇶 Martinique | ~400 |
+| Basic-Fit | 🇫🇷 🇧🇪 🇳🇱 🇱🇺 🇩🇪 🇪🇸 🇲🇦 | ~1 200 |
+| L'Orange Bleue | 🇫🇷 France | ~470 |
+| Keep Cool | 🇫🇷 France | ~250 |
+| Elancia | 🇫🇷 France | ~100 |
+| Neoness | 🇫🇷 France | ~50 |
+| GoFit | 🇫🇷 France | ~30 |
+| CMG Sports Club | 🇫🇷 France (IDF) | ~20 |
+| Wellness Sport Club | 🇫🇷 France | ~40 |
+| Moving | 🇫🇷 France | ~30 |
+| Anytime Fitness | 🌍 International (50+ pays) | ~5 000 |
+| PureGym | 🇬🇧 🇩🇰 🇸🇦 | ~600 |
+| McFit | 🇩🇪 🇦🇹 🇵🇱 🇮🇹 🇪🇸 | ~350 |
+| Holmes Place | 🇩🇪 🇦🇹 🇨🇿 🇵🇱 🇮🇱 🇨🇭 | ~100 |
+| Virgin Active | 🇬🇧 🇮🇹 🇵🇹 🇿🇦 🇦🇺 | ~200 |
 
-> Répertoire enrichi en back-office. Chaque chaîne dispose de sa liste clubs (nom, adresse, CP, ville).
+> Répertoire enrichi en back-office. Chaque club : nom, adresse, CP, ville, **pays (ISO 3166-1 alpha-2)**, coordonnées GPS.
 
 ---
 
@@ -291,17 +326,26 @@ Toutes les requêtes API sont authentifiées via une **API Key** (SHA-256, 64 ch
 
 ```
 User (base commune coach/client)
-  id, email, name, photo_url, role (coach|client), created_at
+  id, email, name, photo_url, role (coach|client)
+  locale (ex: fr-FR, en-US, es-ES)   ← culture de l'utilisateur
+  timezone (ex: Europe/Paris)
+  created_at
 
 CoachProfile
-  user_id, bio, specialties[], certifications[], gyms[], hourly_rate, verified
+  user_id, bio, specialties[], certifications[], gyms[]
+  hourly_rate, currency (ISO 4217 : EUR, USD, GBP…)
+  verified, country (ISO 3166-1 alpha-2 : FR, BE, US…)
 
 ClientProfile
   user_id, birth_date, weight_kg, height_cm, goal, level, injuries[]
+  weight_unit (kg|lb)
   questionnaire_id, strava_token, scale_provider, scale_token
+  country (ISO 3166-1 alpha-2)
 
 Gym (par chaîne)
-  id, chain_name, name, address, zip_code, city, lat, lng
+  id, chain_name, name, address, zip_code, city
+  country (ISO 3166-1 alpha-2 : FR, BE, US, GB…)
+  lat, lng
 
 CoachingRelation
   id, coach_id, client_id
@@ -390,4 +434,4 @@ Waitlist
 
 ---
 
-*Version 1.1 — 25/02/2026 (PostgreSQL + API Key auth + tarification + réservation/annulation/liste d'attente)*
+*Version 1.2 — 25/02/2026 (PostgreSQL + API Key auth + tarification + réservation/annulation/liste d'attente + i18n first : locale BCP 47, pays ISO 3166-1, devise ISO 4217, timezone, unité poids kg/lb)*

@@ -34,21 +34,25 @@ flowchart TD
 flowchart TD
     subgraph BACK["🖥️ Backend"]
         B1[FastAPI + PostgreSQL setup]
-        B2[Modèle de données complet]
+        B2[Modèle de données complet\npays ISO 3166 + locale BCP 47\ndevise ISO 4217 + timezone]
         B3[Auth API Key - Google OAuth + email/password]
         B4[API REST de base - CRUD utilisateurs]
         B5[Docker Compose dev]
+        B6[i18n backend\nfichiers locales JSON par langue\nmessages erreur + notifications traduits]
         B1 --> B2 --> B3 --> B4
         B1 --> B5
+        B2 --> B6
     end
 
     subgraph ANDROID["📱 Android"]
         A1[Monorepo Kotlin - navigation setup]
         A2[Design System - couleurs Coach/Client]
-        A3[ApiClient Retrofit singleton]
-        A4[Screens Auth - Login / Register / Rôle]
+        A3[ApiClient Retrofit - X-API-Key interceptor]
+        A4[Screens Auth - Login / Register / Rôle + Pays + Locale]
+        A5[i18n Android\nstrings.xml par locale\nformat dates devises poids]
         A1 --> A2 --> A4
         A1 --> A3 --> A4
+        A1 --> A5
     end
 
     subgraph INFRA["⚙️ Infra"]
@@ -258,6 +262,11 @@ flowchart TD
 | Stockage clé Android | EncryptedSharedPreferences (AES-256) | Sécurisé, natif Android |
 | Révocation | `revoked = TRUE` en base | Multi-device, logout immédiat |
 | Tarification coach | Séance unitaire + N forfaits configurables | Flexibilité maximale |
+| **i18n** | **BCP 47 locale par utilisateur** | Zéro texte codé en dur dès le 1er commit |
+| Pays | ISO 3166-1 alpha-2 | Sur clubs, profils coach et client |
+| Devises | ISO 4217 stockées en centimes | Jamais de float pour les montants |
+| Dates/heures | UTC en base, converti selon timezone user | Android : `DateTimeFormatter` + `ZoneId` |
+| Poids | Stocké en kg, affiché kg ou lb | Conversion automatique selon préférence |
 | Vidéos | Génération IA (Kling/Runway) + CDN | Pas de coût production |
 | Balance | API Withings en priorité | Meilleure API FR |
 | Déploiement | Docker Compose sur Proxmox LXC | Infrastructure existante |
@@ -281,7 +290,8 @@ Android
   ├── Room (cache local optionnel)
   ├── Navigation Component
   ├── EncryptedSharedPreferences (stockage clé)
-  └── Lottie (animations)
+  ├── Lottie (animations)
+  └── i18n : strings.xml par locale + java.time (dates UTC → local)
 
 Infra
   ├── Docker Compose (backend + PostgreSQL + pgAdmin)
@@ -292,4 +302,4 @@ Infra
 
 ---
 
-*Version 1.1 — Mis à jour le 25/02/2026 (PostgreSQL + API Key auth + tarification coach)*
+*Version 1.2 — Mis à jour le 25/02/2026 (PostgreSQL + API Key auth + tarification coach + i18n first : locale BCP 47, pays ISO 3166-1, devise ISO 4217, timezone, unité poids)*

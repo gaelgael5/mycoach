@@ -4,6 +4,39 @@
 
 ---
 
+## 🌍 INTERNATIONALISATION (i18n) — PRINCIPES FONDATEURS
+
+L'application est **internationale dès le premier commit**. Ces règles s'appliquent à toutes les phases de développement, sans exception.
+
+### Règles de développement (non négociables)
+- **Zéro texte codé en dur** dans le code (Android ou Backend) — tout passe par les fichiers de ressources
+- **Android :** `res/values/strings.xml` (défaut) + `res/values-fr/strings.xml`, `res/values-en/strings.xml`, etc.
+- **Backend :** Répertoire `locales/` avec fichiers JSON par langue (`fr.json`, `en.json`, `es.json`…) — messages d'erreur, notifications, emails
+- **Dates :** toujours stockées en UTC en base, converties en affichage selon `user.timezone`
+- **Devises :** stockées en centimes (entier) + code ISO 4217 (`EUR`, `USD`, `GBP`…), jamais en float
+- **Poids :** stockés en kg en base, affichés selon `user.weight_unit` (kg ou lb) avec conversion automatique
+- **Numéros de téléphone :** format E.164 (`+33612345678`)
+- **Codes pays :** ISO 3166-1 alpha-2 (`FR`, `BE`, `US`, `GB`…)
+- **Codes langue/culture :** BCP 47 (`fr-FR`, `en-US`, `es-ES`, `pt-BR`…)
+
+### Sélection de la culture (utilisateur)
+- Détectée automatiquement depuis la locale système de l'appareil (Android : `Locale.getDefault()`)
+- Modifiable dans Profil → Préférences → Langue
+- Persistée en base (`user.locale`) → synchronisée sur tous les appareils
+- Tout changement → rechargement de l'UI sans redémarrage (Android : `recreate()`)
+
+### Ce que la locale contrôle
+| Élément | Exemple fr-FR | Exemple en-US |
+|---------|--------------|--------------|
+| Dates | 25/02/2026 à 14h30 | Feb 25, 2026 at 2:30 PM |
+| Devise | 50,00 € | $50.00 |
+| Poids | 80 kg | 176 lb |
+| Séparateur décimal | virgule (80,5) | point (80.5) |
+| Premier jour semaine | Lundi | Dimanche |
+| Notifications | En français | In English |
+
+---
+
 ## 🔐 DÉCISIONS TECHNIQUES ARRÊTÉES
 
 | Composant | Choix | Notes |
@@ -19,6 +52,11 @@
 | Tarification | Séance unitaire + forfaits (N séances, prix, validité) | Configurable par coach |
 | Annulation | Pénalité si < délai configuré (défaut 24h) | Séance due au coach |
 | Liste d'attente | File FIFO, fenêtre 30 min par candidat | Automatique à chaque libération |
+| **i18n** | **BCP 47 locale par utilisateur (fr-FR, en-US…)** | Zéro texte codé en dur |
+| Pays | ISO 3166-1 alpha-2 (FR, BE, US…) | Sur clubs, profils, devises |
+| Devises | ISO 4217 (EUR, USD, GBP…) stockées en centimes | Jamais de float pour les montants |
+| Dates | UTC en base, converti selon user.timezone | Pas de décalage horaire surprenant |
+| Poids | Stocké kg, affiché kg ou lb selon préférence | Conversion automatique |
 
 ---
 
@@ -33,6 +71,8 @@
 - Email (obligatoire, format RFC5322, unicité vérifiée côté serveur)
 - Mot de passe (obligatoire, min 8 chars, au moins 1 majuscule, 1 chiffre, 1 caractère spécial)
 - Confirmation mot de passe (doit être identique)
+- Pays (sélecteur ISO 3166-1, pré-sélectionné depuis la locale système)
+- Langue / Culture (pré-sélectionnée depuis la locale système, ex: `fr-FR`) — modifiable
 - Case "J'accepte les CGU" (obligatoire)
 
 **Validations en temps réel :**
@@ -219,9 +259,13 @@ Après vérification email → redirect `ClientOnboardingScreen` (questionnaire,
 
 ### Écran 5/5 — Tarifs & disponibilités
 **Tarifs :**
-- Tarif séance unitaire (€, obligatoire, min 1€)
+- Devise (pré-sélectionnée depuis le pays du coach, modifiable) : EUR / USD / GBP / CHF / CAD / BRL / AUD…
+- Tarif séance unitaire (montant, obligatoire, min 1 dans la devise choisie)
 - Forfaits (ajout dynamique de lignes) :
+  - Nom du forfait (ex : "Pack 10 séances", "Mensuel")
   - Nb séances + Prix total → prix unitaire calculé et affiché automatiquement
+  - Durée de validité : 1 mois / 2 mois / 3 mois / 6 mois / Sans limite
+  - Visible publiquement : oui / non
 - Séance découverte : toggle "Proposer une séance découverte"
   - Si oui : Gratuite / Payante (saisir le tarif)
   - Durée de la découverte : 30 / 45 / 60 min
@@ -1090,9 +1134,12 @@ Dashboard | Clients | Agenda | Perfs | Profil
 
 ### 22.1 Paramètres Coach
 - Modifier photo, prénom, nom, bio
+- **Pays** (ISO 3166-1 — affecte la devise par défaut et le filtrage des salles)
+- **Langue / Culture** (BCP 47 : `fr-FR`, `en-US`, `es-ES`… — change l'UI immédiatement)
+- **Devise** (ISO 4217 : EUR, USD, GBP… — appliquée à tous les tarifs)
 - Spécialités (ajout/suppression)
 - Certifications (ajout/suppression/modification)
-- Salles (ajout/suppression)
+- Salles (ajout/suppression, filtrées par pays)
 - Tarifs et forfaits
 - Disponibilités (modifier les créneaux récurrents)
 - Politique d'annulation (§9.6)
@@ -1105,9 +1152,13 @@ Dashboard | Clients | Agenda | Perfs | Profil
 
 ### 22.2 Paramètres Client
 - Modifier photo, prénom, nom
+- **Pays** (ISO 3166-1 — affecte les salles disponibles et la devise affichée)
+- **Langue / Culture** (BCP 47 — change l'UI immédiatement)
+- **Unité de poids** (kg / lb — affecte l'affichage des perfs et de la balance)
+- Fuseau horaire (auto-détecté, modifiable — affecte l'affichage des horaires de séances)
 - Refaire le questionnaire (objectif, fréquence, équipement)
-- Salles fréquentées
-- Poids et taille (pour calcul IMC)
+- Salles fréquentées (filtrées par pays)
+- Poids et taille (pour calcul IMC, stocké en kg, affiché selon préférence)
 - Poids cible (optionnel)
 - Intégrations : Strava, Google Calendar, Balance connectée
 - Partage des performances :
@@ -1154,12 +1205,16 @@ Dashboard | Clients | Agenda | Perfs | Profil
 - Coût estimé API (si disponible)
 
 ### 23.5 Gestion du répertoire salles
-- Tableau filtrables par chaîne, ville, CP
-- Bouton "Importer CSV" → format attendu : chaîne, nom, adresse, CP, ville, latitude, longitude
-- Ajout manuel d'un club (formulaire)
+- Tableau filtrable par : chaîne, **pays (ISO 3166-1)**, ville, CP
+- Bouton "Importer CSV" → format attendu :
+  ```
+  chain_name, name, address, zip_code, city, country (ISO 3166-1), latitude, longitude
+  ```
+- Ajout manuel d'un club (formulaire avec sélecteur pays obligatoire)
 - Modification inline
 - Suppression (avec confirmation, vérification qu'aucun coach ne référence ce club)
-- Export CSV complet
+- Export CSV complet (avec colonne `country`)
+- Vue carte (Leaflet / Google Maps) pour visualiser la couverture géographique
 
 ---
 
@@ -1203,6 +1258,7 @@ pending_coach_validation ──(24h expiration)──► auto_rejected
 |---------|------|---------------|
 | 1.0 | 25/02/2026 | Document initial — 24 modules complets |
 | 1.1 | 25/02/2026 | SQLite → PostgreSQL 16 · JWT → API Key SHA-256 · Tarification (unitaire + forfaits) · Réservation client + annulation pénalité + liste d'attente |
+| 1.2 | 25/02/2026 | i18n first : locale BCP 47 + pays ISO 3166-1 + devise ISO 4217 + unité poids + timezone sur tous les profils · Pays sur clubs · Chaînes internationales ajoutées |
 
 ---
 
