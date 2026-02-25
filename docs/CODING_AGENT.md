@@ -305,289 +305,63 @@ Ces règles s'appliquent à **chaque ligne de code produite**, sans exception.
 
 ---
 
-## 6. LISTE ORDONNÉE DES TÂCHES
+## 6. LISTES DE TÂCHES
 
-> Mise à jour de l'état dans `docs/PROGRESS.md` après chaque tâche.
-> Statuts : `⬜ À faire` | `🔄 En cours` | `✅ Terminé` | `⛔ Bloqué`
+Les tâches sont réparties dans deux fichiers dédiés, un par plateforme :
 
----
+| Fichier | Plateforme | Répertoire cible |
+|---------|-----------|-----------------|
+| `docs/TASKS_BACKEND.md` | Python / FastAPI | `backend/` |
+| `docs/TASKS_ANDROID.md` | Kotlin / Android | `android/` |
 
-### PHASE 0 — Fondations *(Semaines 1–2)*
+**Règles d'utilisation :**
+- Chaque tâche est numérotée (`B0-01`, `A0-01`…) et référence ses dépendances
+- Chaque tâche a une priorité : 🔴 Bloquant / 🟡 Important / 🟢 Optionnel
+- Traiter les tâches 🔴 dans l'ordre avant toute tâche 🟡
+- Mettre à jour `docs/PROGRESS.md` après chaque tâche complétée
+- Statuts : `⬜ À faire` | `🔄 En cours` | `✅ Terminé` | `⛔ Bloqué`
 
-#### Back-end
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| B0-1 | Initialiser le projet FastAPI : structure dossiers, `main.py`, `config.py` (pydantic-settings), `requirements.txt` | ⬜ |
-| B0-2 | Docker Compose : service `db` (PostgreSQL 16), service `backend`, volumes, variables d'env | ⬜ |
-| B0-3 | Configurer SQLAlchemy 2 async + asyncpg : `database.py`, session factory, base declarative | ⬜ |
-| B0-4 | Configurer Alembic : `alembic.ini`, `env.py` async, première migration vide | ⬜ |
-| B0-5 | Modèle `users` : id UUID, email, name, photo_url, role, locale (BCP 47), timezone, country (ISO 3166-1), created_at, updated_at | ⬜ |
-| B0-6 | Modèle `api_keys` : id, user_id FK, key_hash CHAR(64) unique indexé, device_name, created_at, last_used_at, expires_at, revoked | ⬜ |
-| B0-7 | Utilitaire de génération API Key : `generate_api_key(unique_input: str) -> str` (SHA-256 + SECRET_SALT) | ⬜ |
-| B0-8 | Middleware d'authentification : `get_current_user(X-API-Key)` → lookup base → retourne User ou HTTP 401 | ⬜ |
-| B0-9 | Route `POST /auth/google` : vérifie Google ID Token (clés publiques Google via `google-auth`), crée/récupère user, génère API Key, retourne `{ api_key, user }` | ⬜ |
-| B0-10 | Route `POST /auth/register` : création compte email/password, envoi email de vérification (token 24h) | ⬜ |
-| B0-11 | Route `GET /auth/verify-email?token=` : active le compte | ⬜ |
-| B0-12 | Route `POST /auth/login` : vérifie credentials bcrypt, génère API Key, retourne `{ api_key, user }` | ⬜ |
-| B0-13 | Route `DELETE /auth/logout` : révoque la clé courante | ⬜ |
-| B0-14 | Route `DELETE /auth/logout-all` : révoque toutes les clés du user | ⬜ |
-| B0-15 | Route `GET /auth/me` : retourne le profil utilisateur courant (vérifie API Key) | ⬜ |
-| B0-16 | Route `POST /auth/forgot-password` + `POST /auth/reset-password` | ⬜ |
-| B0-17 | Système i18n backend : chargement fichiers `locales/fr.json` + `locales/en.json`, fonction `t(key, locale)` | ⬜ |
-| B0-18 | Middleware `Accept-Language` → injecte `locale` dans le contexte de chaque requête | ⬜ |
-| B0-19 | Route `GET /health` : retourne `{ status: ok, db: ok }` (sans auth) | ⬜ |
-| B0-20 | Tests unitaires : toutes les routes auth (happy path + erreurs : email dupe, bad credentials, token expiré, clé révoquée) | ⬜ |
-
-#### Android
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| A0-1 | Initialiser le projet Android : package `com.mycoach.app`, minSdk 26, Kotlin 1.9+, Hilt, Retrofit, Navigation Component | ⬜ |
-| A0-2 | Design System : définir couleurs Coach (`#0A0E1A` / `#7B2FFF`) et Client (`#F0F4FF` / `#00C2FF`), typographie (Space Grotesk), thème Material 3 | ⬜ |
-| A0-3 | `ApiClient` singleton Retrofit : URL base depuis DataStore, intercepteur `ApiKeyInterceptor` (header `X-API-Key` + `Accept-Language`) | ⬜ |
-| A0-4 | `ApiKeyStore` : stockage/lecture API Key dans `EncryptedSharedPreferences`, méthode `isLoggedIn()` | ⬜ |
-| A0-5 | `SplashScreen` : vérifie `isLoggedIn()` → `GET /auth/me` → si 200 redirect Dashboard, sinon redirect Login | ⬜ |
-| A0-6 | `LoginScreen` : email + password, bouton Google Sign-In (SDK), lien "Mot de passe oublié", lien "Créer un compte" | ⬜ |
-| A0-7 | `LoginViewModel` : `loginWithEmail()`, `loginWithGoogle(idToken)` → appels API → stocke API Key → émet état `Success(role)` | ⬜ |
-| A0-8 | `RegisterScreen` + `RegisterViewModel` : inscription email/password + choix pays/locale + choix rôle Coach/Client | ⬜ |
-| A0-9 | `EmailVerificationScreen` : affiche email, bouton renvoyer (cooldown 60s), lien "Mauvais email" | ⬜ |
-| A0-10 | `RoleSelectionScreen` : affiché après Google login si nouveau compte → sélection Coach / Client | ⬜ |
-| A0-11 | `ForgotPasswordScreen` + `ResetPasswordScreen` | ⬜ |
-| A0-12 | Système i18n Android : `strings.xml` en (défaut) + fr + es + pt. `LocaleHelper` : applique la locale user au démarrage et à chaque changement | ⬜ |
-| A0-13 | `WeightFormatter`, `PriceFormatter`, `DateTimeFormatter` : fonctions utilitaires i18n pour l'affichage | ⬜ |
-| A0-14 | Tests unitaires : `LoginViewModel`, `RegisterViewModel` (mocks Retrofit) | ⬜ |
+**Ordre de développement inter-plateformes :**
+```
+Phase 0 Back (B0-01→B0-26)
+       │
+       ├──► Phase 0 Android (A0-01→A0-31)    ← peut démarrer en parallèle (UI mocks)
+       │
+Phase 1 Back (B1-01→B1-28)
+       │
+       ├──► Phase 1 Android (A1-01→A1-20)
+       │
+Phase 2 Back (B2-01→B2-26)
+       │
+       └──► Phase 2 Android (A2-01→A2-26)
+                     ...
+```
 
 ---
 
-### PHASE 1 — Espace Coach *(Semaines 3–5)*
-
-#### Back-end
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| B1-1 | Modèles BDD : `coach_profiles`, `specialties`, `coach_certifications`, `gyms`, `gym_chains`, `coach_gyms` (relation M-M) | ⬜ |
-| B1-2 | Modèles BDD : `coach_pricing` (per_session et package), `coach_availability` (créneaux récurrents + nb places + horizon), `cancellation_policies` | ⬜ |
-| B1-3 | API `POST /coaches/profile` : création profil coach (onboarding étapes 1–5) | ⬜ |
-| B1-4 | API `PUT /coaches/profile` : mise à jour profil | ⬜ |
-| B1-5 | API `GET /coaches/profile` : récupère profil coach courant | ⬜ |
-| B1-6 | API `GET /gyms?chain=&country=&city=&q=` : recherche de clubs (filtres pays obligatoire) | ⬜ |
-| B1-7 | Seed BDD : import des répertoires de salles (Fitness Park, Basic-Fit, etc.) avec champ `country` ISO 3166-1 | ⬜ |
-| B1-8 | API CRUD `/coaches/pricing` : créer/modifier/supprimer forfaits et tarif unitaire (montants en centimes + devise) | ⬜ |
-| B1-9 | API CRUD `/coaches/availability` : créneaux récurrents + nb places + horizon | ⬜ |
-| B1-10 | API `PUT /coaches/cancellation-policy` : délai, mode (auto/manuel), no-show policy, message client | ⬜ |
-| B1-11 | Modèles BDD : `coaching_relations`, `clients` (vue coach sur ses clients), `coach_notes` | ⬜ |
-| B1-12 | API `GET /coaches/clients` : liste avec filtres (statut, tri) + pagination | ⬜ |
-| B1-13 | API `GET /coaches/clients/{id}` : fiche client complète (profil + séances + paiements) | ⬜ |
-| B1-14 | API `PUT /coaches/clients/{id}/relation` : suspend / termine la relation | ⬜ |
-| B1-15 | API `PUT /coaches/clients/{id}/note` : note privée coach | ⬜ |
-| B1-16 | Modèles BDD : `payments`, `packages` (forfaits achetés par client) | ⬜ |
-| B1-17 | API CRUD `/coaches/clients/{id}/payments` : créer forfait, enregistrer paiement, historique | ⬜ |
-| B1-18 | API `GET /coaches/clients/{id}/hours` : heures consommées / forfait actif | ⬜ |
-| B1-19 | Tests unitaires : toutes les routes coach | ⬜ |
-
-#### Android
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| A1-1 | `CoachOnboardingActivity` : navigation entre les 5 écrans d'onboarding avec progress indicator | ⬜ |
-| A1-2 | Écran 1/5 : photo (Camera/Galerie + crop), prénom/nom, bio avec compteur de chars | ⬜ |
-| A1-3 | Écran 2/5 : spécialités multi-select (chips) | ⬜ |
-| A1-4 | Écran 3/5 : certifications (liste ajoutables + upload photo) | ⬜ |
-| A1-5 | Écran 4/5 : sélection salles (chaîne → pays → ville/CP → clubs multi-select) | ⬜ |
-| A1-6 | Écran 5/5 : devise, tarif unitaire, forfaits (lignes dynamiques : nb séances + prix + validité + visibilité), séance découverte, durée standard, disponibilités récurrentes | ⬜ |
-| A1-7 | `CoachDashboardFragment` : KPIs (séances, clients, heures, revenus formatés selon locale/devise), prochaines séances, réservations à valider, alertes forfaits | ⬜ |
-| A1-8 | `ClientListFragment` + `ClientListViewModel` : liste filtrée/triée, recherche | ⬜ |
-| A1-9 | `ClientDetailFragment` : 5 onglets (Profil, Séances, Programme, Performances, Paiements) | ⬜ |
-| A1-10 | `ClientPaymentsFragment` : solde forfait, historique, créer forfait, enregistrer paiement, export | ⬜ |
-| A1-11 | `CoachProfileFragment` : affichage et édition profil, politique d'annulation, partage profil (deep link) | ⬜ |
-| A1-12 | Tests unitaires ViewModels : Dashboard, ClientList, ClientDetail | ⬜ |
+> 📋 **Les tâches détaillées sont dans :**
+> - `docs/TASKS_BACKEND.md` — toutes les tâches Python/FastAPI (B0-xx → B6-xx)
+> - `docs/TASKS_ANDROID.md` — toutes les tâches Kotlin/Android (A0-xx → A6-xx)
 
 ---
 
-### PHASE 2 — Espace Client *(Semaines 6–8)*
+### Résumé des phases (vue d'ensemble)
 
-#### Back-end
+| Phase | Back (TASKS_BACKEND.md) | Android (TASKS_ANDROID.md) | Sem. |
+|-------|------------------------|---------------------------|------|
+| 0 — Fondations | B0-01 → B0-26 (infra, auth, API Key, i18n) | A0-01 → A0-31 (setup, design, login) | 1–2 |
+| 1 — Coach | B1-01 → B1-28 (profil, tarifs, clients, paiements) | A1-01 → A1-20 (onboarding, dashboard, clients) | 3–5 |
+| 2 — Client & Résa | B2-01 → B2-26 (questionnaire, réservation, annulation, waitlist) | A2-01 → A2-26 (questionnaire, recherche, booking, agenda) | 6–8 |
+| 3 — Performances | B3-01 → B3-15 (QR, exercices, séances, stats, PRs) | A3-01 → A3-20 (session, scanner, graphiques) | 9–11 |
+| 4 — IA & Programmes | B4-01 → B4-13 (génération programme, progression, vidéos) | A4-01 → A4-17 (séance guidée, builder programme) | 12–14 |
+| 5 — Intégrations | B5-01 → B5-08 (Strava, Calendar, Balance, Firebase) | A5-01 → A5-12 (OAuth, balance, notifications) | 15–17 |
+| 6 — Launch | B6-01 → B6-06 (audit, RGPD, perf, Docker hardening) | A6-01 → A6-12 (polish, Espresso, Play Store) | 18–20 |
 
-| # | Tâche | Statut |
-|---|-------|--------|
-| B2-1 | Modèles BDD : `client_profiles`, `client_questionnaires`, `client_gyms` | ⬜ |
-| B2-2 | API `POST /clients/profile` + `PUT /clients/profile` + `GET /clients/profile` | ⬜ |
-| B2-3 | API `POST /clients/questionnaire` + `PUT /clients/questionnaire` | ⬜ |
-| B2-4 | API `GET /coaches/search?country=&chain=&gym=&specialty=&max_price=&discovery=&certified=` : recherche coaches avec filtres | ⬜ |
-| B2-5 | API `GET /coaches/{id}/public` : profil public d'un coach (visible par client) | ⬜ |
-| B2-6 | Modèles BDD : `coaching_requests` (demandes de découverte), `bookings`, `waitlist` | ⬜ |
-| B2-7 | API `POST /coaching-requests` : demande de découverte client → coach | ⬜ |
-| B2-8 | API `GET /coaching-requests` (coach) : liste des demandes en attente | ⬜ |
-| B2-9 | API `POST /coaching-requests/{id}/accept` : coach accepte + propose créneau découverte | ⬜ |
-| B2-10 | API `POST /coaching-requests/{id}/reject` : coach refuse + motif | ⬜ |
-| B2-11 | API `GET /coaches/{id}/slots?from=&to=` : créneaux disponibles du coach (calcul depuis availability - bookings existants) | ⬜ |
-| B2-12 | API `POST /bookings` : client réserve un créneau (statut `pending_coach_validation`) + choix tarif (unitaire ou forfait_id) | ⬜ |
-| B2-13 | API `POST /bookings/{id}/confirm` (coach) : valide la réservation | ⬜ |
-| B2-14 | API `POST /bookings/{id}/reject` (coach) : refuse + motif | ⬜ |
-| B2-15 | API `DELETE /bookings/{id}` : annulation par client ou coach — applique la règle pénalité (< délai = séance due) | ⬜ |
-| B2-16 | API `POST /bookings/{id}/waive-penalty` (coach) : exonère la pénalité d'annulation tardive | ⬜ |
-| B2-17 | API `POST /bookings/{id}/no-show` (coach) : marque le client absent | ⬜ |
-| B2-18 | Service `WaitlistService` : gestion FIFO, notification 30 min, expiration, passage au suivant | ⬜ |
-| B2-19 | API `POST /waitlist/{slot_ref}` : rejoindre la liste d'attente | ⬜ |
-| B2-20 | API `DELETE /waitlist/{id}` : quitter la liste d'attente | ⬜ |
-| B2-21 | API `POST /waitlist/{id}/confirm` : client confirme dans la fenêtre de 30 min | ⬜ |
-| B2-22 | Worker async : auto-reject des `pending_coach_validation` après 24h sans réponse coach | ⬜ |
-| B2-23 | Envoi notifications push (Firebase) : tous les déclencheurs définis dans les specs §21 | ⬜ |
-| B2-24 | Tests unitaires : réservation, annulation (cas < et > délai), liste d'attente, notifications | ⬜ |
-
-#### Android
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| A2-1 | `ClientOnboardingActivity` : 6 écrans de questionnaire avec navigation et sauvegarde progressive | ⬜ |
-| A2-2 | Écrans questionnaire 1–6 (objectif, niveau, fréquence, équipements, zones, blessures) | ⬜ |
-| A2-3 | `ClientDashboardFragment` : programme de la semaine, prochaines séances, accès rapide "Nouvelle séance" | ⬜ |
-| A2-4 | `CoachSearchFragment` : barre recherche + filtres (drawer) + liste résultats | ⬜ |
-| A2-5 | `CoachPublicProfileFragment` : profil coach complet, bouton "Demander découverte" / "Réserver" | ⬜ |
-| A2-6 | `DiscoveryRequestBottomSheet` : message optionnel + confirmation | ⬜ |
-| A2-7 | `CoachSlotsFragment` : calendrier des disponibilités du coach (🟢🟠🔴⬛🟡) | ⬜ |
-| A2-8 | `BookingConfirmBottomSheet` : récap créneau + sélection tarif (unitaire / forfait / forfait actif) | ⬜ |
-| A2-9 | `ClientAgendaFragment` : vue semaine multi-coach color-coded, tap → détail séance | ⬜ |
-| A2-10 | `SessionDetailBottomSheet` (client) : infos + actions selon statut (Accepter/Décliner/Annuler) + règle pénalité affichée si < délai | ⬜ |
-| A2-11 | `WaitlistBottomSheet` : position dans la file, règle 30 min, rejoindre/quitter | ⬜ |
-| A2-12 | Écran de confirmation liste d'attente (deep link depuis notification) : "Confirmer en X min" avec timer | ⬜ |
-| A2-13 | Tests unitaires ViewModels : CoachSearch, Booking, Agenda | ⬜ |
+> ⚠️ Toujours commencer par les tâches 🔴 (bloquantes) dans l'ordre indiqué dans chaque fichier.
 
 ---
 
-### PHASE 3 — Performances *(Semaines 9–11)*
-
-#### Back-end
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| B3-1 | Modèles BDD : `exercise_types` (nom, catégorie, muscles ciblés, vidéo, difficulté), `machines` (type, marque, modèle, photo, qr_code, validated) | ⬜ |
-| B3-2 | Modèles BDD : `performance_sessions`, `exercise_sets` (session, exercice, sets, reps, weight_kg) | ⬜ |
-| B3-3 | API `GET /exercises?q=&category=&muscle=` : liste des exercices searchable | ⬜ |
-| B3-4 | API `GET /machines/qr/{qr_code}` : identification machine par QR | ⬜ |
-| B3-5 | API `POST /machines/submit` : soumission machine inconnue (type, marque, modèle, photo) | ⬜ |
-| B3-6 | API `POST /performances` : créer une session de performance (sets, exercices) | ⬜ |
-| B3-7 | API `PUT /performances/{id}` : modifier (accessible < 48h, par l'auteur uniquement) | ⬜ |
-| B3-8 | API `DELETE /performances/{id}` : supprimer (accessible < 48h, par l'auteur) | ⬜ |
-| B3-9 | API `POST /performances/for-client/{client_id}` (coach) : saisir perf pour un client | ⬜ |
-| B3-10 | API `GET /performances?from=&to=&type=&muscle=` : historique filtré | ⬜ |
-| B3-11 | API `GET /performances/stats/exercise/{exercise_id}` : données graphique (poids max + volume par date) | ⬜ |
-| B3-12 | API `GET /performances/stats/week` : séances semaine en cours, muscles travaillés, streak | ⬜ |
-| B3-13 | Détection PR (record personnel) : à chaque sauvegarde, comparer avec l'historique → si nouveau PR → notif push | ⬜ |
-| B3-14 | API `GET /coaches/clients/{id}/performances` (coach) : perfs d'un client si partage activé | ⬜ |
-| B3-15 | Back-office : API `GET /admin/machines/pending` + `POST /admin/machines/{id}/validate` + `POST /admin/machines/{id}/reject` | ⬜ |
-| B3-16 | Tests unitaires : création perf, stats, détection PR, accès coach aux perfs client | ⬜ |
-
-#### Android
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| A3-1 | `WorkoutSessionFragment` : liste d'exercices, drag & drop, chrono, bouton "Terminer" | ⬜ |
-| A3-2 | `AddExerciseBottomSheet` : onglets Scanner QR / Manuel | ⬜ |
-| A3-3 | QR Code scanner : intégration ML Kit Barcode Scanning, overlay caméra, feedback vibration | ⬜ |
-| A3-4 | Fallback manuel : type machine (scroll list) → marque → modèle → photo (Camera/Galerie) | ⬜ |
-| A3-5 | `ExerciseSetBottomSheet` : steppers reps/poids par série, ajout/suppression série, note, bouton vidéo | ⬜ |
-| A3-6 | `VideoPlayerBottomSheet` : mini player vidéo (ExoPlayer) en overlay, loop, légendes | ⬜ |
-| A3-7 | `SessionSummaryFragment` : récap perf, ressenti 1–5 étoiles, sauvegarder, bottom sheet Strava | ⬜ |
-| A3-8 | `PerformanceHistoryFragment` : liste avec filtres période/type/muscle | ⬜ |
-| A3-9 | `PerformanceDetailFragment` : détail séance, modifier/supprimer si < 48h | ⬜ |
-| A3-10 | `PerformanceStatsFragment` : sélecteur exercice + graphiques (MPAndroidChart), badges PR | ⬜ |
-| A3-11 | `WeekDashboardFragment` : jauge séances, radar muscles, streak, volume mensuel | ⬜ |
-| A3-12 | Saisie coach pour client : banner "Saisie pour [Client]", même interface + notif client | ⬜ |
-| A3-13 | Tests unitaires ViewModels : WorkoutSession, PerformanceHistory, Stats | ⬜ |
-
----
-
-### PHASE 4 — Intelligence IA *(Semaines 12–14)*
-
-#### Back-end
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| B4-1 | Service `ProgramGeneratorService` : génère un programme hebdo depuis le questionnaire client (règles métier, pas d'IA externe nécessaire en v1) | ⬜ |
-| B4-2 | API `GET /clients/program` : programme de la semaine en cours (IA ou coach) | ⬜ |
-| B4-3 | API `POST /clients/program/recalibrate` : regénère depuis questionnaire mis à jour | ⬜ |
-| B4-4 | Service `ProgressionService` : règle d'ajustement automatique des charges (3 séances OK → +2.5kg, échec → maintien/réduction) | ⬜ |
-| B4-5 | Modèles BDD : `workout_plans`, `planned_sessions`, `planned_exercises` | ⬜ |
-| B4-6 | API CRUD `/coaches/programs` : créer/modifier/dupliquer/archiver des programmes | ⬜ |
-| B4-7 | API `POST /coaches/programs/{id}/assign` : assigner un programme à un client avec date de départ | ⬜ |
-| B4-8 | API `GET /coaches/clients/{id}/program-progress` : avancement semaine + perfs réelles vs cibles | ⬜ |
-| B4-9 | Modèles BDD : `exercise_videos` (exercise_type_id, video_url, status: pending/generating/validating/published/rejected) | ⬜ |
-| B4-10 | Back-office : API `POST /admin/videos/generate/{exercise_id}` → appel API IA vidéo (Kling/Runway), statut async | ⬜ |
-| B4-11 | Back-office : API `POST /admin/videos/{id}/validate` + `POST /admin/videos/{id}/reject` | ⬜ |
-| B4-12 | Tests unitaires : génération programme, ajustement progressif, CRUD programmes coach | ⬜ |
-
-#### Android
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| A4-1 | `ProgramWeekFragment` : vue semaine du programme (séances prévues, statuts ✓/✗/⏳, badge IA ou Coach) | ⬜ |
-| A4-2 | `ProgramSessionPreviewFragment` : liste exercices + durée + muscles + bouton "Commencer" | ⬜ |
-| A4-3 | `GuidedSessionFragment` : navigation exercice par exercice, progress bar, bouton vidéo | ⬜ |
-| A4-4 | Sets guidés : préremplissage poids cibles, saisie poids réel, bouton "Set réalisé ✓" | ⬜ |
-| A4-5 | Timer de repos : countdown, vibration + son, "Ignorer", "Prolonger +30s" | ⬜ |
-| A4-6 | Modification inline pendant séance guidée : changer poids/reps, passer exercice + motif | ⬜ |
-| A4-7 | `GuidedSessionSummaryFragment` : animation Lottie, ressenti, sauvegarde, Strava | ⬜ |
-| A4-8 | Affichage suggestion ajustement progressif : notification + confirmation/refus | ⬜ |
-| A4-9 | `CoachProgramBuilderFragment` : créer programme (vue semaine, ajout séances, ajout exercices, drag & drop) | ⬜ |
-| A4-10 | `CoachProgramLibraryFragment` : liste programmes, assigner à un client | ⬜ |
-| A4-11 | `ClientProgramProgressFragment` (coach) : avancement + perfs réelles vs cibles | ⬜ |
-| A4-12 | Tests unitaires ViewModels : GuidedSession, ProgramBuilder | ⬜ |
-
----
-
-### PHASE 5 — Intégrations *(Semaines 15–17)*
-
-#### Back-end
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| B5-1 | Strava OAuth2 : `GET /integrations/strava/connect` + callback + stockage token | ⬜ |
-| B5-2 | API `POST /integrations/strava/push/{session_id}` : push séance vers Strava (WeightTraining, Workout…) | ⬜ |
-| B5-3 | API `GET /integrations/strava/import` : import activités Strava non présentes | ⬜ |
-| B5-4 | Google Calendar OAuth2 : `GET /integrations/calendar/connect` + callback + stockage token | ⬜ |
-| B5-5 | Service `CalendarSyncService` : push séances confirmées vers GCal, update si annulation | ⬜ |
-| B5-6 | Withings OAuth2 : connect + callback + import mesures corporelles | ⬜ |
-| B5-7 | API `GET /integrations/scale/history` : historique mesures corporelles (poids, IMC, % graisse…) | ⬜ |
-| B5-8 | API `POST /integrations/scale/manual` : saisie manuelle d'une mesure | ⬜ |
-| B5-9 | Firebase : configuration push notifications, envoi depuis le service de notifications existant | ⬜ |
-| B5-10 | Tests d'intégration : OAuth flows, push Strava, sync Calendar, import balance | ⬜ |
-
-#### Android
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| A5-1 | `IntegrationsFragment` : liste des intégrations (Strava, Calendar, Balance) avec statut connecté/déconnecté | ⬜ |
-| A5-2 | Strava OAuth2 : WebView ou Chrome Custom Tab → callback → stockage token | ⬜ |
-| A5-3 | Bottom sheet "Pousser vers Strava ?" après sauvegarde séance | ⬜ |
-| A5-4 | Google Calendar OAuth2 : connexion + options sync bidirectionnelle | ⬜ |
-| A5-5 | Balance connectée : Withings OAuth2 + import + graphiques composition corporelle | ⬜ |
-| A5-6 | Saisie manuelle balance : modale date + poids + métriques optionnelles | ⬜ |
-| A5-7 | `BodyCompositionFragment` : courbes historiques (poids, % graisse, masse musculaire), sélecteur période | ⬜ |
-| A5-8 | Gestion notifications Firebase : réception, routing vers le bon écran selon type | ⬜ |
-| A5-9 | Tests unitaires : IntegrationsViewModel, BodyCompositionViewModel | ⬜ |
-
----
-
-### PHASE 6 — Polish & Launch *(Semaines 18–20)*
-
-| # | Tâche | Statut |
-|---|-------|--------|
-| P6-1 | Animations Lottie : splash, completion séance, nouveau PR, onboarding | ⬜ |
-| P6-2 | Glassmorphism + effets visuels high-tech sur les deux thèmes (Coach/Client) | ⬜ |
-| P6-3 | Accessibilité : content descriptions sur tous les éléments interactifs, taille de texte adaptable | ⬜ |
-| P6-4 | Tests E2E Android : Espresso sur les flows critiques (login → réservation → perf → sauvegarde) | ⬜ |
-| P6-5 | Optimisation performances API : index PostgreSQL, requêtes N+1, cache Redis (optionnel) | ⬜ |
-| P6-6 | Audit sécurité : OWASP Mobile Top 10, OWASP API Top 10 | ⬜ |
-| P6-7 | RGPD : droit à l'oubli (suppression compte effectif J+30), export données utilisateur, bandeau consentement | ⬜ |
-| P6-8 | CGU + Politique de confidentialité (WebView dans l'app) | ⬜ |
-| P6-9 | Back-office web complet : modération machines, validation coachs, gestion vidéos, stats globales | ⬜ |
-| P6-10 | Configuration Play Store : fiche app, captures d'écran, description (fr + en), politique de confidentialité | ⬜ |
-| P6-11 | Beta interne (Firebase App Distribution) : 10 coachs + 50 clients | ⬜ |
-| P6-12 | Correction bugs beta + polish final | ⬜ |
-| P6-13 | 🚀 Publication Google Play Store | ⬜ |
-
+#### SUPPRIMÉ — voir TASKS_BACKEND.md et TASKS_ANDROID.md pour le détail complet
 ---
 
 ## 7. FICHIER DE PROGRESSION
