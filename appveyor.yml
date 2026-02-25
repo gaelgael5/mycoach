@@ -1,0 +1,106 @@
+# MyCoach — CI/CD Backend (Python / FastAPI)
+# AppVeyor pipeline : Tests → Build Docker → Push Docker Hub
+# Triggered : push sur main ou pull request
+
+version: "{build}"
+
+# ─── Image ───────────────────────────────────────────────────────────────────
+image: Ubuntu2204
+
+# ─── Variables globales ───────────────────────────────────────────────────────
+environment:
+  PYTHON_VERSION: "3.12"
+  DOCKER_IMAGE: blackbeardteam/mycoach-api
+  # Secrets injectés depuis AppVeyor UI (Settings → Environment)
+  DOCKER_USERNAME:
+    secure: "REPLACE_WITH_APPVEYOR_ENCRYPTED_VALUE"
+  DOCKER_PASSWORD:
+    secure: "REPLACE_WITH_APPVEYOR_ENCRYPTED_VALUE"
+  # DB pour les tests (service PostgreSQL AppVeyor)
+  POSTGRES_DB: mycoach_test
+  POSTGRES_USER: mycoach
+  POSTGRES_PASSWORD: mycoach_ci
+  DATABASE_URL: "postgresql+asyncpg://mycoach:mycoach_ci@localhost:5432/mycoach_test"
+  SECRET_KEY: "ci_secret_key_not_used_in_production"
+  APP_ENV: "test"
+
+# ─── Service PostgreSQL ───────────────────────────────────────────────────────
+services:
+  - postgresql
+
+# ─── Installation ─────────────────────────────────────────────────────────────
+install:
+  # Python 3.12
+  - sudo apt-get update -q
+  - sudo apt-get install -y python3.12 python3.12-venv python3.12-dev python3-pip
+  - python3.12 -m pip install --upgrade pip
+
+  # Dépendances projet
+  - cd backend
+  - python3.12 -m pip install -r requirements.txt
+  - python3.12 -m pip install -r requirements-dev.txt
+
+  # Attendre PostgreSQL
+  - sleep 3
+  - psql -U postgres -c "CREATE USER mycoach WITH PASSWORD 'mycoach_ci';"
+  - psql -U postgres -c "CREATE DATABASE mycoach_test OWNER mycoach;"
+
+  # Migrations Alembic
+  - python3.12 -m alembic upgrade head
+
+# ─── Build ────────────────────────────────────────────────────────────────────
+build_script:
+  - echo "Build step — tests and lint"
+
+# ─── Tests ────────────────────────────────────────────────────────────────────
+test_script:
+  # Lint
+  - python3.12 -m ruff check app/
+
+  # Type check
+  - python3.12 -m mypy app/ --ignore-missing-imports
+
+  # Tests unitaires avec couverture
+  - python3.12 -m pytest tests/ -v --cov=app --cov-report=xml --cov-report=term-missing
+
+  - cd ..
+
+# ─── Artifacts ────────────────────────────────────────────────────────────────
+artifacts:
+  - path: backend/coverage.xml
+    name: coverage-report
+
+# ─── Deploy (uniquement sur main) ─────────────────────────────────────────────
+deploy_script:
+  - |
+    if [ "$APPVEYOR_REPO_BRANCH" = "main" ] && [ "$APPVEYOR_PULL_REQUEST_NUMBER" = "" ]; then
+      echo ">>> Branch main détectée — build et push Docker Hub"
+
+      # Login Docker Hub
+      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+      # Tags : latest + numéro de build
+      TAG_LATEST="$DOCKER_IMAGE:latest"
+      TAG_BUILD="$DOCKER_IMAGE:build-$APPVEYOR_BUILD_NUMBER"
+
+      # Build depuis le Dockerfile backend
+      docker build \
+        -t "$TAG_LATEST" \
+        -t "$TAG_BUILD" \
+        ./backend/
+
+      # Push
+      docker push "$TAG_LATEST"
+      docker push "$TAG_BUILD"
+
+      echo ">>> Push terminé : $TAG_LATEST et $TAG_BUILD"
+    else
+      echo ">>> Pas de push Docker (branche: $APPVEYOR_REPO_BRANCH, PR: $APPVEYOR_PULL_REQUEST_NUMBER)"
+    fi
+
+# ─── Notifications ────────────────────────────────────────────────────────────
+notifications:
+  - provider: GitHubPullRequest
+    auth_token:
+      secure: "REPLACE_WITH_APPVEYOR_ENCRYPTED_GITHUB_TOKEN"
+    template: "Build {{status}} — {{duration}}"

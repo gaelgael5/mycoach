@@ -1,0 +1,114 @@
+# MyCoach — CI/CD Android (Kotlin)
+# AppVeyor pipeline : Lint → Tests → Build APK → Artifact
+# Triggered : push sur main ou pull request
+
+version: "{build}"
+
+# ─── Image ───────────────────────────────────────────────────────────────────
+# Ubuntu avec Android SDK préinstallé
+image: Ubuntu2204
+
+# ─── Variables ───────────────────────────────────────────────────────────────
+environment:
+  ANDROID_SDK_VERSION: "34"
+  JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+  ANDROID_HOME: /usr/local/lib/android/sdk
+
+  # Pour un build release (optionnel — désactivé par défaut)
+  # Encoder le keystore en base64 et stocker dans AppVeyor UI :
+  KEYSTORE_BASE64:
+    secure: "REPLACE_IF_RELEASE_BUILD_NEEDED"
+  KEYSTORE_PASSWORD:
+    secure: "REPLACE_IF_RELEASE_BUILD_NEEDED"
+  KEY_ALIAS: "mycoach"
+  KEY_PASSWORD:
+    secure: "REPLACE_IF_RELEASE_BUILD_NEEDED"
+
+# ─── Cache Gradle ─────────────────────────────────────────────────────────────
+cache:
+  - android/.gradle -> android/build.gradle.kts
+  - android/app/.gradle -> android/app/build.gradle.kts
+
+# ─── Installation ─────────────────────────────────────────────────────────────
+install:
+  # Java 17
+  - sudo apt-get install -y openjdk-17-jdk
+  - java -version
+
+  # Android SDK command-line tools (si non présents sur l'image)
+  - |
+    if [ ! -d "$ANDROID_HOME" ]; then
+      mkdir -p $ANDROID_HOME/cmdline-tools
+      wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdtools.zip
+      unzip -q /tmp/cmdtools.zip -d /tmp/cmdtools
+      mv /tmp/cmdtools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
+    fi
+
+  # Accepter les licences Android SDK
+  - yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+  - $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
+
+  # Gradle wrapper exécutable
+  - chmod +x android/gradlew
+
+# ─── Build ────────────────────────────────────────────────────────────────────
+build_script:
+  - cd android
+
+  # Lint Android
+  - ./gradlew lint --stacktrace
+
+  # Tests unitaires
+  - ./gradlew testDebugUnitTest --stacktrace
+
+  # Build APK debug (toujours)
+  - ./gradlew assembleDebug --stacktrace
+
+  # Build APK release (uniquement sur main avec keystore configuré)
+  - |
+    if [ "$APPVEYOR_REPO_BRANCH" = "main" ] && [ "$KEYSTORE_BASE64" != "REPLACE_IF_RELEASE_BUILD_NEEDED" ]; then
+      echo ">>> Build release APK"
+
+      # Décoder le keystore
+      echo "$KEYSTORE_BASE64" | base64 --decode > app/mycoach-release.keystore
+
+      # Build release signé
+      ./gradlew assembleRelease \
+        -Pandroid.injected.signing.store.file=app/mycoach-release.keystore \
+        -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
+        -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+        -Pandroid.injected.signing.key.password="$KEY_PASSWORD"
+
+      # Nettoyer le keystore du disque CI
+      rm -f app/mycoach-release.keystore
+    fi
+
+  - cd ..
+
+# ─── Artifacts ────────────────────────────────────────────────────────────────
+artifacts:
+  # APK debug — toujours disponible
+  - path: android/app/build/outputs/apk/debug/app-debug.apk
+    name: MyCoach-debug.apk
+
+  # APK release — si build release activé
+  - path: android/app/build/outputs/apk/release/app-release.apk
+    name: MyCoach-release.apk
+
+  # Rapport de lint
+  - path: android/app/build/reports/lint-results-debug.html
+    name: lint-report.html
+
+  # Rapports de tests
+  - path: android/app/build/reports/tests/testDebugUnitTest/**/*
+    name: test-reports
+
+# ─── Pas de deploy automatique pour Android ──────────────────────────────────
+# Distribution future via Fastlane + Google Play (Phase 6)
+
+# ─── Notifications ────────────────────────────────────────────────────────────
+notifications:
+  - provider: GitHubPullRequest
+    auth_token:
+      secure: "REPLACE_WITH_APPVEYOR_ENCRYPTED_GITHUB_TOKEN"
+    template: "Android build {{status}} — APK disponible en artifact"

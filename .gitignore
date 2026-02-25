@@ -1,15 +1,71 @@
+# ─── Python ──────────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
+.Python
+build/
+dist/
 *.egg-info/
-.env
-.env.*
-!.env.example
-*.db
-*.sqlite
-data/*.db
-data/*.sqlite
-users/
-venv/
+.eggs/
+*.egg
 .venv/
-*.log
+venv/
+env/
+*.sqlite3
+
+# ─── FastAPI / Alembic ────────────────────────────────────────────────────────
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# ─── Tests ───────────────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# ─── Android ─────────────────────────────────────────────────────────────────
+android/local.properties
+android/.gradle/
+android/app/build/
+android/*.iml
+android/.idea/
+android/**/*.iml
+
+# Firebase
+android/app/google-services.json
+
+# Keystore (JAMAIS commiter)
+*.keystore
+*.jks
+*.b64
+
+# APKs et AABs générés
+*.apk
+*.aab
+
+# ─── VSCode ───────────────────────────────────────────────────────────────────
+.vscode/settings.json
+# Garder launch.json et extensions.json si souhaité
+# .vscode/
+
+# ─── Déploiement ──────────────────────────────────────────────────────────────
+deploy/.env.prod
+deploy/.env
+deploy/nginx/ssl/
+
+# ─── OS ───────────────────────────────────────────────────────────────────────
 .DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ─── Docker ───────────────────────────────────────────────────────────────────
+docker-compose.override.yml
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/

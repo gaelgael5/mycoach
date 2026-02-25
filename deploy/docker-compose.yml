@@ -1,0 +1,124 @@
+# MyCoach — Docker Compose Production
+# Usage :
+#   cp .env.prod.example .env.prod
+#   nano .env.prod              # remplir les vraies valeurs
+#   docker compose --env-file .env.prod up -d
+#
+# ⚠️  Ce fichier peut être commité (pas de secrets hardcodés)
+# ⚠️  Le fichier .env.prod ne doit JAMAIS être commité
+
+services:
+
+  # ─── Base de données PostgreSQL ──────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: mycoach-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-mycoach}
+      POSTGRES_USER: ${POSTGRES_USER:-mycoach}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - mycoach-internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-mycoach} -d ${POSTGRES_DB:-mycoach}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ─── API FastAPI ──────────────────────────────────────────────────────────
+  api:
+    image: blackbeardteam/mycoach-api:latest
+    container_name: mycoach-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # Base de données
+      DATABASE_URL: "postgresql+asyncpg://${POSTGRES_USER:-mycoach}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-mycoach}"
+
+      # Sécurité
+      SECRET_KEY: ${SECRET_KEY}
+      APP_ENV: production
+      APP_DEBUG: "false"
+
+      # Google OAuth
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+
+      # App
+      APP_PORT: 8000
+      CORS_ORIGINS: ${CORS_ORIGINS:-[]}
+
+      # Uploads (si stockage local — sinon S3)
+      UPLOAD_DIR: /app/uploads
+
+    volumes:
+      - api_uploads:/app/uploads
+    networks:
+      - mycoach-internal
+      - mycoach-public
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  # ─── Reverse proxy Nginx ──────────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: mycoach-nginx
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+      - "443:443"       # Pour Let's Encrypt (future évolution)
+    volumes:
+      - ./nginx/mycoach.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro          # Certificats SSL (si HTTPS)
+    networks:
+      - mycoach-public
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ─── Watchtower — Auto-update ─────────────────────────────────────────────
+  watchtower:
+    image: containrrr/watchtower
+    container_name: mycoach-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_POLL_INTERVAL: 300          # Vérifier toutes les 5 minutes
+      WATCHTOWER_LABEL_ENABLE: "true"        # Surveiller uniquement les containers labellisés
+      WATCHTOWER_NOTIFICATIONS: "off"        # Activer si webhook Slack/Telegram voulu
+    networks:
+      - mycoach-internal
+
+# ─── Volumes ──────────────────────────────────────────────────────────────────
+volumes:
+  postgres_data:
+    driver: local
+  api_uploads:
+    driver: local
+
+# ─── Réseaux ──────────────────────────────────────────────────────────────────
+networks:
+  mycoach-internal:
+    driver: bridge
+    internal: true         # Pas d'accès internet direct (API ↔ DB isolé)
+  mycoach-public:
+    driver: bridge         # Nginx ↔ API ↔ internet
