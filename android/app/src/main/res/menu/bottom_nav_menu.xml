@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/dashboardFragment"
+        android:icon="@android:drawable/ic_menu_today"
+        android:title="@string/nav_dashboard"/>
+
+    <item
+        android:id="@+id/clientsFragment"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="@string/nav_clients"/>
+
+    <item
+        android:id="@+id/sessionsFragment"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:title="@string/nav_sessions"/>
+
+    <item
+        android:id="@+id/paymentsFragment"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/nav_payments"/>
+
+</menu>

@@ -1,0 +1,3 @@
+-keep class com.mycoach.app.models.** { *; }
+-keepattributes Signature
+-dontwarn okhttp3.**
