@@ -6,7 +6,8 @@ __pycache__/
 !.env.example
 *.db
 *.sqlite
-data/
+data/*.db
+data/*.sqlite
 users/
 venv/
 .venv/

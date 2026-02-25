@@ -1,0 +1,3116 @@
+[
+  {
+    "slug": "angers-centre",
+    "name": "Fitness Park Angers Centre",
+    "street": "8 bis boulevard du maréchal",
+    "zip": "49100",
+    "city": "ANGERS",
+    "phone": "+33252601560",
+    "url": "https://www.fitnesspark.fr/club/angers-centre/"
+  },
+  {
+    "slug": "aix-en-provence-centre",
+    "name": "Fitness Park Aix en Provence",
+    "street": "28 boulevard de la republique",
+    "zip": "13100",
+    "city": "Aix-en-Provence",
+    "phone": "+33486888909",
+    "url": "https://www.fitnesspark.fr/club/aix-en-provence-centre/"
+  },
+  {
+    "slug": "ajaccio-jean-nicoli",
+    "name": "Fitness Park Ajaccio - Jean Nicoli",
+    "street": "9 cours Jean Nicoli",
+    "zip": "20090",
+    "city": "Ajaccio",
+    "phone": "+33670394612",
+    "url": "https://www.fitnesspark.fr/club/ajaccio-jean-nicoli/"
+  },
+  {
+    "slug": "allonne",
+    "name": "Fitness Park Allonne",
+    "street": "3 Avenue Paul Gréber",
+    "zip": "60000",
+    "city": "Allonne",
+    "phone": "+33344453308",
+    "url": "https://www.fitnesspark.fr/club/allonne/"
+  },
+  {
+    "slug": "ales",
+    "name": "Fitness Park Alès",
+    "street": "1351 Quai du Mas D'Hours",
+    "zip": "30100",
+    "city": "Alès",
+    "phone": "+33466558154",
+    "url": "https://www.fitnesspark.fr/club/ales/"
+  },
+  {
+    "slug": "amiens",
+    "name": "Fitness Park Amiens Centre-Ville",
+    "street": "56 rue des Trois cailloux",
+    "zip": "80000",
+    "city": "Amiens",
+    "phone": "+33360820070",
+    "url": "https://www.fitnesspark.fr/club/amiens/"
+  },
+  {
+    "slug": "amilly",
+    "name": "Fitness Park Amilly",
+    "street": "577 Route de Saint-Firmin des Vignes",
+    "zip": "45200",
+    "city": "Amilly",
+    "phone": "+33602007247",
+    "url": "https://www.fitnesspark.fr/club/amilly/"
+  },
+  {
+    "slug": "andrezieux",
+    "name": "Fitness Park Andrézieux",
+    "street": "33 boulevard Joseph Cugnot",
+    "zip": "42160",
+    "city": "Andrézieux-Bouthéon",
+    "phone": "+33482777757",
+    "url": "https://www.fitnesspark.fr/club/andrezieux/"
+  },
+  {
+    "slug": "angoulins-sur-mer",
+    "name": "Fitness Park Angoulins-sur-Mer",
+    "street": "3 avenue des Ormeaux",
+    "zip": "17690",
+    "city": "Angoulins",
+    "phone": "+33586301047",
+    "url": "https://www.fitnesspark.fr/club/angoulins-sur-mer/"
+  },
+  {
+    "slug": "angouleme",
+    "name": "Fitness Park Angoulême",
+    "street": "548 rue de Bordeaux",
+    "zip": "16000",
+    "city": "Angoulême",
+    "phone": "+33586303181",
+    "url": "https://www.fitnesspark.fr/club/angouleme/"
+  },
+  {
+    "slug": "annemasse",
+    "name": "Fitness Park Annemasse",
+    "street": "4 Rue du 18 Août 1944",
+    "zip": "74100",
+    "city": "Annemasse",
+    "phone": "+33450371482",
+    "url": "https://www.fitnesspark.fr/club/annemasse/"
+  },
+  {
+    "slug": "anthy-sur-leman",
+    "name": "Fitness Park Anthy sur Leman",
+    "street": "10 avenue pré Robert Nord",
+    "zip": "74200",
+    "city": "Anthy sur Léman",
+    "phone": "+33427830393",
+    "url": "https://www.fitnesspark.fr/club/anthy-sur-leman/"
+  },
+  {
+    "slug": "antibes-olympie",
+    "name": "Fitness Park Antibes - Olympie",
+    "street": "Voie Marie Fischer",
+    "zip": "06600",
+    "city": "Antibes",
+    "phone": "+33489374172",
+    "url": "https://www.fitnesspark.fr/club/antibes-olympie/"
+  },
+  {
+    "slug": "arcueil",
+    "name": "Fitness Park Arcueil",
+    "street": "Centre commercial La Vache Noire Niveau 0,  Pl. de la Vache Noire",
+    "zip": "94110",
+    "city": "Arcueil",
+    "phone": "+33178812570",
+    "url": "https://www.fitnesspark.fr/club/arcueil/"
+  },
+  {
+    "slug": "argenteuil",
+    "name": "Fitness Park Argenteuil",
+    "street": "14 Bis Avenue du Général de Gaulle",
+    "zip": "95100",
+    "city": "Argenteuil",
+    "phone": "+33660037725",
+    "url": "https://www.fitnesspark.fr/club/argenteuil/"
+  },
+  {
+    "slug": "arras",
+    "name": "Fitness Park Arras",
+    "street": "14 Rue Copernic",
+    "zip": "62000",
+    "city": "Arras",
+    "phone": "+33688720591",
+    "url": "https://www.fitnesspark.fr/club/arras/"
+  },
+  {
+    "slug": "asnieres-sur-seine",
+    "name": "Fitness Park Asnières Sur Seine",
+    "street": "4 rue Diderot",
+    "zip": "92600",
+    "city": "Asnières Sur Seine",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/asnieres-sur-seine/"
+  },
+  {
+    "slug": "athis-mons",
+    "name": "Fitness Park Athis Mons",
+    "street": "Centre commerciale 180 N7",
+    "zip": "91200",
+    "city": "Athis-Mons",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/athis-mons/"
+  },
+  {
+    "slug": "aubagne",
+    "name": "Fitness Park Aubagne",
+    "street": "506 Avenue des Caniers",
+    "zip": "13400",
+    "city": "Aubagne",
+    "phone": "+33486257513",
+    "url": "https://www.fitnesspark.fr/club/aubagne/"
+  },
+  {
+    "slug": "aubervilliers",
+    "name": "Fitness Park Aubervilliers",
+    "street": "174 Avenue Jean Jaures",
+    "zip": "93300",
+    "city": "Aubervilliers",
+    "phone": "+33621671104",
+    "url": "https://www.fitnesspark.fr/club/aubervilliers/"
+  },
+  {
+    "slug": "audincourt",
+    "name": "Fitness Park Audincourt",
+    "street": "3 Rue Raoul Follereau",
+    "zip": "25400",
+    "city": "Audincourt",
+    "phone": "+33631075854",
+    "url": "https://www.fitnesspark.fr/club/audincourt/"
+  },
+  {
+    "slug": "avignon",
+    "name": "Fitness Park Avignon",
+    "street": "2680 Route de Marseille",
+    "zip": "84140",
+    "city": "Avignon",
+    "phone": "+33767758341",
+    "url": "https://www.fitnesspark.fr/club/avignon/"
+  },
+  {
+    "slug": "barentin",
+    "name": "Fitness Park Barentin",
+    "street": "CC du Mesnil Roux",
+    "zip": "76360",
+    "city": "BARENTIN",
+    "phone": "+33759546990",
+    "url": "https://www.fitnesspark.fr/club/barentin/"
+  },
+  {
+    "slug": "angers-atoll",
+    "name": "Fitness Park Angers Atoll",
+    "street": "Retail Park - Ecopark du Buisson",
+    "zip": "49070",
+    "city": "BEAUCOUZE",
+    "phone": "+33252601550",
+    "url": "https://www.fitnesspark.fr/club/angers-atoll/"
+  },
+  {
+    "slug": "begles",
+    "name": "Fitness Park Bègles",
+    "street": "Zone commerciale Rive d'Arcins, Rue Denis Papin",
+    "zip": "33130",
+    "city": "BEGLES",
+    "phone": "+33677168332",
+    "url": "https://www.fitnesspark.fr/club/begles/"
+  },
+  {
+    "slug": "boulogne-sur-mer",
+    "name": "Fitness Park Boulogne-sur-Mer",
+    "street": "Ouverture prochaine",
+    "zip": "62200",
+    "city": "BOULOGNE-SUR-MER",
+    "phone": "+33359616585",
+    "url": "https://www.fitnesspark.fr/club/boulogne-sur-mer/"
+  },
+  {
+    "slug": "bagneux",
+    "name": "Fitness Park Bagneux",
+    "street": "168 Avenue Aristide Briand",
+    "zip": "92220",
+    "city": "Bagneux",
+    "phone": "+33146651233",
+    "url": "https://www.fitnesspark.fr/club/bagneux/"
+  },
+  {
+    "slug": "bagneux-lucie-aubrac",
+    "name": "Fitness Park Bagneux Lucie Aubrac",
+    "street": "10 rue Nina Simone",
+    "zip": "92220",
+    "city": "Bagneux",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/bagneux-lucie-aubrac/"
+  },
+  {
+    "slug": "bagnolet",
+    "name": "Fitness Park Bagnolet",
+    "street": "3-7 rue Angela Davis",
+    "zip": "93170",
+    "city": "Bagnolet",
+    "phone": "+33148389588",
+    "url": "https://www.fitnesspark.fr/club/bagnolet/"
+  },
+  {
+    "slug": "guadeloupe-jarry",
+    "name": "Fitness Park Guadeloupe - Jarry",
+    "street": "Boulevard du Marquisat de Houelbourg",
+    "zip": "97122",
+    "city": "Baie Mahault",
+    "phone": "+590690833200",
+    "url": "https://www.fitnesspark.fr/club/guadeloupe-jarry/"
+  },
+  {
+    "slug": "guadeloupe-basse-terre",
+    "name": "Fitness Park Guadeloupe - Basse Terre",
+    "street": "Allée des Peres Blancs, Baillif",
+    "zip": "97123",
+    "city": "Baillif",
+    "phone": "+590690131500",
+    "url": "https://www.fitnesspark.fr/club/guadeloupe-basse-terre/"
+  },
+  {
+    "slug": "barjouville",
+    "name": "Fitness Park Barjouville",
+    "street": "30 Rue des Pierres Missigault",
+    "zip": "28630",
+    "city": "Barjouville",
+    "phone": "+33237908767",
+    "url": "https://www.fitnesspark.fr/club/barjouville/"
+  },
+  {
+    "slug": "guadeloupe-bergevin",
+    "name": "Fitness Park Guadeloupe - Bergevin",
+    "street": "Rue Ho Chi Minh, Pointe-à-Pitre",
+    "zip": "97110",
+    "city": "Bergevin",
+    "phone": "+590690804800",
+    "url": "https://www.fitnesspark.fr/club/guadeloupe-bergevin/"
+  },
+  {
+    "slug": "besancon-chateaufarine",
+    "name": "Fitness Park Besançon - Chateaufarine",
+    "street": "Zac De Chateaufarine, Bois Joli",
+    "zip": "25000",
+    "city": "Besançon",
+    "phone": "+33365673949",
+    "url": "https://www.fitnesspark.fr/club/besancon-chateaufarine/"
+  },
+  {
+    "slug": "bezons",
+    "name": "Fitness Park Bezons",
+    "street": "60 rue Emile Zola",
+    "zip": "95870",
+    "city": "Bezons",
+    "phone": "+33134347700",
+    "url": "https://www.fitnesspark.fr/club/bezons/"
+  },
+  {
+    "slug": "bizanos",
+    "name": "Fitness Park Bizanos",
+    "street": "Avenue du Corps Franc Pommiès",
+    "zip": "64320",
+    "city": "Bizanos",
+    "phone": "+33547541054",
+    "url": "https://www.fitnesspark.fr/club/bizanos/"
+  },
+  {
+    "slug": "blagnac",
+    "name": "Fitness Park Blagnac",
+    "street": "Zac Du Grand Noble, 2 Imp. Emile Zola",
+    "zip": "31700",
+    "city": "Blagnac",
+    "phone": "+33517149918",
+    "url": "https://www.fitnesspark.fr/club/blagnac/"
+  },
+  {
+    "slug": "bobigny",
+    "name": "Fitness Park Bobigny - Stalingrad",
+    "street": "225 Rue de Stalingrad",
+    "zip": "93000",
+    "city": "Bobigny",
+    "phone": "+33170936856",
+    "url": "https://www.fitnesspark.fr/club/bobigny/"
+  },
+  {
+    "slug": "bobigny-coeur-de-ville",
+    "name": "Fitness Park Bobigny Coeur de Ville",
+    "street": "3 rue Mouss Diouf",
+    "zip": "93000",
+    "city": "Bobigny",
+    "phone": "+33186528805",
+    "url": "https://www.fitnesspark.fr/club/bobigny-coeur-de-ville/"
+  },
+  {
+    "slug": "boissy-saint-leger",
+    "name": "Fitness Park Boissy-Saint-Léger",
+    "street": "9 Avenue Charles de Gaulle",
+    "zip": "94470",
+    "city": "Boissy-Saint-Léger",
+    "phone": "+33159146965",
+    "url": "https://www.fitnesspark.fr/club/boissy-saint-leger/"
+  },
+  {
+    "slug": "bondy",
+    "name": "Fitness Park Bondy",
+    "street": "162 avenue Gallieni",
+    "zip": "93140",
+    "city": "Bondy",
+    "phone": "+33745089700",
+    "url": "https://www.fitnesspark.fr/club/bondy/"
+  },
+  {
+    "slug": "bonneuil-sur-marne",
+    "name": "Fitness Park Bonneuil-sur-Marne",
+    "street": "10 Carrefour du Général de Gaulle",
+    "zip": "94380",
+    "city": "Bonneuil-sur-Marne",
+    "phone": "+33170978544",
+    "url": "https://www.fitnesspark.fr/club/bonneuil-sur-marne/"
+  },
+  {
+    "slug": "bordeaux-lac",
+    "name": "Fitness Park Bordeaux - Aushopping Lac",
+    "street": "1 Avenue des 40 Journaux, 33300 Bordeaux",
+    "zip": "33300",
+    "city": "Bordeaux",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/bordeaux-lac/"
+  },
+  {
+    "slug": "bordeaux-chartrons",
+    "name": "Fitness Park Bordeaux - Chartrons",
+    "street": "170 Cours du Médoc",
+    "zip": "33300",
+    "city": "Bordeaux",
+    "phone": "+33556105784",
+    "url": "https://www.fitnesspark.fr/club/bordeaux-chartrons/"
+  },
+  {
+    "slug": "bordeaux-meriadeck",
+    "name": "Fitness Park Bordeaux - Mériadeck",
+    "street": "16 Rue Claude Bonnier",
+    "zip": "33000",
+    "city": "Bordeaux",
+    "phone": "+33535569980",
+    "url": "https://www.fitnesspark.fr/club/bordeaux-meriadeck/"
+  },
+  {
+    "slug": "boulogne-billancourt",
+    "name": "Fitness Park Boulogne-Billancourt",
+    "street": "23 Bis Barthélémy Danjou",
+    "zip": "92100",
+    "city": "Boulogne-Billancourt",
+    "phone": "+33174312917",
+    "url": "https://www.fitnesspark.fr/club/boulogne-billancourt/"
+  },
+  {
+    "slug": "bourg-en-bresse",
+    "name": "Fitness Park Bourg en Bresse",
+    "street": "20 rue du Moulin de Brou",
+    "zip": "01000",
+    "city": "Bourg en Bresse",
+    "phone": "+33474425497",
+    "url": "https://www.fitnesspark.fr/club/bourg-en-bresse/"
+  },
+  {
+    "slug": "bourges-avaricum",
+    "name": "Fitness Park Bourges - Avaricum",
+    "street": "Centre commercial Avaricum, Avenue de Peterborough",
+    "zip": "18000",
+    "city": "Bourges",
+    "phone": "+33248699343",
+    "url": "https://www.fitnesspark.fr/club/bourges-avaricum/"
+  },
+  {
+    "slug": "bourgoin-jallieu",
+    "name": "Fitness Park Bourgoin-Jallieu",
+    "street": "4 Impasse Leon Serpollet, Zac de la Maladière",
+    "zip": "38300",
+    "city": "Bourgouin Jallieux",
+    "phone": "+33474439995",
+    "url": "https://www.fitnesspark.fr/club/bourgoin-jallieu/"
+  },
+  {
+    "slug": "bretigny-sur-orge",
+    "name": "Fitness Park Brétigny-sur-Orge",
+    "street": "52 avenue de la commune de Paris",
+    "zip": "91220",
+    "city": "Bretigny-sur-Orge",
+    "phone": "+33173207857",
+    "url": "https://www.fitnesspark.fr/club/bretigny-sur-orge/"
+  },
+  {
+    "slug": "brie-comte-robert",
+    "name": "Fitness Park Brie-Comte-Robert",
+    "street": "14 bis ZAC de la Haie Passart, Rue Gustave Eiffel",
+    "zip": "77170",
+    "city": "Brie-Comte-Robert",
+    "phone": "+33187706008",
+    "url": "https://www.fitnesspark.fr/club/brie-comte-robert/"
+  },
+  {
+    "slug": "bron",
+    "name": "Fitness Park Bron",
+    "street": "Porte des Alpes, ZAC Champ du pont",
+    "zip": "69500",
+    "city": "Bron",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/bron/"
+  },
+  {
+    "slug": "buchelay",
+    "name": "Fitness Park Buchelay",
+    "street": "18 rue des Champs Odés",
+    "zip": "78200",
+    "city": "Buchelay",
+    "phone": "+33658369594",
+    "url": "https://www.fitnesspark.fr/club/buchelay/"
+  },
+  {
+    "slug": "beziers",
+    "name": "Fitness Park Béziers",
+    "street": "Route de Bessan, Avenue de la voie domitienne",
+    "zip": "34500",
+    "city": "Béziers",
+    "phone": "+33422530357",
+    "url": "https://www.fitnesspark.fr/club/beziers/"
+  },
+  {
+    "slug": "cabries-plan-de-campagne",
+    "name": "Fitness Park Cabriès - Plan de Campagne",
+    "street": "Zone Commerciale Plan de Campagne, CC La Palmeraie",
+    "zip": "13480",
+    "city": "Cabriès",
+    "phone": "+33488938364",
+    "url": "https://www.fitnesspark.fr/club/cabries-plan-de-campagne/"
+  },
+  {
+    "slug": "cannes-gare",
+    "name": "Fitness Park Cannes - Gare",
+    "street": "Place de la Gare",
+    "zip": "06400",
+    "city": "Cannes",
+    "phone": "+33489374165",
+    "url": "https://www.fitnesspark.fr/club/cannes-gare/"
+  },
+  {
+    "slug": "cannes-la-bocca",
+    "name": "Fitness Park Cannes - La Bocca",
+    "street": "201 Avenue Francis Tonner",
+    "zip": "06150",
+    "city": "Cannes",
+    "phone": "+33489374076",
+    "url": "https://www.fitnesspark.fr/club/cannes-la-bocca/"
+  },
+  {
+    "slug": "carcassonne-rocadest",
+    "name": "Fitness Park Carcassonne - Rocadest",
+    "street": "Centre Commercial Rocadest",
+    "zip": "11000",
+    "city": "Carcassonne",
+    "phone": "+33448221213",
+    "url": "https://www.fitnesspark.fr/club/carcassonne-rocadest/"
+  },
+  {
+    "slug": "carpiquet",
+    "name": "Fitness Park Carpiquet",
+    "street": "1 rue du Coteau",
+    "zip": "14650",
+    "city": "Carpiquet",
+    "phone": "+33261671567",
+    "url": "https://www.fitnesspark.fr/club/carpiquet/"
+  },
+  {
+    "slug": "castelnau-destretefonds",
+    "name": "Fitness Park Castelnau-d'Estrétefonds",
+    "street": "5 Rue de la canelle",
+    "zip": "31620",
+    "city": "Castelnau d'estrétefonds",
+    "phone": "+33567808954",
+    "url": "https://www.fitnesspark.fr/club/castelnau-destretefonds/"
+  },
+  {
+    "slug": "castres",
+    "name": "Fitness Park Castres",
+    "street": "14 rue Jean Bories",
+    "zip": "81100",
+    "city": "Castres",
+    "phone": "+33532097929",
+    "url": "https://www.fitnesspark.fr/club/castres/"
+  },
+  {
+    "slug": "guyane-cayenne",
+    "name": "Fitness Park Guyane - Cayenne",
+    "street": "574 Avenue Justin CATAYEE",
+    "zip": "97300",
+    "city": "Cayenne",
+    "phone": "+594694317632",
+    "url": "https://www.fitnesspark.fr/club/guyane-cayenne/"
+  },
+  {
+    "slug": "cergy-aren-park",
+    "name": "Fitness Park Cergy - Aren'Park",
+    "street": "23 Avenue de la Plaine des Sports",
+    "zip": "95800",
+    "city": "Cergy",
+    "phone": "+33173257857",
+    "url": "https://www.fitnesspark.fr/club/cergy-aren-park/"
+  },
+  {
+    "slug": "cergy-les-3-fontaines",
+    "name": "Fitness Park Cergy - Les 3 Fontaines",
+    "street": "Centre Commercial Les 3 Fontaines, Avenue des 3 Fontaines",
+    "zip": "95000",
+    "city": "Cergy",
+    "phone": "+33173255699",
+    "url": "https://www.fitnesspark.fr/club/cergy-les-3-fontaines/"
+  },
+  {
+    "slug": "cergy-le-haut",
+    "name": "Fitness Park Cergy-le-Haut",
+    "street": "3 Cours des Merveilles",
+    "zip": "95800",
+    "city": "Cergy-le-Haut",
+    "phone": "+33173257856",
+    "url": "https://www.fitnesspark.fr/club/cergy-le-haut/"
+  },
+  {
+    "slug": "cesson-woodshop",
+    "name": "Fitness Park Cesson - Woodshop",
+    "street": "Centre commercial Woodshop Boissénart D306",
+    "zip": "77240",
+    "city": "Cesson",
+    "phone": "+33160349697",
+    "url": "https://www.fitnesspark.fr/club/cesson-woodshop/"
+  },
+  {
+    "slug": "chaintre",
+    "name": "Fitness Park Chaintré",
+    "street": "710 Rue de Bourgogne",
+    "zip": "71570",
+    "city": "Chaintré",
+    "phone": "+33373551088",
+    "url": "https://www.fitnesspark.fr/club/chaintre/"
+  },
+  {
+    "slug": "chalon-sur-saone",
+    "name": "Fitness Park Chalon-sur-Saône",
+    "street": "2 rue René Cassin",
+    "zip": "71100",
+    "city": "Chalon-sur-Saône",
+    "phone": "+33669548373",
+    "url": "https://www.fitnesspark.fr/club/chalon-sur-saone/"
+  },
+  {
+    "slug": "chambourcy",
+    "name": "Fitness Park Chambourcy - Les vergers de la plaine",
+    "street": "Avenue de la Renaissance",
+    "zip": "78240",
+    "city": "Chambourcy",
+    "phone": "+33186528802",
+    "url": "https://www.fitnesspark.fr/club/chambourcy/"
+  },
+  {
+    "slug": "laon",
+    "name": "Fitness Park Laon",
+    "street": "4 Rue Jean Baptiste Colbert",
+    "zip": "02000",
+    "city": "Chambry",
+    "phone": "+33648707179",
+    "url": "https://www.fitnesspark.fr/club/laon/"
+  },
+  {
+    "slug": "champigny-sur-marne",
+    "name": "Fitness Park Champigny",
+    "street": "12 Rue Roger Salengro",
+    "zip": "94500",
+    "city": "Champigny sur Marne",
+    "phone": "+33489495096",
+    "url": "https://www.fitnesspark.fr/club/champigny-sur-marne/"
+  },
+  {
+    "slug": "charenton-le-pont-bercy-2",
+    "name": "Fitness Park Charenton-le-Pont - Bercy 2",
+    "street": "Centre Commercial Bercy 2, 4 Place de l'Europe",
+    "zip": "94220",
+    "city": "Charenton-le-Pont",
+    "phone": "+33170978541",
+    "url": "https://www.fitnesspark.fr/club/charenton-le-pont-bercy-2/"
+  },
+  {
+    "slug": "chelles-general-de-gaulle",
+    "name": "Fitness Park Chelles - Général de Gaulle",
+    "street": "10-14 Avenue du Général de Gaulle",
+    "zip": "77500",
+    "city": "Chelles",
+    "phone": "+33173088340",
+    "url": "https://www.fitnesspark.fr/club/chelles-general-de-gaulle/"
+  },
+  {
+    "slug": "chelles-terre-ciel",
+    "name": "Fitness Park Chelles - Terre Ciel",
+    "street": "115 Avenue Gendarme Castermant",
+    "zip": "77500",
+    "city": "Chelles",
+    "phone": "+33173088307",
+    "url": "https://www.fitnesspark.fr/club/chelles-terre-ciel/"
+  },
+  {
+    "slug": "chennevieres-sur-marne",
+    "name": "Fitness Park Chennevières-sur-Marne",
+    "street": "3 Avenue Champlain",
+    "zip": "94430",
+    "city": "Chennevières-sur-Marne",
+    "phone": "+33159146970",
+    "url": "https://www.fitnesspark.fr/club/chennevieres-sur-marne/"
+  },
+  {
+    "slug": "cholet",
+    "name": "Fitness Park Cholet",
+    "street": "5 rue des Pagannes",
+    "zip": "49300",
+    "city": "Cholet",
+    "phone": "+33252605848",
+    "url": "https://www.fitnesspark.fr/club/cholet/"
+  },
+  {
+    "slug": "chateau-dolonne",
+    "name": "Fitness Park Château-d'Olonne",
+    "street": "Centre Commercial Les Océanes, 15 Rue du Général Montcalm",
+    "zip": "85180",
+    "city": "Château D'Olonne",
+    "phone": "+33252614388",
+    "url": "https://www.fitnesspark.fr/club/chateau-dolonne/"
+  },
+  {
+    "slug": "chateau-thierry",
+    "name": "Fitness Park Château-Thierry",
+    "street": "2 rue de la Plaine",
+    "zip": "02400",
+    "city": "Château-Thierry",
+    "phone": "+33375007200",
+    "url": "https://www.fitnesspark.fr/club/chateau-thierry/"
+  },
+  {
+    "slug": "chatenay-malabry",
+    "name": "Fitness Park Châtenay-Malabry",
+    "street": "49 Avenue de la Division Leclerc",
+    "zip": "92290",
+    "city": "Châtenay Malabry",
+    "phone": "+33185743656",
+    "url": "https://www.fitnesspark.fr/club/chatenay-malabry/"
+  },
+  {
+    "slug": "claye-souilly",
+    "name": "Fitness Park Claye-Souilly",
+    "street": "Zac Commercial de Claye, 1 Rue Ernest Sarron",
+    "zip": "77410",
+    "city": "Claye-Souilly",
+    "phone": "+33173084062",
+    "url": "https://www.fitnesspark.fr/club/claye-souilly/"
+  },
+  {
+    "slug": "clermont-ferrand-le-brezet",
+    "name": "Fitness Park Clermont-Ferrand - Le Brézet",
+    "street": "21 avenue de l'agriculture",
+    "zip": "63100",
+    "city": "Clermont Ferrand",
+    "phone": "+33443551121",
+    "url": "https://www.fitnesspark.fr/club/clermont-ferrand-le-brezet/"
+  },
+  {
+    "slug": "martinique-cluny",
+    "name": "Fitness Park Martinique - Cluny",
+    "street": "Immeuble venutolo, Rte de Cluny",
+    "zip": "97233",
+    "city": "Cluny",
+    "phone": "+596696847388",
+    "url": "https://www.fitnesspark.fr/club/martinique-cluny/"
+  },
+  {
+    "slug": "colmar",
+    "name": "Fitness Park Colmar",
+    "street": "18 Rue Edouard Branly",
+    "zip": "68000",
+    "city": "Colmar",
+    "phone": "+33367350725",
+    "url": "https://www.fitnesspark.fr/club/colmar/"
+  },
+  {
+    "slug": "colombes",
+    "name": "Fitness Park Colombes",
+    "street": "ZAC de l'arc sportif",
+    "zip": "92700",
+    "city": "Colombes",
+    "phone": "+33180210210",
+    "url": "https://www.fitnesspark.fr/club/colombes/"
+  },
+  {
+    "slug": "colomiers",
+    "name": "Fitness Park Colomiers",
+    "street": "Chemin de la Salvetat",
+    "zip": "31770",
+    "city": "Colomiers",
+    "phone": "+33567808955",
+    "url": "https://www.fitnesspark.fr/club/colomiers/"
+  },
+  {
+    "slug": "compiegne",
+    "name": "Fitness Park Compiègne",
+    "street": "26 Rue Gaspard Monge",
+    "zip": "60200",
+    "city": "Compiègne",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/compiegne/"
+  },
+  {
+    "slug": "conde-sur-sarthe",
+    "name": "Fitness Park Condé-sur-Sarthe",
+    "street": "69 bis rue d'Alençon",
+    "zip": "61250",
+    "city": "Condé-sur-Sarthe",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/conde-sur-sarthe/"
+  },
+  {
+    "slug": "coquelles",
+    "name": "Fitness Park Coquelles",
+    "street": "1001 Boulevard du Kent",
+    "zip": "62231",
+    "city": "Coquelles",
+    "phone": "+33362811491",
+    "url": "https://www.fitnesspark.fr/club/coquelles/"
+  },
+  {
+    "slug": "cormeilles-en-parisis",
+    "name": "Fitness Park Cormeilles En Parisis",
+    "street": "ZAC des Bois ROCHEFORT, Bd du Parisis",
+    "zip": "95240",
+    "city": "Cormeilles-en-Parisis",
+    "phone": "+33188605088",
+    "url": "https://www.fitnesspark.fr/club/cormeilles-en-parisis/"
+  },
+  {
+    "slug": "cormontreuil",
+    "name": "Fitness Park Cormontreuil",
+    "street": "5 Av. des Goisses",
+    "zip": "51350",
+    "city": "Cormontreuil",
+    "phone": "+33351257840",
+    "url": "https://www.fitnesspark.fr/club/cormontreuil/"
+  },
+  {
+    "slug": "coulommiers",
+    "name": "Fitness Park Coulommiers",
+    "street": "27 Avenue de Strasbourg",
+    "zip": "77120",
+    "city": "Coulommiers",
+    "phone": "+33159146966",
+    "url": "https://www.fitnesspark.fr/club/coulommiers/"
+  },
+  {
+    "slug": "courbevoie-centre",
+    "name": "Fitness Park Courbevoie - Centre",
+    "street": "68 boulevard de la Mission Marchand",
+    "zip": "92400",
+    "city": "Courbevoie",
+    "phone": "+33147684290",
+    "url": "https://www.fitnesspark.fr/club/courbevoie-centre/"
+  },
+  {
+    "slug": "la-defense-coeur-defense",
+    "name": "Fitness Park La Défense - Cœur Défense",
+    "street": "17 Place des Corolles",
+    "zip": "92400",
+    "city": "Courbevoie",
+    "phone": "+33186529849",
+    "url": "https://www.fitnesspark.fr/club/la-defense-coeur-defense/"
+  },
+  {
+    "slug": "creteil-pompadour",
+    "name": "Fitness Park Créteil - Pompadour",
+    "street": "83 Avenue du Maréchal Foch",
+    "zip": "94000",
+    "city": "Créteil",
+    "phone": "+33757000770",
+    "url": "https://www.fitnesspark.fr/club/creteil-pompadour/"
+  },
+  {
+    "slug": "creteil-soleil",
+    "name": "Fitness Park Créteil Soleil",
+    "street": "Centre Commercial Régional Créteil Soleil",
+    "zip": "94000",
+    "city": "Créteil",
+    "phone": "+33170978540",
+    "url": "https://www.fitnesspark.fr/club/creteil-soleil/"
+  },
+  {
+    "slug": "dijon-bourroches",
+    "name": "Fitness Park Dijon - Bourroches",
+    "street": "139 Avenue Jean Jaurès",
+    "zip": "21000",
+    "city": "Dijon",
+    "phone": "+33627029501",
+    "url": "https://www.fitnesspark.fr/club/dijon-bourroches/"
+  },
+  {
+    "slug": "martinique-ducos",
+    "name": "Fitness Park Martinique - Ducos",
+    "street": "Zone Industrielle Cocotte Canal",
+    "zip": "97224",
+    "city": "Ducos",
+    "phone": "+596696358286",
+    "url": "https://www.fitnesspark.fr/club/martinique-ducos/"
+  },
+  {
+    "slug": "decines-charpieu",
+    "name": "Fitness Park Décines-Charpieu",
+    "street": "181 Avenue Franklin Roosevelt",
+    "zip": "69150",
+    "city": "Décines-Charpieu",
+    "phone": "+33788233152",
+    "url": "https://www.fitnesspark.fr/club/decines-charpieu/"
+  },
+  {
+    "slug": "echirolles",
+    "name": "Fitness Park Échirolles - Comboire",
+    "street": "5 rue du grand Veymont",
+    "zip": "38130",
+    "city": "Echirolles",
+    "phone": "+33973202609",
+    "url": "https://www.fitnesspark.fr/club/echirolles/"
+  },
+  {
+    "slug": "puerto-de-santa-maria",
+    "name": "Fitness Park Puerto de Santa María - C.C. El Paseo",
+    "street": "N-IV, Km 653 Local L01",
+    "zip": "11500",
+    "city": "El Puerto de Sta María",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/puerto-de-santa-maria/"
+  },
+  {
+    "slug": "epagny-metz-tessy",
+    "name": "Fitness Park Epagny Metz-Tessy",
+    "street": "124 rue des Roseaux",
+    "zip": "74330",
+    "city": "Epagny",
+    "phone": "+33480480646",
+    "url": "https://www.fitnesspark.fr/club/epagny-metz-tessy/"
+  },
+  {
+    "slug": "ermont",
+    "name": "Fitness Park Ermont",
+    "street": "135 rue Louis De Savoie",
+    "zip": "95120",
+    "city": "Ermont",
+    "phone": "+33134136605",
+    "url": "https://www.fitnesspark.fr/club/ermont/"
+  },
+  {
+    "slug": "evry",
+    "name": "Fitness Park Évry",
+    "street": "46 rue Paul Claudel",
+    "zip": "91000",
+    "city": "Evry",
+    "phone": "+33173216977",
+    "url": "https://www.fitnesspark.fr/club/evry/"
+  },
+  {
+    "slug": "flers-en-escrebieux",
+    "name": "Fitness Park Flers-en-Escrebieux",
+    "street": "Centre Commercial Carrefour",
+    "zip": "59128",
+    "city": "Flers-en-Escrebieux",
+    "phone": "+33362672277",
+    "url": "https://www.fitnesspark.fr/club/flers-en-escrebieux/"
+  },
+  {
+    "slug": "fleury-les-aubrais",
+    "name": "Fitness Park Fleury-les-Aubrais",
+    "street": "14 rue André Dessaux",
+    "zip": "45400",
+    "city": "Fleury les Aubrais",
+    "phone": "+33665919856",
+    "url": "https://www.fitnesspark.fr/club/fleury-les-aubrais/"
+  },
+  {
+    "slug": "fleury-merogis-la-croix-blanche",
+    "name": "Fitness Park Fleury-Mérogis - La Croix Blanche",
+    "street": "Zone commerciale de la Croix Blanche, 51 avenue de l'Hurepoix",
+    "zip": "91700",
+    "city": "Fleury-Mérogis",
+    "phone": "+33160162320",
+    "url": "https://www.fitnesspark.fr/club/fleury-merogis-la-croix-blanche/"
+  },
+  {
+    "slug": "flins-sur-seine",
+    "name": "Fitness Park Flins-sur-Seine",
+    "street": "Chemin Départemental 14",
+    "zip": "78410",
+    "city": "Flins-sur-Seine",
+    "phone": "+33186708210",
+    "url": "https://www.fitnesspark.fr/club/flins-sur-seine/"
+  },
+  {
+    "slug": "fontenay-sous-bois",
+    "name": "Fitness Park Fontenay sous Bois",
+    "street": "Centre Commercial Val de Fontenay",
+    "zip": "94120",
+    "city": "Fontenay-sous-Bois",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/fontenay-sous-bois/"
+  },
+  {
+    "slug": "martinique-fort-de-france",
+    "name": "Fitness Park Martinique - Fort-de-France",
+    "street": "Angle rue des Gabares et de la Pointe Simon",
+    "zip": "97200",
+    "city": "Fort-de-France",
+    "phone": "+596696833565",
+    "url": "https://www.fitnesspark.fr/club/martinique-fort-de-france/"
+  },
+  {
+    "slug": "fresnes",
+    "name": "Fitness Park Fresnes",
+    "street": "La Ceriseraie, Avenue Edouard Herriot",
+    "zip": "94260",
+    "city": "Fresnes",
+    "phone": "+33140847982",
+    "url": "https://www.fitnesspark.fr/club/fresnes/"
+  },
+  {
+    "slug": "frejus-la-palud",
+    "name": "Fitness Park Fréjus - La Palud",
+    "street": "36 Rue de Lintendance",
+    "zip": "83600",
+    "city": "Fréjus",
+    "phone": "+33489495058",
+    "url": "https://www.fitnesspark.fr/club/frejus-la-palud/"
+  },
+  {
+    "slug": "frejus-tassigny",
+    "name": "Fitness Park Fréjus - Tassigny",
+    "street": "1000 Avenue de Lattre de Tassigny",
+    "zip": "83600",
+    "city": "Fréjus",
+    "phone": "+33489495039",
+    "url": "https://www.fitnesspark.fr/club/frejus-tassigny/"
+  },
+  {
+    "slug": "bastia-furiani",
+    "name": "Fitness Park Bastia - Furiani",
+    "street": "Centre Commercial Lido Marana - Route du stade",
+    "zip": "20600",
+    "city": "Furiani",
+    "phone": "+33787441436",
+    "url": "https://www.fitnesspark.fr/club/bastia-furiani/"
+  },
+  {
+    "slug": "gaillard",
+    "name": "Fitness Park Gaillard",
+    "street": "27 rue René Cassin",
+    "zip": "74240",
+    "city": "Gaillard",
+    "phone": "+33450399696",
+    "url": "https://www.fitnesspark.fr/club/gaillard/"
+  },
+  {
+    "slug": "gap-tokoro",
+    "name": "Fitness Park Gap - Tokoro",
+    "street": "8 Boulevard d'Orient",
+    "zip": "05000",
+    "city": "Gap",
+    "phone": "+33783214216",
+    "url": "https://www.fitnesspark.fr/club/gap-tokoro/"
+  },
+  {
+    "slug": "garges-les-gonesse",
+    "name": "Fitness Park Garges-lès-Gonesse",
+    "street": "Centre Commercial Pont de Pierre, Avenue de Stalingrad",
+    "zip": "95140",
+    "city": "Garges lès Gonesse",
+    "phone": "+33134457688",
+    "url": "https://www.fitnesspark.fr/club/garges-les-gonesse/"
+  },
+  {
+    "slug": "rambouillet",
+    "name": "Fitness Park Rambouillet",
+    "street": "11 rue de Cutesson",
+    "zip": "78125",
+    "city": "Gazeran",
+    "phone": "+33187470099",
+    "url": "https://www.fitnesspark.fr/club/rambouillet/"
+  },
+  {
+    "slug": "gennevilliers",
+    "name": "Fitness Park Gennevilliers",
+    "street": "21/23 rue Louis Calmel",
+    "zip": "92230",
+    "city": "Gennevilliers",
+    "phone": "+33184209592",
+    "url": "https://www.fitnesspark.fr/club/gennevilliers/"
+  },
+  {
+    "slug": "gentilly",
+    "name": "Fitness Park Gentilly",
+    "street": "47 Rue Charles Frérot",
+    "zip": "94250",
+    "city": "Gentilly",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/gentilly/"
+  },
+  {
+    "slug": "gonfreville-l-orcher",
+    "name": "Fitness Park Gonfreville L'Orcher",
+    "street": "6 Avenue du Camp dolent",
+    "zip": "76700",
+    "city": "Gonfreville L'Orcher",
+    "phone": "+33235424960",
+    "url": "https://www.fitnesspark.fr/club/gonfreville-l-orcher/"
+  },
+  {
+    "slug": "grenoble-centre",
+    "name": "Fitness Park Grenoble - Centre",
+    "street": "3 place Jean Achard",
+    "zip": "38000",
+    "city": "Grenoble",
+    "phone": "+33458171293",
+    "url": "https://www.fitnesspark.fr/club/grenoble-centre/"
+  },
+  {
+    "slug": "grigny",
+    "name": "Fitness Park Grigny",
+    "street": "7 rue Ferdinand de Lesseps",
+    "zip": "91350",
+    "city": "Grigny",
+    "phone": "+33169258107",
+    "url": "https://www.fitnesspark.fr/club/grigny/"
+  },
+  {
+    "slug": "guichainville",
+    "name": "Fitness Park Guichainville",
+    "street": "Zone commerciale Carrefour",
+    "zip": "27930",
+    "city": "Guichainville",
+    "phone": "+33232239554",
+    "url": "https://www.fitnesspark.fr/club/guichainville/"
+  },
+  {
+    "slug": "herblay",
+    "name": "Fitness Park Herblay",
+    "street": "10 Boulevard du Havre",
+    "zip": "95220",
+    "city": "Herblay",
+    "phone": "+33186535180",
+    "url": "https://www.fitnesspark.fr/club/herblay/"
+  },
+  {
+    "slug": "henin-beaumont",
+    "name": "Fitness Park Hénin-Beaumont",
+    "street": "Boulevard Olof Palme",
+    "zip": "62110",
+    "city": "Hénin Beaumont",
+    "phone": "+33688490495",
+    "url": "https://www.fitnesspark.fr/club/henin-beaumont/"
+  },
+  {
+    "slug": "illkirch-graffenstaden",
+    "name": "Fitness Park Illkirch-Graffenstaden",
+    "street": "21 rue de l'Industrie",
+    "zip": "67400",
+    "city": "Illkirch Graffenstaden",
+    "phone": "+33353741908",
+    "url": "https://www.fitnesspark.fr/club/illkirch-graffenstaden/"
+  },
+  {
+    "slug": "illzach",
+    "name": "Fitness Park Illzach",
+    "street": "35 Avenue de l'Italie",
+    "zip": "68110",
+    "city": "Illzach",
+    "phone": "+33389451933",
+    "url": "https://www.fitnesspark.fr/club/illzach/"
+  },
+  {
+    "slug": "issy-les-moulineaux",
+    "name": "Fitness Park Issy-les-Moulineaux",
+    "street": "29 Rue Ernest Renan",
+    "zip": "92130",
+    "city": "Issy-les-Moulineaux",
+    "phone": "+33174312918",
+    "url": "https://www.fitnesspark.fr/club/issy-les-moulineaux/"
+  },
+  {
+    "slug": "antibes-palais-des-congres",
+    "name": "Fitness Park Antibes - Palais des Congrès",
+    "street": "60 Chemin des Sables",
+    "zip": "06160",
+    "city": "Juan les Pins",
+    "phone": "+33489374108",
+    "url": "https://www.fitnesspark.fr/club/antibes-palais-des-congres/"
+  },
+  {
+    "slug": "jurancon",
+    "name": "Fitness Park Jurancon",
+    "street": "55 avenue Corps Franc Pommies",
+    "zip": "64110",
+    "city": "Jurançon",
+    "phone": "+33533097017",
+    "url": "https://www.fitnesspark.fr/club/jurancon/"
+  },
+  {
+    "slug": "guyane-kourou",
+    "name": "Fitness Park Guyane - Kourou",
+    "street": "Parc d'activités de Bois chaudat, Route de Pariacabo",
+    "zip": "97310",
+    "city": "KOUROU",
+    "phone": "+594694200685",
+    "url": "https://www.fitnesspark.fr/club/guyane-kourou/"
+  },
+  {
+    "slug": "lisle-adam",
+    "name": "Fitness Park L'Isle-Adam",
+    "street": "Boulevard D'arcole",
+    "zip": "95290",
+    "city": "L'isle Adam",
+    "phone": "+33185763833",
+    "url": "https://www.fitnesspark.fr/club/lisle-adam/"
+  },
+  {
+    "slug": "la-varenne-saint-hilaire",
+    "name": "Fitness Park La Varenne Saint-Hilaire",
+    "street": "78 Avenue du Bac",
+    "zip": "94210",
+    "city": "LA VARENNE SAINT HILAIRE",
+    "phone": "+33159146964",
+    "url": "https://www.fitnesspark.fr/club/la-varenne-saint-hilaire/"
+  },
+  {
+    "slug": "la-chapelle-saint-luc",
+    "name": "Fitness Park La Chapelle-Saint-Luc",
+    "street": "Centre Commercial l'Escapade, 4 Boulevard de l'Ouest",
+    "zip": "10600",
+    "city": "La Chapelle-Saint-Luc",
+    "phone": "+33679391511",
+    "url": "https://www.fitnesspark.fr/club/la-chapelle-saint-luc/"
+  },
+  {
+    "slug": "la-francheville",
+    "name": "Fitness Park La Francheville",
+    "street": "ZAC Grand Parc, Plateau de l'Angélique",
+    "zip": "08000",
+    "city": "La Francheville",
+    "phone": "+33324333826",
+    "url": "https://www.fitnesspark.fr/club/la-francheville/"
+  },
+  {
+    "slug": "la-roche-sur-yon",
+    "name": "Fitness Park La Roche-sur-Yon",
+    "street": "34 Route de Nantes",
+    "zip": "85000",
+    "city": "La Roche-sur-Yon",
+    "phone": "+33252614413",
+    "url": "https://www.fitnesspark.fr/club/la-roche-sur-yon/"
+  },
+  {
+    "slug": "la-sentinelle",
+    "name": "Fitness Park La Sentinelle",
+    "street": "700, rue Jean Jaurès",
+    "zip": "59174",
+    "city": "La Sentinelle",
+    "phone": "+33362815141",
+    "url": "https://www.fitnesspark.fr/club/la-sentinelle/"
+  },
+  {
+    "slug": "la-teste-de-buch",
+    "name": "Fitness Park La Teste de Buch",
+    "street": "1120 avenue Gustave Eiffel",
+    "zip": "33260",
+    "city": "La Teste de Buch",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/la-teste-de-buch/"
+  },
+  {
+    "slug": "la-trinite",
+    "name": "Fitness Park La Trinité",
+    "street": "15 Boulevard Fuon Santa",
+    "zip": "06340",
+    "city": "La Trinité",
+    "phone": "+33489418454",
+    "url": "https://www.fitnesspark.fr/club/la-trinite/"
+  },
+  {
+    "slug": "valette-du-var",
+    "name": "Fitness Park La Valette Du Var",
+    "street": "Avenue Jean d’Ormesson",
+    "zip": "83160",
+    "city": "La Valette du Var",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/valette-du-var/"
+  },
+  {
+    "slug": "la-ville-du-bois",
+    "name": "Fitness Park La Ville du Bois",
+    "street": "5 rue de la Croix Saint-Jacques",
+    "zip": "91620",
+    "city": "La Ville du Bois",
+    "phone": "+33169806224",
+    "url": "https://www.fitnesspark.fr/club/la-ville-du-bois/"
+  },
+  {
+    "slug": "lagny-sur-marne",
+    "name": "Fitness Park Lagny-sur-Marne",
+    "street": "130 avenue du Général Leclerc",
+    "zip": "77400",
+    "city": "Lagny-sur-marne",
+    "phone": "+33173088339",
+    "url": "https://www.fitnesspark.fr/club/lagny-sur-marne/"
+  },
+  {
+    "slug": "lagord",
+    "name": "Fitness Park Lagord",
+    "street": "avenue du fief rose",
+    "zip": "17140",
+    "city": "Lagord",
+    "phone": "+33546670496",
+    "url": "https://www.fitnesspark.fr/club/lagord/"
+  },
+  {
+    "slug": "lampertheim",
+    "name": "Fitness Park Lampertheim",
+    "street": "19 rue du Chemin de Fer",
+    "zip": "67450",
+    "city": "Lampertheim",
+    "phone": "+33353741909",
+    "url": "https://www.fitnesspark.fr/club/lampertheim/"
+  },
+  {
+    "slug": "lanester",
+    "name": "Fitness Park Lanester",
+    "street": "6 Rue-Straed Jean-Marie Tjibaou",
+    "zip": "56600",
+    "city": "Lanester",
+    "phone": "+33257675828",
+    "url": "https://www.fitnesspark.fr/club/lanester/"
+  },
+  {
+    "slug": "laval",
+    "name": "Fitness Park Laval",
+    "street": "Parc de l'Habitat - 28 Rue du Petit Montron",
+    "zip": "53000",
+    "city": "Laval",
+    "phone": "+33682373500",
+    "url": "https://www.fitnesspark.fr/club/laval/"
+  },
+  {
+    "slug": "le-bouscat",
+    "name": "Fitness Park Le Bouscat",
+    "street": "43 avenue de la libération",
+    "zip": "33110",
+    "city": "Le Bouscat",
+    "phone": "+33547541034",
+    "url": "https://www.fitnesspark.fr/club/le-bouscat/"
+  },
+  {
+    "slug": "le-cannet",
+    "name": "Fitness Park Le Cannet",
+    "street": "480 avenue du Général De Gaulle",
+    "zip": "06110",
+    "city": "Le Cannet",
+    "phone": "+33493941308",
+    "url": "https://www.fitnesspark.fr/club/le-cannet/"
+  },
+  {
+    "slug": "le-chesnay",
+    "name": "Fitness Park Le Chesnay",
+    "street": "10 avenue de Voluceau",
+    "zip": "78150",
+    "city": "Le Chesnay-Rocquencourt",
+    "phone": "+33185766200",
+    "url": "https://www.fitnesspark.fr/club/le-chesnay/"
+  },
+  {
+    "slug": "martinique-la-galleria",
+    "name": "Fitness Park Martinique - La Galleria",
+    "street": "Centre Commercial La Galleria",
+    "zip": "97232",
+    "city": "Le Lamentin",
+    "phone": "+596696808086",
+    "url": "https://www.fitnesspark.fr/club/martinique-la-galleria/"
+  },
+  {
+    "slug": "le-mans-centre",
+    "name": "Fitness Park Le Mans - Centre",
+    "street": "11-13 rue du Docteur Leroy",
+    "zip": "72000",
+    "city": "Le Mans",
+    "phone": "+33272882747",
+    "url": "https://www.fitnesspark.fr/club/le-mans-centre/"
+  },
+  {
+    "slug": "le-mans-nord",
+    "name": "Fitness Park Le Mans - Nord",
+    "street": "1 rue des Frères voisins",
+    "zip": "72000",
+    "city": "Le Mans",
+    "phone": "+33272882160",
+    "url": "https://www.fitnesspark.fr/club/le-mans-nord/"
+  },
+  {
+    "slug": "le-mans-centre-sud",
+    "name": "Fitness Park le Mans - Sud",
+    "street": "Centre commercial Centre Sud, 257 Av. Georges Durand",
+    "zip": "72000",
+    "city": "Le Mans",
+    "phone": "+33255489917",
+    "url": "https://www.fitnesspark.fr/club/le-mans-centre-sud/"
+  },
+  {
+    "slug": "guadeloupe-le-moule",
+    "name": "Fitness Park Guadeloupe - Le Moule",
+    "street": "D115 Route de Sergent",
+    "zip": "97160",
+    "city": "Le Moule",
+    "phone": "+590690249500",
+    "url": "https://www.fitnesspark.fr/club/guadeloupe-le-moule/"
+  },
+  {
+    "slug": "le-pontet",
+    "name": "Fitness Park Avignon - Aushopping Nord",
+    "street": "ZAC Auchan les Daulands, 542 Avenue Jules Verne",
+    "zip": "84700",
+    "city": "Le Pontet",
+    "phone": "+33413950601",
+    "url": "https://www.fitnesspark.fr/club/le-pontet/"
+  },
+  {
+    "slug": "martinique-le-robert",
+    "name": "Fitness Park Martinique - Le Robert",
+    "street": "Centre Commercial Géant Océanis",
+    "zip": "97231",
+    "city": "Le Robert",
+    "phone": "+596696377663",
+    "url": "https://www.fitnesspark.fr/club/martinique-le-robert/"
+  },
+  {
+    "slug": "guadeloupe-providence",
+    "name": "Fitness Park Guadeloupe - Providence",
+    "street": "Parc d'activités la providence",
+    "zip": "97142",
+    "city": "Les Abymes",
+    "phone": "+590690137200",
+    "url": "https://www.fitnesspark.fr/club/guadeloupe-providence/"
+  },
+  {
+    "slug": "les-clayes-sous-bois",
+    "name": "Fitness Park Les Clayes-sous-Bois",
+    "street": "90 avenue Henri Barbusse",
+    "zip": "78340",
+    "city": "Les Clayes sous Bois",
+    "phone": "+33130600305",
+    "url": "https://www.fitnesspark.fr/club/les-clayes-sous-bois/"
+  },
+  {
+    "slug": "les-pavillons-sous-bois",
+    "name": "Fitness Park Les Pavillons-sous-Bois",
+    "street": "214 Avenue Aristide Briand",
+    "zip": "93320",
+    "city": "Les Pavillons-sous-Bois",
+    "phone": "+33155890740",
+    "url": "https://www.fitnesspark.fr/club/les-pavillons-sous-bois/"
+  },
+  {
+    "slug": "les-ulis",
+    "name": "Fitness Park Les Ulis",
+    "street": "Avenue de L'Aubrac",
+    "zip": "91940",
+    "city": "Les Ulis",
+    "phone": "+33785230266",
+    "url": "https://www.fitnesspark.fr/club/les-ulis/"
+  },
+  {
+    "slug": "lesquin",
+    "name": "Fitness Park Lesquin",
+    "street": "20 Rue des Meuniers",
+    "zip": "59810",
+    "city": "Lesquin",
+    "phone": "+33771630955",
+    "url": "https://www.fitnesspark.fr/club/lesquin/"
+  },
+  {
+    "slug": "libourne",
+    "name": "Fitness Park Libourne",
+    "street": "141 Avenue du Général de Gaulle",
+    "zip": "33500",
+    "city": "Libourne",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/libourne/"
+  },
+  {
+    "slug": "lieusaint-carre-senart",
+    "name": "Fitness Park Lieusaint - Carré Sénart",
+    "street": "Centre commercial Westfield Carré Sénart 3 allée du préambule",
+    "zip": "77127",
+    "city": "Lieusaint",
+    "phone": "+33185766688",
+    "url": "https://www.fitnesspark.fr/club/lieusaint-carre-senart/"
+  },
+  {
+    "slug": "lille-le-31",
+    "name": "Fitness Park Lille - Le 31",
+    "street": "7 rue d’Amiens",
+    "zip": "59800",
+    "city": "Lille",
+    "phone": "+33359619744",
+    "url": "https://www.fitnesspark.fr/club/lille-le-31/"
+  },
+  {
+    "slug": "limoges",
+    "name": "Fitness Park Limoges",
+    "street": "2 Allée de la Cornude",
+    "zip": "87280",
+    "city": "Limoges",
+    "phone": "+33544231612",
+    "url": "https://www.fitnesspark.fr/club/limoges/"
+  },
+  {
+    "slug": "limonest",
+    "name": "Fitness Park Limonest",
+    "street": "1716 N6",
+    "zip": "69760",
+    "city": "Limonest",
+    "phone": "+33670265500",
+    "url": "https://www.fitnesspark.fr/club/limonest/"
+  },
+  {
+    "slug": "lisses",
+    "name": "Fitness Park Lisses",
+    "street": "44 rue du Cantal",
+    "zip": "91090",
+    "city": "Lisses",
+    "phone": "+33173216978",
+    "url": "https://www.fitnesspark.fr/club/lisses/"
+  },
+  {
+    "slug": "livry-gargan",
+    "name": "Fitness Park Livry-Gargan",
+    "street": "47-53 Boulevard de l’Europe",
+    "zip": "93190",
+    "city": "Livry - Gargan",
+    "phone": "+33188598058",
+    "url": "https://www.fitnesspark.fr/club/livry-gargan/"
+  },
+  {
+    "slug": "lievin",
+    "name": "Fitness Park Liévin",
+    "street": "CC Carrefour (Côté Flunch)",
+    "zip": "62800",
+    "city": "Liévin",
+    "phone": "+33687617987",
+    "url": "https://www.fitnesspark.fr/club/lievin/"
+  },
+  {
+    "slug": "lognes",
+    "name": "Fitness Park Lognes",
+    "street": "10 rue Wolfgang Amadeus Mozart",
+    "zip": "77185",
+    "city": "Lognes",
+    "phone": "+33638976239",
+    "url": "https://www.fitnesspark.fr/club/lognes/"
+  },
+  {
+    "slug": "lons",
+    "name": "Fitness Park Lons",
+    "street": "Zac du Parvis 6 Mail de l'Hippodrome",
+    "zip": "64140",
+    "city": "Lons",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/lons/"
+  },
+  {
+    "slug": "lyon-part-dieu",
+    "name": "Fitness Park Lyon - La Part Dieu",
+    "street": "Tour Part Dieu, 129 rue Servient",
+    "zip": "69003",
+    "city": "Lyon",
+    "phone": "+33487913077",
+    "url": "https://www.fitnesspark.fr/club/lyon-part-dieu/"
+  },
+  {
+    "slug": "guyane-soula",
+    "name": "Fitness Park Guyane - Soula",
+    "street": "10 Avenue des Portes de Soula",
+    "zip": "97351",
+    "city": "Macouria",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/guyane-soula/"
+  },
+  {
+    "slug": "malakoff",
+    "name": "Fitness Park Malakoff",
+    "street": "53 Boulevard de Stalingrad",
+    "zip": "92240",
+    "city": "Malakoff",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/malakoff/"
+  },
+  {
+    "slug": "mandelieu-la-napoule",
+    "name": "Fitness Park Mandelieu-la-Napoule",
+    "street": "Avenue du Maréchal Lyautey",
+    "zip": "06210",
+    "city": "Mandelieu-la-Napoule",
+    "phone": "+33489374020",
+    "url": "https://www.fitnesspark.fr/club/mandelieu-la-napoule/"
+  },
+  {
+    "slug": "marly",
+    "name": "Fitness Park Marly",
+    "street": "1 rue de la grange aux ormes",
+    "zip": "57155",
+    "city": "Marly",
+    "phone": "+33353741910",
+    "url": "https://www.fitnesspark.fr/club/marly/"
+  },
+  {
+    "slug": "marseille-bourse",
+    "name": "Fitness Park Marseille - Bourse",
+    "street": "C.C. Centre Bourse, 17 Cours Belsunce",
+    "zip": "13001",
+    "city": "Marseille",
+    "phone": "+33488925380",
+    "url": "https://www.fitnesspark.fr/club/marseille-bourse/"
+  },
+  {
+    "slug": "marseille-grand-littoral",
+    "name": "Fitness Park Marseille - Grand Littoral",
+    "street": "Centre Commercial Grand Littoral, 11 Avenue de Saint Antoine",
+    "zip": "13015",
+    "city": "Marseille",
+    "phone": "+33488925707",
+    "url": "https://www.fitnesspark.fr/club/marseille-grand-littoral/"
+  },
+  {
+    "slug": "marseille-la-valentine",
+    "name": "Fitness Park Marseille - La Valentine",
+    "street": "Montée du Commandant de Robien",
+    "zip": "13011",
+    "city": "Marseille",
+    "phone": "+33488925381",
+    "url": "https://www.fitnesspark.fr/club/marseille-la-valentine/"
+  },
+  {
+    "slug": "marseille-les-docks",
+    "name": "Fitness Park Marseille - Les Docks",
+    "street": "10 place Joliette",
+    "zip": "13002",
+    "city": "Marseille",
+    "phone": "+33488925709",
+    "url": "https://www.fitnesspark.fr/club/marseille-les-docks/"
+  },
+  {
+    "slug": "marseille-saint-loup",
+    "name": "Fitness Park Marseille - Saint-Loup",
+    "street": "Centre Commercial Auchan, 57 Boulevard Romain Rolland",
+    "zip": "13010",
+    "city": "Marseille",
+    "phone": "+33488925382",
+    "url": "https://www.fitnesspark.fr/club/marseille-saint-loup/"
+  },
+  {
+    "slug": "massy",
+    "name": "Fitness Park Massy",
+    "street": "Place antoine de Saint Exupéry",
+    "zip": "91300",
+    "city": "Massy",
+    "phone": "+33169821954",
+    "url": "https://www.fitnesspark.fr/club/massy/"
+  },
+  {
+    "slug": "maubeuge",
+    "name": "Fitness Park Maubeuge",
+    "street": "8 rue Pierre Perrin",
+    "zip": "59600",
+    "city": "Maubeuge",
+    "phone": "+33359616500",
+    "url": "https://www.fitnesspark.fr/club/maubeuge/"
+  },
+  {
+    "slug": "maurepas-pariwest",
+    "name": "Fitness Park Maurepas - Pariwest",
+    "street": "Centre Commercial Pariwest, Rond-Point Laurent Schwartz",
+    "zip": "78310",
+    "city": "Maurepas",
+    "phone": "+33173136761",
+    "url": "https://www.fitnesspark.fr/club/maurepas-pariwest/"
+  },
+  {
+    "slug": "melun",
+    "name": "Fitness Park Melun",
+    "street": "11 Avenue du General Patton",
+    "zip": "77000",
+    "city": "Melun",
+    "phone": "+33757009123",
+    "url": "https://www.fitnesspark.fr/club/melun/"
+  },
+  {
+    "slug": "mennecy",
+    "name": "Fitness Park Mennecy",
+    "street": "17  Rue Faraday",
+    "zip": "91540",
+    "city": "Mennecy",
+    "phone": "+33160754632",
+    "url": "https://www.fitnesspark.fr/club/mennecy/"
+  },
+  {
+    "slug": "metz",
+    "name": "Fitness Park Metz",
+    "street": "6 Boulevard de Trèves",
+    "zip": "57070",
+    "city": "Metz",
+    "phone": "+33353741913",
+    "url": "https://www.fitnesspark.fr/club/metz/"
+  },
+  {
+    "slug": "meylan",
+    "name": "Fitness Park Meylan",
+    "street": "5 Boulevard des Alpes",
+    "zip": "38240",
+    "city": "Meylan",
+    "phone": "+33476627035",
+    "url": "https://www.fitnesspark.fr/club/meylan/"
+  },
+  {
+    "slug": "migne-auxances",
+    "name": "Fitness Park Migné-Auxances",
+    "street": "45 Avenue Chatellerault",
+    "zip": "86440",
+    "city": "Migné-Auxances",
+    "phone": "+33660586143",
+    "url": "https://www.fitnesspark.fr/club/migne-auxances/"
+  },
+  {
+    "slug": "mittelhausbergen",
+    "name": "Fitness Park Mittelhausbergen",
+    "street": "26 Rue de Strasbourg",
+    "zip": "67206",
+    "city": "Mittelhausbergen",
+    "phone": "+33353741911",
+    "url": "https://www.fitnesspark.fr/club/mittelhausbergen/"
+  },
+  {
+    "slug": "mondelange",
+    "name": "Fitness Park Mondelange",
+    "street": "Boucle de la Sente",
+    "zip": "57300",
+    "city": "Mondelange",
+    "phone": "+33678466729",
+    "url": "https://www.fitnesspark.fr/club/mondelange/"
+  },
+  {
+    "slug": "mont-de-marsans",
+    "name": "Fitness Park Mont-de-Marsan",
+    "street": "3-4 Rond Point Aline Calliatte",
+    "zip": "40000",
+    "city": "Mont de Marsan",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/mont-de-marsans/"
+  },
+  {
+    "slug": "montauban",
+    "name": "Fitness Park Montauban",
+    "street": "1870 CHEMIN DE MATRAS",
+    "zip": "82000",
+    "city": "Montauban",
+    "phone": "+33646789005",
+    "url": "https://www.fitnesspark.fr/club/montauban/"
+  },
+  {
+    "slug": "montgermont",
+    "name": "Fitness Park Montgermont",
+    "street": "Zone Décoparc, 1 Rue Newton",
+    "zip": "35760",
+    "city": "Montgermont",
+    "phone": "+33221650231",
+    "url": "https://www.fitnesspark.fr/club/montgermont/"
+  },
+  {
+    "slug": "montgeron",
+    "name": "Fitness Park Montgeron",
+    "street": "ZA Maurice Garin",
+    "zip": "91230",
+    "city": "Montgeron",
+    "phone": "+33169453739",
+    "url": "https://www.fitnesspark.fr/club/montgeron/"
+  },
+  {
+    "slug": "montigny-le-bretonneux",
+    "name": "Fitness Park Montigny-le-Bretonneux",
+    "street": "Centre Commercial Sud Canal, 61ter Boulevard Vauban",
+    "zip": "78180",
+    "city": "Montigny-le-Bretonneux",
+    "phone": "+33173136762",
+    "url": "https://www.fitnesspark.fr/club/montigny-le-bretonneux/"
+  },
+  {
+    "slug": "montpellier-comedie",
+    "name": "Fitness Park Montpellier - Comédie",
+    "street": "12 Rue du Guesclin",
+    "zip": "34000",
+    "city": "Montpellier",
+    "phone": "+33448202688",
+    "url": "https://www.fitnesspark.fr/club/montpellier-comedie/"
+  },
+  {
+    "slug": "montpellier-odysseum",
+    "name": "Fitness Park Montpellier - Odysseum",
+    "street": "Centre Commercial Odysseum",
+    "zip": "34000",
+    "city": "Montpellier",
+    "phone": "+33448203344",
+    "url": "https://www.fitnesspark.fr/club/montpellier-odysseum/"
+  },
+  {
+    "slug": "montreuil",
+    "name": "Fitness Park Montreuil",
+    "street": "13 bis rue Du Colonel Raynal",
+    "zip": "93100",
+    "city": "Montreuil",
+    "phone": "+33141699272",
+    "url": "https://www.fitnesspark.fr/club/montreuil/"
+  },
+  {
+    "slug": "montevrain",
+    "name": "Fitness Park Montévrain",
+    "street": "Centre Commercial Le Clos du Chêne, 6 Rue du clos Rose",
+    "zip": "77144",
+    "city": "Montévrain",
+    "phone": "+33173088309",
+    "url": "https://www.fitnesspark.fr/club/montevrain/"
+  },
+  {
+    "slug": "moneteau",
+    "name": "Fitness Park Monéteau",
+    "street": "13 rue de Londres",
+    "zip": "89470",
+    "city": "Monéteau",
+    "phone": "+33386526034",
+    "url": "https://www.fitnesspark.fr/club/moneteau/"
+  },
+  {
+    "slug": "morangis",
+    "name": "Fitness Park Morangis",
+    "street": "11 Avenue Ferdinand de Lesseps",
+    "zip": "91420",
+    "city": "Morangis",
+    "phone": "+33160122826",
+    "url": "https://www.fitnesspark.fr/club/morangis/"
+  },
+  {
+    "slug": "etampes",
+    "name": "Fitness Park Etampes",
+    "street": "Rue du Four À Chaux",
+    "zip": "91150",
+    "city": "Morigny-Champigny",
+    "phone": "+33185743272",
+    "url": "https://www.fitnesspark.fr/club/etampes/"
+  },
+  {
+    "slug": "mougins",
+    "name": "Fitness Park Mougins - Roquette",
+    "street": "561  Route de la Roquette",
+    "zip": "06250",
+    "city": "Mougins",
+    "phone": "+33489374018",
+    "url": "https://www.fitnesspark.fr/club/mougins/"
+  },
+  {
+    "slug": "mulhouse",
+    "name": "Fitness Park Mulhouse",
+    "street": "Centre Commercial Porte Jeune, 1 Boulevard de l'Europe",
+    "zip": "68100",
+    "city": "Mulhouse",
+    "phone": "+33367350306",
+    "url": "https://www.fitnesspark.fr/club/mulhouse/"
+  },
+  {
+    "slug": "muret",
+    "name": "Fitness Park Muret",
+    "street": "5 Impasse Jacques Monod",
+    "zip": "31600",
+    "city": "Muret",
+    "phone": "+33567808952",
+    "url": "https://www.fitnesspark.fr/club/muret/"
+  },
+  {
+    "slug": "merignac",
+    "name": "Fitness Park Mérignac",
+    "street": "26 Avenue du président John Fitzgerald",
+    "zip": "33700",
+    "city": "Mérignac",
+    "phone": "+33535569313",
+    "url": "https://www.fitnesspark.fr/club/merignac/"
+  },
+  {
+    "slug": "meru",
+    "name": "Fitness Park Méru",
+    "street": "6 Allée Elysé LeMonnier",
+    "zip": "60110",
+    "city": "Méru",
+    "phone": "+33360820007",
+    "url": "https://www.fitnesspark.fr/club/meru/"
+  },
+  {
+    "slug": "nancy",
+    "name": "Fitness Park Nancy",
+    "street": "52 Boulevard Lobau",
+    "zip": "54000",
+    "city": "Nancy",
+    "phone": "+33787864819",
+    "url": "https://www.fitnesspark.fr/club/nancy/"
+  },
+  {
+    "slug": "nanterre-les-champs-pierreux",
+    "name": "Fitness Park Nanterre - Les Champs Pierreux",
+    "street": "30 Avenue des Champs Pierreux",
+    "zip": "92000",
+    "city": "Nanterre",
+    "phone": "+33184208979",
+    "url": "https://www.fitnesspark.fr/club/nanterre-les-champs-pierreux/"
+  },
+  {
+    "slug": "nantes-beaulieu",
+    "name": "Fitness Park Nantes - Beaulieu",
+    "street": "Centre Commercial Beaulieu, Boulevard Général de Gaulle",
+    "zip": "44200",
+    "city": "Nantes",
+    "phone": "+33252597280",
+    "url": "https://www.fitnesspark.fr/club/nantes-beaulieu/"
+  },
+  {
+    "slug": "nantes-centre",
+    "name": "Fitness Park Nantes - Centre",
+    "street": "8 rue de Budapest",
+    "zip": "44000",
+    "city": "Nantes",
+    "phone": "+33252591429",
+    "url": "https://www.fitnesspark.fr/club/nantes-centre/"
+  },
+  {
+    "slug": "nanteuil-les-meaux",
+    "name": "Fitness Park Nanteuil-lès-Meaux",
+    "street": "11 Avenue de la Foulée",
+    "zip": "77100",
+    "city": "Nanteuil-lès-Meaux",
+    "phone": "+33173095003",
+    "url": "https://www.fitnesspark.fr/club/nanteuil-les-meaux/"
+  },
+  {
+    "slug": "neuilly-plaisance",
+    "name": "Fitness Park Neuilly-Plaisance",
+    "street": "10 Boulevard Galliéni",
+    "zip": "93360",
+    "city": "Neuilly Plaisance",
+    "phone": "+33143083028",
+    "url": "https://www.fitnesspark.fr/club/neuilly-plaisance/"
+  },
+  {
+    "slug": "neuilly-sur-seine",
+    "name": "Fitness Park Neuilly sur Seine",
+    "street": "143 Avenue Charles de Gaulle",
+    "zip": "92200",
+    "city": "Neuilly sur Seine",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/neuilly-sur-seine/"
+  },
+  {
+    "slug": "nice-californie",
+    "name": "Fitness Park Nice - Californie",
+    "street": "13-15 avenue de la Californie",
+    "zip": "06200",
+    "city": "Nice",
+    "phone": "+33423292292",
+    "url": "https://www.fitnesspark.fr/club/nice-californie/"
+  },
+  {
+    "slug": "nice-jean-medecin",
+    "name": "Fitness Park Nice - Jean Médecin",
+    "street": "54 avenue Jean Médecin",
+    "zip": "06000",
+    "city": "Nice",
+    "phone": "+33423292291",
+    "url": "https://www.fitnesspark.fr/club/nice-jean-medecin/"
+  },
+  {
+    "slug": "nice-la-plaine",
+    "name": "Fitness Park Nice - La Plaine",
+    "street": "272 Boulevard du Mercantour",
+    "zip": "06200",
+    "city": "Nice",
+    "phone": "+33423292293",
+    "url": "https://www.fitnesspark.fr/club/nice-la-plaine/"
+  },
+  {
+    "slug": "nice-halevy",
+    "name": "Fitness Park Nice - Promenade",
+    "street": "7 Rue Halévy",
+    "zip": "06000",
+    "city": "Nice",
+    "phone": "+33489418568",
+    "url": "https://www.fitnesspark.fr/club/nice-halevy/"
+  },
+  {
+    "slug": "nice-riquier",
+    "name": "Fitness Park Nice - Riquier",
+    "street": "3 Boulevard Armée des alpes",
+    "zip": "06300",
+    "city": "Nice",
+    "phone": "+33423292290",
+    "url": "https://www.fitnesspark.fr/club/nice-riquier/"
+  },
+  {
+    "slug": "nice-saint-isidore",
+    "name": "Fitness Park Nice - Saint-Isidore",
+    "street": "448 Route de Grenoble",
+    "zip": "06200",
+    "city": "Nice",
+    "phone": "+33489418566",
+    "url": "https://www.fitnesspark.fr/club/nice-saint-isidore/"
+  },
+  {
+    "slug": "nice-verany",
+    "name": "Fitness Park Nice - Vérany",
+    "street": "28 Boulevard Jean-Baptiste Vérany",
+    "zip": "06300",
+    "city": "Nice",
+    "phone": "+33489418573",
+    "url": "https://www.fitnesspark.fr/club/nice-verany/"
+  },
+  {
+    "slug": "niort",
+    "name": "Fitness Park Niort",
+    "street": "600 Avenue de Paris",
+    "zip": "79000",
+    "city": "Niort",
+    "phone": "+33768536904",
+    "url": "https://www.fitnesspark.fr/club/niort/"
+  },
+  {
+    "slug": "nogent-sur-marne",
+    "name": "Fitness Park Nogent-Sur-Marne",
+    "street": "140 Boulevard de Strasbourg",
+    "zip": "94130",
+    "city": "Nogent Sur Marne",
+    "phone": "+33178812434",
+    "url": "https://www.fitnesspark.fr/club/nogent-sur-marne/"
+  },
+  {
+    "slug": "nimes-ouest",
+    "name": "Fitness Park Nîmes - Carré Sud",
+    "street": "148 rue Jean Lauret",
+    "zip": "30900",
+    "city": "Nîmes",
+    "phone": "+33448211167",
+    "url": "https://www.fitnesspark.fr/club/nimes-ouest/"
+  },
+  {
+    "slug": "nimes-carre-sud",
+    "name": "Fitness Park Nîmes - Carré Sud",
+    "street": "148 rue Jean Lauret",
+    "zip": "30900",
+    "city": "Nîmes",
+    "phone": "+33448211167",
+    "url": "https://www.fitnesspark.fr/club/nimes-carre-sud/"
+  },
+  {
+    "slug": "orleans",
+    "name": "Fitness Park Orléans",
+    "street": "Centre Commercial Place D'Arc",
+    "zip": "45000",
+    "city": "Orleans",
+    "phone": "+33763705165",
+    "url": "https://www.fitnesspark.fr/club/orleans/"
+  },
+  {
+    "slug": "orly",
+    "name": "Fitness Park Orly",
+    "street": "Avenue des Martyrs de Châteaubriant",
+    "zip": "94310",
+    "city": "Orly",
+    "phone": "+33170978546",
+    "url": "https://www.fitnesspark.fr/club/orly/"
+  },
+  {
+    "slug": "paris-montmartre",
+    "name": "Fitness Park Montmartre",
+    "street": "79 Rue Marcadet",
+    "zip": "75018",
+    "city": "PARIS",
+    "phone": "+33684539429",
+    "url": "https://www.fitnesspark.fr/club/paris-montmartre/"
+  },
+  {
+    "slug": "paris-bastille",
+    "name": "Fitness Park Paris - Bastille",
+    "street": "4 Place de la Bastille",
+    "zip": "75012",
+    "city": "PARIS",
+    "phone": "+33188806901",
+    "url": "https://www.fitnesspark.fr/club/paris-bastille/"
+  },
+  {
+    "slug": "pantin",
+    "name": "Fitness Park Pantin",
+    "street": "45 rue Délizy",
+    "zip": "93500",
+    "city": "Pantin",
+    "phone": "+33649525726",
+    "url": "https://www.fitnesspark.fr/club/pantin/"
+  },
+  {
+    "slug": "paris-rue-de-bagnolet",
+    "name": "Fitness Park Paris - 20ème",
+    "street": "65 rue de bagnolet",
+    "zip": "75020",
+    "city": "Paris",
+    "phone": "+33188464404",
+    "url": "https://www.fitnesspark.fr/club/paris-rue-de-bagnolet/"
+  },
+  {
+    "slug": "paris-alesia",
+    "name": "Fitness Park Paris - Alésia",
+    "street": "95 Avenue du Général Leclerc",
+    "zip": "75014",
+    "city": "Paris",
+    "phone": "+33188464401",
+    "url": "https://www.fitnesspark.fr/club/paris-alesia/"
+  },
+  {
+    "slug": "paris-batignolles",
+    "name": "Fitness Park Paris - Batignolles",
+    "street": "147 bis rue Cardinet",
+    "zip": "75017",
+    "city": "Paris",
+    "phone": "+33173445328",
+    "url": "https://www.fitnesspark.fr/club/paris-batignolles/"
+  },
+  {
+    "slug": "paris-belleville",
+    "name": "Fitness Park Paris - Belleville",
+    "street": "247 Rue de Belleville",
+    "zip": "75019",
+    "city": "Paris",
+    "phone": "+33178910909",
+    "url": "https://www.fitnesspark.fr/club/paris-belleville/"
+  },
+  {
+    "slug": "paris-chevaleret",
+    "name": "Fitness Park Paris - Chevaleret",
+    "street": "81-83 Rue du Chevaleret",
+    "zip": "75013",
+    "city": "Paris",
+    "phone": "+33188464403",
+    "url": "https://www.fitnesspark.fr/club/paris-chevaleret/"
+  },
+  {
+    "slug": "paris-diderot",
+    "name": "Fitness Park Paris - Diderot",
+    "street": "60-62 Boulevard Diderot",
+    "zip": "75012",
+    "city": "Paris",
+    "phone": "+33188464402",
+    "url": "https://www.fitnesspark.fr/club/paris-diderot/"
+  },
+  {
+    "slug": "paris-la-chapelle",
+    "name": "Fitness Park Paris - La Chapelle",
+    "street": "69 Ter rue de La Chapelle",
+    "zip": "75018",
+    "city": "Paris",
+    "phone": "+33180273006",
+    "url": "https://www.fitnesspark.fr/club/paris-la-chapelle/"
+  },
+  {
+    "slug": "paris-nation",
+    "name": "Fitness Park Paris - Nation",
+    "street": "5 rue de Lagny",
+    "zip": "75020",
+    "city": "Paris",
+    "phone": "+33176216465",
+    "url": "https://www.fitnesspark.fr/club/paris-nation/"
+  },
+  {
+    "slug": "paris-place-de-clichy",
+    "name": "Fitness Park Paris - Place de Clichy",
+    "street": "16 Rue Capron",
+    "zip": "75018",
+    "city": "Paris",
+    "phone": "+33187164729",
+    "url": "https://www.fitnesspark.fr/club/paris-place-de-clichy/"
+  },
+  {
+    "slug": "paris-porte-de-choisy",
+    "name": "Fitness Park Paris - Porte de Choisy",
+    "street": "13 Avenue de Choisy",
+    "zip": "75013",
+    "city": "Paris",
+    "phone": "+33173445329",
+    "url": "https://www.fitnesspark.fr/club/paris-porte-de-choisy/"
+  },
+  {
+    "slug": "paris-republique",
+    "name": "Fitness Park Paris - République",
+    "street": "5 Avenue de la République",
+    "zip": "75011",
+    "city": "Paris",
+    "phone": "+33185651903",
+    "url": "https://www.fitnesspark.fr/club/paris-republique/"
+  },
+  {
+    "slug": "paris-theatre",
+    "name": "Fitness Park Paris - Théâtre",
+    "street": "104 bis rue du Théâtre",
+    "zip": "75015",
+    "city": "Paris",
+    "phone": "+33188450044",
+    "url": "https://www.fitnesspark.fr/club/paris-theatre/"
+  },
+  {
+    "slug": "paris-voltaire",
+    "name": "Fitness Park Paris Voltaire",
+    "street": "160 rue de la Roquette",
+    "zip": "75011",
+    "city": "Paris",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/paris-voltaire/"
+  },
+  {
+    "slug": "perpignan-chateau-roussillon",
+    "name": "Fitness Park Perpignan - Château-Roussillon",
+    "street": "Centre Commercial Carrefour, Plateau de la roseraie",
+    "zip": "66000",
+    "city": "Perpignan",
+    "phone": "+33468622265",
+    "url": "https://www.fitnesspark.fr/club/perpignan-chateau-roussillon/"
+  },
+  {
+    "slug": "perpignan-mailloles",
+    "name": "Fitness Park Perpignan - Mailloles",
+    "street": "1085 avenue Julien Panchot",
+    "zip": "66000",
+    "city": "Perpignan",
+    "phone": "+33672699163",
+    "url": "https://www.fitnesspark.fr/club/perpignan-mailloles/"
+  },
+  {
+    "slug": "perpignan-polygone",
+    "name": "Fitness Park Perpignan - Polygone",
+    "street": "1570  Avenue du Languedoc",
+    "zip": "66000",
+    "city": "Perpignan",
+    "phone": "+33468390335",
+    "url": "https://www.fitnesspark.fr/club/perpignan-polygone/"
+  },
+  {
+    "slug": "persan",
+    "name": "Fitness Park Persan",
+    "street": "2 rue Maria Deraisme",
+    "zip": "95340",
+    "city": "Persan",
+    "phone": "+33130347205",
+    "url": "https://www.fitnesspark.fr/club/persan/"
+  },
+  {
+    "slug": "guadeloupe-colin",
+    "name": "Fitness Park Guadeloupe - Colin",
+    "street": "Colin Sud - Parc d'activité de Colin",
+    "zip": "97170",
+    "city": "Petit-Bourg",
+    "phone": "+590690839600",
+    "url": "https://www.fitnesspark.fr/club/guadeloupe-colin/"
+  },
+  {
+    "slug": "pierrefitte-sur-seine",
+    "name": "Fitness Park Pierrefitte-sur-Seine",
+    "street": "1 Rue de  Séverine",
+    "zip": "93380",
+    "city": "Pierrefitte sur seine",
+    "phone": "+33184218899",
+    "url": "https://www.fitnesspark.fr/club/pierrefitte-sur-seine/"
+  },
+  {
+    "slug": "poitiers-centre",
+    "name": "Fitness Park Poitiers",
+    "street": "Centre Commercial Super U, 91 Avenue du 8 Mai 1945",
+    "zip": "86000",
+    "city": "Poitiers",
+    "phone": "+33699884119",
+    "url": "https://www.fitnesspark.fr/club/poitiers-centre/"
+  },
+  {
+    "slug": "pollestres",
+    "name": "Fitness Park Pollestres",
+    "street": "Centre commercial frunshopping , Zac Creu Blanca",
+    "zip": "66450",
+    "city": "Pollestres",
+    "phone": "+33649191386",
+    "url": "https://www.fitnesspark.fr/club/pollestres/"
+  },
+  {
+    "slug": "pontault-combault-les-4-chenes",
+    "name": "Fitness Park Pontault-Combault - Les 4 Chênes",
+    "street": "National 4, centre commercial les 4 chenes",
+    "zip": "77340",
+    "city": "Pontault Combault",
+    "phone": "+33159146969",
+    "url": "https://www.fitnesspark.fr/club/pontault-combault-les-4-chenes/"
+  },
+  {
+    "slug": "montlucon",
+    "name": "Fitness Park Montluçon",
+    "street": "138 Avenue des Martyrs",
+    "zip": "03410",
+    "city": "Prémilhat",
+    "phone": "+33470033264",
+    "url": "https://www.fitnesspark.fr/club/montlucon/"
+  },
+  {
+    "slug": "puteaux",
+    "name": "Fitness Park Puteaux",
+    "street": "16 Avenue des Bergères",
+    "zip": "92800",
+    "city": "Puteaux",
+    "phone": "+33180210190",
+    "url": "https://www.fitnesspark.fr/club/puteaux/"
+  },
+  {
+    "slug": "quincy-sous-senart",
+    "name": "Fitness Park Quincy sous Sénart",
+    "street": "52 rue de la Marnière",
+    "zip": "91480",
+    "city": "Quincy sous Sénart",
+    "phone": "+33159146962",
+    "url": "https://www.fitnesspark.fr/club/quincy-sous-senart/"
+  },
+  {
+    "slug": "reims",
+    "name": "Fitness Park Reims",
+    "street": "267 Rue de Neufchâtel",
+    "zip": "51100",
+    "city": "Reims",
+    "phone": "+33326062100",
+    "url": "https://www.fitnesspark.fr/club/reims/"
+  },
+  {
+    "slug": "rennes-la-pommeraie",
+    "name": "Fitness Park Rennes - La Pommeraie",
+    "street": "1 Rue du Noyer",
+    "zip": "35000",
+    "city": "Rennes",
+    "phone": "+33221100730",
+    "url": "https://www.fitnesspark.fr/club/rennes-la-pommeraie/"
+  },
+  {
+    "slug": "rennes-liberte",
+    "name": "Fitness Park Rennes - Liberté",
+    "street": "36 boulevard de la liberté",
+    "zip": "35000",
+    "city": "Rennes",
+    "phone": "+33299783031",
+    "url": "https://www.fitnesspark.fr/club/rennes-liberte/"
+  },
+  {
+    "slug": "rennes-longs-champs",
+    "name": "Fitness Park Rennes - Longs Champs",
+    "street": "Cc des longchamps, allée Morvan Lebesque",
+    "zip": "35700",
+    "city": "Rennes",
+    "phone": "+33223205050",
+    "url": "https://www.fitnesspark.fr/club/rennes-longs-champs/"
+  },
+  {
+    "slug": "robion",
+    "name": "Fitness Park Robion",
+    "street": "702 Route d'Avignon",
+    "zip": "84440",
+    "city": "Robion",
+    "phone": "+33488605510",
+    "url": "https://www.fitnesspark.fr/club/robion/"
+  },
+  {
+    "slug": "roissy-en-brie",
+    "name": "Fitness Park Roissy-en-Brie",
+    "street": "Zone Commerciale Intermarché, Avenue du Moulin",
+    "zip": "77680",
+    "city": "Roissy en Brie",
+    "phone": "+33159146968",
+    "url": "https://www.fitnesspark.fr/club/roissy-en-brie/"
+  },
+  {
+    "slug": "roissy-aeroville",
+    "name": "Fitness Park Roissy-en-France - Aéroville",
+    "street": "Centre commercial Aéroville, 30 Rue des Buissons",
+    "zip": "95700",
+    "city": "Roissy en France",
+    "phone": "+33188600676",
+    "url": "https://www.fitnesspark.fr/club/roissy-aeroville/"
+  },
+  {
+    "slug": "romainville",
+    "name": "Fitness Park Romainville",
+    "street": "156 Avenue Gaston Roussel",
+    "zip": "93230",
+    "city": "Romainville",
+    "phone": "+33630298176",
+    "url": "https://www.fitnesspark.fr/club/romainville/"
+  },
+  {
+    "slug": "romans-sur-isere",
+    "name": "Fitness Park Romans sur Isère",
+    "street": "43 Avenue des Allobroges",
+    "zip": "26100",
+    "city": "Romans sur Isère",
+    "phone": "+33458173272",
+    "url": "https://www.fitnesspark.fr/club/romans-sur-isere/"
+  },
+  {
+    "slug": "roncq",
+    "name": "Fitness Park Roncq",
+    "street": "Centre Commercial Auchan, Boulevard d'Halluin",
+    "zip": "59223",
+    "city": "Roncq",
+    "phone": "+33359617360",
+    "url": "https://www.fitnesspark.fr/club/roncq/"
+  },
+  {
+    "slug": "rosny-sous-bois-rosny-2",
+    "name": "Fitness Park Rosny-sous-Bois - Rosny 2",
+    "street": "Centre Commercial Rosny 2 Porte 2, Avenue du Général de Gaulle",
+    "zip": "93110",
+    "city": "Rosny-sous-Bois",
+    "phone": "+33148940905",
+    "url": "https://www.fitnesspark.fr/club/rosny-sous-bois-rosny-2/"
+  },
+  {
+    "slug": "roubaix-mcarthurglen",
+    "name": "Fitness Park Roubaix - McArthurGlen",
+    "street": "96 rue Mail de Lannoy",
+    "zip": "50900",
+    "city": "Roubaix",
+    "phone": "+33359616550",
+    "url": "https://www.fitnesspark.fr/club/roubaix-mcarthurglen/"
+  },
+  {
+    "slug": "rouen-saint-marc",
+    "name": "Fitness Park Rouen - Saint-Marc",
+    "street": "10 place Saint  Marc",
+    "zip": "76000",
+    "city": "Rouen",
+    "phone": "+33680803809",
+    "url": "https://www.fitnesspark.fr/club/rouen-saint-marc/"
+  },
+  {
+    "slug": "rueil-malmaison",
+    "name": "Fitness Park Rueil-Malmaison",
+    "street": "5 Boulevard Marcel Pourtout",
+    "zip": "92500",
+    "city": "Rueil-Malmaison",
+    "phone": "+33178771140",
+    "url": "https://www.fitnesspark.fr/club/rueil-malmaison/"
+  },
+  {
+    "slug": "saint-parres-aux-tertres",
+    "name": "Fitness Park Saint-Parres-Aux-Tertres",
+    "street": "2 rue des Magnolias",
+    "zip": "10410",
+    "city": "SAINT PARRES AUX TERTRES",
+    "phone": "+33351252969",
+    "url": "https://www.fitnesspark.fr/club/saint-parres-aux-tertres/"
+  },
+  {
+    "slug": "saint-etienne-centre-2",
+    "name": "Fitness Park Saint Etienne - Centre 2",
+    "street": "1-7 rue des Docteurs Charcot",
+    "zip": "42100",
+    "city": "SAINT-ETIENNE",
+    "phone": "+33481095020",
+    "url": "https://www.fitnesspark.fr/club/saint-etienne-centre-2/"
+  },
+  {
+    "slug": "saint-denis-stade-de-france",
+    "name": "Fitness Park Saint-Denis - Stade de France",
+    "street": "17 Avenue Jules Rimet",
+    "zip": "93200",
+    "city": "Saint Denis",
+    "phone": "+33170936857",
+    "url": "https://www.fitnesspark.fr/club/saint-denis-stade-de-france/"
+  },
+  {
+    "slug": "saint-herblain-le-sillon-shopping",
+    "name": "Fitness Park Saint-Herblain - Le Sillon Shopping",
+    "street": "8 Avenue des Thébaudières",
+    "zip": "44800",
+    "city": "Saint Herblain",
+    "phone": "+33272247010",
+    "url": "https://www.fitnesspark.fr/club/saint-herblain-le-sillon-shopping/"
+  },
+  {
+    "slug": "saint-martin-dheres",
+    "name": "Fitness Park Saint-Martin-D'hères",
+    "street": "Centre commercial Neyrpic",
+    "zip": "38400",
+    "city": "Saint Martin D'hères",
+    "phone": "+33685697901",
+    "url": "https://www.fitnesspark.fr/club/saint-martin-dheres/"
+  },
+  {
+    "slug": "saint-maximin",
+    "name": "Fitness Park Saint-Maximin",
+    "street": "Zone Commerciale de Saint Maximin, 96 Rue de la Marseillaise",
+    "zip": "60740",
+    "city": "Saint Maximin",
+    "phone": "+33658659103",
+    "url": "https://www.fitnesspark.fr/club/saint-maximin/"
+  },
+  {
+    "slug": "saint-priest",
+    "name": "Fitness Park Saint-Priest",
+    "street": "220 Route de Grenoble",
+    "zip": "69800",
+    "city": "Saint Priest",
+    "phone": "+33786204487",
+    "url": "https://www.fitnesspark.fr/club/saint-priest/"
+  },
+  {
+    "slug": "chambery",
+    "name": "Fitness Park Saint-Alban-Leysse",
+    "street": "86 Rue du Marocaz",
+    "zip": "73230",
+    "city": "Saint-Alban-Leysse",
+    "phone": "+33950336376",
+    "url": "https://www.fitnesspark.fr/club/chambery/"
+  },
+  {
+    "slug": "saint-brice-sous-foret",
+    "name": "Fitness Park Saint-Brice-Sous-Foret",
+    "street": "5-7  Avenue Robert Schuman,",
+    "zip": "95350",
+    "city": "Saint-Brice-sous-Forêt",
+    "phone": "+33188600565",
+    "url": "https://www.fitnesspark.fr/club/saint-brice-sous-foret/"
+  },
+  {
+    "slug": "saint-cloud",
+    "name": "Fitness Park Saint-Cloud",
+    "street": "1 rue Royale",
+    "zip": "92210",
+    "city": "Saint-Cloud",
+    "phone": "+33159146967",
+    "url": "https://www.fitnesspark.fr/club/saint-cloud/"
+  },
+  {
+    "slug": "saint-cyr-lecole",
+    "name": "Fitness Park Saint-Cyr-l'École",
+    "street": "Avenue du Colonel Fabien",
+    "zip": "78210",
+    "city": "Saint-Cyr-L'Ecole",
+    "phone": "+33130529838",
+    "url": "https://www.fitnesspark.fr/club/saint-cyr-lecole/"
+  },
+  {
+    "slug": "saint-cyr-sur-loire",
+    "name": "Fitness Park Tours - Saint-Cyr",
+    "street": "250 Boulevard Charles de Gaulle",
+    "zip": "37540",
+    "city": "Saint-Cyr-sur-Loire",
+    "phone": "+33987348570",
+    "url": "https://www.fitnesspark.fr/club/saint-cyr-sur-loire/"
+  },
+  {
+    "slug": "la-reunion-saint-denis",
+    "name": "Fitness Park La Réunion - Saint- Denis",
+    "street": "Ouverture prochaine",
+    "zip": "97400",
+    "city": "Saint-Denis",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/la-reunion-saint-denis/"
+  },
+  {
+    "slug": "saint-denis-carnot",
+    "name": "Fitness Park Saint-Denis - Carnot",
+    "street": "35 Boulevard Carnot",
+    "zip": "93200",
+    "city": "Saint-Denis",
+    "phone": "+33170936858",
+    "url": "https://www.fitnesspark.fr/club/saint-denis-carnot/"
+  },
+  {
+    "slug": "sens",
+    "name": "Fitness Park Sens",
+    "street": "1 Avenue des Fonderies Pont à Mousson",
+    "zip": "89100",
+    "city": "Saint-Denis lès Sens",
+    "phone": "+33373561030",
+    "url": "https://www.fitnesspark.fr/club/sens/"
+  },
+  {
+    "slug": "saint-doulchard",
+    "name": "Fitness Park Saint-Doulchard",
+    "street": "854 Route d’Orléans",
+    "zip": "18230",
+    "city": "Saint-Doulchard",
+    "phone": "+33248278781",
+    "url": "https://www.fitnesspark.fr/club/saint-doulchard/"
+  },
+  {
+    "slug": "guadeloupe-saint-francois",
+    "name": "Fitness Park Guadeloupe - Saint-François",
+    "street": "N4 Saint-François",
+    "zip": "97118",
+    "city": "Saint-François",
+    "phone": "+590690976977",
+    "url": "https://www.fitnesspark.fr/club/guadeloupe-saint-francois/"
+  },
+  {
+    "slug": "saint-gervais-la-foret",
+    "name": "Fitness Park Saint-Gervais-la-Forêt",
+    "street": "125 route nationale",
+    "zip": "41350",
+    "city": "Saint-Gervais-la-Forêt",
+    "phone": "+33678300309",
+    "url": "https://www.fitnesspark.fr/club/saint-gervais-la-foret/"
+  },
+  {
+    "slug": "saint-jean-de-la-ruelle",
+    "name": "Fitness Park Saint-Jean-de-la-ruelle",
+    "street": "Zone commerciale des 3 fontaines, 1 Av. Pierre Mendès France",
+    "zip": "45140",
+    "city": "Saint-Jean-de-la-Ruelle",
+    "phone": "+33665517854",
+    "url": "https://www.fitnesspark.fr/club/saint-jean-de-la-ruelle/"
+  },
+  {
+    "slug": "chateauroux-cap-sud",
+    "name": "Fitness Park Châteauroux - Cap Sud",
+    "street": "Cap Sud - 85 avenue d'Occitanie",
+    "zip": "36250",
+    "city": "Saint-Maur",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/chateauroux-cap-sud/"
+  },
+  {
+    "slug": "saint-maur-des-fosses",
+    "name": "Fitness Park Saint-Maur-des-Fossés",
+    "street": "20 Rue de la Varenne",
+    "zip": "94100",
+    "city": "Saint-Maur-des-Fossés",
+    "phone": "+33159146961",
+    "url": "https://www.fitnesspark.fr/club/saint-maur-des-fosses/"
+  },
+  {
+    "slug": "saint-orens-de-gameville",
+    "name": "Fitness Park Saint-Orens-de-Gameville",
+    "street": "Centre Commercial Leclerc, 5 Allée des Champs Pinsons",
+    "zip": "31650",
+    "city": "Saint-Orens-de-Gameville",
+    "phone": "+33567808953",
+    "url": "https://www.fitnesspark.fr/club/saint-orens-de-gameville/"
+  },
+  {
+    "slug": "saint-ouen-gare",
+    "name": "Fitness Park Saint-Ouen - Gare",
+    "street": "4 Rue Nadia Guendouz",
+    "zip": "93400",
+    "city": "Saint-Ouen",
+    "phone": "+33170936855",
+    "url": "https://www.fitnesspark.fr/club/saint-ouen-gare/"
+  },
+  {
+    "slug": "saint-ouen-les-docks",
+    "name": "Fitness Park Saint-Ouen Les Docks",
+    "street": "44 Cours des Lavandières",
+    "zip": "93400",
+    "city": "Saint-Ouen",
+    "phone": "+33173088308",
+    "url": "https://www.fitnesspark.fr/club/saint-ouen-les-docks/"
+  },
+  {
+    "slug": "la-reunion-saint-pierre",
+    "name": "Fitness Park La Réunion - Saint-Pierre",
+    "street": "30 rue de Cayenne - Les jardin D'Ugo",
+    "zip": "97410",
+    "city": "Saint-Pierre",
+    "phone": "+262262244282",
+    "url": "https://www.fitnesspark.fr/club/la-reunion-saint-pierre/"
+  },
+  {
+    "slug": "bayonne-ametzondo",
+    "name": "Fitness Park Bayonne - Ametzondo",
+    "street": "Centre Commercial Ametzondo Shopping",
+    "zip": "64990",
+    "city": "Saint-Pierre-d'Irube",
+    "phone": "+33975875899",
+    "url": "https://www.fitnesspark.fr/club/bayonne-ametzondo/"
+  },
+  {
+    "slug": "saint-pierre-les-elbeuf",
+    "name": "Fitness Park Saint-Pierre-lès-Elbeuf",
+    "street": "849 route de pont de l'arche",
+    "zip": "76320",
+    "city": "Saint-Pierre-lès-Elbeuf",
+    "phone": "+33789745436",
+    "url": "https://www.fitnesspark.fr/club/saint-pierre-les-elbeuf/"
+  },
+  {
+    "slug": "saint-quentin",
+    "name": "Fitness Park Saint Quentin",
+    "street": "9023 rue Antoine Parmentier",
+    "zip": "02100",
+    "city": "Saint-Quentin",
+    "phone": "+33323661106",
+    "url": "https://www.fitnesspark.fr/club/saint-quentin/"
+  },
+  {
+    "slug": "saint-etienne-monthieu",
+    "name": "Fitness Park Saint-Etienne - Monthieu",
+    "street": "130 Rue de la Montat",
+    "zip": "42000",
+    "city": "Saint-étienne",
+    "phone": "+33477252590",
+    "url": "https://www.fitnesspark.fr/club/saint-etienne-monthieu/"
+  },
+  {
+    "slug": "salon-de-provence",
+    "name": "Fitness Park Salon-De-Provence",
+    "street": "Place Jules Morgan",
+    "zip": "13300",
+    "city": "Salon-de-Provence",
+    "phone": "+33640478127",
+    "url": "https://www.fitnesspark.fr/club/salon-de-provence/"
+  },
+  {
+    "slug": "sarcelles",
+    "name": "Fitness Park Sarcelles",
+    "street": "11 Boulevard François Mitterrand",
+    "zip": "95200",
+    "city": "Sarcelles",
+    "phone": "+33185430807",
+    "url": "https://www.fitnesspark.fr/club/sarcelles/"
+  },
+  {
+    "slug": "ajaccio-atrium",
+    "name": "Fitness Park Ajaccio - Atrium",
+    "street": "Centre commercial Atrium",
+    "zip": "20167",
+    "city": "Sarrola Carcopino",
+    "phone": "+33750697545",
+    "url": "https://www.fitnesspark.fr/club/ajaccio-atrium/"
+  },
+  {
+    "slug": "schiltigheim",
+    "name": "Fitness Park Schiltigheim",
+    "street": "Centre commercial E.Leclerc ,90 route du général de Gaulle,",
+    "zip": "67300",
+    "city": "Schiltigheim",
+    "phone": "+33353741906",
+    "url": "https://www.fitnesspark.fr/club/schiltigheim/"
+  },
+  {
+    "slug": "schweighouse-sur-moder",
+    "name": "Fitness Park Schweighouse-sur-Moder",
+    "street": "11 rue de la Sablière",
+    "zip": "67590",
+    "city": "Schweighouse-sur-Moder",
+    "phone": "+33353741912",
+    "url": "https://www.fitnesspark.fr/club/schweighouse-sur-moder/"
+  },
+  {
+    "slug": "sevran",
+    "name": "Fitness Park Sevran",
+    "street": "Place Auguste Cretier",
+    "zip": "93270",
+    "city": "Sevran",
+    "phone": "+33178811108",
+    "url": "https://www.fitnesspark.fr/club/sevran/"
+  },
+  {
+    "slug": "soissons",
+    "name": "Fitness Park Soissons",
+    "street": "79 Route de Chevreux",
+    "zip": "02200",
+    "city": "Soissons",
+    "phone": "+33323733340",
+    "url": "https://www.fitnesspark.fr/club/soissons/"
+  },
+  {
+    "slug": "suresnes",
+    "name": "Fitness Park Suresnes",
+    "street": "26 quai Gallieni",
+    "zip": "92150",
+    "city": "Suresnes",
+    "phone": "",
+    "url": "https://www.fitnesspark.fr/club/suresnes/"
+  },
+  {
+    "slug": "tignieu",
+    "name": "Fitness Park Tignieu",
+    "street": "5 Rue du Bochet",
+    "zip": "38230",
+    "city": "TIGNIEU-JAMEYZIEU",
+    "phone": "+33420267131",
+    "url": "https://www.fitnesspark.fr/club/tignieu/"
+  },
+  {
+    "slug": "talence",
+    "name": "Fitness Park Talence",
+    "street": "511 Cours de la Libération",
+    "zip": "33400",
+    "city": "Talence",
+    "phone": "+33533573828",
+    "url": "https://www.fitnesspark.fr/club/talence/"
+  },
+  {
+    "slug": "tarbes",
+    "name": "Fitness Park Tarbes",
+    "street": "135 rue du corps Franc Pommies",
+    "zip": "65000",
+    "city": "Tarbes",
+    "phone": "+33532096446",
+    "url": "https://www.fitnesspark.fr/club/tarbes/"
+  },
+  {
+    "slug": "taverny",
+    "name": "Fitness Park Taverny",
+    "street": "Centre Commercial les portes de Taverny, Rue Théroigne de Méricourt",
+    "zip": "95150",
+    "city": "Taverny",
+    "phone": "+33185763620",
+    "url": "https://www.fitnesspark.fr/club/taverny/"
+  },
+  {
+    "slug": "terville",
+    "name": "Fitness Park Terville",
+    "street": "1 avenue du 14 juillet 1789",
+    "zip": "57180",
+    "city": "Terville",
+    "phone": "+33372601490",
+    "url": "https://www.fitnesspark.fr/club/terville/"
+  },
+  {
+    "slug": "thiais-belle-epine",
+    "name": "Fitness Park Thiais - Belle Épine",
+    "street": "Centre Commercial Belle Épine, Rue du Luxembourg",
+    "zip": "94320",
+    "city": "Thiais",
+    "phone": "+33170978542",
+    "url": "https://www.fitnesspark.fr/club/thiais-belle-epine/"
+  },
+  {
+    "slug": "thillois-champea",
+    "name": "Fitness Park Thillois Champea",
+    "street": "Centre commercial Champéa shopping, 1 Rue des Acacias",
+    "zip": "51370",
+    "city": "Thillois",
+    "phone": "+33351252140",
+    "url": "https://www.fitnesspark.fr/club/thillois-champea/"
+  },
+  {
+    "slug": "toulouse-bayard",
+    "name": "Fitness Park Toulouse - Bayard",
+    "street": "11 rue de Bayard",
+    "zip": "31000",
+    "city": "Toulouse",
+    "phone": "+33567808951",
+    "url": "https://www.fitnesspark.fr/club/toulouse-bayard/"
+  },
+  {
+    "slug": "toulouse-la-cartoucherie",
+    "name": "Fitness Park Toulouse - La Cartoucherie",
+    "street": "1 allée Georges Charpak",
+    "zip": "31300",
+    "city": "Toulouse",
+    "phone": "+33532780935",
+    "url": "https://www.fitnesspark.fr/club/toulouse-la-cartoucherie/"
+  },
+  {
+    "slug": "toulouse-montaudran",
+    "name": "Fitness Park Toulouse - Montaudran",
+    "street": "Place Marcel Bouilloux-Lafont",
+    "zip": "31400",
+    "city": "Toulouse",
+    "phone": "+33489374167",
+    "url": "https://www.fitnesspark.fr/club/toulouse-montaudran/"
+  },
+  {
+    "slug": "tours-lheure-tranquille",
+    "name": "Fitness Park Tours - L'Heure Tranquille",
+    "street": "59 avenue Marcel Mérieux",
+    "zip": "37200",
+    "city": "Tours",
+    "phone": "+33247860553",
+    "url": "https://www.fitnesspark.fr/club/tours-lheure-tranquille/"
+  },
+  {
+    "slug": "tours-nord",
+    "name": "Fitness Park Tours Nord",
+    "street": "2 rue des Frères Wright",
+    "zip": "37100",
+    "city": "Tours",
+    "phone": "+33246991399",
+    "url": "https://www.fitnesspark.fr/club/tours-nord/"
+  },
+  {
+    "slug": "trans-en-provence",
+    "name": "Fitness Park Trans-en-Provence",
+    "street": "Rte de Draguignan",
+    "zip": "83720",
+    "city": "Trans-en-Provence",
+    "phone": "+33682242744",
+    "url": "https://www.fitnesspark.fr/club/trans-en-provence/"
+  },
+  {
+    "slug": "tregueux",
+    "name": "Fitness Park Trégueux",
+    "street": "18 rue Marc Seguin",
+    "zip": "22950",
+    "city": "Trégueux",
+    "phone": "+33257672157",
+    "url": "https://www.fitnesspark.fr/club/tregueux/"
+  },
+  {
+    "slug": "vandoeuvre-les-nancy",
+    "name": "Fitness Park Vandoeuvre",
+    "street": "54500",
+    "zip": "54500",
+    "city": "VANDOEUVRE LES NANCY",
+    "phone": "+33372612030",
+    "url": "https://www.fitnesspark.fr/club/vandoeuvre-les-nancy/"
+  },
+  {
+    "slug": "sophia-antipolis",
+    "name": "Fitness Park Sophia Antipolis",
+    "street": "230 Rte des Dolines",
+    "zip": "06560",
+    "city": "Valbonne",
+    "phone": "+33489375541",
+    "url": "https://www.fitnesspark.fr/club/sophia-antipolis/"
+  },
+  {
+    "slug": "valence",
+    "name": "Fitness Park Valence",
+    "street": "21 Rue du Docteur Henri Abel",
+    "zip": "26000",
+    "city": "Valence",
+    "phone": "+33475257725",
+    "url": "https://www.fitnesspark.fr/club/valence/"
+  },
+  {
+    "slug": "vannes",
+    "name": "Fitness Park Vannes",
+    "street": "124 avenue de la Marne",
+    "zip": "56000",
+    "city": "Vannes",
+    "phone": "+33257670319",
+    "url": "https://www.fitnesspark.fr/club/vannes/"
+  },
+  {
+    "slug": "vanves",
+    "name": "Fitness Park Vanves",
+    "street": "126 rue Victor Hugo",
+    "zip": "92170",
+    "city": "Vanves",
+    "phone": "+33173088268",
+    "url": "https://www.fitnesspark.fr/club/vanves/"
+  },
+  {
+    "slug": "varennes-sur-seine",
+    "name": "Fitness Park Varennes-sur-Seine",
+    "street": "105 route du petit Fossard",
+    "zip": "77130",
+    "city": "Varennes sur Seine",
+    "phone": "+33185765520",
+    "url": "https://www.fitnesspark.fr/club/varennes-sur-seine/"
+  },
+  {
+    "slug": "vendargues",
+    "name": "Fitness Park Vendargues",
+    "street": "45 Avenue des Bigos",
+    "zip": "34740",
+    "city": "Vendargues",
+    "phone": "+33448203334",
+    "url": "https://www.fitnesspark.fr/club/vendargues/"
+  },
+  {
+    "slug": "vernouillet",
+    "name": "Fitness Park Vernouillet",
+    "street": "ZAC Hyper U",
+    "zip": "28500",
+    "city": "Vernouillet",
+    "phone": "+33237559266",
+    "url": "https://www.fitnesspark.fr/club/vernouillet/"
+  },
+  {
+    "slug": "villebon-sur-yvette-aushopping",
+    "name": "Fitness Park Villebon-sur-Yvette - Aushopping",
+    "street": "Centre Aushopping Villebon 2, 2 avenue de la Plesse",
+    "zip": "91140",
+    "city": "Villebon-sur-Yvette",
+    "phone": "+33185742526",
+    "url": "https://www.fitnesspark.fr/club/villebon-sur-yvette-aushopping/"
+  },
+  {
+    "slug": "villefranche-sur-saone",
+    "name": "Fitness Park Villefranche-sur-Saône",
+    "street": "1525 Route de Frans",
+    "zip": "69400",
+    "city": "Villefranche-sur-Saône",
+    "phone": "+33428380200",
+    "url": "https://www.fitnesspark.fr/club/villefranche-sur-saone/"
+  },
+  {
+    "slug": "villejuif",
+    "name": "Fitness Park Villejuif",
+    "street": "67 Avenue de Stalingrad",
+    "zip": "94800",
+    "city": "Villejuif",
+    "phone": "+33185780720",
+    "url": "https://www.fitnesspark.fr/club/villejuif/"
+  },
+  {
+    "slug": "villemomble",
+    "name": "Fitness Park Villemomble",
+    "street": "8 avenue du Général Gallieni",
+    "zip": "93250",
+    "city": "Villemomble",
+    "phone": "+33148541754",
+    "url": "https://www.fitnesspark.fr/club/villemomble/"
+  },
+  {
+    "slug": "villeneuve-dascq",
+    "name": "Fitness Park Villeneuve-d'Ascq",
+    "street": "150 Boulevard de l'Ouest",
+    "zip": "59650",
+    "city": "Villeneuve d'Ascq",
+    "phone": "+33663292379",
+    "url": "https://www.fitnesspark.fr/club/villeneuve-dascq/"
+  },
+  {
+    "slug": "villeneuve-loubet-gare",
+    "name": "Fitness Park Villeneuve-Loubet - Gare",
+    "street": "2594 Route Nationale",
+    "zip": "06270",
+    "city": "Villeneuve-Loubet",
+    "phone": "+33489418363",
+    "url": "https://www.fitnesspark.fr/club/villeneuve-loubet-gare/"
+  },
+  {
+    "slug": "villeneuve-la-garenne-qwartz",
+    "name": "Fitness Park Villeneuve-la-Garenne - Qwartz",
+    "street": "Centre Commercial Qwartz, 4 Boulevard Gallieni",
+    "zip": "92390",
+    "city": "Villeneuve-la-Garenne",
+    "phone": "+33186529848",
+    "url": "https://www.fitnesspark.fr/club/villeneuve-la-garenne-qwartz/"
+  },
+  {
+    "slug": "villepinte",
+    "name": "Fitness Park Villepinte",
+    "street": "1 Avenue Georges Clemenceau",
+    "zip": "93420",
+    "city": "Villepinte",
+    "phone": "+33185784742",
+    "url": "https://www.fitnesspark.fr/club/villepinte/"
+  },
+  {
+    "slug": "villiers-sur-marne",
+    "name": "Fitness Park Villiers-sur-Marne",
+    "street": "3 Boulevard Jean Monnet",
+    "zip": "94350",
+    "city": "Villiers sur Marne",
+    "phone": "+33963630015",
+    "url": "https://www.fitnesspark.fr/club/villiers-sur-marne/"
+  },
+  {
+    "slug": "villiers-en-biere",
+    "name": "Fitness Park Villiers-en-Bière",
+    "street": "Centre commercial Villiers-en-Bière",
+    "zip": "77190",
+    "city": "Villiers-en-Bière",
+    "phone": "+33164392753",
+    "url": "https://www.fitnesspark.fr/club/villiers-en-biere/"
+  },
+  {
+    "slug": "vitrolles",
+    "name": "Fitness Park Vitrolles",
+    "street": "Av. Denis Padovani",
+    "zip": "13127",
+    "city": "Vitrolles",
+    "phone": "+33423292297",
+    "url": "https://www.fitnesspark.fr/club/vitrolles/"
+  },
+  {
+    "slug": "vitry-sur-seine",
+    "name": "Fitness Park Vitry-sur-Seine",
+    "street": "99 Boulevard de Stalingrad",
+    "zip": "94400",
+    "city": "Vitry-sur-Seine",
+    "phone": "+33184230884",
+    "url": "https://www.fitnesspark.fr/club/vitry-sur-seine/"
+  },
+  {
+    "slug": "velizy-villacoublay-velizy-2",
+    "name": "Fitness Park Vélizy 2",
+    "street": "Centre Commercial Vélizy 2, 2 Avenue de l'Europe",
+    "zip": "78140",
+    "city": "Vélizy-Villacoublay",
+    "phone": "+33173196608",
+    "url": "https://www.fitnesspark.fr/club/velizy-villacoublay-velizy-2/"
+  },
+  {
+    "slug": "wittenheim",
+    "name": "Fitness Park Wittenheim",
+    "street": "7 rue de Soultz",
+    "zip": "68270",
+    "city": "Wittenheim",
+    "phone": "+33339720272",
+    "url": "https://www.fitnesspark.fr/club/wittenheim/"
+  },
+  {
+    "slug": "wolfisheim",
+    "name": "Fitness Park Wolfisheim",
+    "street": "5 Rue du Commerce",
+    "zip": "67202",
+    "city": "Wolfisheim",
+    "phone": "+33353741907",
+    "url": "https://www.fitnesspark.fr/club/wolfisheim/"
+  },
+  {
+    "slug": "le-kremlin-bicetre",
+    "name": "Fitness Park Le Kremlin-Bicêtre",
+    "street": "70 avenue de Fontainebleau",
+    "zip": "94270",
+    "city": "le Kremlin-Bicêtre",
+    "phone": "+33972112794",
+    "url": "https://www.fitnesspark.fr/club/le-kremlin-bicetre/"
+  },
+  {
+    "slug": "epinay-sur-seine",
+    "name": "Fitness Park Épinay-sur-Seine",
+    "street": "163 Avenue Joffre",
+    "zip": "93800",
+    "city": "Épinay-sur-Seine",
+    "phone": "+33170936854",
+    "url": "https://www.fitnesspark.fr/club/epinay-sur-seine/"
+  }
+]
