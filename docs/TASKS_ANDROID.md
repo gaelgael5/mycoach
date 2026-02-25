@@ -176,13 +176,14 @@ android/
 | **A1-04** | `coach/data/CoachRepository.kt` : getProfile, updateProfile, searchGyms, createPricing, updatePricing, deletePricing, setAvailability, setCancellationPolicy, getClients (paginé), getClientDetail, updateClientRelation, updateClientNote | A1-01, A1-02 | 🔴 |
 | **A1-05** | `coach/data/PaymentRepository.kt` : createPackage, recordPayment, getPaymentHistory, getHoursSummary | A1-01 | 🔴 |
 | **A1-06** | `coach/di/CoachModule.kt` : Hilt bindings pour CoachRepository, PaymentRepository | A1-04, A1-05 | 🔴 |
-| **A1-07** | `CoachOnboardingActivity.kt` : navigation entre 6 étapes, bouton **"Terminer plus tard"** dans le header dès l'étape 2 (sauvegarde partielle et redirect Dashboard), indicateur de progression | A1-04 | 🔴 |
+| **A1-07** | `CoachOnboardingActivity.kt` : navigation entre **7 étapes**, bouton **"Terminer plus tard"** dans le header dès l'étape 2 (sauvegarde partielle et redirect Dashboard), indicateur de progression (ProgressBar 1/7 → 7/7) | A1-04 | 🔴 |
 | **A1-08** | **Étape 1/6 OBLIGATOIRE** `OnboardingStep1Fragment` : prénom/nom (pré-remplis), photo (optionnel, avatar par défaut), **téléphone** (optionnel, champ E.164 avec sélecteur préfixe pays), date naissance (optionnel), bio (optionnel). Bouton "Accéder à mon espace →" + bouton "Continuer le setup" | A1-07 | 🔴 |
 | **A1-09** | **Étape 2/6** `OnboardingStep2Fragment` : **jours de travail & horaires** — 7 toggles (Lun→Dim), jours activés = travail (plages horaires start/end + multi-créneaux par jour), désactivés = repos "😴", bouton "Appliquer à tous", résumé texte en bas | A1-07 | 🔴 |
 | **A1-10** | **Étape 3/6** `OnboardingStep3Fragment` : spécialités multi-select chips (aucun minimum requis) | A1-07 | 🟡 |
 | **A1-11** | **Étape 4/6** `OnboardingStep4Fragment` : certifications (liste ajoutables, upload photo optionnel) | A1-07 | 🟡 |
 | **A1-12** | **Étape 5/6** `OnboardingStep5Fragment` : sélection salles (chaîne → pays → recherche → multi-select clubs avec chips) | A1-07, A1-04 | 🟡 |
-| **A1-12b** | **Étape 6/6** `OnboardingStep6Fragment` : devise, tarif unitaire, forfaits dynamiques (nom + nb séances + prix + validité + visibilité), séance découverte toggle, durée standard — Bouton "Publier mon profil 🚀" | A1-07 | 🟡 |
+| **A1-12b** | **Étape 6/7** `OnboardingStep6Fragment` : devise, tarif unitaire, forfaits dynamiques (nom + nb séances + prix + validité + visibilité), séance découverte toggle, durée standard — Bouton "Continuer →" | A1-07 | 🟡 |
+| **A1-12d** | **Étape 7/7** `OnboardingStep7Fragment` — Messages d'annulation : liste des templates (RecyclerView), pré-rempli avec template "Maladie" (titre + corps). Chaque item : titre, extrait corps, bouton ✏️ Modifier / 🗑️ Supprimer. Bouton "+ Ajouter un message" (grisé si 5 templates déjà). `TemplateEditBottomSheet` : champ titre (max 40 chars), textarea corps (max 300 chars, compteur temps réel), boutons variables insérable ({prénom} {date} {heure} {coach}). Drag-and-drop reorder (ItemTouchHelper). Bouton "Publier mon profil 🚀". | A1-07, A1-04 | 🟡 |
 | **A1-12c** | **Bandeau de complétion** sur `CoachDashboardFragment` : barre de progression (%), badges sections manquantes (tap → ouvre section dans profil), disparaît à 100% | A1-13 | 🔴 |
 | **A1-13** | `coach/ui/dashboard/CoachDashboardFragment.kt` + `CoachDashboardViewModel.kt` : KPIs (formatés via PriceFormatter + DateTimeFormatter), prochaines séances (3), réservations à valider (badge), alertes forfaits | A1-04 | 🔴 |
 | **A1-14** | `coach/ui/clients/ClientListFragment.kt` + VM : tabs (Tous/Actifs/En pause/Terminés), tri, recherche, scroll infini | A1-04 | 🔴 |
@@ -192,6 +193,13 @@ android/
 | **A1-18** | `coach/ui/CoachProfileFragment.kt` + VM : édition profil, politique d'annulation (délai, mode, no-show), partage profil (deep link + QR code) | A1-04 | 🔴 |
 | **A1-19** | `res/values/strings.xml` (EN) + `values-fr/` : toutes les chaînes Phase 1 coach | A1-07 → A1-18 | 🔴 |
 | **A1-20** | Tests unitaires `test/coach/` : `CoachDashboardViewModel`, `ClientListViewModel`, `ClientDetailViewModel` (mocks) | A1-13 → A1-17 | 🔴 |
+| **A1-21** | `coach/data/dto/CancellationTemplateDto.kt` : `CancellationTemplateDto` (id, title, body, isDefault, position, variablesUsed), `CancellationTemplateCreateRequest`, `CancellationTemplateUpdateRequest`, `CancellationTemplatePreviewRequest` (bookingId), `CancellationTemplatePreviewResponse` (resolvedBody) | A1-01 | 🔴 |
+| **A1-22** | `coach/domain/model/CancellationTemplate.kt` : domain model + mapper depuis DTO | A1-21 | 🔴 |
+| **A1-23** | `coach/data/CancellationTemplateRepository.kt` : `getTemplates()`, `createTemplate(title, body)`, `updateTemplate(id, title?, body?, position?)`, `deleteTemplate(id)`, `reorderTemplates(list)`, `previewTemplate(id, bookingId)` | A1-21, A1-22 | 🔴 |
+| **A1-24** | `coach/di/CoachModule.kt` mis à jour : binding `CancellationTemplateRepository` | A1-23 | 🔴 |
+| **A1-25** | `coach/ui/templates/CancellationTemplatesFragment.kt` + `CancellationTemplatesViewModel.kt` : liste des templates (max 5), bouton "+", `TemplateEditBottomSheet`, drag-and-drop, UiState<List<CancellationTemplate>>. Accessible depuis Profil Coach → "Messages d'annulation" | A1-23 | 🔴 |
+| **A1-26** | `res/values/strings.xml` (EN) + `values-fr/` : chaînes step 7 wizard + écran gestion templates | A1-12d, A1-25 | 🔴 |
+| **A1-27** | Tests unitaires `test/coach/CancellationTemplateViewModelTest.kt` : liste, création (OK, max 5 → erreur), édition, suppression, reorder | A1-25 | 🔴 |
 
 ---
 
@@ -229,6 +237,27 @@ android/
 | **A2-24** | `shared/notifications/NotificationHandler.kt` : réception Firebase, routing vers le bon Fragment selon type de notif (deep links) | A0-13 | 🔴 |
 | **A2-25** | `res/values/strings.xml` (EN) + `values-fr/` : toutes les chaînes Phase 2 (questionnaire, recherche, réservation, annulation, liste d'attente, notifications) | A2-07 → A2-23 | 🔴 |
 | **A2-26** | Tests unitaires `test/client/` : `CoachSearchViewModel` (filtres, pagination), `BookingViewModel` (réservation, annulation, pénalité), `AgendaViewModel` | A2-15, A2-18, A2-22 | 🔴 |
+
+---
+
+### Agenda Coach — Sélection en masse & Annulation groupée
+
+| # | Tâche | Dépend de | Priorité |
+|---|-------|-----------|----------|
+| **A2-27** | `coach/data/dto/BulkCancelDto.kt` : `BulkCancelRequest` (bookingIds: List<String>, templateId: String?, customMessage: String?, sendSms: Boolean), `BulkCancelResponse` (cancelledCount, smsSentCount, smsFailedCount, failedClients: List<String>) | A1-01 | 🔴 |
+| **A2-28** | `coach/data/BulkActionRepository.kt` : `bulkCancelBookings(request: BulkCancelRequest): BulkCancelResponse`, `broadcastSms(scope, day?, clientIds?, templateId?, customMessage?)`, `getSmsLogs(page, filters)` | A2-27 | 🔴 |
+| **A2-29** | `coach/domain/model/BulkCancel.kt` + mapper | A2-27 | 🔴 |
+| **A2-30** | **Multi-select sur `CoachAgendaDayFragment`** : bouton "Sélectionner" dans la toolbar de la vue **Jour uniquement**, active `selectionMode`. En mode sélection : checkbox visible sur chaque séance (RecyclerView + `ListAdapter` avec payload `isSelected`). Bouton "Tout sélectionner" / compteur "N sélectionnée(s)". Long-press sur une séance → active le mode + coche. Bouton ✕ → désélectionne tout + quitte le mode | A1-13 | 🔴 |
+| **A2-31** | **`BulkActionBar`** (BottomAppBar flottante) : apparaît dès qu'au moins 1 séance cochée, affiche le compteur + bouton "Actions ▲". Tap → `BulkActionsBottomSheet` | A2-30 | 🔴 |
+| **A2-32** | **`BulkActionsBottomSheet`** : liste d'actions disponibles (Phase 2 : "❌ Annuler les N séances sélectionnées" uniquement). Tap action → ferme et déclenche le workflow | A2-31 | 🔴 |
+| **A2-33** | **`BulkCancelConfirmationDialog`** : texte "Êtes-vous sûr(e) d'annuler X séances le [date] ?" (date formatée via DateTimeFormatter), boutons "Garder mes séances" / "Annuler les séances" (style danger). Confirmation → navigue vers `BulkCancelMessageFragment` | A2-32 | 🔴 |
+| **A2-34** | **`BulkCancelMessageFragment`** + `BulkCancelViewModel` : liste des templates (depuis `CancellationTemplateRepository`) affichée comme radio group, option "Message personnalisé" (textarea max 300 chars). Toggle SMS "Envoyer par SMS" + indication "X clients avec numéro". Bouton "Aperçu →" | A2-33, A1-23 | 🔴 |
+| **A2-35** | **`SmsPreviewer`** (composant paginé) : résout le message template avec les variables réelles du booking (ex: `{prénom}` → prénom du client) via `previewTemplate()`. Navigation ◄ 1/3 ►. Affichage en bulle SMS stylisée | A2-34 | 🔴 |
+| **A2-36** | **Appel API & écran de résultat** : bouton "Confirmer et annuler les séances" → `POST /coaches/bookings/bulk-cancel` → animation de chargement → écran récapitulatif : "✅ X séances annulées · Y SMS envoyés · Z non notifiés (sans numéro)". Bouton "Voir l'agenda" → retour agenda + refresh | A2-34, A2-28 | 🔴 |
+| **A2-37** | **`SmsBroadcastFragment`** + VM : scope selector (Tous / Journée / Sélection), datepicker si Journée, liste clients sélectionnables si Sélection manuelle. Choix template ou message libre. Confirmation "Envoyer X SMS ?". Résultat (N envoyés, M échoués). Accessible depuis Mes Clients → "📨 Message à tous" | A2-28 | 🟡 |
+| **A2-38** | **`SmsHistoryFragment`** + VM : liste paginée des envois (date, destinataire, extrait message, badge ✅/❌), filtres (date, statut). Accessible depuis Profil Coach → "Historique SMS" | A2-28 | 🟡 |
+| **A2-39** | `res/values/strings.xml` (EN) + `values-fr/` : toutes les chaînes annulation en masse + SMS broadcast + historique | A2-30 → A2-38 | 🔴 |
+| **A2-40** | Tests unitaires `test/coach/BulkCancelViewModelTest.kt` : sélection séances, confirmation, choix template, toggle SMS, appel API mock → état récapitulatif | A2-34, A2-36 | 🔴 |
 
 ---
 

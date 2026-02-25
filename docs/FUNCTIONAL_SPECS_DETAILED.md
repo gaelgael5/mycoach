@@ -355,7 +355,7 @@ Affiché tant que le questionnaire est incomplet :
 
 ---
 
-### Étape 6/6 — Tarification *(optionnel)*
+### Étape 6/7 — Tarification *(optionnel)*
 > Sans tarif renseigné, le profil est visible mais non réservable — un bandeau l'indique.
 
 - Devise (pré-sélectionnée depuis le pays du coach, modifiable)
@@ -363,6 +363,42 @@ Affiché tant que le questionnaire est incomplet :
 - Forfaits : lignes dynamiques (nom + nb séances + prix total + validité + visibilité publique)
 - Séance découverte : toggle + tarif (gratuite ou payante) + durée
 - Durée standard : 30 / 45 / 60 / 90 min
+
+**Bouton principal :** "Continuer →" → passe à l'étape 7
+**Bouton secondaire :** "Terminer plus tard"
+
+---
+
+### Étape 7/7 — Messages d'annulation *(optionnel)*
+
+> **Objectif :** préparer à l'avance les messages envoyés aux clients en cas d'annulation de séances.
+> Utilisés lors de l'annulation en masse depuis l'agenda (§7.5).
+
+**Pré-rempli par défaut avec 1 message "Maladie" :**
+```
+🤒 Maladie
+──────────────────────────────────────────────
+Bonjour {prénom}, je suis malheureusement
+malade et dois annuler notre séance du
+{date} à {heure}. Je vous présente toutes
+mes excuses et vous recontacterai rapidement
+pour reprogrammer. — {coach}
+──────────────────────────────────────────────
+[✏️ Modifier]  [🗑️ Supprimer]
+```
+
+**Ajouter un template :**
+- Bouton **"+ Ajouter un message"** → formulaire inline :
+  - **Titre** (ex: "Urgence familiale", max 40 chars)
+  - **Corps du message** (max 300 chars, textarea avec compteur)
+  - Variables insérables : boutons `{prénom}` `{date}` `{heure}` `{coach}`
+  - **Bouton "Enregistrer"**
+- Maximum **5 templates** — le bouton "+" se grise au-delà
+
+**Contraintes :**
+- Au moins 1 template doit exister (le default maladie est supprimable uniquement s'il en existe un autre)
+- L'ordre peut être changé par drag-and-drop (ordre = ordre d'affichage dans le sélecteur)
+- Templates modifiables et supprimables depuis Profil Coach → "Messages d'annulation" (après le wizard)
 
 **Bouton :** "Publier mon profil complet 🚀" → `POST /coaches/profile` → Dashboard
 
@@ -529,6 +565,152 @@ Dashboard | Clients | Agenda | Perfs | Profil
 - Ouvre `CreateSessionModal` pré-rempli (client, type, durée)
 - Ancienne séance passe en `cancelled_by_coach`
 - Nouvelle séance créée en `proposed_by_coach`
+
+---
+
+### 7.4 Sélection en masse (vue Jour)
+
+> Cas d'usage principal : le coach est malade ou indisponible, il veut annuler **toutes ses séances du jour** en une action.
+
+**Activation du mode multi-sélection :**
+- Bouton **"Sélectionner"** dans la toolbar de la vue **Jour** uniquement
+- Long-press sur une séance individuelle → active le mode sélection + coche cette séance
+
+**Comportement en mode sélection :**
+- Checkbox visible sur chaque séance de la journée
+- Tap → coche / décoche
+- Bouton **"Tout sélectionner"** en haut → coche toutes les séances actives du jour (statuts : `confirmed`, `pending_coach_validation`, `proposed_by_coach`)
+- Compteur en temps réel : **"3 séances sélectionnées"**
+- Bouton **"Annuler la sélection"** (croix) → désactive le mode, tout décoche
+
+**Barre d'actions (flottante en bas, apparaît dès qu'au moins 1 séance cochée) :**
+```
+┌────────────────────────────────────────────────────────┐
+│  ☑ 3 séances sélectionnées          [ Actions ▲ ]     │
+└────────────────────────────────────────────────────────┘
+```
+- Tap **"Actions ▲"** → ouvre un bottom sheet
+
+**Bottom sheet Actions en masse :**
+```
+┌─────────────────────────────────────────┐
+│  Actions sur 3 séances                  │
+│                                         │
+│  ❌  Annuler les séances sélectionnées  │
+│                                         │
+│  [ Fermer ]                             │
+└─────────────────────────────────────────┘
+```
+
+---
+
+### 7.5 Annulation en masse — Workflow complet
+
+**Étape 1 — Confirmation**
+
+Modale :
+```
+┌──────────────────────────────────────────────────────┐
+│  ⚠️ Annuler 3 séances le mardi 25 fév. ?            │
+│                                                      │
+│  Cette action est irréversible. Vos clients seront   │
+│  notifiés de l'annulation.                           │
+│                                                      │
+│  [ Garder mes séances ]   [ Annuler les séances ]   │
+└──────────────────────────────────────────────────────┘
+```
+- "Garder mes séances" → ferme, rien ne se passe
+- "Annuler les séances" → passe à l'étape 2
+
+**Étape 2 — Choix du message d'annulation**
+
+Écran `BulkCancelMessageScreen` :
+```
+┌──────────────────────────────────────────────────────┐
+│  ← Annulation en masse                               │
+│                                                      │
+│  Choisir le message envoyé à vos clients :           │
+│                                                      │
+│  ○ 🤒 Maladie                                        │
+│    "Bonjour {prénom}, je suis malheureusement..."    │
+│                                                      │
+│  ○ 🚑 Urgence personnelle                            │
+│    "Bonjour {prénom}, je dois faire face à une..."   │
+│                                                      │
+│  ○ ✍️ Message personnalisé                           │
+│    [ Zone de texte libre — max 300 chars ]           │
+│                                                      │
+│  ─────────────────────────────────────────────────  │
+│  📱 Envoyer par SMS aux clients concernés   [ ✓ ON ] │
+│  (3 clients avec numéro de téléphone renseigné)      │
+│                                                      │
+│  [ Aperçu du SMS → ]                                 │
+│                                                      │
+│  [ Confirmer et annuler les séances ]                │
+└──────────────────────────────────────────────────────┘
+```
+
+**Variables disponibles dans les messages :**
+- `{prénom}` → prénom du client
+- `{date}` → ex: "mardi 25 février"
+- `{heure}` → ex: "10h30"
+- `{coach}` → prénom du coach
+
+**Aperçu SMS résolu (par client) :**
+```
+┌────────────────────────────────────────────┐
+│  Aperçu — Julien                           │
+│                                            │
+│  Bonjour Julien, je suis malheureusement   │
+│  malade et dois annuler notre séance du    │
+│  mardi 25 fév. à 10h30. Je vous présente  │
+│  toutes mes excuses et vous recontacterai  │
+│  rapidement pour reprogrammer. — Marie     │
+│                                            │
+│  ◄ Précédent  1/3  Suivant ►               │
+└────────────────────────────────────────────┘
+```
+
+**Étape 3 — Traitement et récapitulatif**
+
+- Animation de chargement : "Annulation des séances en cours…"
+- Une fois terminé : écran récapitulatif :
+```
+┌────────────────────────────────────────────┐
+│  ✅ Annulation effectuée                   │
+│                                            │
+│  3 séances annulées                        │
+│  3 SMS envoyés                             │
+│  1 client sans numéro → non notifié par SMS│
+│                                            │
+│  Voir l'agenda                             │
+└────────────────────────────────────────────┘
+```
+
+**Effets backend :**
+- Toutes les séances sélectionnées → statut `cancelled_by_coach`
+- Politique d'annulation tardive NON appliquée (annulation initiée par le coach)
+- Créneau libéré pour chaque séance → liste d'attente notifiée (push)
+- SMS envoyé pour chaque client avec numéro E.164 renseigné
+- Log SMS créé en base (`sms_logs`)
+
+---
+
+### 7.6 SMS en masse (coach)
+
+> Accessible également depuis **Mes clients → "📨 Envoyer un message à tous"**
+
+**Fonctionnement :**
+- Choix du scope : Tous les clients actifs / Clients d'une journée / Sélection manuelle (checkboxes)
+- Choix du message : template ou message libre (max 300 chars)
+- Résolution des variables par client
+- Confirmation : "Envoyer X SMS ?"
+- Envoi via le provider SMS configuré (Twilio par défaut)
+- Récapitulatif : X envoyés, Y échoués (numéro invalide ou absent)
+
+**Historique SMS :**
+- Profil Coach → "Historique SMS"
+- Liste chronologique : date, destinataire, extrait du message, statut (✅ envoyé / ❌ échec)
 
 ---
 
@@ -1361,6 +1543,7 @@ pending_coach_validation ──(24h expiration)──► auto_rejected
 | 1.1 | 25/02/2026 | SQLite → PostgreSQL 16 · JWT → API Key SHA-256 · Tarification (unitaire + forfaits) · Réservation client + annulation pénalité + liste d'attente |
 | 1.2 | 25/02/2026 | i18n first : locale BCP 47 + pays ISO 3166-1 + devise ISO 4217 + unité poids + timezone sur tous les profils · Pays sur clubs · Chaînes internationales ajoutées |
 | 1.3 | 25/02/2026 | Téléphone (E.164) sur Coach et Client · Jours de travail + horaires multi-créneaux sur Coach · Wizard minimaliste (1 seule étape obligatoire, "Terminer plus tard" dès étape 2) · Design responsive obligatoire · Bandeau de complétion de profil |
+| 1.4 | 25/02/2026 | §7.4 Sélection en masse (vue Jour) · §7.5 Annulation en masse avec workflow complet (confirmation → choix message → aperçu SMS par client → récapitulatif) · §7.6 SMS en masse coach + historique SMS · Wizard coach : étape 7/7 Messages d'annulation (1 template maladie pré-rempli, jusqu'à 5 templates, variables {prénom}/{date}/{heure}/{coach}, drag-and-drop) |
 
 ---
 
