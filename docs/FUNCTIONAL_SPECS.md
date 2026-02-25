@@ -242,6 +242,7 @@ Complété à l'inscription, reconfigurable à tout moment :
 
 | Service | Usage | Auth |
 |---------|-------|------|
+| Google OAuth2 | Authentification utilisateurs | ID Token → échange API Key |
 | Google Calendar | Sync agenda | OAuth2 |
 | Strava | Push/pull activités | OAuth2 |
 | Withings | Balance connectée | OAuth2 |
@@ -249,7 +250,29 @@ Complété à l'inscription, reconfigurable à tout moment :
 | Garmin Connect | Balance + activités | OAuth2 |
 | Firebase | Push notifications | SDK |
 | Stripe | Paiements en ligne | API key |
-| IA vidéo (Sora / Runway / Kling) | Génération vidéos exercices | API key |
+| IA vidéo (Kling / Runway) | Génération vidéos exercices | API key |
+
+## 🔐 Stratégie d'authentification
+
+Toutes les requêtes API sont authentifiées via une **API Key** (SHA-256, 64 chars hex) transmise dans le header `X-API-Key`.
+
+**Flux Google OAuth :**
+1. Client obtient un Google ID Token
+2. Envoie à `POST /auth/google`
+3. Backend vérifie le token (clés publiques Google)
+4. Génère : `api_key = SHA256(google_sub + email + SECRET_SALT)`
+5. Stocke en table `api_keys` (user_id, key_hash, device, timestamps)
+6. Retourne la clé au client → stockée en `EncryptedSharedPreferences`
+
+**Flux Email/Password :**
+1. `POST /auth/login` avec email + password
+2. Backend vérifie credentials (bcrypt)
+3. Génère : `api_key = SHA256(email + bcrypt_hash_stocké + SECRET_SALT)`
+4. Même stockage et retour
+
+**Révocation :**
+- `DELETE /auth/logout` → `revoked = TRUE` sur la clé courante
+- `DELETE /auth/logout-all` → révoque toutes les clés de l'utilisateur (tous appareils)
 
 ---
 
@@ -257,8 +280,10 @@ Complété à l'inscription, reconfigurable à tout moment :
 
 - **Android** : Kotlin, Material Design 3, minSdk 26
 - **iOS** : Swift / SwiftUI (phase 2)
-- **Backend** : FastAPI (Python) + PostgreSQL
-- **Déploiement** : Docker sur Proxmox LXC
+- **Backend** : FastAPI (Python 3.12)
+- **SGBD** : PostgreSQL 16 (Docker)
+- **ORM** : SQLAlchemy 2 async + Alembic (migrations)
+- **Déploiement** : Docker Compose sur Proxmox LXC
 
 ---
 
@@ -327,8 +352,42 @@ Payment
   id, client_id, coach_id
   amount, currency, status: pending|paid|late
   package_hours, hours_remaining, created_at, paid_at
+
+ApiKey
+  id, user_id
+  key_hash (CHAR 64, SHA-256, indexé unique)
+  device_name (optionnel)
+  created_at, last_used_at
+  expires_at (NULL = pas d'expiration)
+  revoked (bool, défaut FALSE)
+
+CoachPricing
+  id, coach_id
+  type: per_session|package
+  name (ex: "Pack 10 séances")
+  session_count (NULL si per_session)
+  price_total (€)
+  validity_months (NULL = sans limite)
+  public (bool)
+
+Booking
+  id, client_id, coach_id, slot_datetime
+  duration_min, status: pending_validation|confirmed|done
+            |cancelled_by_client|cancelled_late_by_client
+            |cancelled_by_coach|no_show|rejected
+  pricing_type: per_session|package
+  package_id (FK CoachPricing, nullable)
+  client_message, coach_message
+  late_cancel_waived (bool, défaut FALSE)
+  created_at
+
+Waitlist
+  id, booking_slot_ref, client_id
+  position, status: waiting|notified|confirmed|expired
+  notified_at, expires_at
+  created_at
 ```
 
 ---
 
-*Version 1.0 — Rédigé le 25/02/2026*
+*Version 1.1 — 25/02/2026 (PostgreSQL + API Key auth + tarification + réservation/annulation/liste d'attente)*

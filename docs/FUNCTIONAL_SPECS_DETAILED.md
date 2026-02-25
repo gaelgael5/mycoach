@@ -4,6 +4,24 @@
 
 ---
 
+## 🔐 DÉCISIONS TECHNIQUES ARRÊTÉES
+
+| Composant | Choix | Notes |
+|-----------|-------|-------|
+| SGBD | **PostgreSQL 16** | Docker, multi-users, MVCC |
+| ORM | SQLAlchemy 2 async + asyncpg | Driver natif async |
+| Migrations | Alembic | Versionning schéma |
+| Auth API | **API Key SHA-256** | `X-API-Key` header sur tous les appels |
+| Auth Google | ID Token → `POST /auth/google` → API Key maison | 1 vérif Google puis lookup local |
+| Auth email | bcrypt credentials → API Key maison | Même système unifié |
+| Stockage Android | EncryptedSharedPreferences (AES-256) | Jamais en clair |
+| Révocation | `revoked = TRUE` en base | Multi-device, immédiat |
+| Tarification | Séance unitaire + forfaits (N séances, prix, validité) | Configurable par coach |
+| Annulation | Pénalité si < délai configuré (défaut 24h) | Séance due au coach |
+| Liste d'attente | File FIFO, fenêtre 30 min par candidat | Automatique à chaque libération |
+
+---
+
 ## 1. AUTHENTIFICATION
 
 ### 1.1 Inscription Coach
@@ -57,7 +75,7 @@ Après vérification email → redirect `ClientOnboardingScreen` (questionnaire,
 - Mot de passe (toggle afficher/masquer)
 
 **Actions :**
-- "Se connecter" → `POST /auth/login` → JWT (access token 24h + refresh token 30j) → stocké en SecureStorage → redirect selon rôle
+- "Se connecter" → `POST /auth/login` → vérif bcrypt → génère `SHA256(email+hash+salt)` → `{ "api_key": "..." }` → stocké en `EncryptedSharedPreferences` → redirect selon rôle
 - "Mot de passe oublié" → `ForgotPasswordScreen`
 - "Créer un compte" → `RegisterScreen`
 - "Connexion avec Google" → OAuth2 Google
@@ -69,13 +87,17 @@ Après vérification email → redirect `ClientOnboardingScreen` (questionnaire,
 - 5 tentatives échouées → blocage 15 min avec message "Trop de tentatives, réessayez dans X minutes"
 
 **Connexion Google :**
-- `GET /auth/google` → redirect Google OAuth2
-- Callback → si nouvel utilisateur → `RoleSelectionScreen` (Coach ou Client ?)
-- Si utilisateur existant → login direct
+- Bouton → SDK Google Sign-In → obtention du Google ID Token côté app
+- Envoi `POST /auth/google { id_token }` → backend vérifie via clés publiques Google
+- Extrait : `sub`, `email`, `name`, `picture`
+- Génère : `SHA256(sub + email + SECRET_SALT)` → stocké en `api_keys`
+- Si nouvel utilisateur → `RoleSelectionScreen` (Coach ou Client ?)
+- Si utilisateur existant → retourne `{ "api_key": "..." }` → login direct
 
 **Auto-login :**
-- Au lancement → vérification refresh token → si valide → auto-login silencieux → redirect dashboard
-- Si refresh token expiré → `LoginScreen`
+- Au lancement → lecture API Key depuis `EncryptedSharedPreferences`
+- Si présente → `GET /auth/me` avec `X-API-Key` → si 200 → auto-login silencieux → redirect dashboard
+- Si 401 (clé révoquée ou expirée) → effacement locale → `LoginScreen`
 
 ---
 
@@ -91,7 +113,15 @@ Après vérification email → redirect `ClientOnboardingScreen` (questionnaire,
 ---
 
 ### 1.5 Déconnexion
-- Menu Profil → "Se déconnecter" → confirmation → révocation refresh token côté serveur → suppression tokens locaux → `LoginScreen`
+- Menu Profil → "Se déconnecter" → confirmation
+- `DELETE /auth/logout` avec `X-API-Key` → `revoked = TRUE` en base
+- Suppression locale de l'API Key (`EncryptedSharedPreferences`)
+- Redirect `LoginScreen`
+
+**Déconnexion tous les appareils :**
+- Profil → "Déconnecter tous mes appareils"
+- `DELETE /auth/logout-all` → `revoked = TRUE` sur toutes les clés de l'utilisateur
+- Cas d'usage : appareil perdu, suspicion de compromission
 
 ---
 
@@ -1165,5 +1195,15 @@ pending_coach_validation ──(24h expiration)──► auto_rejected
 
 ---
 
-*Document rédigé le 25/02/2026 — Version 1.0 complète*
+---
+
+## CHANGELOG
+
+| Version | Date | Modifications |
+|---------|------|---------------|
+| 1.0 | 25/02/2026 | Document initial — 24 modules complets |
+| 1.1 | 25/02/2026 | SQLite → PostgreSQL 16 · JWT → API Key SHA-256 · Tarification (unitaire + forfaits) · Réservation client + annulation pénalité + liste d'attente |
+
+---
+
 *Toute modification doit être validée par le product owner avant implémentation*

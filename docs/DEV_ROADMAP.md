@@ -35,7 +35,7 @@ flowchart TD
     subgraph BACK["🖥️ Backend"]
         B1[FastAPI + PostgreSQL setup]
         B2[Modèle de données complet]
-        B3[Auth JWT - email + Google OAuth]
+        B3[Auth API Key - Google OAuth + email/password]
         B4[API REST de base - CRUD utilisateurs]
         B5[Docker Compose dev]
         B1 --> B2 --> B3 --> B4
@@ -71,19 +71,24 @@ flowchart TD
     C2[Sélection salles\nchaînes + clubs]
     C3[Gestion clients\nliste, fiches, notes]
     C4[Agenda coach\nvue globale séances]
-    C5[Gestion paiements\nforfaits, facturation, historique]
-    C6[Gestion heures\ncompteur, alertes renouvellement]
-    C7[Performances personnelles\ncoach trackant ses propres entraînements]
+    C5[Tarification\nséance unitaire + forfaits N séances]
+    C6[Gestion paiements\nforfaits, facturation, historique]
+    C7[Gestion heures\ncompteur, alertes renouvellement]
+    C8[Politique d'annulation\ndélai, pénalité, no-show]
+    C9[Performances personnelles\ncoach trackant ses propres entraînements]
+    C10[Disponibilités\ncréneaux récurrents, nb places, horizon résa]
 
     C1 --> C3
     C2 --> C3
     C3 --> C4
-    C3 --> C5
     C5 --> C6
-    C1 --> C7
+    C6 --> C7
+    C8 --> C4
+    C10 --> C4
+    C1 --> C9
 ```
 
-**Livrables :** Un coach peut créer son profil complet, gérer ses clients et ses paiements.
+**Livrables :** Un coach peut créer son profil complet, configurer ses tarifs (unitaire + forfaits), ses disponibilités, sa politique d'annulation, et gérer ses clients et paiements.
 
 ---
 
@@ -95,17 +100,27 @@ flowchart TD
     CL2[Sélection salles]
     CL3[Recherche coachs\nfiltres, profils]
     CL4[Tunnel découverte\ndemande → créneaux → confirmation]
-    CL5[Agenda client\nvue séances, validation]
-    CL6[Notifications\nrappels, demandes, annulations]
+    CL5[Réservation créneaux\ncalendrier dispo coach]
+    CL6[Choix tarif à la réservation\nunitaire ou sélection forfait]
+    CL7[Validation séance par le coach]
+    CL8[Annulation\n> 24h libre / < 24h séance due]
+    CL9[Liste d'attente\nnotif 30 min si place libérée]
+    CL10[Agenda client\nvue séances multi-coach]
+    CL11[Notifications\nrappels, confirmations, annulations]
 
     CL1 --> CL3
     CL2 --> CL3
     CL3 --> CL4
     CL4 --> CL5
     CL5 --> CL6
+    CL6 --> CL7
+    CL5 --> CL9
+    CL7 --> CL10
+    CL8 --> CL11
+    CL10 --> CL11
 ```
 
-**Livrables :** Un client peut s'inscrire, trouver un coach, planifier une séance découverte.
+**Livrables :** Un client peut s'inscrire, trouver un coach, réserver un créneau, choisir son tarif (unitaire ou forfait), gérer ses annulations avec les règles de pénalité, et rejoindre une liste d'attente.
 
 ---
 
@@ -216,9 +231,9 @@ flowchart TD
 
 | Phase | Contenu | Durée | Dépendances |
 |-------|---------|-------|-------------|
-| **0 — Fondations** | Backend, auth, Android base, CI/CD | 2 sem | — |
-| **1 — Coach** | Profil, clients, paiements, agenda, perfs perso | 3 sem | Phase 0 |
-| **2 — Client** | Profil, recherche coach, découverte, agenda | 3 sem | Phase 0 |
+| **0 — Fondations** | Backend FastAPI + PostgreSQL, auth API Key, Android base, CI/CD | 2 sem | — |
+| **1 — Coach** | Profil, tarification (unitaire + forfaits), disponibilités, politique annulation, clients, paiements, agenda | 3 sem | Phase 0 |
+| **2 — Client** | Profil, recherche coach, réservation, choix tarif, validation coach, annulation (pénalité < 24h), liste d'attente | 3 sem | Phase 0 |
 | **3 — Performances** | QR code, tracking, graphiques, back-office | 3 sem | Phases 1+2 |
 | **4 — IA** | Suggestions, programmes, vidéos générées | 3 sem | Phase 3 |
 | **5 — Intégrations** | Strava, balance, Calendar, Stripe | 3 sem | Phase 3 |
@@ -232,14 +247,49 @@ flowchart TD
 
 | Décision | Choix | Raison |
 |----------|-------|--------|
-| Backend | FastAPI + PostgreSQL | Rapidité dev, scalable |
-| Mobile | Android Kotlin d'abord | Marché FR + coût |
-| Auth | JWT + Google OAuth2 | UX fluide |
+| Backend | FastAPI (Python) | Rapidité dev, async natif |
+| SGBD | **PostgreSQL 16** | Multi-users, MVCC, JSONB, scalable |
+| ORM | SQLAlchemy 2 (async) + Alembic | Standard Python, migrations propres |
+| Mobile | Android Kotlin d'abord | Marché FR + coût iOS différé |
+| **Auth** | **API Key (SHA-256)** | Simple, stateful, révocable, sans dépendance |
+| Auth Google | Google ID Token → échange → API Key maison | 1 vérification Google puis lookup local |
+| Auth email/password | bcrypt hash → SHA-256(email+hash+salt) → API Key | Même système unifié |
+| API Key header | `X-API-Key: <64 chars hex>` | Standard REST, Retrofit-friendly |
+| Stockage clé Android | EncryptedSharedPreferences (AES-256) | Sécurisé, natif Android |
+| Révocation | `revoked = TRUE` en base | Multi-device, logout immédiat |
+| Tarification coach | Séance unitaire + N forfaits configurables | Flexibilité maximale |
 | Vidéos | Génération IA (Kling/Runway) + CDN | Pas de coût production |
 | Balance | API Withings en priorité | Meilleure API FR |
-| DB dev | SQLite → PostgreSQL prod | Migration simple |
-| Déploiement | Docker sur Proxmox LXC | Infrastructure existante |
+| Déploiement | Docker Compose sur Proxmox LXC | Infrastructure existante |
 
 ---
 
-*Version 1.0 — Rédigé le 25/02/2026*
+## 📦 Stack technique résumée
+
+```
+Backend
+  ├── FastAPI (Python 3.12)
+  ├── PostgreSQL 16 (Docker)
+  ├── SQLAlchemy 2 async + asyncpg
+  ├── Alembic (migrations)
+  ├── bcrypt (hash passwords)
+  └── hashlib SHA-256 (API keys, stdlib — aucune dépendance)
+
+Android
+  ├── Kotlin + Coroutines
+  ├── Retrofit 2 (HTTP, intercepteur X-API-Key)
+  ├── Room (cache local optionnel)
+  ├── Navigation Component
+  ├── EncryptedSharedPreferences (stockage clé)
+  └── Lottie (animations)
+
+Infra
+  ├── Docker Compose (backend + PostgreSQL + pgAdmin)
+  ├── Proxmox LXC (hébergement)
+  ├── GitHub Actions (CI)
+  └── Firebase (push notifications)
+```
+
+---
+
+*Version 1.1 — Mis à jour le 25/02/2026 (PostgreSQL + API Key auth + tarification coach)*
