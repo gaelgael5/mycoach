@@ -10,6 +10,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
+from core import calendar as gcal
+from fastapi.responses import RedirectResponse
+
 from models.schemas import (
     Client, ClientCreate, ClientUpdate,
     Session, SessionCreate,
@@ -256,3 +259,60 @@ def dashboard(db: sqlite3.Connection = Depends(get_db)):
         total_paid=round(paid, 2),
         total_outstanding=round(revenue - paid, 2),
     )
+
+
+# ── Google Calendar ──────────────────────────────────────────
+
+@app.get("/auth/google-calendar")
+def google_calendar_connect():
+    """Redirect user to Google OAuth2 consent screen."""
+    if not gcal.GOOGLE_CLIENT_ID:
+        raise HTTPException(500, "GOOGLE_CLIENT_ID not configured")
+    return RedirectResponse(gcal.get_auth_url())
+
+
+@app.get("/auth/google-calendar/callback")
+def google_calendar_callback(code: str):
+    """Handle OAuth2 callback and store credentials."""
+    gcal.handle_callback(code)
+    return RedirectResponse("/?calendar=connected")
+
+
+@app.get("/api/calendar/status")
+def calendar_status():
+    return {"connected": gcal.is_connected()}
+
+
+@app.delete("/api/calendar/disconnect")
+def calendar_disconnect():
+    gcal.revoke()
+    return {"message": "Google Calendar disconnected"}
+
+
+@app.get("/api/calendar/events")
+def get_calendar_events(days: int = 30):
+    if not gcal.is_connected():
+        raise HTTPException(403, "Google Calendar not connected")
+    return gcal.list_upcoming_events(days=days)
+
+
+@app.post("/api/calendar/events")
+def create_calendar_event(data: dict):
+    """Create an event. Expects: title, start (ISO), duration_minutes, description."""
+    if not gcal.is_connected():
+        raise HTTPException(403, "Google Calendar not connected")
+    start = datetime.fromisoformat(data["start"])
+    return gcal.create_event(
+        title=data["title"],
+        start_dt=start,
+        duration_minutes=data.get("duration_minutes", 60),
+        description=data.get("description", ""),
+    )
+
+
+@app.delete("/api/calendar/events/{event_id}")
+def delete_calendar_event(event_id: str):
+    if not gcal.is_connected():
+        raise HTTPException(403, "Google Calendar not connected")
+    gcal.delete_event(event_id)
+    return {"message": "Event deleted"}

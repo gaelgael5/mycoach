@@ -86,6 +86,7 @@ tr:hover td{background:#f7fafc}
   <a href="#" onclick="showPage('clients',this)">Clients</a>
   <a href="#" onclick="showPage('sessions',this)">Séances</a>
   <a href="#" onclick="showPage('payments',this)">Paiements</a>
+  <a href="#" onclick="showPage('schedule',this)">📅 Emploi du temps</a>
 </nav>
 
 <main>
@@ -144,9 +145,67 @@ tr:hover td{background:#f7fafc}
   </div>
 </div>
 
+<!-- SCHEDULE -->
+<div id="page-schedule" class="page">
+
+  <!-- Not connected banner -->
+  <div id="gcal-connect-banner" class="section" style="text-align:center;padding:40px;display:none">
+    <div style="font-size:48px;margin-bottom:12px">📅</div>
+    <h3 style="font-size:20px;font-weight:700;margin-bottom:8px;color:#2d3748">Connecter Google Calendar</h3>
+    <p style="color:#718096;margin-bottom:24px">Synchronisez vos séances avec votre Google Calendar pour gérer votre emploi du temps.</p>
+    <a href="/auth/google-calendar" class="btn btn-primary" style="text-decoration:none">Connecter Google Calendar</a>
+  </div>
+
+  <!-- Connected view -->
+  <div id="gcal-connected-view" style="display:none">
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Emploi du temps</h2>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span id="gcal-status-badge" class="badge badge-green">✅ Google Calendar connecté</span>
+          <button class="btn btn-primary btn-sm" onclick="openEventModal()">+ Créer un événement</button>
+          <button class="btn btn-ghost btn-sm" onclick="refreshEvents()">🔄</button>
+          <button class="btn btn-danger btn-sm" onclick="disconnectCalendar()">Déconnecter</button>
+        </div>
+      </div>
+
+      <!-- Upcoming events -->
+      <div id="events-list" style="display:grid;gap:10px;margin-top:8px"></div>
+    </div>
+
+    <!-- Embed Google Calendar -->
+    <div class="section" style="padding:0;overflow:hidden;border-radius:12px">
+      <iframe id="gcal-embed" src="" style="width:100%;height:600px;border:none;display:block" frameborder="0" scrolling="no"></iframe>
+    </div>
+  </div>
+
+</div>
+
 </main>
 
 <!-- MODALS -->
+
+<!-- Event modal -->
+<div class="modal-bg" id="event-modal">
+  <div class="modal">
+    <h3>Créer un événement</h3>
+    <div class="form-group"><label>Titre *</label><input id="ev-title" placeholder="Séance coaching — Jean Dupont"/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Date et heure *</label><input id="ev-start" type="datetime-local"/></div>
+      <div class="form-group"><label>Durée (minutes)</label><input id="ev-duration" type="number" value="60" min="15" step="15"/></div>
+    </div>
+    <div class="form-group"><label>Client (optionnel)</label>
+      <select id="ev-client">
+        <option value="">— Aucun —</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Description</label><textarea id="ev-desc" rows="2"></textarea></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-ghost" onclick="closeModal('event-modal')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveEvent()">Créer dans Google Calendar</button>
+    </div>
+  </div>
+</div>
 
 <!-- Client modal -->
 <div class="modal-bg" id="client-modal">
@@ -224,6 +283,7 @@ function showPage(name, el) {
   if (name === 'clients') loadClients();
   if (name === 'sessions') loadSessions();
   if (name === 'payments') loadPayments();
+  if (name === 'schedule') loadSchedule();
 }
 
 // ── API helpers ──────────────────────────────────────────────
@@ -419,6 +479,131 @@ function closeModal(id) {
 document.querySelectorAll('.modal-bg').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
 });
+
+// ── Google Calendar ──────────────────────────────────────────
+async function loadSchedule() {
+  const status = await api('/api/calendar/status');
+
+  if (!status.connected) {
+    document.getElementById('gcal-connect-banner').style.display = 'block';
+    document.getElementById('gcal-connected-view').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('gcal-connect-banner').style.display = 'none';
+  document.getElementById('gcal-connected-view').style.display = 'block';
+
+  // Embed Google Calendar (public view)
+  const embed = document.getElementById('gcal-embed');
+  if (!embed.src) {
+    embed.src = 'https://calendar.google.com/calendar/embed?showTitle=0&showNav=1&showDate=1&showPrint=0&showCalendars=0&mode=WEEK&hl=fr';
+  }
+
+  refreshEvents();
+}
+
+async function refreshEvents() {
+  try {
+    const events = await api('/api/calendar/events?days=14');
+    const container = document.getElementById('events-list');
+
+    if (events.length === 0) {
+      container.innerHTML = '<p style="color:#a0aec0;text-align:center;padding:24px">Aucun événement dans les 14 prochains jours</p>';
+      return;
+    }
+
+    container.innerHTML = events.map(e => {
+      const start = new Date(e.start);
+      const end   = new Date(e.end);
+      const dateStr = start.toLocaleDateString('fr-FR', {weekday:'short', day:'numeric', month:'short'});
+      const timeStr = start.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) + ' – ' + end.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+      return `
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#f7fafc;border-radius:10px;border-left:4px solid #3182ce">
+          <div style="min-width:90px;text-align:center">
+            <div style="font-size:13px;font-weight:700;color:#3182ce">${dateStr}</div>
+            <div style="font-size:12px;color:#718096">${timeStr}</div>
+          </div>
+          <div style="flex:1">
+            <div style="font-weight:600;color:#2d3748">${e.title}</div>
+            ${e.description ? `<div style="font-size:12px;color:#718096;margin-top:2px">${e.description}</div>` : ''}
+          </div>
+          <div style="display:flex;gap:6px">
+            <a href="${e.html_link}" target="_blank" class="btn btn-ghost btn-sm" title="Ouvrir dans Google Calendar">↗</a>
+            <button class="btn btn-danger btn-sm" onclick="deleteEvent('${e.id}')" title="Supprimer">🗑️</button>
+          </div>
+        </div>`;
+    }).join('');
+  } catch (err) {
+    document.getElementById('events-list').innerHTML = `<p style="color:#e53e3e">Erreur: ${err.message}</p>`;
+  }
+}
+
+async function openEventModal() {
+  const clients = await api('/api/clients');
+  const sel = document.getElementById('ev-client');
+  sel.innerHTML = '<option value="">— Aucun —</option>' + clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+  // Default: now, rounded to next 30min
+  const now = new Date();
+  now.setMinutes(Math.ceil(now.getMinutes()/30)*30, 0, 0);
+  document.getElementById('ev-start').value = now.toISOString().slice(0,16);
+  document.getElementById('ev-duration').value = 60;
+  document.getElementById('ev-title').value = '';
+  document.getElementById('ev-desc').value = '';
+  document.getElementById('event-modal').classList.add('open');
+}
+
+async function saveEvent() {
+  const clientId = document.getElementById('ev-client').value;
+  let title = document.getElementById('ev-title').value.trim();
+  const start = document.getElementById('ev-start').value;
+  const duration = parseInt(document.getElementById('ev-duration').value);
+  const desc = document.getElementById('ev-desc').value;
+
+  if (!title) { alert('Le titre est requis'); return; }
+  if (!start)  { alert('La date est requise'); return; }
+
+  // Auto-prefix with client name if selected
+  if (clientId) {
+    const clients = await api('/api/clients');
+    const client = clients.find(c => c.id == clientId);
+    if (client && !title.includes(client.name)) {
+      title = `${title} — ${client.name}`;
+    }
+  }
+
+  try {
+    const ev = await api('/api/calendar/events', 'POST', {
+      title, start, duration_minutes: duration, description: desc
+    });
+    closeModal('event-modal');
+    refreshEvents();
+    // Also reload calendar embed
+    const embed = document.getElementById('gcal-embed');
+    embed.src = embed.src;
+  } catch (err) {
+    alert('Erreur: ' + err.message);
+  }
+}
+
+async function deleteEvent(eventId) {
+  if (!confirm('Supprimer cet événement de Google Calendar ?')) return;
+  await api('/api/calendar/events/' + eventId, 'DELETE');
+  refreshEvents();
+}
+
+async function disconnectCalendar() {
+  if (!confirm('Déconnecter Google Calendar ?')) return;
+  await api('/api/calendar/disconnect', 'DELETE');
+  loadSchedule();
+}
+
+// Check URL params on load (after OAuth redirect)
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('calendar') === 'connected') {
+  showPage('schedule', document.querySelector('nav a:last-child'));
+  history.replaceState({}, '', '/');
+}
 
 // Init
 loadDashboard();
