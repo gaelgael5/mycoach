@@ -13,7 +13,8 @@ Dans cet ordre strict :
 1. `docs/FUNCTIONAL_SPECS.md` — Vue d'ensemble fonctionnelle, modèle de données, intégrations
 2. `docs/FUNCTIONAL_SPECS_DETAILED.md` — Détail de chaque écran, action, validation, règle métier
 3. `docs/DEV_ROADMAP.md` — Phases de développement, stack technique, décisions arrêtées
-4. `docs/CODING_AGENT.md` — Ce fichier (méthodologie d'exécution)
+4. `docs/DEV_PATTERNS.md` — Patterns d'architecture, design patterns Python/Kotlin, OWASP API Top 10, OWASP Mobile Top 10
+5. `docs/CODING_AGENT.md` — Ce fichier (méthodologie d'exécution)
 
 **Tu ne peux pas commencer à coder avant d'avoir lu les 4 documents.**
 Si un document manque ou est incomplet, signale-le avant de continuer.
