@@ -122,3 +122,5 @@ async def reorder_templates(
         return templates
     except ProfileNotFoundError:
         raise HTTPException(status_code=404, detail="Profil coach introuvable")
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))

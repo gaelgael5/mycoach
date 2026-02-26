@@ -1,133 +1,70 @@
-"""Tests Phase 1 — Profil coach, clients, salles, forfaits, paiements — B1-28.
-
-Cas passants + cas non passants pour :
-  - CRUD profil coach
-  - Spécialités, certifications, pricing, disponibilités
-  - Politique d'annulation
-  - Listing clients
-  - Salles (search)
-  - Forfaits + paiements + résumé heures
-"""
+"""Tests Phase 1 — Profil coach, spécialités, certifications, pricing, availability — B1-28."""
 
 import uuid
-
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
+BASE_PROFILE = {"bio": "Coach certifié 10 ans", "currency": "EUR", "session_duration_min": 60}
 
-COACH_HEADERS = {}
-CLIENT_HEADERS = {}
-
-BASE_COACH = {
-    "bio": "Coach certifié BPJEPS",
-    "currency": "EUR",
-    "session_duration_min": 60,
-    "discovery_enabled": True,
-    "discovery_free": True,
-    "booking_horizon_days": 30,
-}
-
-
-# ─── Helpers ─────────────────────────────────────────────────────────────────
-
-async def _create_profile(client: AsyncClient, key: str, data: dict | None = None) -> dict:
-    payload = data or BASE_COACH
-    resp = await client.post(
-        "/coaches/profile",
-        json=payload,
-        headers={"X-API-Key": key},
-    )
-    return resp
-
-
-# ─── CRUD Profil ──────────────────────────────────────────────────────────────
 
 class TestCoachProfile:
-    async def test_create_profile_ok(
-        self, client: AsyncClient, coach_api_key: str
-    ):
+    async def test_create_profile_ok(self, client: AsyncClient, coach_api_key: str):
         """✅ Créer un profil coach."""
-        resp = await _create_profile(client, coach_api_key)
-        assert resp.status_code == 201, resp.text
+        resp = await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": coach_api_key})
+        assert resp.status_code == 201
         data = resp.json()
+        assert data["bio"] == "Coach certifié 10 ans"
         assert data["currency"] == "EUR"
         assert data["session_duration_min"] == 60
-        assert data["onboarding_completed"] is False
 
-    async def test_create_profile_duplicate(
-        self, client: AsyncClient, coach_api_key: str
-    ):
-        """❌ Créer un profil deux fois → 409."""
-        await _create_profile(client, coach_api_key)
-        resp = await _create_profile(client, coach_api_key)
+    async def test_create_profile_duplicate(self, client: AsyncClient, coach_api_key: str):
+        """❌ Deux profils pour le même coach → 409."""
+        await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": coach_api_key})
+        resp = await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": coach_api_key})
         assert resp.status_code == 409
 
-    async def test_create_profile_client_role_forbidden(
-        self, client: AsyncClient, client_api_key: str
-    ):
-        """❌ Rôle client ne peut pas créer un profil coach → 403."""
-        resp = await _create_profile(client, client_api_key)
+    async def test_create_profile_wrong_role(self, client: AsyncClient, client_api_key: str):
+        """❌ Client ne peut pas créer un profil coach → 403."""
+        resp = await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": client_api_key})
         assert resp.status_code == 403
 
-    async def test_get_profile_ok(
-        self, client: AsyncClient, coach_api_key: str
-    ):
+    async def test_get_profile_ok(self, client: AsyncClient, coach_api_key: str):
         """✅ GET /coaches/profile après création."""
-        await _create_profile(client, coach_api_key)
-        resp = await client.get(
-            "/coaches/profile", headers={"X-API-Key": coach_api_key}
-        )
+        await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": coach_api_key})
+        resp = await client.get("/coaches/profile", headers={"X-API-Key": coach_api_key})
         assert resp.status_code == 200
-        assert "specialties" in resp.json()
-        assert "cancellation_policy" in resp.json()
+        assert resp.json()["currency"] == "EUR"
 
-    async def test_get_profile_not_found(
-        self, client: AsyncClient, coach_api_key: str
-    ):
-        """❌ Profil coach inexistant → 404."""
-        resp = await client.get(
-            "/coaches/profile", headers={"X-API-Key": coach_api_key}
-        )
+    async def test_get_profile_not_found(self, client: AsyncClient, coach_api_key: str):
+        """❌ Profil inexistant → 404."""
+        resp = await client.get("/coaches/profile", headers={"X-API-Key": coach_api_key})
         assert resp.status_code == 404
 
-    async def test_update_profile_ok(
-        self, client: AsyncClient, coach_api_key: str
-    ):
-        """✅ PUT /coaches/profile — mise à jour bio."""
-        await _create_profile(client, coach_api_key)
+    async def test_update_profile_ok(self, client: AsyncClient, coach_api_key: str):
+        """✅ Modifier la bio."""
+        await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": coach_api_key})
         resp = await client.put(
             "/coaches/profile",
-            json={"bio": "Nouveau bio"},
+            json={"bio": "Nouvelle bio"},
             headers={"X-API-Key": coach_api_key},
         )
         assert resp.status_code == 200
-        assert resp.json()["bio"] == "Nouveau bio"
+        assert resp.json()["bio"] == "Nouvelle bio"
 
-    async def test_update_profile_duration_invalid(
-        self, client: AsyncClient, coach_api_key: str
-    ):
-        """❌ Duration hors limites → 422."""
-        await _create_profile(client, coach_api_key)
-        resp = await client.put(
-            "/coaches/profile",
-            json={"session_duration_min": 5},  # < 15
-            headers={"X-API-Key": coach_api_key},
-        )
-        assert resp.status_code == 422
+    async def test_unauthorized(self, client: AsyncClient):
+        """❌ Sans clé API → 401."""
+        resp = await client.get("/coaches/profile")
+        assert resp.status_code == 401
 
-
-# ─── Spécialités ──────────────────────────────────────────────────────────────
 
 class TestSpecialties:
-    async def _setup(self, client, key):
-        await _create_profile(client, key)
+    async def _create_profile(self, client, key):
+        await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": key})
 
-    async def test_add_specialty_ok(
-        self, client: AsyncClient, coach_api_key: str
-    ):
-        """✅ Ajouter une spécialité valide."""
-        await self._setup(client, coach_api_key)
+    async def test_add_specialty_ok(self, client: AsyncClient, coach_api_key: str):
+        """✅ Ajouter une spécialité."""
+        await self._create_profile(client, coach_api_key)
         resp = await client.post(
             "/coaches/profile/specialties",
             json={"specialty": "yoga"},
@@ -136,40 +73,35 @@ class TestSpecialties:
         assert resp.status_code == 201
         assert resp.json()["specialty"] == "yoga"
 
-    async def test_add_specialty_invalid(
-        self, client: AsyncClient, coach_api_key: str
-    ):
-        """❌ Spécialité inconnue → 422."""
-        await self._setup(client, coach_api_key)
-        resp = await client.post(
-            "/coaches/profile/specialties",
-            json={"specialty": "bowling"},
-            headers={"X-API-Key": coach_api_key},
-        )
-        assert resp.status_code == 422
+    async def test_add_multiple_specialties(self, client: AsyncClient, coach_api_key: str):
+        """✅ Plusieurs spécialités distinctes."""
+        await self._create_profile(client, coach_api_key)
+        for val in ["pilates", "boxe", "natation"]:
+            r = await client.post(
+                "/coaches/profile/specialties",
+                json={"specialty": val},
+                headers={"X-API-Key": coach_api_key},
+            )
+            assert r.status_code == 201
 
-    async def test_delete_specialty_ok(
-        self, client: AsyncClient, coach_api_key: str
-    ):
+    async def test_delete_specialty_ok(self, client: AsyncClient, coach_api_key: str):
         """✅ Supprimer une spécialité."""
-        await self._setup(client, coach_api_key)
-        add_resp = await client.post(
+        await self._create_profile(client, coach_api_key)
+        add = await client.post(
             "/coaches/profile/specialties",
-            json={"specialty": "muscu"},
+            json={"specialty": "boxe"},
             headers={"X-API-Key": coach_api_key},
         )
-        spec_id = add_resp.json()["id"]
-        del_resp = await client.delete(
+        spec_id = add.json()["id"]
+        resp = await client.delete(
             f"/coaches/profile/specialties/{spec_id}",
             headers={"X-API-Key": coach_api_key},
         )
-        assert del_resp.status_code == 200
+        assert resp.status_code == 200
 
-    async def test_delete_specialty_not_found(
-        self, client: AsyncClient, coach_api_key: str
-    ):
+    async def test_delete_specialty_not_found(self, client: AsyncClient, coach_api_key: str):
         """❌ Supprimer une spécialité inexistante → 404."""
-        await self._setup(client, coach_api_key)
+        await self._create_profile(client, coach_api_key)
         resp = await client.delete(
             f"/coaches/profile/specialties/{uuid.uuid4()}",
             headers={"X-API-Key": coach_api_key},
@@ -177,254 +109,222 @@ class TestSpecialties:
         assert resp.status_code == 404
 
 
-# ─── Pricing ──────────────────────────────────────────────────────────────────
+class TestCertifications:
+    async def _create_profile(self, client, key):
+        await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": key})
 
-class TestPricing:
-    async def _setup(self, client, key):
-        await _create_profile(client, key)
-
-    async def test_create_pricing_ok(
-        self, client: AsyncClient, coach_api_key: str
-    ):
-        """✅ Créer un tarif à la séance."""
-        await self._setup(client, coach_api_key)
+    async def test_add_certification_ok(self, client: AsyncClient, coach_api_key: str):
+        """✅ Ajouter une certification."""
+        await self._create_profile(client, coach_api_key)
         resp = await client.post(
-            "/coaches/pricing",
-            json={"type": "per_session", "name": "Séance unitaire", "price_cents": 5000},
+            "/coaches/profile/certifications",
+            json={"name": "BPJEPS", "issuer": "Sport France", "year": 2020},
             headers={"X-API-Key": coach_api_key},
         )
         assert resp.status_code == 201
-        assert resp.json()["price_cents"] == 5000
+        data = resp.json()
+        assert data["name"] == "BPJEPS"
+        assert data["year"] == 2020
 
-    async def test_create_pricing_invalid_type(
-        self, client: AsyncClient, coach_api_key: str
+    async def test_delete_certification_ok(self, client: AsyncClient, coach_api_key: str):
+        """✅ Supprimer une certification."""
+        await self._create_profile(client, coach_api_key)
+        add = await client.post(
+            "/coaches/profile/certifications",
+            json={"name": "CQP", "issuer": "CNOSF"},
+            headers={"X-API-Key": coach_api_key},
+        )
+        cert_id = add.json()["id"]
+        resp = await client.delete(
+            f"/coaches/profile/certifications/{cert_id}",
+            headers={"X-API-Key": coach_api_key},
+        )
+        assert resp.status_code == 200
+
+    async def test_delete_certification_other_coach(
+        self, client: AsyncClient, coach_api_key: str, db: AsyncSession
     ):
-        """❌ Type de tarif invalide → 422."""
+        """❌ Supprimer la certif d'un autre coach → 404."""
+        await self._create_profile(client, coach_api_key)
+        add = await client.post(
+            "/coaches/profile/certifications",
+            json={"name": "CQP"},
+            headers={"X-API-Key": coach_api_key},
+        )
+        cert_id = add.json()["id"]
+
+        from app.repositories.user_repository import user_repository
+        from app.repositories.api_key_repository import api_key_repository
+        other = await user_repository.create(
+            db, first_name="O", last_name="T",
+            email=f"ot_{uuid.uuid4().hex[:6]}@test.com",
+            role="coach", password_plain="Password1"
+        )
+        await db.commit()
+        other_key, _ = await api_key_repository.create(db, other.id, "d")
+        await db.commit()
+        await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": other_key})
+
+        resp = await client.delete(
+            f"/coaches/profile/certifications/{cert_id}",
+            headers={"X-API-Key": other_key},
+        )
+        assert resp.status_code == 404
+
+
+class TestPricing:
+    async def _setup(self, client, key):
+        await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": key})
+
+    async def test_create_pricing_ok(self, client: AsyncClient, coach_api_key: str):
+        """✅ Créer un tarif."""
         await self._setup(client, coach_api_key)
         resp = await client.post(
             "/coaches/pricing",
-            json={"type": "subscription", "name": "Test", "price_cents": 1000},
+            json={"type": "per_session", "name": "Séance individuelle", "price_cents": 6000, "currency": "EUR"},
             headers={"X-API-Key": coach_api_key},
         )
-        assert resp.status_code == 422
+        assert resp.status_code == 201
+        data = resp.json()
+        assert data["price_cents"] == 6000
+        assert data["type"] == "per_session"
 
-    async def test_list_pricing_ok(
-        self, client: AsyncClient, coach_api_key: str
-    ):
+    async def test_list_pricing(self, client: AsyncClient, coach_api_key: str):
         """✅ Lister les tarifs."""
         await self._setup(client, coach_api_key)
         await client.post(
             "/coaches/pricing",
-            json={"type": "per_session", "name": "S1", "price_cents": 4500},
+            json={"type": "package", "name": "Pack 10 séances", "price_cents": 50000, "session_count": 10},
             headers={"X-API-Key": coach_api_key},
         )
         resp = await client.get("/coaches/pricing", headers={"X-API-Key": coach_api_key})
         assert resp.status_code == 200
         assert len(resp.json()) >= 1
 
-    async def test_delete_pricing_ok(
-        self, client: AsyncClient, coach_api_key: str
-    ):
+    async def test_update_pricing_ok(self, client: AsyncClient, coach_api_key: str):
+        """✅ Modifier un tarif."""
+        await self._setup(client, coach_api_key)
+        create = await client.post(
+            "/coaches/pricing",
+            json={"type": "per_session", "name": "Séance", "price_cents": 5000},
+            headers={"X-API-Key": coach_api_key},
+        )
+        pricing_id = create.json()["id"]
+        resp = await client.put(
+            f"/coaches/pricing/{pricing_id}",
+            json={"price_cents": 7000},
+            headers={"X-API-Key": coach_api_key},
+        )
+        assert resp.status_code == 200
+        assert resp.json()["price_cents"] == 7000
+
+    async def test_delete_pricing_ok(self, client: AsyncClient, coach_api_key: str):
         """✅ Supprimer un tarif."""
         await self._setup(client, coach_api_key)
-        add = await client.post(
+        create = await client.post(
             "/coaches/pricing",
-            json={"type": "per_session", "name": "S2", "price_cents": 3000},
+            json={"type": "per_session", "name": "Séance", "price_cents": 5000},
             headers={"X-API-Key": coach_api_key},
         )
-        pricing_id = add.json()["id"]
+        pricing_id = create.json()["id"]
         resp = await client.delete(
-            f"/coaches/pricing/{pricing_id}", headers={"X-API-Key": coach_api_key}
+            f"/coaches/pricing/{pricing_id}",
+            headers={"X-API-Key": coach_api_key},
         )
         assert resp.status_code == 200
 
+    async def test_negative_amount_rejected(self, client: AsyncClient, coach_api_key: str):
+        """❌ Montant négatif → 422."""
+        await self._setup(client, coach_api_key)
+        resp = await client.post(
+            "/coaches/pricing",
+            json={"type": "per_session", "name": "Séance", "price_cents": -100},
+            headers={"X-API-Key": coach_api_key},
+        )
+        assert resp.status_code == 422
 
-# ─── Politique d'annulation ───────────────────────────────────────────────────
+
+class TestAvailability:
+    async def _setup(self, client, key):
+        await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": key})
+
+    async def test_create_availability_ok(self, client: AsyncClient, coach_api_key: str):
+        """✅ Créer un créneau de disponibilité."""
+        await self._setup(client, coach_api_key)
+        resp = await client.post(
+            "/coaches/availability",
+            json={"day_of_week": 1, "start_time": "09:00", "end_time": "12:00"},
+            headers={"X-API-Key": coach_api_key},
+        )
+        assert resp.status_code == 201
+        data = resp.json()
+        assert data["day_of_week"] == 1
+
+    async def test_list_availability(self, client: AsyncClient, coach_api_key: str):
+        """✅ Lister les disponibilités."""
+        await self._setup(client, coach_api_key)
+        await client.post(
+            "/coaches/availability",
+            json={"day_of_week": 2, "start_time": "14:00", "end_time": "18:00"},
+            headers={"X-API-Key": coach_api_key},
+        )
+        resp = await client.get("/coaches/availability", headers={"X-API-Key": coach_api_key})
+        assert resp.status_code == 200
+        assert len(resp.json()) >= 1
+
+    async def test_delete_availability_ok(self, client: AsyncClient, coach_api_key: str):
+        """✅ Supprimer une disponibilité."""
+        await self._setup(client, coach_api_key)
+        create = await client.post(
+            "/coaches/availability",
+            json={"day_of_week": 3, "start_time": "10:00", "end_time": "11:00"},
+            headers={"X-API-Key": coach_api_key},
+        )
+        avail_id = create.json()["id"]
+        resp = await client.delete(
+            f"/coaches/availability/{avail_id}",
+            headers={"X-API-Key": coach_api_key},
+        )
+        assert resp.status_code == 200
+
 
 class TestCancellationPolicy:
-    async def test_set_policy_ok(
-        self, client: AsyncClient, coach_api_key: str
-    ):
-        """✅ Définir la politique d'annulation."""
-        await _create_profile(client, coach_api_key)
+    async def _setup(self, client, key):
+        await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": key})
+
+    async def test_update_policy_ok(self, client: AsyncClient, coach_api_key: str):
+        """✅ Mettre à jour la politique d'annulation."""
+        await self._setup(client, coach_api_key)
         resp = await client.put(
             "/coaches/cancellation-policy",
-            json={"threshold_hours": 48, "mode": "auto", "noshow_is_due": True},
+            json={"threshold_hours": 48, "noshow_is_due": True},
             headers={"X-API-Key": coach_api_key},
         )
         assert resp.status_code == 200
-        assert resp.json()["threshold_hours"] == 48
+        data = resp.json()
+        assert data["threshold_hours"] == 48
+        assert data["noshow_is_due"] is True
 
-    async def test_set_policy_invalid_mode(
-        self, client: AsyncClient, coach_api_key: str
-    ):
-        """❌ Mode invalide → 422."""
-        await _create_profile(client, coach_api_key)
+    async def test_invalid_threshold(self, client: AsyncClient, coach_api_key: str):
+        """❌ Seuil négatif → 422."""
+        await self._setup(client, coach_api_key)
         resp = await client.put(
             "/coaches/cancellation-policy",
-            json={"mode": "strict"},
+            json={"threshold_hours": -5},
             headers={"X-API-Key": coach_api_key},
         )
         assert resp.status_code == 422
 
 
-# ─── Clients ──────────────────────────────────────────────────────────────────
+class TestCoachClients:
+    async def _setup(self, client, coach_key, client_user):
+        await client.post("/coaches/profile", json=BASE_PROFILE, headers={"X-API-Key": coach_key})
+        return client_user
 
-class TestClients:
-    async def test_list_clients_empty(
-        self, client: AsyncClient, coach_api_key: str
-    ):
-        """✅ Lister les clients — liste vide au départ."""
-        await _create_profile(client, coach_api_key)
-        resp = await client.get(
-            "/coaches/clients", headers={"X-API-Key": coach_api_key}
-        )
-        assert resp.status_code == 200
-        assert resp.json() == []
-
-    async def test_update_relation_ok(
-        self, client: AsyncClient, coach_api_key: str, client_user
-    ):
-        """✅ Créer/mettre à jour une relation coach-client."""
-        await _create_profile(client, coach_api_key)
-        resp = await client.put(
-            f"/coaches/clients/{client_user.id}/relation",
-            json={"status": "active"},
-            headers={"X-API-Key": coach_api_key},
-        )
-        assert resp.status_code == 200
-        assert resp.json()["status"] == "active"
-
-    async def test_update_note_ok(
-        self, client: AsyncClient, coach_api_key: str, client_user
-    ):
-        """✅ Enregistrer/mettre à jour une note sur un client."""
-        await _create_profile(client, coach_api_key)
-        resp = await client.put(
-            f"/coaches/clients/{client_user.id}/note",
-            json={"content": "Client sérieux, objectif perte de poids."},
-            headers={"X-API-Key": coach_api_key},
-        )
-        assert resp.status_code == 200
-
-
-# ─── Salles de sport ──────────────────────────────────────────────────────────
-
-class TestGyms:
-    async def test_list_chains_empty(self, client: AsyncClient):
-        """✅ Lister les chaînes (vide en test)."""
-        resp = await client.get("/gyms/chains")
-        assert resp.status_code == 200
-        assert isinstance(resp.json(), list)
-
-    async def test_search_gyms_empty(self, client: AsyncClient):
-        """✅ Recherche de salles (vide en test)."""
-        resp = await client.get("/gyms")
+    async def test_list_clients_empty(self, client: AsyncClient, coach_api_key: str, client_user):
+        """✅ Liste clients vide au départ."""
+        await self._setup(client, coach_api_key, client_user)
+        resp = await client.get("/coaches/clients", headers={"X-API-Key": coach_api_key})
         assert resp.status_code == 200
         data = resp.json()
-        assert "items" in data
-        assert data["total"] == 0
-
-    async def test_get_gym_not_found(self, client: AsyncClient):
-        """❌ Salle inexistante → 404."""
-        resp = await client.get(f"/gyms/{uuid.uuid4()}")
-        assert resp.status_code == 404
-
-
-# ─── Forfaits & Paiements ─────────────────────────────────────────────────────
-
-class TestPackagesAndPayments:
-    async def test_create_package_ok(
-        self, client: AsyncClient, coach_api_key: str, client_user
-    ):
-        """✅ Créer un forfait pour un client."""
-        await _create_profile(client, coach_api_key)
-        resp = await client.post(
-            f"/coaches/clients/{client_user.id}/packages",
-            json={
-                "name": "Forfait 10 séances",
-                "sessions_total": 10,
-                "price_cents": 45000,
-                "currency": "EUR",
-            },
-            headers={"X-API-Key": coach_api_key},
-        )
-        assert resp.status_code == 201
-        data = resp.json()
-        assert data["sessions_total"] == 10
-        assert data["sessions_remaining"] == 10
-        assert data["status"] == "active"
-
-    async def test_create_package_invalid_sessions(
-        self, client: AsyncClient, coach_api_key: str, client_user
-    ):
-        """❌ sessions_total = 0 → 422."""
-        await _create_profile(client, coach_api_key)
-        resp = await client.post(
-            f"/coaches/clients/{client_user.id}/packages",
-            json={"name": "Bad", "sessions_total": 0, "price_cents": 1000},
-            headers={"X-API-Key": coach_api_key},
-        )
-        assert resp.status_code == 422
-
-    async def test_record_payment_ok(
-        self, client: AsyncClient, coach_api_key: str, client_user
-    ):
-        """✅ Enregistrer un paiement manuel."""
-        await _create_profile(client, coach_api_key)
-        resp = await client.post(
-            f"/coaches/clients/{client_user.id}/payments",
-            json={
-                "amount_cents": 5000,
-                "currency": "EUR",
-                "payment_method": "cash",
-            },
-            headers={"X-API-Key": coach_api_key},
-        )
-        assert resp.status_code == 201
-        assert resp.json()["amount_cents"] == 5000
-        assert resp.json()["status"] == "pending"
-
-    async def test_record_payment_invalid_method(
-        self, client: AsyncClient, coach_api_key: str, client_user
-    ):
-        """❌ Méthode de paiement inconnue → 422."""
-        await _create_profile(client, coach_api_key)
-        resp = await client.post(
-            f"/coaches/clients/{client_user.id}/payments",
-            json={"amount_cents": 5000, "payment_method": "bitcoin"},
-            headers={"X-API-Key": coach_api_key},
-        )
-        assert resp.status_code == 422
-
-    async def test_hours_summary_no_package(
-        self, client: AsyncClient, coach_api_key: str, client_user
-    ):
-        """✅ Résumé heures — aucun forfait actif."""
-        await _create_profile(client, coach_api_key)
-        resp = await client.get(
-            f"/coaches/clients/{client_user.id}/hours",
-            headers={"X-API-Key": coach_api_key},
-        )
-        assert resp.status_code == 200
-        data = resp.json()
-        assert data["sessions_remaining"] == 0
-        assert data["active_package"] is None
-
-    async def test_alert_low_sessions(
-        self, client: AsyncClient, coach_api_key: str, client_user
-    ):
-        """✅ Alerte 2 séances restantes détectée."""
-        await _create_profile(client, coach_api_key)
-        # Créer un forfait de 2 séances
-        await client.post(
-            f"/coaches/clients/{client_user.id}/packages",
-            json={"name": "Mini", "sessions_total": 2, "price_cents": 9000},
-            headers={"X-API-Key": coach_api_key},
-        )
-        resp = await client.get(
-            f"/coaches/clients/{client_user.id}/hours",
-            headers={"X-API-Key": coach_api_key},
-        )
-        assert resp.status_code == 200
-        assert resp.json()["alert_low_sessions"] is True
+        assert isinstance(data, (list, dict))

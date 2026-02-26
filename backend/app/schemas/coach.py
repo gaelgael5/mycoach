@@ -121,6 +121,14 @@ class AvailabilityResponse(BaseModel):
 
     model_config = {"from_attributes": True}
 
+    @field_validator("start_time", "end_time", mode="before")
+    @classmethod
+    def coerce_time_to_str(cls, v: object) -> str:
+        """Convertit datetime.time → 'HH:MM' (asyncpg retourne des time objects)."""
+        if hasattr(v, "hour"):
+            return f"{v.hour:02d}:{v.minute:02d}"  # type: ignore[union-attr]
+        return str(v)
+
 
 # ── Politique d'annulation ────────────────────────────────────────────────────
 

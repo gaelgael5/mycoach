@@ -135,12 +135,17 @@ async def reorder(
 ) -> list[CancellationMessageTemplate]:
     """Met à jour les positions des templates.
     items = [{"id": uuid, "position": int}]
+
+    Raises:
+        ValueError si un ID n'appartient pas à ce coach.
     """
     updated = []
     for item in items:
         t = await get_by_id_and_coach(db, item["id"], coach_id)
-        if t:
-            t.position = item["position"]
-            updated.append(t)
+        if t is None:
+            raise ValueError(f"Template {item['id']} introuvable pour ce coach")
+        t.position = item["position"]
+        updated.append(t)
     await db.flush()
-    return updated
+    # Retourner trié par position croissante
+    return sorted(updated, key=lambda x: x.position)

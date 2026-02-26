@@ -165,6 +165,13 @@ async def delete_pricing(db: AsyncSession, obj: CoachPricing) -> None:
 async def add_availability(
     db: AsyncSession, coach_id: uuid.UUID, **kwargs: Any
 ) -> CoachAvailability:
+    from datetime import time as dt_time
+    # asyncpg ne sait pas convertir "HH:MM" en time — on le fait ici
+    for field in ("start_time", "end_time"):
+        val = kwargs.get(field)
+        if isinstance(val, str):
+            h, m = val.split(":")
+            kwargs[field] = dt_time(int(h), int(m))
     obj = CoachAvailability(id=uuid.uuid4(), coach_id=coach_id, **kwargs)
     db.add(obj)
     await db.flush()
