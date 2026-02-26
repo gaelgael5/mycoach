@@ -47,15 +47,15 @@ install:
   - sudo service postgresql start || true
   - |
     for i in $(seq 1 20); do
-      pg_isready -U postgres && break
-      echo "Attente PostgreSQL... ($i)"
+      sudo -u postgres psql -c "SELECT 1" > /dev/null 2>&1 && break
+      echo "Attente PostgreSQL... ($i/20)"
       sleep 2
     done
-  - psql -U postgres -c "CREATE USER mycoach_ci WITH PASSWORD 'mycoach_ci_pass';"
-  - psql -U postgres -c "CREATE DATABASE mycoach_test OWNER mycoach_ci;"
-  - psql -U postgres -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
-  - psql -U postgres -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
-  - psql -U postgres -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
+  - sudo -u postgres psql -c "CREATE USER mycoach_ci WITH PASSWORD 'mycoach_ci_pass';"
+  - sudo -u postgres psql -c "CREATE DATABASE mycoach_test OWNER mycoach_ci;"
+  - sudo -u postgres psql -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
+  - sudo -u postgres psql -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+  - sudo -u postgres psql -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
 
   # Venv Python
   - python3.12 -m venv backend/.venv
