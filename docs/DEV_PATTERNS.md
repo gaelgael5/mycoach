@@ -1057,6 +1057,215 @@ def reencrypt_all(old_key: str, new_key: str):
 
 ---
 
+---
+
+### 1.11 Programme IA — `coach_id = NULL`
+
+> **Décision :** les programmes générés par l'IA ont `coach_id = NULL` et `source = 'ai'`. Pas de faux utilisateur admin IA — simplicité maximale.
+
+```python
+# app/models/program.py
+import enum
+
+
+class ProgramSource(str, enum.Enum):
+    COACH = "coach"   # Créé manuellement par un coach
+    AI    = "ai"      # Généré automatiquement par l'IA
+
+
+class Program(Base):
+    __tablename__ = "programs"
+
+    id:       Mapped[UUID]      = mapped_column(primary_key=True, default=uuid4)
+    coach_id: Mapped[UUID|None] = mapped_column(ForeignKey("users.id"), nullable=True, index=True)
+    #          ↑ NULL si source = 'ai'
+
+    source:   Mapped[str]       = mapped_column(String(10), nullable=False, default="coach")
+    #          'coach' | 'ai'
+
+    name:             Mapped[str]       = mapped_column(String(80), nullable=False)
+    description:      Mapped[str|None]  = mapped_column(String(300), nullable=True)
+    duration_weeks:   Mapped[int]       = mapped_column(SmallInteger, nullable=False)
+    target_level:     Mapped[str]       = mapped_column(String(20), nullable=False)  # beginner | intermediate | advanced | all
+    fitness_goal:     Mapped[str|None]  = mapped_column(String(30), nullable=True)
+    status:           Mapped[str]       = mapped_column(String(20), nullable=False, default="active")
+
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
+```
+
+```python
+# Requêtes selon la source
+async def get_coach_programs(db, coach_id: UUID) -> list[Program]:
+    """Programmes créés par ce coach."""
+    return (await db.execute(
+        select(Program).where(Program.coach_id == coach_id, Program.status != "archived")
+    )).scalars().all()
+
+async def get_ai_programs_for_client(db, client: ClientProfile) -> list[Program]:
+    """
+    Programmes IA disponibles pour ce client.
+    Filtrés par niveau et objectif fitness du client.
+    """
+    stmt = select(Program).where(
+        Program.source == "ai",
+        Program.status == "active",
+    )
+    if client.fitness_level:
+        stmt = stmt.where(
+            or_(Program.target_level == client.fitness_level, Program.target_level == "all")
+        )
+    if client.fitness_goal:
+        stmt = stmt.where(
+            or_(Program.fitness_goal == client.fitness_goal, Program.fitness_goal == None)
+        )
+    return (await db.execute(stmt)).scalars().all()
+```
+
+**Affichage Android :**
+- Badge `"Proposé par IA 🤖"` si `source = 'ai'`
+- Badge `"Programme de [Coach]"` si `source = 'coach'`
+- Même composant `ProgramCard`, différencié par le badge uniquement
+
+---
+
+### 1.12 Personal Records (PRs) — sans table dédiée
+
+> **Décision :** `exercise_sets.is_pr = TRUE` suffit. Pas de table `personal_records`.
+> Performance garantie par un **index partiel** PostgreSQL + recalcul à chaque sauvegarde.
+
+#### Index partiel — migration Alembic
+
+```python
+# alembic/versions/xxxx_pr_partial_index.py
+def upgrade():
+    # Index partiel sur is_pr = TRUE uniquement
+    # Très compact (quelques lignes par exercice) → lookups O(log n)
+    op.execute(
+        "CREATE INDEX ix_exercise_sets_pr "
+        "ON exercise_sets (workout_exercise_id) "
+        "WHERE is_pr = TRUE"
+    )
+
+def downgrade():
+    op.execute("DROP INDEX IF EXISTS ix_exercise_sets_pr")
+```
+
+#### Requête : PR actuel d'un client sur un exercice
+
+```python
+# app/repositories/performance_repository.py
+
+async def get_current_pr(
+    db: AsyncSession,
+    user_id: UUID,
+    exercise_id: UUID,
+) -> "ExerciseSet | None":
+    """
+    Retourne le set marqué is_pr=TRUE le plus récent pour cet exercice/utilisateur.
+    Utilise l'index partiel ix_exercise_sets_pr → rapide même sur 10 000+ sets.
+    """
+    result = await db.execute(
+        select(ExerciseSet)
+        .join(WorkoutExercise, WorkoutExercise.id == ExerciseSet.workout_exercise_id)
+        .join(WorkoutSession,  WorkoutSession.id  == WorkoutExercise.workout_session_id)
+        .where(
+            WorkoutSession.user_id   == user_id,
+            WorkoutExercise.exercise_id == exercise_id,
+            ExerciseSet.is_pr        == True,
+            ExerciseSet.is_completed == True,
+        )
+        .order_by(WorkoutSession.started_at.desc())
+        .limit(1)
+    )
+    return result.scalar_one_or_none()
+```
+
+#### Service : détection et marquage des PRs à la sauvegarde
+
+```python
+# app/services/pr_service.py
+
+async def update_prs_for_session(
+    db: AsyncSession,
+    workout_session: WorkoutSession,
+) -> list[tuple["WorkoutExercise", "ExerciseSet"]]:
+    """
+    Appelé à chaque sauvegarde de séance (après insertion des sets).
+    Pour chaque exercice de la séance :
+      1. Trouve le meilleur set (poids max, puis reps max à poids égal)
+      2. Compare avec l'ancien PR
+      3. Si nouveau PR → marque is_pr=TRUE sur le nouveau, FALSE sur l'ancien
+    Retourne la liste des nouveaux PRs (pour déclencher les notifications push).
+    """
+    new_prs: list[tuple[WorkoutExercise, ExerciseSet]] = []
+
+    for workout_exercise in workout_session.exercises:
+        if workout_exercise.skipped:
+            continue
+
+        # Meilleur set de cette séance pour cet exercice
+        best_set = max(
+            (s for s in workout_exercise.sets if s.is_completed and s.weight_kg > 0),
+            key=lambda s: (s.weight_kg, s.reps),
+            default=None,
+        )
+        if not best_set:
+            continue
+
+        # PR actuel (hors cette séance)
+        current_pr = await get_current_pr(
+            db,
+            user_id=workout_session.user_id,
+            exercise_id=workout_exercise.exercise_id,
+        )
+
+        is_new_pr = (
+            current_pr is None
+            or best_set.weight_kg > current_pr.weight_kg
+            or (best_set.weight_kg == current_pr.weight_kg and best_set.reps > current_pr.reps)
+        )
+
+        if is_new_pr:
+            # Réinitialiser l'ancien PR
+            if current_pr:
+                current_pr.is_pr = False
+
+            # Marquer le nouveau
+            best_set.is_pr = True
+            new_prs.append((workout_exercise, best_set))
+
+    await db.flush()
+    return new_prs
+    # Appelant : pour chaque (exercise, set) dans new_prs → push notif "🏆 Nouveau PR"
+```
+
+**Règle :** `is_pr` n'est **jamais** positionné manuellement — uniquement via `update_prs_for_session()` appelé dans `WorkoutSessionService.save()`.
+
+---
+
+### 1.13 Notation coach — Phase 2, aucun schéma anticipé
+
+> **Décision :** Les avis et notes coaches (`§11` des specs) sont **Phase 2**.
+> **Aucune colonne ni table n'est créée** en Phase 0–1, même vide.
+> Ajouter une migration dédiée en Phase 2 le moment venu.
+
+```python
+# ❌ À NE PAS FAIRE en Phase 0-1 :
+# class CoachRating(Base): ...
+# coach_profiles.average_rating = ...
+# coach_profiles.rating_count = ...
+
+# ✅ Ce qu'on fera en Phase 2 (migration dédiée) :
+# Table : coach_ratings (id, coach_id, client_id, relationship_id, score 1-5,
+#                        comment EncryptedString, created_at)
+# Contrainte : 1 avis par relation (UNIQUE coach_id + relationship_id)
+# Colonnes calculées sur coach_profiles : average_rating NUMERIC(3,2), rating_count INT
+#   → mises à jour via trigger PostgreSQL ou dans le service après chaque nouveau rating
+```
+
+---
+
 ## PARTIE 2 — ANDROID (Kotlin)
 
 ### 2.1 Architecture MVVM + Clean Architecture
@@ -2014,6 +2223,7 @@ keyGenerator.init(
 
 ---
 
+*Version 1.3 — 26/02/2026 — §1.11 Programme IA (coach_id NULL + source), §1.12 PRs sans table dédiée (is_pr + index partiel + recalcul), §1.13 Notation coach Phase 2 (pas de schéma anticipé)*
 *Version 1.2 — 26/02/2026 — §1.10 Architecture sessions multi-participants : session_participants (statut/prix par client), tarif groupe (seuil N → recalcul), package_consumptions (pending/consumed/due/waived), multi-coach traçabilité coach_id*
 *Version 1.1 — 26/02/2026 — §1.9 PII Encryption + search_token + M9 Android PII rules + checklists*
 *Version 1.0 — 25/02/2026 — Document initial*

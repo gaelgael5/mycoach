@@ -108,6 +108,9 @@ L'application Android est **responsive dès le premier écran** :
 | **Sessions multi-clients** | Table `session_participants` — `sessions` n'a plus de `client_id` direct | Chaque participant a son propre statut, prix et état d'annulation |
 | **Multi-coach** | Un client peut avoir N coachs simultanément — chaque coach gère ses propres sessions et forfaits | Chaque coach voit librement la liste des autres coachs du client |
 | **Traçabilité consommation** | Table `package_consumptions` — ligne par crédit consommé ou dû | Id_pack · Id_Payment · Id_Client · minutes · date planif · statut (Consommé / Due / En attente) |
+| **Programme IA** | `programs.coach_id = NULL` + `source = 'ai'` — pas de faux utilisateur admin | Simplicité ; un programme IA n'appartient à aucun coach |
+| **Personal Records (PRs)** | `exercise_sets.is_pr = TRUE` — pas de table dédiée | Index partiel `WHERE is_pr = TRUE` pour queryabilité ; recalcul à chaque sauvegarde |
+| **Notation coach** | Non modélisé — Phase 2 uniquement | Aucune anticipation de schéma en Phase 0–1 |
 | **i18n** | **BCP 47 locale par utilisateur (fr-FR, en-US…)** | Zéro texte codé en dur |
 | Pays | ISO 3166-1 alpha-2 (FR, BE, US…) | Sur clubs, profils, devises |
 | Devises | ISO 4217 (EUR, USD, GBP…) stockées en centimes | Jamais de float pour les montants |
@@ -1576,6 +1579,7 @@ pending_coach_validation ──(24h expiration)──► auto_rejected
 | 1.4 | 25/02/2026 | §7.4 Sélection en masse (vue Jour) · §7.5 Annulation en masse avec workflow complet (confirmation → choix message → aperçu SMS par client → récapitulatif) · §7.6 SMS en masse coach + historique SMS · Wizard coach : étape 7/7 Messages d'annulation (1 template maladie pré-rempli, jusqu'à 5 templates, variables {prénom}/{date}/{heure}/{coach}, drag-and-drop) |
 | 1.5 | 26/02/2026 | §1.1 Prénom/Nom : max 50 → **max 150 chars** (noms internationaux) · Règle PII ajoutée : toutes les données personnelles chiffrées au repos (voir DEV_PATTERNS.md §1.9 + CODING_AGENT.md §5.1) |
 | 1.6 | 26/02/2026 | §10.4 Architecture multi-participants : `sessions` sans `client_id` → table `session_participants` (statut/prix/annulation par client) · Tarif groupe : seuil N → prix/client réduit · Multi-coach : client peut avoir N coachs simultanément, données tracées par `coach_id` · Traçabilité consommation : table `package_consumptions` (Id_pack · Id_Payment · Id_Client · minutes · date planif · statut Consommé/Due/En attente) |
+| 1.7 | 26/02/2026 | Décisions architecturales finales : Programme IA → `coach_id = NULL` + `source = 'ai'` · PRs → `is_pr = TRUE` sur `exercise_sets` (pas de table dédiée) + index partiel · Notation coach → Phase 2, aucun schéma anticipé |
 
 ---
 
