@@ -1396,7 +1396,136 @@ Modale :
 
 ---
 
-### 20.1 Définition des forfaits (coach)
+### 20.1 Coordonnées bancaires du coach (RIB)
+
+> **Objectif :** permettre au coach de saisir son RIB une seule fois et de le partager facilement aux clients qui souhaitent régler par virement.
+
+#### Saisie et gestion (Profil coach → "Mes coordonnées bancaires")
+
+**Champs RIB :**
+| Champ | Obligatoire | Format | Notes |
+|-------|-------------|--------|-------|
+| Titulaire du compte | ✅ | Texte libre, max 70 chars | Peut différer du nom du coach |
+| IBAN | ✅ | 34 chars max, format international | Validé par algorithme MOD-97. Ex: `FR76 3000 6000 0112 3456 7890 189` |
+| BIC / SWIFT | ✅ | 8 ou 11 chars | Ex: `BNPAFRPPXXX` |
+| Nom de la banque | ☐ | Texte libre, max 60 chars | Ex: "BNP Paribas" |
+| Libellé virement | ☐ | Texte libre, max 140 chars | Texte suggéré sur l'ordre de virement (ex: "COACHING [PRÉNOM] [MOIS]") |
+
+> ℹ️ Pour les coachs français uniquement, les champs détaillés (code banque, code guichet, numéro de compte, clé RIB) sont **déduits automatiquement** depuis l'IBAN.
+
+**Comportement :**
+- Le coach peut enregistrer **plusieurs RIBs** (ex: compte perso + compte pro) — maximum 3
+- Chaque RIB a un **libellé interne** (ex: "Compte BNP pro", "Compte Crédit Agricole perso")
+- Un seul RIB est marqué **par défaut** (utilisé dans les suggestions de virement)
+- Bouton **"Prévisualiser le RIB"** → affiche le RIB formaté tel qu'il sera vu par le client
+- Bouton **"Supprimer"** → confirmation requise
+
+**Sécurité & Chiffrement :**
+- IBAN et BIC stockés **chiffrés (Fernet, `FIELD_ENCRYPTION_KEY`)** — jamais en clair en base
+- `iban_hash = SHA256(normalize(IBAN))` stocké en clair pour déduplication
+- Jamais affiché en clair dans les logs ou les exports génériques
+- Accès uniquement : coach (lui-même) + clients liés (lecture du RIB partagé)
+
+---
+
+#### Partage du RIB à un client
+
+**Déclencheurs possibles :**
+1. **Lors de la création d'un forfait client** → bouton "📎 Joindre mon RIB" dans `CreatePackageModal`
+2. **Depuis la fiche client → Paiements** → bouton "Envoyer mon RIB"
+3. **Réponse à une demande de client** → depuis la messagerie ou la notification
+
+**Ce que reçoit le client (notification push + message in-app) :**
+```
+📄 Coordonnées bancaires de [Prénom Coach]
+
+Titulaire : [Nom titulaire]
+IBAN      : FR76 **** **** **** **** **** 189
+BIC       : BNP*****XXX
+Banque    : BNP Paribas
+
+Libellé suggéré : "COACHING MARIE MARS 2026"
+
+[ Copier l'IBAN ]   [ Voir le RIB complet ]
+```
+
+> ⚠️ **IBAN partiellement masqué** dans les notifications (4 premiers + 3 derniers chars visibles). Le client accède au RIB complet en tap → écran dédié, après confirmation identité (biométrie/PIN si configuré).
+
+**Envoi du RIB :**
+- `POST /coaches/me/bank-accounts/{id}/share`  
+  Body : `{ client_id: UUID }`
+- Crée un événement `rib_shared` en base (traçabilité : qui, à qui, quand)
+- Log conservé 5 ans (obligation légale transactions financières)
+
+---
+
+#### Vue client — Écran RIB reçu
+
+```
+┌──────────────────────────────────────────────────────┐
+│  📄 Coordonnées bancaires                            │
+│  de Marie Dupont — Coach fitness                     │
+│                                                      │
+│  Titulaire : Marie Dupont                            │
+│  IBAN      : FR76 3000 6000 0112 3456 7890 189       │
+│  BIC       : BNPAFRPPXXX                             │
+│  Banque    : BNP Paribas                             │
+│                                                      │
+│  Libellé à indiquer :                               │
+│  "COACHING MARIE MARS 2026"                          │
+│                                                      │
+│  [📋 Copier l'IBAN]   [📤 Partager]                 │
+│                                                      │
+│  ℹ️  Ces coordonnées sont partagées par votre coach. │
+│  MyCoach ne collecte aucun paiement.                 │
+└──────────────────────────────────────────────────────┘
+```
+
+- Bouton **"Copier l'IBAN"** → copie dans le presse-papier (toast "IBAN copié ✓")
+- Bouton **"Partager"** → share sheet natif Android (pour envoyer à son app bancaire)
+- Historique des RIBs reçus : client → Mes paiements → "Coordonnées reçues" (liste triée par date)
+
+---
+
+#### Modèle de données
+
+```sql
+-- Comptes bancaires du coach (stockés chiffrés)
+CREATE TABLE coach_bank_accounts (
+    id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    coach_id        UUID NOT NULL REFERENCES coach_profiles(id) ON DELETE CASCADE,
+    label           VARCHAR(60) NOT NULL,               -- libellé interne coach
+    account_holder  TEXT NOT NULL,                      -- chiffré Fernet
+    iban            TEXT NOT NULL,                      -- chiffré Fernet
+    iban_hash       CHAR(64) NOT NULL,                  -- SHA256(normalize(IBAN)), pour dédup
+    bic             TEXT NOT NULL,                      -- chiffré Fernet
+    bank_name       TEXT,                               -- chiffré Fernet (optionnel)
+    transfer_label  VARCHAR(140),                       -- libellé virement suggéré (non chiffré)
+    is_default      BOOLEAN DEFAULT FALSE,
+    created_at      TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at      TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    CONSTRAINT max_3_bank_accounts CHECK (
+        (SELECT COUNT(*) FROM coach_bank_accounts cb WHERE cb.coach_id = coach_id) <= 3
+    )
+);
+
+-- Log des partages de RIB (traçabilité légale)
+CREATE TABLE rib_shares (
+    id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    bank_account_id UUID NOT NULL REFERENCES coach_bank_accounts(id),
+    coach_id        UUID NOT NULL REFERENCES coach_profiles(id),
+    client_id       UUID NOT NULL REFERENCES users(id),
+    shared_at       TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    -- Conservation 5 ans minimum
+);
+
+CREATE UNIQUE INDEX uq_iban_per_coach ON coach_bank_accounts (coach_id, iban_hash);
+CREATE INDEX idx_bank_accounts_coach ON coach_bank_accounts (coach_id);
+```
+
+---
+
+### 20.2 Définition des forfaits (coach)
 **Profil coach → "Mes forfaits" :**
 - Forfaits prédéfinis (modifiables à tout moment) :
   - Nom (ex: "Pack 10 séances Yoga"), nb séances, prix total, prix unitaire (calculé)
