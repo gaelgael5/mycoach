@@ -427,11 +427,19 @@ class User(Base):
     # ...
 ```
 
-**Contraintes de ce choix :**
-- ❌ Impossible de faire `WHERE email = ?` directement — utiliser un **hash de recherche** : `email_hash = SHA256(lower(email))` stocké en clair pour les lookups
-- ❌ Impossible de trier/filtrer par prénom/nom en SQL — le tri se fait en Python après fetch
+**Contraintes de ce choix et solutions adoptées :**
+- ❌ Impossible de faire `WHERE email = ?` directement
+  → ✅ **`email_hash`** = `SHA256(lower(email))`, stocké en clair, index unique, utilisé pour tous les lookups
+- ❌ Impossible de faire `WHERE first_name LIKE ?` ou tri SQL par nom
+  → ✅ **`search_token`** = `unaccent(lower(prénom + ' ' + nom))`, stocké en clair, index **GIN pg_trgm** → supporte `ILIKE '%query%'` et `similarity()` performants (voir DEV_PATTERNS.md §1.9)
 - ✅ Dump SQL = illisible sans la clé `FIELD_ENCRYPTION_KEY`
-- ✅ Rotation de clé possible avec script de re-chiffrement
+- ✅ Rotation de clé possible avec script de re-chiffrement (voir DEV_PATTERNS.md §1.9)
+
+**`search_token` — règle d'usage :**
+- Jamais retourné dans les réponses API
+- Jamais loggué
+- Utilisé uniquement dans les clauses `WHERE` de recherche
+- Pas considéré PII : token dérivé irréversible, ne permet pas de retrouver le nom exact
 
 **Pattern email avec hash de recherche :**
 

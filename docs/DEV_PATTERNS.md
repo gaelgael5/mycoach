@@ -411,24 +411,27 @@ class EncryptedString(TypeDecorator):
 ```python
 # app/models/user.py
 import hashlib
+import unicodedata
 from sqlalchemy.orm import Mapped, mapped_column, validates
+from sqlalchemy import Index
 from app.core.encrypted_type import EncryptedString
 from app.db.base import Base
 
 
+def _normalize_for_search(value: str) -> str:
+    """
+    Produit un token de recherche non-PII à partir d'un nom.
+    Étapes : NFD decompose → strip diacritiques → lowercase → strip → collapse spaces.
+    Exemple : "Marie-Hélène Dubois" → "marie-helene dubois"
+    Ce token est stocké en clair — ce n'est PAS le nom réel (pas de fuite PII).
+    """
+    nfd = unicodedata.normalize("NFD", value)
+    ascii_only = "".join(c for c in nfd if unicodedata.category(c) != "Mn")
+    return " ".join(ascii_only.lower().split())
+
+
 class User(Base):
     __tablename__ = "users"
-
-    # --- Colonnes PII chiffrées ---
-    first_name: Mapped[str]       = mapped_column(EncryptedString(150))
-    last_name:  Mapped[str]       = mapped_column(EncryptedString(150))
-    email:      Mapped[str]       = mapped_column(EncryptedString(255))
-    phone:      Mapped[str | None]= mapped_column(EncryptedString(20))
-    google_sub: Mapped[str | None]= mapped_column(EncryptedString(255))
-
-    # --- Hash de recherche (non-PII, indexé) ---
-    # Permet les WHERE email = ? sans déchiffrer toute la table
-    email_hash: Mapped[str] = mapped_column(String(64), unique=True, index=True, nullable=False)
 
     # --- Colonnes non-PII (pas de chiffrement) ---
     id:         Mapped[UUID]      = mapped_column(primary_key=True, default=uuid4)
@@ -440,21 +443,63 @@ class User(Base):
     created_at: Mapped[datetime]  = mapped_column(default=datetime.utcnow)
     updated_at: Mapped[datetime]  = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # --- Colonnes PII chiffrées ---
+    first_name: Mapped[str]        = mapped_column(EncryptedString(150))
+    last_name:  Mapped[str]        = mapped_column(EncryptedString(150))
+    email:      Mapped[str]        = mapped_column(EncryptedString(255))
+    phone:      Mapped[str | None] = mapped_column(EncryptedString(20))
+    google_sub: Mapped[str | None] = mapped_column(EncryptedString(255))
+
+    # --- Colonnes de recherche (non-PII, indexées) ---
+    # email_hash : SHA-256(lower(email)) → lookup unique sans scan chiffré
+    email_hash:   Mapped[str]        = mapped_column(String(64), unique=True, index=True, nullable=False)
+    # search_token : unaccent+lower(prénom + ' ' + nom) → recherche fulltext/trigram
+    # Exemple : "Marie-Hélène Dubois" → "marie-helene dubois"
+    # Index GIN pg_trgm → supporte LIKE '%query%' et similarity() performants
+    search_token: Mapped[str]        = mapped_column(String(300), nullable=False, default="")
+
+    __table_args__ = (
+        # Index GIN trigram sur search_token — requiert l'extension pg_trgm
+        # (déjà activée dans backend/docker/init-db.sql)
+        Index(
+            "ix_users_search_token_gin",
+            "search_token",
+            postgresql_using="gin",
+            postgresql_ops={"search_token": "gin_trgm_ops"},
+        ),
+    )
+
     @validates("email")
     def _sync_email_hash(self, key, value):
         """Synchronise email_hash à chaque modification de email."""
         if value:
-            # Note : SQLAlchemy appelle validate avant process_bind_param
-            # donc `value` est ici la valeur en clair
             self.email_hash = hashlib.sha256(value.strip().lower().encode()).hexdigest()
+        return value
+
+    @validates("first_name", "last_name")
+    def _sync_search_token(self, key, value):
+        """
+        Reconstruit search_token à chaque changement de prénom ou de nom.
+        SQLAlchemy appelle @validates avant le chiffrement EncryptedString,
+        donc `value` est toujours en clair ici.
+        """
+        current_first = self.first_name or ""
+        current_last  = self.last_name  or ""
+        if key == "first_name":
+            new_token = _normalize_for_search(f"{value} {current_last}")
+        else:
+            new_token = _normalize_for_search(f"{current_first} {value}")
+        self.search_token = new_token
         return value
 ```
 
-#### Repository : lookup par email
+#### Repository : lookup par email + recherche coach
 
 ```python
 # app/repositories/user_repository.py
-from app.core.encryption import hash_for_lookup
+from sqlalchemy import select, func
+from app.core.encryption import hash_for_lookup, _normalize_for_search
+
 
 class UserRepository:
 
@@ -466,15 +511,63 @@ class UserRepository:
 
     async def create(self, db: AsyncSession, data: UserCreate) -> User:
         user = User(
-            first_name=data.first_name,   # chiffré automatiquement par EncryptedString
+            first_name=data.first_name,   # @validates → search_token mis à jour
             last_name=data.last_name,
-            email=data.email,             # @validates déclenche _sync_email_hash
+            email=data.email,             # @validates → email_hash mis à jour
             role=data.role,
-            # ...
         )
         db.add(user)
         await db.flush()
         return user
+
+
+class CoachRepository:
+
+    async def search(
+        self,
+        db: AsyncSession,
+        query: str | None = None,
+        specialty: str | None = None,
+        country: str | None = None,
+        max_price_cents: int | None = None,
+        discovery_only: bool = False,
+        certified_only: bool = False,
+        offset: int = 0,
+        limit: int = 20,
+    ) -> tuple[list[User], int]:
+        """
+        Recherche fulltext sur search_token (pg_trgm) + filtres métier.
+        La recherche est insensible aux accents et à la casse.
+        """
+        stmt = (
+            select(User)
+            .join(CoachProfile, CoachProfile.id == User.id)
+            .where(User.role == "coach", User.status == "active")
+        )
+
+        # Recherche par nom — trigram similarity sur search_token (non-PII, indexé)
+        if query:
+            normalized_q = _normalize_for_search(query)
+            stmt = stmt.where(User.search_token.ilike(f"%{normalized_q}%"))
+            # Alternative : similarity score pour fuzzy matching
+            # stmt = stmt.where(func.similarity(User.search_token, normalized_q) > 0.2)
+            # stmt = stmt.order_by(func.similarity(User.search_token, normalized_q).desc())
+
+        # Filtres non-PII (colonnes plain, indexables normalement)
+        if country:
+            stmt = stmt.where(User.country == country)
+        if specialty:
+            stmt = stmt.join(CoachSpecialty).where(CoachSpecialty.specialty == specialty)
+        if max_price_cents:
+            stmt = stmt.where(CoachProfile.unit_price_cents <= max_price_cents)
+        if discovery_only:
+            stmt = stmt.where(CoachProfile.discovery_session_enabled == True)
+        if certified_only:
+            stmt = stmt.where(CoachProfile.is_certified == True)
+
+        total = await db.scalar(select(func.count()).select_from(stmt.subquery()))
+        result = await db.execute(stmt.offset(offset).limit(limit))
+        return result.scalars().all(), total
 ```
 
 #### Schéma Pydantic avec validation longueur
@@ -501,27 +594,62 @@ class UserRegister(BaseModel):
         return v
 ```
 
-#### Migration Alembic : taille des colonnes chiffrées
+#### Migration Alembic : taille des colonnes chiffrées + colonnes de recherche
 
 ```python
-# alembic/versions/xxxx_add_pii_encryption.py
-# Les colonnes PII stockent du texte Fernet → taille SQL = plaintext_max * 2 + 100
-# first_name(150) → VARCHAR(400)
-# email(255)      → VARCHAR(610)
+# alembic/versions/xxxx_users_pii_encryption.py
+"""
+Colonnes PII : chiffrées Fernet → taille SQL ≈ plaintext_max × 2 + 100
+  first_name(150) → VARCHAR(400)
+  last_name(150)  → VARCHAR(400)
+  email(255)      → VARCHAR(610)
+  phone(20)       → VARCHAR(150)
+
+Colonnes de recherche plain (non-PII) :
+  email_hash    → CHAR(64)      SHA-256 hex
+  search_token  → VARCHAR(300)  unaccent+lower(prénom + ' ' + nom)
+                  Index GIN pg_trgm pour recherche fulltext rapide
+"""
+import sqlalchemy as sa
+from alembic import op
+
 
 def upgrade():
-    op.alter_column("users", "first_name", type_=sa.String(400), nullable=False)
-    op.alter_column("users", "last_name",  type_=sa.String(400), nullable=False)
-    op.alter_column("users", "email",      type_=sa.String(610), nullable=False)
-    op.alter_column("users", "phone",      type_=sa.String(150), nullable=True)
-    # email_hash reste VARCHAR(64) — SHA-256 hex, jamais chiffré
+    # Colonnes PII chiffrées
+    op.add_column("users", sa.Column("first_name",  sa.String(400), nullable=False, server_default=""))
+    op.add_column("users", sa.Column("last_name",   sa.String(400), nullable=False, server_default=""))
+    op.add_column("users", sa.Column("email",       sa.String(610), nullable=False, server_default=""))
+    op.add_column("users", sa.Column("phone",       sa.String(150), nullable=True))
+    op.add_column("users", sa.Column("google_sub",  sa.String(610), nullable=True))
+
+    # Colonnes de lookup / recherche (plain, indexées)
+    op.add_column("users", sa.Column("email_hash",   sa.String(64),  nullable=False, server_default=""))
+    op.add_column("users", sa.Column("search_token", sa.String(300), nullable=False, server_default=""))
+
+    # Index unique sur email_hash (lookup rapide O(1))
+    op.create_index("ix_users_email_hash", "users", ["email_hash"], unique=True)
+
+    # Index GIN trigram sur search_token (fulltext sur noms)
+    # Requiert : CREATE EXTENSION IF NOT EXISTS pg_trgm (dans init-db.sql)
+    op.execute(
+        "CREATE INDEX ix_users_search_token_gin ON users "
+        "USING gin (search_token gin_trgm_ops)"
+    )
+
+
+def downgrade():
+    op.execute("DROP INDEX IF EXISTS ix_users_search_token_gin")
+    op.drop_index("ix_users_email_hash", table_name="users")
+    for col in ["first_name", "last_name", "email", "phone", "google_sub",
+                "email_hash", "search_token"]:
+        op.drop_column("users", col)
 ```
 
 #### Champs chiffrés par table (référence complète)
 
-| Table | Champs chiffrés | Champs de lookup (hash) |
-|-------|----------------|------------------------|
-| `users` | `first_name`, `last_name`, `email`, `phone`, `google_sub` | `email_hash` |
+| Table | Champs chiffrés (EncryptedString) | Colonnes de recherche plain (non-PII) |
+|-------|----------------------------------|--------------------------------------|
+| `users` | `first_name`, `last_name`, `email`, `phone`, `google_sub` | `email_hash` SHA-256 · `search_token` unaccent+lower (GIN) |
 | `client_profiles` | `injuries_notes` | — |
 | `coach_profiles` | `bio` | — |
 | `coach_notes` | `content` | — |
@@ -529,6 +657,8 @@ def upgrade():
 | `sms_logs` | `body`, `phone_to` | — |
 | `integration_tokens` | `access_token`, `refresh_token` | — |
 | `cancellation_message_templates` | `body` | — |
+
+> **Règle `search_token`** : jamais loggué, jamais retourné dans les réponses API, utilisé uniquement pour les clauses `WHERE` de recherche. Ce token dérivé n'est pas considéré PII car il ne permet pas de retrouver le nom exact (il est irréversible par design — pas de déchiffrement possible).
 
 #### Variable d'environnement
 
