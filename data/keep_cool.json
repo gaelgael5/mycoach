@@ -18,7 +18,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-agde",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-aix-les-bains",
@@ -32,7 +33,8 @@
       "phone": "+33479607080",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-aix-les-bains",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-aix-en-provence-centre",
@@ -46,7 +48,8 @@
       "phone": "+33442610250",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-aix-en-provence-centre",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-amiens-centre",
@@ -60,7 +63,8 @@
       "phone": "+33322497456",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-amiens-centre",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-aubenas",
@@ -74,7 +78,8 @@
       "phone": "+33966912654",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-aubenas",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-bagnols-sur-ceze",
@@ -88,7 +93,8 @@
       "phone": "+33466793475",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-bagnols-sur-ceze",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-barentin",
@@ -102,7 +108,8 @@
       "phone": "+33235650101",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-barentin",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-beziers",
@@ -116,7 +123,8 @@
       "phone": "+33467214865",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-beziers",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-bourg-en-bresse",
@@ -130,7 +138,8 @@
       "phone": "+33474257227",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-bourg-en-bresse",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-briancon",
@@ -144,7 +153,8 @@
       "phone": "+33492533240",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-briancon",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-bruxelles-toison-dor",
@@ -158,7 +168,8 @@
       "phone": "+33322850072",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-bruxelles-toison-dor",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-cagnes-sur-mer",
@@ -172,7 +183,8 @@
       "phone": "+33624081638",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-cagnes-sur-mer",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-erstein",
@@ -186,7 +198,8 @@
       "phone": "+33767416081",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-erstein",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-gap",
@@ -200,7 +213,8 @@
       "phone": "+33492223437",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-gap",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-grenoble-comboire",
@@ -214,7 +228,8 @@
       "phone": "+33476481298",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-grenoble-comboire",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-hyeres",
@@ -228,7 +243,8 @@
       "phone": "+33494360522",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-hyeres",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-istres",
@@ -242,7 +258,8 @@
       "phone": "+33442566610",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-istres",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-levallois",
@@ -256,7 +273,8 @@
       "phone": "+33184209483",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-levallois",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lille",
@@ -270,7 +288,8 @@
       "phone": "+33320378448",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lille",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lille-centre",
@@ -284,7 +303,8 @@
       "phone": "+33320550808",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lille-centre",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-malakoff",
@@ -298,7 +318,8 @@
       "phone": "+33184191530",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-malakoff",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-manosque",
@@ -312,7 +333,8 @@
       "phone": "+33492770077",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-manosque",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marguerittes",
@@ -326,7 +348,8 @@
       "phone": "+33466332454",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marguerittes",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nice-etoile",
@@ -340,7 +363,8 @@
       "phone": "+33493628218",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nice-etoile",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nice-garibaldi",
@@ -354,7 +378,8 @@
       "phone": "+33492129224",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nice-garibaldi",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nice-gorbella",
@@ -368,7 +393,8 @@
       "phone": "+33493572168",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nice-gorbella",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nice-promenade",
@@ -382,7 +408,8 @@
       "phone": "+33493011234",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nice-promenade",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-chalons-en-champagne",
@@ -396,7 +423,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-chalons-en-champagne",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-pamiers",
@@ -410,7 +438,8 @@
       "phone": "+33534024872",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-pamiers",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-narbonne",
@@ -424,7 +453,8 @@
       "phone": "+33468491106",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-narbonne",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-rodez",
@@ -438,7 +468,8 @@
       "phone": "+33565759667",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-rodez",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-joliette",
@@ -452,7 +483,8 @@
       "phone": "+33484896260",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-joliette",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-cinq-avenues",
@@ -466,7 +498,8 @@
       "phone": "+33491271010",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-cinq-avenues",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-chutes-lavie",
@@ -480,7 +513,8 @@
       "phone": "+33491649362",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-chutes-lavie",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-5e",
@@ -494,7 +528,8 @@
       "phone": "+33491981809",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-5e",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-castellane",
@@ -508,7 +543,8 @@
       "phone": "+33972547833",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-castellane",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-cours-julien",
@@ -522,7 +558,8 @@
       "phone": "+33966926885",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-cours-julien",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-vieux-port",
@@ -536,7 +573,8 @@
       "phone": "+33491590000",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-vieux-port",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-rabatau",
@@ -550,7 +588,8 @@
       "phone": "+33491809708",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-rabatau",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-sainte-anne",
@@ -564,7 +603,8 @@
       "phone": "+33484895205",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-sainte-anne",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-la-valentine",
@@ -578,7 +618,8 @@
       "phone": "+33491191828",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-la-valentine",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-les-olives",
@@ -592,7 +633,8 @@
       "phone": "+33491724115",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-les-olives",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marseille-chateau-gombert",
@@ -606,7 +648,8 @@
       "phone": "+33484895220",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marseille-chateau-gombert",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-aix-en-provence-la-duranne",
@@ -620,7 +663,8 @@
       "phone": "+33442203876",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-aix-en-provence-la-duranne",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-aix-en-provence-rotonde",
@@ -634,7 +678,8 @@
       "phone": "+33484496315",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-aix-en-provence-rotonde",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-ventabren",
@@ -648,7 +693,8 @@
       "phone": "+33442962153",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-ventabren",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-vitrolles",
@@ -662,7 +708,8 @@
       "phone": "+33442414221",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-vitrolles",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-plan-de-campagne-les-pennes",
@@ -676,7 +723,8 @@
       "phone": "+33442413595",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-plan-de-campagne-les-pennes",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-arles-fourchon",
@@ -690,7 +738,8 @@
       "phone": "+33490972730",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-arles-fourchon",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-aix-en-provence-la-pioline",
@@ -704,7 +753,8 @@
       "phone": "+33484496270",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-aix-en-provence-la-pioline",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-salon-de-provence-pelissanne",
@@ -718,7 +768,8 @@
       "phone": "+33490423437",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-salon-de-provence-pelissanne",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-aubagne",
@@ -732,7 +783,8 @@
       "phone": "+33486339056",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-aubagne",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-martigues",
@@ -746,7 +798,8 @@
       "phone": "+33442415341",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-martigues",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-venelles",
@@ -760,7 +813,8 @@
       "phone": "+33442646541",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-venelles",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-rousset-peynier",
@@ -774,7 +828,8 @@
       "phone": "+33788745246",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-rousset-peynier",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-aix-en-provence-les-milles",
@@ -788,7 +843,8 @@
       "phone": "+33442642226",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-aix-en-provence-les-milles",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-cognac",
@@ -802,7 +858,8 @@
       "phone": "+33672934418",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-cognac",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-saintes",
@@ -816,7 +873,8 @@
       "phone": "+33546961815",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-saintes",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-rochelle",
@@ -830,7 +888,8 @@
       "phone": "+33546671394",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-rochelle",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-rochefort",
@@ -844,7 +903,8 @@
       "phone": "+33586220620",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-rochefort",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-bourges",
@@ -858,7 +918,8 @@
       "phone": "+33756283555",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-bourges",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-dijon-valmy",
@@ -872,7 +933,8 @@
       "phone": "+33380411076",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-dijon-valmy",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-beaune",
@@ -886,7 +948,8 @@
       "phone": "+33380242314",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-beaune",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-dijon-quetigny",
@@ -900,7 +963,8 @@
       "phone": "+33380741616",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-dijon-quetigny",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-plerin",
@@ -914,7 +978,8 @@
       "phone": "+33296583850",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-plerin",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lannion",
@@ -928,7 +993,8 @@
       "phone": "+33296131691",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lannion",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-tregueux-saint-brieuc",
@@ -942,7 +1008,8 @@
       "phone": "+33296526682",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-tregueux-saint-brieuc",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-perigueux",
@@ -956,7 +1023,8 @@
       "phone": "+33553132406",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-perigueux",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-montelimar",
@@ -970,7 +1038,8 @@
       "phone": "+33475537297",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-montelimar",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-pierrelatte",
@@ -984,7 +1053,8 @@
       "phone": "+33475912458",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-pierrelatte",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-chartres",
@@ -998,7 +1068,8 @@
       "phone": "+33237223223",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-chartres",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-dreux",
@@ -1012,7 +1083,8 @@
       "phone": "+33237467279",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-dreux",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-quimper",
@@ -1026,7 +1098,8 @@
       "phone": "+33229402873",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-quimper",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-brest-port",
@@ -1040,7 +1113,8 @@
       "phone": "+33298204159",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-brest-port",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-brest-plouzane",
@@ -1054,7 +1128,8 @@
       "phone": "+33229028113",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-brest-plouzane",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lesneven",
@@ -1068,7 +1143,8 @@
       "phone": "+33229610323",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lesneven",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-brest-guipavas",
@@ -1082,7 +1158,8 @@
       "phone": "+33298339838",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-brest-guipavas",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nimes-centre",
@@ -1096,7 +1173,8 @@
       "phone": "+33757591148",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nimes-centre",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-ales",
@@ -1110,7 +1188,8 @@
       "phone": "+33466072103",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-ales",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-avignon-les-angles",
@@ -1124,7 +1203,8 @@
       "phone": "+33484512690",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-avignon-les-angles",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nimes-mas-carbonnel",
@@ -1138,7 +1218,8 @@
       "phone": "+33466402163",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nimes-mas-carbonnel",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nimes-ouest",
@@ -1152,7 +1233,8 @@
       "phone": "+33466843624",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nimes-ouest",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-toulouse-capitole",
@@ -1166,7 +1248,8 @@
       "phone": "+33561750286",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-toulouse-capitole",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-toulouse-matabiau",
@@ -1180,7 +1263,8 @@
       "phone": "+33561156458",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-toulouse-matabiau",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-toulouse-atlanta",
@@ -1194,7 +1278,8 @@
       "phone": "+33562271086",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-toulouse-atlanta",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-cazeres",
@@ -1208,7 +1293,8 @@
       "phone": "+33561976993",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-cazeres",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-carbonne",
@@ -1222,7 +1308,8 @@
       "phone": "+33561871307",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-carbonne",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-labege",
@@ -1236,7 +1323,8 @@
       "phone": "+33531614736",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-labege",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-bordeaux-centre-parlement",
@@ -1250,7 +1338,8 @@
       "phone": "+33972127279",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-bordeaux-centre-parlement",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-cenon",
@@ -1264,7 +1353,8 @@
       "phone": "+33980833804",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-cenon",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-saint-medard-en-jalles",
@@ -1278,7 +1368,8 @@
       "phone": "+33556703256",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-saint-medard-en-jalles",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-saint-andre-de-cubzac",
@@ -1292,7 +1383,8 @@
       "phone": "+33557587872",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-saint-andre-de-cubzac",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-teste",
@@ -1306,7 +1398,8 @@
       "phone": "+33556835416",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-teste",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-le-pian-medoc",
@@ -1320,7 +1413,8 @@
       "phone": "+33556159579",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-le-pian-medoc",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-pessac",
@@ -1334,7 +1428,8 @@
       "phone": "+33647322336",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-pessac",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-brede",
@@ -1348,7 +1443,8 @@
       "phone": "+33557912847",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-brede",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-merignac-capeyron",
@@ -1362,7 +1458,8 @@
       "phone": "+33964035451",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-merignac-capeyron",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-podensac",
@@ -1376,7 +1473,8 @@
       "phone": "+33556769912",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-podensac",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-montpellier-arceaux",
@@ -1390,7 +1488,8 @@
       "phone": "+33499581183",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-montpellier-arceaux",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-montpellier-beaux-arts",
@@ -1404,7 +1503,8 @@
       "phone": "+33467584366",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-montpellier-beaux-arts",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-montpellier-maurin",
@@ -1418,7 +1518,8 @@
       "phone": "+33467588629",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-montpellier-maurin",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-montpellier-odysseum",
@@ -1432,7 +1533,8 @@
       "phone": "+33467471366",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-montpellier-odysseum",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-montpellier-euromedecine",
@@ -1446,7 +1548,8 @@
       "phone": "+33467703432",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-montpellier-euromedecine",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-sete",
@@ -1460,7 +1563,8 @@
       "phone": "+33467189916",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-sete",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lunel",
@@ -1474,7 +1578,8 @@
       "phone": "+33467505461",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lunel",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-saint-jean-de-vedas",
@@ -1488,7 +1593,8 @@
       "phone": "+33467475124",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-saint-jean-de-vedas",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-rennes-colombier",
@@ -1502,7 +1608,8 @@
       "phone": "+33299314880",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-rennes-colombier",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-cesson-viasilva",
@@ -1516,7 +1623,8 @@
       "phone": "+33299039562",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-cesson-viasilva",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-chambray-les-tours",
@@ -1530,7 +1638,8 @@
       "phone": "+33247720369",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-chambray-les-tours",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-grenoble-gambetta",
@@ -1544,7 +1653,8 @@
       "phone": "+33438032659",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-grenoble-gambetta",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-grenoble-saint-martin-dheres",
@@ -1558,7 +1668,8 @@
       "phone": "+33476820607",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-grenoble-saint-martin-dheres",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-crolles",
@@ -1572,7 +1683,8 @@
       "phone": "+33476718355",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-crolles",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-mont-de-marsan",
@@ -1586,7 +1698,8 @@
       "phone": "+33558461407",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-mont-de-marsan",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-saint-etienne",
@@ -1600,7 +1713,8 @@
       "phone": "+33618823589",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-saint-etienne",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-roanne-riorges",
@@ -1614,7 +1728,8 @@
       "phone": "+33477727454",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-roanne-riorges",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-firminy",
@@ -1628,7 +1743,8 @@
       "phone": "+33625313616",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-firminy",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-sorbiers",
@@ -1642,7 +1758,8 @@
       "phone": "+33786443447",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-sorbiers",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-saint-etienne-la-fouillouse",
@@ -1656,7 +1773,8 @@
       "phone": "+33627702727",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-saint-etienne-la-fouillouse",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-montbrison",
@@ -1670,7 +1788,8 @@
       "phone": "+33477763656",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-montbrison",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-le-puy-en-velay",
@@ -1684,7 +1803,8 @@
       "phone": "+33471095349",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-le-puy-en-velay",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nantes-centre-hotel-dieu",
@@ -1698,7 +1818,8 @@
       "phone": "+33240748545",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nantes-centre-hotel-dieu",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nantes-centre-saint-mihiel",
@@ -1712,7 +1833,8 @@
       "phone": "+33228440995",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nantes-centre-saint-mihiel",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nantes-route-de-vannes",
@@ -1726,7 +1848,8 @@
       "phone": "+33228078614",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nantes-route-de-vannes",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nantes-pole-sud",
@@ -1740,7 +1863,8 @@
       "phone": "+33228097710",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nantes-pole-sud",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-pornic",
@@ -1754,7 +1878,8 @@
       "phone": "+33251746680",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-pornic",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nantes-jules-verne",
@@ -1768,7 +1893,8 @@
       "phone": "+33259160926",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nantes-jules-verne",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nantes-beaujoire",
@@ -1782,7 +1908,8 @@
       "phone": "+33240493670",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nantes-beaujoire",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-saint-nazaire",
@@ -1796,7 +1923,8 @@
       "phone": "+33240151515",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-saint-nazaire",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nantes-ragon",
@@ -1810,7 +1938,8 @@
       "phone": "+33240771993",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nantes-ragon",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-orleans-centre",
@@ -1824,7 +1953,8 @@
       "phone": "+33246915040",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-orleans-centre",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-orleans-saint-mesmin",
@@ -1838,7 +1968,8 @@
       "phone": "+33238573471",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-orleans-saint-mesmin",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-orleans-fleury-les-aubrais",
@@ -1852,7 +1983,8 @@
       "phone": "+33238738220",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-orleans-fleury-les-aubrais",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-cahors",
@@ -1866,7 +1998,8 @@
       "phone": "+33565367221",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-cahors",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-agen-boe",
@@ -1880,7 +2013,8 @@
       "phone": "+33553485175",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-agen-boe",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-angers-capucins",
@@ -1894,7 +2028,8 @@
       "phone": "+33749519805",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-angers-capucins",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nancy-artem",
@@ -1908,7 +2043,8 @@
       "phone": "+33966819220",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nancy-artem",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nancy-centre-commanderie",
@@ -1922,7 +2058,8 @@
       "phone": "+33372472010",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nancy-centre-commanderie",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nancy-gare",
@@ -1936,7 +2073,8 @@
       "phone": "+33372470830",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nancy-gare",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nancy-essey",
@@ -1950,7 +2088,8 @@
       "phone": "+33383331106",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nancy-essey",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lorient",
@@ -1964,7 +2103,8 @@
       "phone": "+33297875706",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lorient",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-metz-gare",
@@ -1978,7 +2118,8 @@
       "phone": "+33387554096",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-metz-gare",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-metz-saint-julien",
@@ -1992,7 +2133,8 @@
       "phone": "+33967213224",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-metz-saint-julien",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-thionville",
@@ -2006,7 +2148,8 @@
       "phone": "+33382858500",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-thionville",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-metz-sud",
@@ -2020,7 +2163,8 @@
       "phone": "+33387663030",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-metz-sud",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-sarrebourg",
@@ -2034,7 +2178,8 @@
       "phone": "+33372660090",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-sarrebourg",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nevers",
@@ -2048,7 +2193,8 @@
       "phone": "+33698428807",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nevers",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lille-solferino",
@@ -2062,7 +2208,8 @@
       "phone": "+33967583899",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lille-solferino",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-valenciennes",
@@ -2076,7 +2223,8 @@
       "phone": "+33327263030",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-valenciennes",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-villeneuve-dascq",
@@ -2090,7 +2238,8 @@
       "phone": "+33320651298",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-villeneuve-dascq",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-le-quesnoy",
@@ -2104,7 +2253,8 @@
       "phone": "+33374014110",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-le-quesnoy",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-clermont-ferrand",
@@ -2118,7 +2268,8 @@
       "phone": "+33473915680",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-clermont-ferrand",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-riom-mozac",
@@ -2132,7 +2283,8 @@
       "phone": "+33473331153",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-riom-mozac",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-cournon",
@@ -2146,7 +2298,8 @@
       "phone": "+33473836375",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-cournon",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-pau",
@@ -2160,7 +2313,8 @@
       "phone": "+33559711854",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-pau",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-anglet",
@@ -2174,7 +2328,8 @@
       "phone": "+33559420091",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-anglet",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-tarbes",
@@ -2188,7 +2343,8 @@
       "phone": "+33562338442",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-tarbes",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-perpignan-chateau-roussillon",
@@ -2202,7 +2358,8 @@
       "phone": "+33468521660",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-perpignan-chateau-roussillon",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-strasbourg",
@@ -2216,7 +2373,8 @@
       "phone": "+33367103855",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-strasbourg",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-strasbourg-cathedrale",
@@ -2230,7 +2388,8 @@
       "phone": "+33367103790",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-strasbourg-cathedrale",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-strasbourg-les-halles",
@@ -2244,7 +2403,8 @@
       "phone": "+33367104115",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-strasbourg-les-halles",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-neudorf",
@@ -2258,7 +2418,8 @@
       "phone": "+33367109150",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-neudorf",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-neudorf-ribeauville",
@@ -2272,7 +2433,8 @@
       "phone": "+33388601111",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-neudorf-ribeauville",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-obernai",
@@ -2286,7 +2448,8 @@
       "phone": "+33749550735",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-obernai",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lingolsheim",
@@ -2300,7 +2463,8 @@
       "phone": "+33367103780",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lingolsheim",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-souffelweyersheim",
@@ -2314,7 +2478,8 @@
       "phone": "+33367109160",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-souffelweyersheim",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-haguenau",
@@ -2328,7 +2493,8 @@
       "phone": "+33367310740",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-haguenau",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-schweighouse",
@@ -2342,7 +2508,8 @@
       "phone": "+33388061217",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-schweighouse",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-selestat",
@@ -2356,7 +2523,8 @@
       "phone": "+33367370087",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-selestat",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-colmar",
@@ -2370,7 +2538,8 @@
       "phone": "+33389241276",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-colmar",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-mulhouse-wittenheim",
@@ -2384,7 +2553,8 @@
       "phone": "+33389351266",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-mulhouse-wittenheim",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lyon-2-confluence",
@@ -2398,7 +2568,8 @@
       "phone": "+33472042283",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lyon-2-confluence",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lyon-3-felix-faure",
@@ -2412,7 +2583,8 @@
       "phone": "+33972462520",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lyon-3-felix-faure",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lyon-3-montchat",
@@ -2426,7 +2598,8 @@
       "phone": "+33472122153",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lyon-3-montchat",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lyon-part-dieu",
@@ -2440,7 +2613,8 @@
       "phone": "+33428460002",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lyon-part-dieu",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lyon-sky56",
@@ -2454,7 +2628,8 @@
       "phone": "+33428299070",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lyon-sky56",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lyon-8",
@@ -2468,7 +2643,8 @@
       "phone": "+33478761406",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lyon-8",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-lyon-9-vaise",
@@ -2482,7 +2658,8 @@
       "phone": "+33478431788",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-lyon-9-vaise",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-villeurbanne-charpennes",
@@ -2496,7 +2673,8 @@
       "phone": "+33437436403",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-villeurbanne-charpennes",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-craponne",
@@ -2510,7 +2688,8 @@
       "phone": "+33437412251",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-craponne",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-bron",
@@ -2524,7 +2703,8 @@
       "phone": "+33478264344",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-bron",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-limonest",
@@ -2538,7 +2718,8 @@
       "phone": "+33478405838",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-limonest",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-macon-nord",
@@ -2552,7 +2733,8 @@
       "phone": "+33385343854",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-macon-nord",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-le-mans-village",
@@ -2566,7 +2748,8 @@
       "phone": "+33243271601",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-le-mans-village",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-chambery-centre",
@@ -2580,7 +2763,8 @@
       "phone": "+33479607080",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-chambery-centre",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-phoenix",
@@ -2594,7 +2778,8 @@
       "phone": "+33230427883",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-phoenix",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-annecy",
@@ -2608,7 +2793,8 @@
       "phone": "+33450052427",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-annecy",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-paris-14-denfert-rochereau",
@@ -2622,7 +2808,8 @@
       "phone": "+33614585024",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-paris-14-denfert-rochereau",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-paris-2-clery",
@@ -2636,7 +2823,8 @@
       "phone": "+33189164850",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-paris-2-clery",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-paris-4-bastille",
@@ -2650,7 +2838,8 @@
       "phone": "+33189164900",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-paris-4-bastille",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-paris-5-saint-germain",
@@ -2664,7 +2853,8 @@
       "phone": "+33189167550",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-paris-5-saint-germain",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-paris-8-monceau",
@@ -2678,7 +2868,8 @@
       "phone": "+33142892230",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-paris-8-monceau",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-paris-9-chateaudun",
@@ -2692,7 +2883,8 @@
       "phone": "+33189166525",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-paris-9-chateaudun",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-paris-15-convention",
@@ -2706,7 +2898,8 @@
       "phone": "+33972128541",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-paris-15-convention",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-paris-18-marcadet",
@@ -2720,7 +2913,8 @@
       "phone": "+33189166280",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-paris-18-marcadet",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-rouen-centre",
@@ -2734,7 +2928,8 @@
       "phone": "+33975243761",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-rouen-centre",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-mont-saint-aignan",
@@ -2748,7 +2943,8 @@
       "phone": "+33235604232",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-mont-saint-aignan",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-le-havre",
@@ -2762,7 +2958,8 @@
       "phone": "+33235444410",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-le-havre",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-varennes-sur-seine",
@@ -2776,7 +2973,8 @@
       "phone": "+33185480710",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-varennes-sur-seine",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-nemours",
@@ -2790,7 +2988,8 @@
       "phone": "+33177038086",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-nemours",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-fontainebleau",
@@ -2804,7 +3003,8 @@
       "phone": "+33160718860",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-fontainebleau",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-saint-germain-en-laye",
@@ -2818,7 +3018,8 @@
       "phone": "+33130611956",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-saint-germain-en-laye",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-le-chesnay",
@@ -2832,7 +3033,8 @@
       "phone": "+33184730250",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-le-chesnay",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-marly-le-roi",
@@ -2846,7 +3048,8 @@
       "phone": "+33967543037",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-marly-le-roi",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-les-clayes-sous-bois",
@@ -2860,7 +3063,8 @@
       "phone": "+33620686102",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-les-clayes-sous-bois",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-flins-sur-seine",
@@ -2874,7 +3078,8 @@
       "phone": "+33134751599",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-flins-sur-seine",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-mantes-la-ville",
@@ -2888,7 +3093,8 @@
       "phone": "+33130924040",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-mantes-la-ville",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-niort",
@@ -2902,7 +3108,8 @@
       "phone": "+33549046884",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-niort",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-abbeville",
@@ -2916,7 +3123,8 @@
       "phone": "+33322250553",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-abbeville",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-albi",
@@ -2930,7 +3138,8 @@
       "phone": "+33563430140",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-albi",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-montauban",
@@ -2944,7 +3153,8 @@
       "phone": "+33563201801",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-montauban",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-sainte-maxime",
@@ -2958,7 +3168,8 @@
       "phone": "+33422470710",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-sainte-maxime",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-valette",
@@ -2972,7 +3183,8 @@
       "phone": "+33422147100",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-valette",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-brignoles",
@@ -2986,7 +3198,8 @@
       "phone": "+33494378953",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-brignoles",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-draguignan",
@@ -3000,7 +3213,8 @@
       "phone": "+33494700430",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-draguignan",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-callian",
@@ -3014,7 +3228,8 @@
       "phone": "+33494673440",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-callian",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-saint-maximin-la-sainte-baume",
@@ -3028,7 +3243,8 @@
       "phone": "+33494699584",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-saint-maximin-la-sainte-baume",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-frejus-la-palud",
@@ -3042,7 +3258,8 @@
       "phone": "+33494513082",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-frejus-la-palud",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-saint-raphael",
@@ -3056,7 +3273,8 @@
       "phone": "+33494823377",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-saint-raphael",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-avignon-fontcouverte",
@@ -3070,7 +3288,8 @@
       "phone": "+33490885740",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-avignon-fontcouverte",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-orange",
@@ -3084,7 +3303,8 @@
       "phone": "+33490301847",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-orange",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-pertuis",
@@ -3098,7 +3318,8 @@
       "phone": "+33490774425",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-pertuis",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-le-pontet",
@@ -3112,7 +3333,8 @@
       "phone": "+33766076173",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-le-pontet",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-le-thor",
@@ -3126,7 +3348,8 @@
       "phone": "+33490225975",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-le-thor",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-cavaillon",
@@ -3140,7 +3363,8 @@
       "phone": "+33432502897",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-cavaillon",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-apt",
@@ -3154,7 +3378,8 @@
       "phone": "+33490048927",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-apt",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-bollene",
@@ -3168,7 +3393,8 @@
       "phone": "+33490111292",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-bollene",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-poitiers",
@@ -3182,7 +3408,8 @@
       "phone": "+33685813799",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-poitiers",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-sens",
@@ -3196,7 +3423,8 @@
       "phone": "+33373610120",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-sens",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-savigny-sur-orge",
@@ -3210,7 +3438,8 @@
       "phone": "+33169444658",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-savigny-sur-orge",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-montrouge",
@@ -3224,7 +3453,8 @@
       "phone": "+33184191570",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-montrouge",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-antony",
@@ -3238,7 +3468,8 @@
       "phone": "+33146666000",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-antony",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-gennevilliers",
@@ -3252,7 +3483,8 @@
       "phone": "+33147936897",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-gennevilliers",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-defense-ariane",
@@ -3266,7 +3498,8 @@
       "phone": "+33174544898",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-defense-ariane",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-puteaux",
@@ -3280,7 +3513,8 @@
       "phone": "+33147289856",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-puteaux",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-champigny-sur-marne",
@@ -3294,7 +3528,8 @@
       "phone": "+33145169012",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-champigny-sur-marne",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-choisy-le-roi",
@@ -3308,7 +3543,8 @@
       "phone": "+33184230655",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-choisy-le-roi",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-cormeilles-en-parisis",
@@ -3322,7 +3558,8 @@
       "phone": "+33139959110",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-cormeilles-en-parisis",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-eragny",
@@ -3336,7 +3573,8 @@
       "phone": "+33134023773",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-eragny",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-martinique-fort-de-france",
@@ -3350,7 +3588,8 @@
       "phone": "+33596696609",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-martinique-fort-de-france",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-martinique-ducos",
@@ -3364,7 +3603,8 @@
       "phone": "+33596696058",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-martinique-ducos",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-martinique-robert-creolis",
@@ -3378,7 +3618,8 @@
       "phone": "+33696013900",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-martinique-robert-creolis",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-reunion-sainte-marie-duparc",
@@ -3392,7 +3633,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-reunion-sainte-marie-duparc",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-reunion-saint-louis",
@@ -3406,7 +3648,8 @@
       "phone": "+33262263169",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-reunion-saint-louis",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-reunion-le-tampon",
@@ -3420,7 +3663,8 @@
       "phone": "+33262243899",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-reunion-le-tampon",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-reunion-quartier-francais",
@@ -3434,7 +3678,8 @@
       "phone": "+33262506430",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-reunion-quartier-francais",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-reunion-saint-benoit",
@@ -3448,7 +3693,8 @@
       "phone": "+33262408051",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-reunion-saint-benoit",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-saint-gilles-eperon",
@@ -3462,7 +3708,8 @@
       "phone": "+33262334996",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-saint-gilles-eperon",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-reunion-saint-joseph",
@@ -3476,7 +3723,8 @@
       "phone": "+33262513292",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-reunion-saint-joseph",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-reunion-saint-leu",
@@ -3490,7 +3738,8 @@
       "phone": "+33262352784",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-reunion-saint-leu",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-reunion-saint-pierre",
@@ -3504,7 +3753,8 @@
       "phone": "+33262251777",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-reunion-saint-pierre",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "KC-la-reunion-sainte-clotilde",
@@ -3518,7 +3768,8 @@
       "phone": "+33693478965",
       "email": null,
       "website_url": "https://keepcool.fr/s/salle-de-sport-la-reunion-sainte-clotilde",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     }
   ]
 }

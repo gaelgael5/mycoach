@@ -59,7 +59,7 @@ import asyncpg
 
 # ─── Configuration ────────────────────────────────────────────────────────────
 
-DATAS_DIR = Path(__file__).parent.parent / "Datas"
+DATAS_DIR = Path(__file__).parent.parent / "data"
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "postgresql://mycoach:mycoach_dev@localhost:5432/mycoach"

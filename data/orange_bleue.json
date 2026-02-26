@@ -18,7 +18,8 @@
       "phone": "+33684488745",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/villers-bocage/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-aigrefeuille-sur-maine",
@@ -32,7 +33,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/aigrefeuille-sur-maine/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-ailly-sur-noye",
@@ -46,7 +48,8 @@
       "phone": "+33744444730",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/ailly-sur-noye/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-audruicq",
@@ -60,7 +63,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/audruicq/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-ambert",
@@ -74,7 +78,8 @@
       "phone": "+33444448899",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/ambert/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-blangy-sur-bresle",
@@ -88,7 +93,8 @@
       "phone": "+33769997983",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/blangy-sur-bresle/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-breal-sous-montfort",
@@ -102,7 +108,8 @@
       "phone": "+33222668670",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/breal-sous-montfort/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bayonne",
@@ -116,7 +123,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bayonne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bazas",
@@ -130,7 +138,8 @@
       "phone": "+33564720935",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bazas/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bordeaux-gare",
@@ -144,7 +153,8 @@
       "phone": "+33750683076",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bordeaux-gare/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bretteville-lorgueilleuse",
@@ -158,7 +168,8 @@
       "phone": "+33759503821",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bretteville-lorgueilleuse/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-brionne",
@@ -172,7 +183,8 @@
       "phone": "+33666613176",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/brionne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-brumath",
@@ -186,7 +198,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/brumath/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-caudry",
@@ -200,7 +213,8 @@
       "phone": "+33327764894",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/caudry/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-clermont-lherault",
@@ -214,7 +228,8 @@
       "phone": "+33467884234",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/clermont-lherault/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-creon",
@@ -228,7 +243,8 @@
       "phone": "+33557340952",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/creon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-canet-en-roussillon",
@@ -242,7 +258,8 @@
       "phone": "+33768269160",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/canet-en-roussillon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-doue-la-fontaine",
@@ -256,7 +273,8 @@
       "phone": "+33241387052",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/doue-la-fontaine/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-darvoy",
@@ -270,7 +288,8 @@
       "phone": "+33238146105",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/darvoy/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-deauville",
@@ -284,7 +303,8 @@
       "phone": "+33666367624",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/deauville/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-derval",
@@ -298,7 +318,8 @@
       "phone": "+33228046906",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/derval/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-douchy-les-mines",
@@ -312,7 +333,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/douchy-les-mines/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-falaise",
@@ -326,7 +348,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/falaise/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-fargues-saint-hilaire",
@@ -340,7 +363,8 @@
       "phone": "+33748882065",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/fargues-saint-hilaire/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-fitz-james",
@@ -354,7 +378,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/fitz-james/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-fleurance",
@@ -368,7 +393,8 @@
       "phone": "+33532097449",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/fleurance/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-gorron",
@@ -382,7 +408,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/gorron/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-hasparren",
@@ -396,7 +423,8 @@
       "phone": "+33789667610",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/hasparren/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chamalieres",
@@ -410,7 +438,8 @@
       "phone": "+33766624091",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chamalieres/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-isneauville",
@@ -424,7 +453,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/isneauville/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-bouilladisse",
@@ -438,7 +468,8 @@
       "phone": "+33484489212",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-bouilladisse/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-ligne",
@@ -452,7 +483,8 @@
       "phone": "+33228301149",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/ligne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-lyon-8",
@@ -466,7 +498,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/lyon-8/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-meziere",
@@ -480,7 +513,8 @@
       "phone": "+33764448338",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-meziere/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-laval-centre",
@@ -494,7 +528,8 @@
       "phone": "+33684438806",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/laval-centre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-le-blanc",
@@ -508,7 +543,8 @@
       "phone": "+33775796123",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/le-blanc/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-le-poire-sur-vie",
@@ -522,7 +558,8 @@
       "phone": "+33624490270",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/le-poire-sur-vie/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-le-pont-de-beauvoisin",
@@ -536,7 +573,8 @@
       "phone": "+33651500909",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/le-pont-de-beauvoisin/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-les-sorinieres",
@@ -550,7 +588,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/les-sorinieres/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-lesparre-medoc",
@@ -564,7 +603,8 @@
       "phone": "+33973890478",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/lesparre-medoc/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-migne-auxances",
@@ -578,7 +618,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/migne-auxances/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-machecoul",
@@ -592,7 +633,8 @@
       "phone": "+33672823408",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/machecoul/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-meslay-du-maine",
@@ -606,7 +648,8 @@
       "phone": "+33743367017",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/meslay-du-maine/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-montauban-de-bretagne",
@@ -620,7 +663,8 @@
       "phone": "+33299069301",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/montauban-de-bretagne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-montech",
@@ -634,7 +678,8 @@
       "phone": "+33660164559",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/montech/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-merignac",
@@ -648,7 +693,8 @@
       "phone": "+33750684462",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/merignac/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-nantes-la-beaujoire",
@@ -662,7 +708,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/nantes-la-beaujoire/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-nice",
@@ -676,7 +723,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/nice/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-orbec",
@@ -690,7 +738,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/orbec/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-orgeval",
@@ -704,7 +753,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/orgeval/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-paimboeuf",
@@ -718,7 +768,8 @@
       "phone": "+33244060555",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/paimboeuf/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-perpignan-sud",
@@ -732,7 +783,8 @@
       "phone": "+33769439782",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/perpignan-sud/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pithiviers",
@@ -746,7 +798,8 @@
       "phone": "+33238060932",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pithiviers/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-plestin-les-greves",
@@ -760,7 +813,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/plestin-les-greves/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-ploermel",
@@ -774,7 +828,8 @@
       "phone": "+33297741225",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/ploermel/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pont-eveque",
@@ -788,7 +843,8 @@
       "phone": "+33474209317",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pont-eveque/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pontault-combault",
@@ -802,7 +858,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pontault-combault/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-roanne-2",
@@ -816,7 +873,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/roanne-2/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rocheserviere-2",
@@ -830,7 +888,8 @@
       "phone": "+33681143756",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rocheserviere-2/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-jean-dillac",
@@ -844,7 +903,8 @@
       "phone": "+33664782379",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-jean-dillac/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-salouel",
@@ -858,7 +918,8 @@
       "phone": "+33983293736",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/salouel/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-soyaux",
@@ -872,7 +933,8 @@
       "phone": "+33545370037",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/soyaux/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-berthevin-2",
@@ -886,7 +948,8 @@
       "phone": "+33626555509",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-berthevin-2/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-brandan",
@@ -900,7 +963,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-brandan/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-cyprien",
@@ -914,7 +978,8 @@
       "phone": "+33673621736",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-cyprien/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-erblon",
@@ -928,7 +993,8 @@
       "phone": "+33290894492",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-erblon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-esteve",
@@ -942,7 +1008,8 @@
       "phone": "+33686304875",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-esteve/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-jean-de-monts",
@@ -956,7 +1023,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-jean-de-monts/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-just-saint-rambert",
@@ -970,7 +1038,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-just-saint-rambert/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-lys-2",
@@ -984,7 +1053,8 @@
       "phone": "+33955135059",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-lys-2/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-pee-sur-nivelle",
@@ -998,7 +1068,8 @@
       "phone": "+33628747920",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-pee-sur-nivelle/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-sainte-lucie-de-porto-vecchio",
@@ -1012,7 +1083,8 @@
       "phone": "+33420204919",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/sainte-lucie-de-porto-vecchio/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saran",
@@ -1026,7 +1098,8 @@
       "phone": "+33238536527",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saran/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-sennecey-le-grand",
@@ -1040,7 +1113,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/sennecey-le-grand/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-thorigne-fouillard",
@@ -1054,7 +1128,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/thorigne-fouillard/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-thuir",
@@ -1068,7 +1143,8 @@
       "phone": "+33612082220",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/thuir/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-thury-harcourt",
@@ -1082,7 +1158,8 @@
       "phone": "+33231793126",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/thury-harcourt/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-tournay",
@@ -1096,7 +1173,8 @@
       "phone": "+33630367696",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/tournay/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-verson",
@@ -1110,7 +1188,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/verson/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-villemoisson-sur-orge",
@@ -1124,7 +1203,8 @@
       "phone": "+33183539805",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/villemoisson-sur-orge/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-villeneuve-loubet",
@@ -1138,7 +1218,8 @@
       "phone": "+33983925441",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/villeneuve-loubet/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-valence-dagen",
@@ -1152,7 +1233,8 @@
       "phone": "+33745101979",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/valence-dagen/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-valognes",
@@ -1166,7 +1248,8 @@
       "phone": "+33250161712",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/valognes/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-vedene",
@@ -1180,7 +1263,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/vedene/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-villeneuve-les-maguelone",
@@ -1194,7 +1278,8 @@
       "phone": "+33660730734",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/villeneuve-les-maguelone/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-villiers-sur-marne",
@@ -1208,7 +1293,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/villiers-sur-marne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-evron",
@@ -1222,7 +1308,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/evron/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-lagnieu",
@@ -1236,7 +1323,8 @@
       "phone": "+33469188231",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/lagnieu/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-montreal-la-cluse-port",
@@ -1250,7 +1338,8 @@
       "phone": "+33474766310",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/montreal-la-cluse-port/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-quentin",
@@ -1264,7 +1353,8 @@
       "phone": "+33323622811",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-quentin/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chauny",
@@ -1278,7 +1368,8 @@
       "phone": "+33323529603",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chauny/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-villers-cotterets",
@@ -1292,7 +1383,8 @@
       "phone": "+33760243005",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/villers-cotterets/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-commentry-malicorne",
@@ -1306,7 +1398,8 @@
       "phone": "+33676853596",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/commentry-malicorne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-carcassonne-est",
@@ -1320,7 +1413,8 @@
       "phone": "+33468716564",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/carcassonne-est/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rodez-olemps",
@@ -1334,7 +1428,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rodez-olemps/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-marseille",
@@ -1348,7 +1443,8 @@
       "phone": "+33966826631",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/marseille/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-marseille-la-valentine",
@@ -1362,7 +1458,8 @@
       "phone": "+33488224173",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/marseille-la-valentine/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-lisieux",
@@ -1376,7 +1473,8 @@
       "phone": "+33231328161",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/lisieux/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-caen-mondeville",
@@ -1390,7 +1488,8 @@
       "phone": "+33231343803",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/caen-mondeville/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-fleury-sur-orne",
@@ -1404,7 +1503,8 @@
       "phone": "+33984102914",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/fleury-sur-orne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-ouistreham",
@@ -1418,7 +1518,8 @@
       "phone": "+33782076081",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/ouistreham/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-dives-sur-mer",
@@ -1432,7 +1533,8 @@
       "phone": "+33231736937",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/dives-sur-mer/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-pierre-en-auge",
@@ -1446,7 +1548,8 @@
       "phone": "+33745030941",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-pierre-en-auge/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-herouville-saint-clair",
@@ -1460,7 +1563,8 @@
       "phone": "+33631380890",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/herouville-saint-clair/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-argences",
@@ -1474,7 +1578,8 @@
       "phone": "+33684832294",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/argences/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bayeux",
@@ -1488,7 +1593,8 @@
       "phone": "+33231226190",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bayeux/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-courseulles-sur-mer",
@@ -1502,7 +1608,8 @@
       "phone": "+33750136040",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/courseulles-sur-mer/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-honfleur",
@@ -1516,7 +1623,8 @@
       "phone": "+33231649939",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/honfleur/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bretteville-sur-odon",
@@ -1530,7 +1638,8 @@
       "phone": "+33973545716",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bretteville-sur-odon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-rochefoucauld-rivieres",
@@ -1544,7 +1653,8 @@
       "phone": "+33517793550",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-rochefoucauld-rivieres/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-angouleme-gond-pontouvre",
@@ -1558,7 +1668,8 @@
       "phone": "+33545683212",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/angouleme-gond-pontouvre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-jarnac",
@@ -1572,7 +1683,8 @@
       "phone": "+33987738872",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/jarnac/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-ruffec",
@@ -1586,7 +1698,8 @@
       "phone": "+33625946093",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/ruffec/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-royan",
@@ -1600,7 +1713,8 @@
       "phone": "+33546392924",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/royan/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rochefort",
@@ -1614,7 +1728,8 @@
       "phone": "+33749076150",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rochefort/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saintes-saint-georges-des-coteaux",
@@ -1628,7 +1743,8 @@
       "phone": "+33546962724",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saintes-saint-georges-des-coteaux/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-tulle",
@@ -1642,7 +1758,8 @@
       "phone": "+33555270756",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/tulle/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-objat",
@@ -1656,7 +1773,8 @@
       "phone": "+33555872180",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/objat/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-porto-vecchio",
@@ -1670,7 +1788,8 @@
       "phone": "+33420027222",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/porto-vecchio/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-dinan-quevert",
@@ -1684,7 +1803,8 @@
       "phone": "+33296876577",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/dinan-quevert/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-lamballe",
@@ -1698,7 +1818,8 @@
       "phone": "+33296319943",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/lamballe/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-matignon",
@@ -1712,7 +1833,8 @@
       "phone": "+33986540503",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/matignon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-loudeac",
@@ -1726,7 +1848,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/loudeac/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-guingamp-ploumagoar",
@@ -1740,7 +1863,8 @@
       "phone": "+33296447376",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/guingamp-ploumagoar/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-sarlat-la-caneda",
@@ -1754,7 +1878,8 @@
       "phone": "+33553319638",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/sarlat-la-caneda/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-ornans",
@@ -1768,7 +1893,8 @@
       "phone": "+33370889869",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/ornans/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bourg-les-valence",
@@ -1782,7 +1908,8 @@
       "phone": "+33475440944",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bourg-les-valence/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-verneuil-sur-avre",
@@ -1796,7 +1923,8 @@
       "phone": "+33227344824",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/verneuil-sur-avre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bourg-achard",
@@ -1810,7 +1938,8 @@
       "phone": "+33780976419",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bourg-achard/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-le-thuit-de-loison",
@@ -1824,7 +1953,8 @@
       "phone": "+33232132159",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/le-thuit-de-loison/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-vernon-saint-marcel",
@@ -1838,7 +1968,8 @@
       "phone": "+33232543868",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/vernon-saint-marcel/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chartres",
@@ -1852,7 +1983,8 @@
       "phone": "+33237288470",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chartres/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chateaudun-saint-denis-lanneray",
@@ -1866,7 +1998,8 @@
       "phone": "+33237454826",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chateaudun-saint-denis-lanneray/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-champhol",
@@ -1880,7 +2013,8 @@
       "phone": "+33237369096",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/champhol/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-quimper-nord",
@@ -1894,7 +2028,8 @@
       "phone": "+33298913655",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/quimper-nord/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-quimper",
@@ -1908,7 +2043,8 @@
       "phone": "+33298574919",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/quimper/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pont-l-abbe",
@@ -1922,7 +2058,8 @@
       "phone": "+33229209065",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pont-l-abbe/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rosporden",
@@ -1936,7 +2073,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rosporden/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chateaulin",
@@ -1950,7 +2088,8 @@
       "phone": "+33298869396",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chateaulin/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-fouesnant",
@@ -1964,7 +2103,8 @@
       "phone": "+33298598384",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/fouesnant/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-brest-centre",
@@ -1978,7 +2118,8 @@
       "phone": "+33298206765",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/brest-centre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-pol-de-leon",
@@ -1992,7 +2133,8 @@
       "phone": "+33298243784",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-pol-de-leon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-plouzane",
@@ -2006,7 +2148,8 @@
       "phone": "+33298341384",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/plouzane/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-renan",
@@ -2020,7 +2163,8 @@
       "phone": "+33298402980",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-renan/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-quimperle-mellac",
@@ -2034,7 +2178,8 @@
       "phone": "+33298717457",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/quimperle-mellac/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-landivisiau",
@@ -2048,7 +2193,8 @@
       "phone": "+33298194289",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/landivisiau/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-plougastel-daoulas",
@@ -2062,7 +2208,8 @@
       "phone": "+33298387626",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/plougastel-daoulas/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-morlaix-saint-martin-des-champs",
@@ -2076,7 +2223,8 @@
       "phone": "+33298637935",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/morlaix-saint-martin-des-champs/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-landerneau",
@@ -2090,7 +2238,8 @@
       "phone": "+33298433727",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/landerneau/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-plabennec",
@@ -2104,7 +2253,8 @@
       "phone": "+33221747786",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/plabennec/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-concarneau",
@@ -2118,7 +2268,8 @@
       "phone": "+33298595877",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/concarneau/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-montrejeau-gourdan-polignan",
@@ -2132,7 +2283,8 @@
       "phone": "+33561884505",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/montrejeau-gourdan-polignan/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-cugnaux",
@@ -2146,7 +2298,8 @@
       "phone": "+33609939706",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/cugnaux/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bessieres",
@@ -2160,7 +2313,8 @@
       "phone": "+33561849229",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bessieres/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-gaudens-landorthe",
@@ -2174,7 +2328,8 @@
       "phone": "+33536850012",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-gaudens-landorthe/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-auch",
@@ -2188,7 +2343,8 @@
       "phone": "+33787549655",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/auch/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-le-barp",
@@ -2202,7 +2358,8 @@
       "phone": "+33787382692",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/le-barp/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-libourne",
@@ -2216,7 +2373,8 @@
       "phone": "+33557507097",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/libourne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bessan",
@@ -2230,7 +2388,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bessan/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rennes-stade",
@@ -2244,7 +2403,8 @@
       "phone": "+33299146359",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rennes-stade/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rennes-alma",
@@ -2258,7 +2418,8 @@
       "phone": "+33299644128",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rennes-alma/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rennes-place-de-bretagnes",
@@ -2272,7 +2433,8 @@
       "phone": "+33223472192",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rennes-place-de-bretagnes/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rennes-saint-gregoire",
@@ -2286,7 +2448,8 @@
       "phone": "+33768345531",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rennes-saint-gregoire/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rennes-colombier",
@@ -2300,7 +2463,8 @@
       "phone": "+33688932170",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rennes-colombier/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rennes-gare",
@@ -2314,7 +2478,8 @@
       "phone": "+33672418737",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rennes-gare/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-guerche-de-bretagne",
@@ -2328,7 +2493,8 @@
       "phone": "+33299968288",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-guerche-de-bretagne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-fougeres",
@@ -2342,7 +2508,8 @@
       "phone": "+33256471133",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/fougeres/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rennes-saint-jacques",
@@ -2356,7 +2523,8 @@
       "phone": "+33299350621",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rennes-saint-jacques/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-montfort-sur-meu-bedee",
@@ -2370,7 +2538,8 @@
       "phone": "+33223434502",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/montfort-sur-meu-bedee/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-janze",
@@ -2384,7 +2553,8 @@
       "phone": "+33223086587",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/janze/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bruz",
@@ -2398,7 +2568,8 @@
       "phone": "+33299529737",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bruz/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-tinteniac",
@@ -2412,7 +2583,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/tinteniac/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chateaubourg",
@@ -2426,7 +2598,8 @@
       "phone": "+33299558363",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chateaubourg/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-combourg",
@@ -2440,7 +2613,8 @@
       "phone": "+33299898510",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/combourg/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-meen-le-grand",
@@ -2454,7 +2628,8 @@
       "phone": "+33223430470",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-meen-le-grand/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-liffre",
@@ -2468,7 +2643,8 @@
       "phone": "+33223223436",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/liffre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-plelan-le-grand",
@@ -2482,7 +2658,8 @@
       "phone": "+33299062877",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/plelan-le-grand/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chateaugiron",
@@ -2496,7 +2673,8 @@
       "phone": "+33223076672",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chateaugiron/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-jouan-des-guerets",
@@ -2510,7 +2688,8 @@
       "phone": "+33299826956",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-jouan-des-guerets/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bain-de-bretagne",
@@ -2524,7 +2703,8 @@
       "phone": "+33982432569",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bain-de-bretagne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-vitre",
@@ -2538,7 +2718,8 @@
       "phone": "+33683686394",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/vitre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-cesson-sevigne-la-rigourdiere",
@@ -2552,7 +2733,8 @@
       "phone": "+33665371688",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/cesson-sevigne-la-rigourdiere/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-guichen",
@@ -2566,7 +2748,8 @@
       "phone": "+33290015552",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/guichen/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-redon",
@@ -2580,7 +2763,8 @@
       "phone": "+33223631749",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/redon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-brice",
@@ -2594,7 +2778,8 @@
       "phone": "+33256470431",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-brice/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rennes-fac-de-droit",
@@ -2608,7 +2793,8 @@
       "phone": "+33640532314",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rennes-fac-de-droit/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pace",
@@ -2622,7 +2808,8 @@
       "phone": "+33223413515",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pace/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-vern-sur-seiche",
@@ -2636,7 +2823,8 @@
       "phone": "+33299621204",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/vern-sur-seiche/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-betton",
@@ -2650,7 +2838,8 @@
       "phone": "+33299557574",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/betton/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-tours",
@@ -2664,7 +2853,8 @@
       "phone": "+33234532124",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/tours/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-tours-nord",
@@ -2678,7 +2868,8 @@
       "phone": "+33783478994",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/tours-nord/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-montlouis-sur-loire",
@@ -2692,7 +2883,8 @@
       "phone": "+33247860306",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/montlouis-sur-loire/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-lisle-dabeau",
@@ -2706,7 +2898,8 @@
       "phone": "+33768459981",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/lisle-dabeau/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-dole",
@@ -2720,7 +2913,8 @@
       "phone": "+33384714202",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/dole/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-mont-de-marsan",
@@ -2734,7 +2928,8 @@
       "phone": "+33524285925",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/mont-de-marsan/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-dax",
@@ -2748,7 +2943,8 @@
       "phone": "+33558571712",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/dax/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-soustons",
@@ -2762,7 +2958,8 @@
       "phone": "+33608669938",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/soustons/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-mimizan",
@@ -2776,7 +2973,8 @@
       "phone": "+33558047750",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/mimizan/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-vincent-de-tyrosse",
@@ -2790,7 +2988,8 @@
       "phone": "+33782375292",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-vincent-de-tyrosse/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-castets",
@@ -2804,7 +3003,8 @@
       "phone": "+33788260237",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/castets/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-peyrehorade",
@@ -2818,7 +3018,8 @@
       "phone": "+33778051889",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/peyrehorade/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pomarez",
@@ -2832,7 +3033,8 @@
       "phone": "+33786370391",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pomarez/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-tarnos-saint-martin-de-seignanx",
@@ -2846,7 +3048,8 @@
       "phone": "+33637705416",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/tarnos-saint-martin-de-seignanx/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-biscarrosse",
@@ -2860,7 +3063,8 @@
       "phone": "+33670921441",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/biscarrosse/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-hagetmau",
@@ -2874,7 +3078,8 @@
       "phone": "+33624669133",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/hagetmau/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-blois-villebarou",
@@ -2888,7 +3093,8 @@
       "phone": "+33236235388",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/blois-villebarou/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-vendome",
@@ -2902,7 +3108,8 @@
       "phone": "+33254801189",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/vendome/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-charlieu",
@@ -2916,7 +3123,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/charlieu/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-le-puy-en-velay",
@@ -2930,7 +3138,8 @@
       "phone": "+33471576540",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/le-puy-en-velay/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chateaubriant",
@@ -2944,7 +3153,8 @@
       "phone": "+33743368886",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chateaubriant/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-grandchamps-des-fontaines",
@@ -2958,7 +3168,8 @@
       "phone": "+33240931047",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/grandchamps-des-fontaines/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-vertou",
@@ -2972,7 +3183,8 @@
       "phone": "+33240803247",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/vertou/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-blain",
@@ -2986,7 +3198,8 @@
       "phone": "+33228055890",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/blain/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-ancenis",
@@ -3000,7 +3213,8 @@
       "phone": "+33240962291",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/ancenis/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-clisson-getigne",
@@ -3014,7 +3228,8 @@
       "phone": "+33240035920",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/clisson-getigne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pornic",
@@ -3028,7 +3243,8 @@
       "phone": "+33240644316",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pornic/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-chapelle-sur-erdre",
@@ -3042,7 +3258,8 @@
       "phone": "+33228304355",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-chapelle-sur-erdre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-savenay",
@@ -3056,7 +3273,8 @@
       "phone": "+33228005827",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/savenay/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-philbert-de-grand-lieu",
@@ -3070,7 +3288,8 @@
       "phone": "+33645308100",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-philbert-de-grand-lieu/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-nantes-bouguenais",
@@ -3084,7 +3303,8 @@
       "phone": "+33642435204",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/nantes-bouguenais/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-nort-sur-erdre",
@@ -3098,7 +3318,8 @@
       "phone": "+33251815271",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/nort-sur-erdre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-chapelle-basse-mer",
@@ -3112,7 +3333,8 @@
       "phone": "+33228003397",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-chapelle-basse-mer/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-carquefou",
@@ -3126,7 +3348,8 @@
       "phone": "+33670642184",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/carquefou/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-baule",
@@ -3140,7 +3363,8 @@
       "phone": "+33240615232",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-baule/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-nazaire-trignac",
@@ -3154,7 +3378,8 @@
       "phone": "+33240901365",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-nazaire-trignac/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-herblain",
@@ -3168,7 +3393,8 @@
       "phone": "+33240860039",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-herblain/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-orleans-saint-jean-de-braye",
@@ -3182,7 +3408,8 @@
       "phone": "+33238553303",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/orleans-saint-jean-de-braye/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-agen",
@@ -3196,7 +3423,8 @@
       "phone": "+33553965891",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/agen/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-marmande",
@@ -3210,7 +3438,8 @@
       "phone": "+33553838920",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/marmande/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-angers",
@@ -3224,7 +3453,8 @@
       "phone": "+33241176014",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/angers/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-beaucouze",
@@ -3238,7 +3468,8 @@
       "phone": "+33241379863",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/beaucouze/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chemille",
@@ -3252,7 +3483,8 @@
       "phone": "+33241299920",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chemille/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-tierce",
@@ -3266,7 +3498,8 @@
       "phone": "+33241424514",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/tierce/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chalonnes-sur-loire",
@@ -3280,7 +3513,8 @@
       "phone": "+33241470646",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chalonnes-sur-loire/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saumur",
@@ -3294,7 +3528,8 @@
       "phone": "+33241032546",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saumur/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-macaire-en-mauges-sevremoine",
@@ -3308,7 +3543,8 @@
       "phone": "+33673115012",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-macaire-en-mauges-sevremoine/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-segre",
@@ -3322,7 +3558,8 @@
       "phone": "+33241942578",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/segre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-beaupreau-en-mauges",
@@ -3336,7 +3573,8 @@
       "phone": "+33241855354",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/beaupreau-en-mauges/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-lo",
@@ -3350,7 +3588,8 @@
       "phone": "+33983423245",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-lo/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-cherbourg-tourlaville",
@@ -3364,7 +3603,8 @@
       "phone": "+33233444910",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/cherbourg-tourlaville/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-villedieu-les-poeles",
@@ -3378,7 +3618,8 @@
       "phone": "+33233609149",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/villedieu-les-poeles/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pontorson",
@@ -3392,7 +3633,8 @@
       "phone": "+33250061049",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pontorson/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-coutances",
@@ -3406,7 +3648,8 @@
       "phone": "+33233178564",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/coutances/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-avranches-saint-martin-des-champs",
@@ -3420,7 +3663,8 @@
       "phone": "+33233589050",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/avranches-saint-martin-des-champs/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-granville",
@@ -3434,7 +3678,8 @@
       "phone": "+33233484773",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/granville/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-cherbourg-querqueville",
@@ -3448,7 +3693,8 @@
       "phone": "+33966958804",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/cherbourg-querqueville/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-carentan",
@@ -3462,7 +3708,8 @@
       "phone": "+33647950384",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/carentan/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-hilaire-du-harcouet",
@@ -3476,7 +3723,8 @@
       "phone": "+33233587939",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-hilaire-du-harcouet/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chalons-en-champagne",
@@ -3490,7 +3738,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chalons-en-champagne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-sezanne",
@@ -3504,7 +3753,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/sezanne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-epernay",
@@ -3518,7 +3768,8 @@
       "phone": "+33326324884",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/epernay/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bezannes",
@@ -3532,7 +3783,8 @@
       "phone": "+33326874331",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bezannes/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-dormans",
@@ -3546,7 +3798,8 @@
       "phone": "+33326520432",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/dormans/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-laval",
@@ -3560,7 +3813,8 @@
       "phone": "+33789511133",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/laval/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-mayenne-peyenniere",
@@ -3574,7 +3828,8 @@
       "phone": "+33243329462",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/mayenne-peyenniere/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chateau-gontier-saint-fort",
@@ -3588,7 +3843,8 @@
       "phone": "+33243070291",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chateau-gontier-saint-fort/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-craon",
@@ -3602,7 +3858,8 @@
       "phone": "+33699721372",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/craon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-ernee",
@@ -3616,7 +3873,8 @@
       "phone": "+33243059551",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/ernee/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-messein",
@@ -3630,7 +3888,8 @@
       "phone": "+33383276231",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/messein/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-vannes",
@@ -3644,7 +3903,8 @@
       "phone": "+33685292208",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/vannes/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-lorient",
@@ -3658,7 +3918,8 @@
       "phone": "+33297306996",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/lorient/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-malestroit",
@@ -3672,7 +3933,8 @@
       "phone": "+33662738389",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/malestroit/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-baud",
@@ -3686,7 +3948,8 @@
       "phone": "+33297282394",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/baud/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-gacilly",
@@ -3700,7 +3963,8 @@
       "phone": "+33299706324",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-gacilly/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-plouay",
@@ -3714,7 +3978,8 @@
       "phone": "+33297846307",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/plouay/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-ploemeur",
@@ -3728,7 +3993,8 @@
       "phone": "+33297784930",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/ploemeur/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-guer",
@@ -3742,7 +4008,8 @@
       "phone": "+33297734631",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/guer/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-auray",
@@ -3756,7 +4023,8 @@
       "phone": "+33767127259",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/auray/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-locmine",
@@ -3770,7 +4038,8 @@
       "phone": "+33297135652",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/locmine/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-queven",
@@ -3784,7 +4053,8 @@
       "phone": "+33297569257",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/queven/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-lanester",
@@ -3798,7 +4068,8 @@
       "phone": "+33297811998",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/lanester/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-hennebont",
@@ -3812,7 +4083,8 @@
       "phone": "+33297825505",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/hennebont/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-ave",
@@ -3826,7 +4098,8 @@
       "phone": "+33297624350",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-ave/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-dunkerque",
@@ -3840,7 +4113,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/dunkerque/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-tourcoing",
@@ -3854,7 +4128,8 @@
       "phone": "+33622201670",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/tourcoing/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-amand-les-eaux",
@@ -3868,7 +4143,8 @@
       "phone": "+33327316843",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-amand-les-eaux/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-valenciennes",
@@ -3882,7 +4158,8 @@
       "phone": "+33327339701",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/valenciennes/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-meru",
@@ -3896,7 +4173,8 @@
       "phone": "+33786677961",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/meru/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-just-en-chaussee",
@@ -3910,7 +4188,8 @@
       "phone": "+33344781147",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-just-en-chaussee/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-grandvilliers",
@@ -3924,7 +4203,8 @@
       "phone": "+33986528244",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/grandvilliers/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-senlis-chamant",
@@ -3938,7 +4218,8 @@
       "phone": "+33344315191",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/senlis-chamant/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-gisors-trie-chateau",
@@ -3952,7 +4233,8 @@
       "phone": "+33344100855",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/gisors-trie-chateau/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-crepy-en-valois",
@@ -3966,7 +4248,8 @@
       "phone": "+33344888125",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/crepy-en-valois/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-alencon",
@@ -3980,7 +4263,8 @@
       "phone": "+33233261795",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/alencon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-flers",
@@ -3994,7 +4278,8 @@
       "phone": "+33233962516",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/flers/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-argentan",
@@ -4008,7 +4293,8 @@
       "phone": "+33233394938",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/argentan/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-laigle",
@@ -4022,7 +4308,8 @@
       "phone": "+33233846432",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/laigle/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-mortagne-au-perche-saint-langis-les-mortagne",
@@ -4036,7 +4323,8 @@
       "phone": "+33233255787",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/mortagne-au-perche-saint-langis-les-mortagne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bapaume",
@@ -4050,7 +4338,8 @@
       "phone": "+33673168517",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bapaume/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-lievin",
@@ -4064,7 +4353,8 @@
       "phone": "+33952746618",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/lievin/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-courpiere",
@@ -4078,7 +4368,8 @@
       "phone": "+33473805673",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/courpiere/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-jean-de-luz-urrugne",
@@ -4092,7 +4383,8 @@
       "phone": "+33547024296",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-jean-de-luz-urrugne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-biarritz",
@@ -4106,7 +4398,8 @@
       "phone": "+33973884207",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/biarritz/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-orthez",
@@ -4120,7 +4413,8 @@
       "phone": "+33559383578",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/orthez/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-oloron",
@@ -4134,7 +4428,8 @@
       "phone": "+33559053814",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/oloron/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-soumoulou",
@@ -4148,7 +4443,8 @@
       "phone": "+33624745297",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/soumoulou/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pau-est-assat",
@@ -4162,7 +4458,8 @@
       "phone": "+33559327077",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pau-est-assat/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bayonne-lahonce",
@@ -4176,7 +4473,8 @@
       "phone": "+33535391453",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bayonne-lahonce/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-tarbes",
@@ -4190,7 +4488,8 @@
       "phone": "+33567458276",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/tarbes/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bagneres-de-bigorre-pouzac",
@@ -4204,7 +4503,8 @@
       "phone": "+33562953002",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bagneres-de-bigorre-pouzac/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-perpignan-le-soler",
@@ -4218,7 +4518,8 @@
       "phone": "+33652722726",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/perpignan-le-soler/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pollestres",
@@ -4232,7 +4533,8 @@
       "phone": "+33749264950",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pollestres/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-argeles-sur-mer",
@@ -4246,7 +4548,8 @@
       "phone": "+33670335465",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/argeles-sur-mer/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-sainte-foy-largentiere-souzy",
@@ -4260,7 +4563,8 @@
       "phone": "+33970667246",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/sainte-foy-largentiere-souzy/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-gueugnon",
@@ -4274,7 +4578,8 @@
       "phone": "+33358139654",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/gueugnon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-montceau-les-mines",
@@ -4288,7 +4593,8 @@
       "phone": "+33358110557",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/montceau-les-mines/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-louhans",
@@ -4302,7 +4608,8 @@
       "phone": "+33385722781",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/louhans/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-le-mans-ouest",
@@ -4316,7 +4623,8 @@
       "phone": "+33243246034",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/le-mans-ouest/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-le-mans-sud-antares",
@@ -4330,7 +4638,8 @@
       "phone": "+33243404340",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/le-mans-sud-antares/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-fleche",
@@ -4344,7 +4653,8 @@
       "phone": "+33243942121",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-fleche/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-sable-sur-sarthe-solesmes",
@@ -4358,7 +4668,8 @@
       "phone": "+33243623238",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/sable-sur-sarthe-solesmes/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-ferte-bernard",
@@ -4372,7 +4683,8 @@
       "phone": "+33243936596",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-ferte-bernard/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-mamers",
@@ -4386,7 +4698,8 @@
       "phone": "+33243348429",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/mamers/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-chambery",
@@ -4400,7 +4713,8 @@
       "phone": "+33456295654",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/chambery/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-moutiers",
@@ -4414,7 +4728,8 @@
       "phone": "+33479554154",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/moutiers/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-douvaine",
@@ -4428,7 +4743,8 @@
       "phone": "+33450430097",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/douvaine/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-rumilly",
@@ -4442,7 +4758,8 @@
       "phone": "+33450644668",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/rumilly/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-thonon-les-bains",
@@ -4456,7 +4773,8 @@
       "phone": "+33450761932",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/thonon-les-bains/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-viuz-en-sallaz",
@@ -4470,7 +4788,8 @@
       "phone": "+33450859897",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/viuz-en-sallaz/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-epagny",
@@ -4484,7 +4803,8 @@
       "phone": "+33679948198",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/epagny/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-pierre-en-faucigny",
@@ -4498,7 +4818,8 @@
       "phone": "+33450975885",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-pierre-en-faucigny/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-scionzier",
@@ -4512,7 +4833,8 @@
       "phone": "+33450258126",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/scionzier/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-yvetot",
@@ -4526,7 +4848,8 @@
       "phone": "+33962535494",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/yvetot/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bolbec-gruchet-le-valasse",
@@ -4540,7 +4863,8 @@
       "phone": "+33967071823",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bolbec-gruchet-le-valasse/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-gournay-en-bray",
@@ -4554,7 +4878,8 @@
       "phone": "+33235904559",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/gournay-en-bray/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-criquetot-lesneval",
@@ -4568,7 +4893,8 @@
       "phone": "+33783440164",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/criquetot-lesneval/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-fecamp",
@@ -4582,7 +4908,8 @@
       "phone": "+33953033660",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/fecamp/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-le-havre-centre",
@@ -4596,7 +4923,8 @@
       "phone": "+33235475936",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/le-havre-centre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-le-havre-grand-hameau",
@@ -4610,7 +4938,8 @@
       "phone": "+33235490833",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/le-havre-grand-hameau/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-provins",
@@ -4624,7 +4953,8 @@
       "phone": "+33619334377",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/provins/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-ozoir-la-ferriere",
@@ -4638,7 +4968,8 @@
       "phone": "+33170336676",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/ozoir-la-ferriere/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-plaisir",
@@ -4652,7 +4983,8 @@
       "phone": "+33651473392",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/plaisir/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-neauphlette",
@@ -4666,7 +4998,8 @@
       "phone": "+33954652493",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/neauphlette/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bessines",
@@ -4680,7 +5013,8 @@
       "phone": "+33950517759",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bessines/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-niort",
@@ -4694,7 +5028,8 @@
       "phone": "+33549350602",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/niort/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-bressuire",
@@ -4708,7 +5043,8 @@
       "phone": "+33549819218",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/bressuire/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-melle-saint-martin-les-melle",
@@ -4722,7 +5058,8 @@
       "phone": "+33963549565",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/melle-saint-martin-les-melle/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-peronne",
@@ -4736,7 +5073,8 @@
       "phone": "+33322830159",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/peronne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-albert",
@@ -4750,7 +5088,8 @@
       "phone": "+33322751426",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/albert/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-roye",
@@ -4764,7 +5103,8 @@
       "phone": "+33322981050",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/roye/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-carmaux-blaye-les-mines",
@@ -4778,7 +5118,8 @@
       "phone": "+33563435264",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/carmaux-blaye-les-mines/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-labastide-saint-pierre",
@@ -4792,7 +5133,8 @@
       "phone": "+33563258104",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/labastide-saint-pierre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-cyr-sur-mer",
@@ -4806,7 +5148,8 @@
       "phone": "+33762646069",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-cyr-sur-mer/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-maximin-la-sainte-baume-3",
@@ -4820,7 +5163,8 @@
       "phone": "+33781300070",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-maximin-la-sainte-baume-3/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-vinon-sur-verdon",
@@ -4834,7 +5178,8 @@
       "phone": "+33749833613",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/vinon-sur-verdon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pertuis",
@@ -4848,7 +5193,8 @@
       "phone": "+33671210026",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pertuis/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-roche-sur-yon-les-flaneries",
@@ -4862,7 +5208,8 @@
       "phone": "+33251988335",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-roche-sur-yon-les-flaneries/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-la-roche-sur-yon",
@@ -4876,7 +5223,8 @@
       "phone": "+33602595252",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/la-roche-sur-yon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-aizenay",
@@ -4890,7 +5238,8 @@
       "phone": "+33771220437",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/aizenay/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-fontenay-le-comte",
@@ -4904,7 +5253,8 @@
       "phone": "+33251539420",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/fontenay-le-comte/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-mortagne-sur-sevre",
@@ -4918,7 +5268,8 @@
       "phone": "+33251928854",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/mortagne-sur-sevre/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-challans",
@@ -4932,7 +5283,8 @@
       "phone": "+33251353346",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/challans/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-les-sables-dolonne-olonne-sur-mer",
@@ -4946,7 +5298,8 @@
       "phone": "+33251013330",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/les-sables-dolonne-olonne-sur-mer/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-lucon",
@@ -4960,7 +5313,8 @@
       "phone": "+33251564375",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/lucon/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-talmont-saint-hilaire",
@@ -4974,7 +5328,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/talmont-saint-hilaire/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-montaigu-bouffere",
@@ -4988,7 +5343,8 @@
       "phone": "+33251427051",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/montaigu-bouffere/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-pouzauges",
@@ -5002,7 +5358,8 @@
       "phone": "+33770201675",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/pouzauges/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-gilles-croix-de-vie",
@@ -5016,7 +5373,8 @@
       "phone": "+33244368901",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-gilles-croix-de-vie/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-limoges-nord",
@@ -5030,7 +5388,8 @@
       "phone": "+33677840562",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/limoges-nord/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-junien",
@@ -5044,7 +5403,8 @@
       "phone": "+33555711189",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-junien/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-remiremont-saint-nabord",
@@ -5058,7 +5418,8 @@
       "phone": "+33329224460",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/remiremont-saint-nabord/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-saint-florentin",
@@ -5072,7 +5433,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/saint-florentin/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-belfort",
@@ -5086,7 +5448,8 @@
       "phone": "+33339034028",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/belfort/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-breuillet",
@@ -5100,7 +5463,8 @@
       "phone": "+33160819788",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/breuillet/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-clichy",
@@ -5114,7 +5478,8 @@
       "phone": "+33147301088",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/clichy/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-montrouge",
@@ -5128,7 +5493,8 @@
       "phone": "+33951042634",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/montrouge/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-vanves",
@@ -5142,7 +5508,8 @@
       "phone": "+33141909352",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/vanves/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-colombes",
@@ -5156,7 +5523,8 @@
       "phone": "+33147853148",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/colombes/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-gournay-sur-marne",
@@ -5170,7 +5538,8 @@
       "phone": "+33149141074",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/gournay-sur-marne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-thiais",
@@ -5184,7 +5553,8 @@
       "phone": null,
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/thiais/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-villejuif-vitry-sur-seine",
@@ -5198,7 +5568,8 @@
       "phone": "+33967532342",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/villejuif-vitry-sur-seine/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-magny-en-vexin",
@@ -5212,7 +5583,8 @@
       "phone": "+33130365638",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/magny-en-vexin/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-eaubonne",
@@ -5226,7 +5598,8 @@
       "phone": "+33175405332",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/eaubonne/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     },
     {
       "external_id": "LOB-mamoudzou",
@@ -5240,7 +5613,8 @@
       "phone": "+33269520627",
       "email": null,
       "website_url": "https://www.lorangebleue.fr/clubs/mamoudzou/",
-      "open_24h": false
+      "open_24h": false,
+      "services": []
     }
   ]
 }

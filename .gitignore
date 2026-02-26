@@ -63,7 +63,7 @@ backend/.env.dev
 !backend/.env.dev.example
 !backend/.env.example
 
-# ─── Données (Datas/*.json sont commités — référentiels de salles) ───────────
+# ─── Données (data/*.json sont commités — référentiels de salles publiques) ──
 # Rien à ignorer ici : les JSON sont du référentiel de données publiques
 
 # ─── OS ───────────────────────────────────────────────────────────────────────
