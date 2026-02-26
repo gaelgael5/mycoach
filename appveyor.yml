@@ -10,8 +10,12 @@
 #   API_KEY_SALT         = hex 16 bytes             (cocher "Encrypt value")
 #   SECRET_KEY           = hex 32 bytes             (cocher "Encrypt value")
 #
-# Variables PAS dans l'UI (gérées ici) :
-#   DATABASE_URL, GOOGLE_CLIENT_ID, APP_ENV
+# Variables gérées dans ce fichier (non secrètes, spécifiques CI) :
+#   DATABASE_URL  — toujours localhost en CI
+#   APP_ENV       — "test"
+#
+# Variables dans l'UI uniquement (secrètes) :
+#   GOOGLE_CLIENT_ID = ci_placeholder
 # ─────────────────────────────────────────────────────────────────────────────
 
 version: "{build}"
