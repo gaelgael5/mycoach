@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 async def get_current_user(
-    x_api_key: str = Header(..., alias="X-API-Key"),
+    x_api_key: str | None = Header(None, alias="X-API-Key"),
     db: AsyncSession = Depends(get_db),
 ) -> User:
     """
@@ -27,6 +27,12 @@ async def get_current_user(
     Raises:
         401 si la clé est absente, invalide ou révoquée.
     """
+    if not x_api_key:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="api_key_missing",
+            headers={"WWW-Authenticate": "ApiKey"},
+        )
     key_hash = hash_api_key(x_api_key)
     user = await api_key_repository.get_user_by_key_hash(db, key_hash)
 

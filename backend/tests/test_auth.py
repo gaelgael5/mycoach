@@ -266,9 +266,9 @@ class TestMe:
         assert data["id"] == str(coach_user.id)
 
     async def test_me_no_key(self, client: AsyncClient):
-        """❌ Pas de clé → 422 (header manquant)."""
+        """❌ Pas de clé → 401 (header optionnel, vérification dans get_current_user)."""
         resp = await client.get("/auth/me")
-        assert resp.status_code == 422
+        assert resp.status_code == 401
 
     async def test_me_invalid_key(self, client: AsyncClient):
         """❌ Clé invalide → 401."""

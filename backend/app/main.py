@@ -18,7 +18,10 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 from app.config import get_settings
 from app.database import engine
 import app.models  # noqa: F401 — charge tous les modèles pour SQLAlchemy mapper
-from app.routers import auth, coaches, gyms, payments, cancellation_templates
+from app.routers import (
+    auth, coaches, gyms, payments, cancellation_templates,
+    clients, bookings, waitlist, push, bulk_actions,
+)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -150,6 +153,11 @@ app.include_router(coaches.router)
 app.include_router(gyms.router)
 app.include_router(payments.router)
 app.include_router(cancellation_templates.router)
+app.include_router(clients.router)
+app.include_router(bookings.router)
+app.include_router(waitlist.router)
+app.include_router(push.router)
+app.include_router(bulk_actions.router)
 # Phase 1+ : coaches, clients, gyms, bookings, etc. ajoutés ici
 
 

@@ -78,3 +78,5 @@ docker-compose.override.yml
 # ─── Logs ─────────────────────────────────────────────────────────────────────
 *.log
 logs/
+.venv/
+backend/.venv/

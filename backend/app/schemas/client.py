@@ -132,3 +132,57 @@ class RelationResponse(BaseModel):
 
 class CoachNoteUpdate(BaseModel):
     content: Annotated[str | None, Field(max_length=5000)] = None
+
+
+# ── Questionnaire client ──────────────────────────────────────────────────────
+
+class QuestionnaireCreate(BaseModel):
+    goal: str | None = None
+    level: str | None = None
+    frequency_per_week: Annotated[int | None, Field(ge=1, le=14)] = None
+    session_duration_min: Annotated[int | None, Field(ge=15, le=240)] = None
+    equipment: list[str] = []
+    target_zones: list[str] = []
+    injuries: Annotated[str | None, Field(max_length=2000)] = None
+    injury_zones: list[str] = []
+
+
+class QuestionnaireUpdate(QuestionnaireCreate):
+    pass
+
+
+class QuestionnaireResponse(BaseModel):
+    id: uuid.UUID
+    client_id: uuid.UUID
+    goal: str | None
+    level: str | None
+    frequency_per_week: int | None
+    session_duration_min: int | None
+    equipment: list[str]
+    target_zones: list[str]
+    injuries: str | None  # déchiffré en clair dans la réponse
+    injury_zones: list[str]
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+# ── Demande de coaching ───────────────────────────────────────────────────────
+
+class CoachingRequestCreate(BaseModel):
+    coach_id: uuid.UUID
+    client_message: Annotated[str | None, Field(max_length=1000)] = None
+    discovery_slot: datetime | None = None
+
+
+class CoachingRequestResponse(BaseModel):
+    id: uuid.UUID
+    client_id: uuid.UUID
+    coach_id: uuid.UUID
+    status: str
+    client_message: str | None
+    coach_message: str | None
+    discovery_slot: datetime | None
+    created_at: datetime
+
+    model_config = {"from_attributes": True}

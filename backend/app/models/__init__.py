@@ -9,6 +9,15 @@ from app.models.api_key import ApiKey
 from app.models.email_verification_token import EmailVerificationToken
 from app.models.password_reset_token import PasswordResetToken
 
+# Phase 2 — Réservations & SMS
+from app.models.client_questionnaire import ClientQuestionnaire
+from app.models.client_gym import ClientGym
+from app.models.coaching_request import CoachingRequest
+from app.models.booking import Booking
+from app.models.waitlist_entry import WaitlistEntry
+from app.models.push_token import PushToken
+from app.models.sms_log import SmsLog
+
 # Phase 1 — Profils & Gyms
 from app.models.gym_chain import GymChain
 from app.models.gym import Gym
@@ -33,6 +42,14 @@ __all__ = [
     "ApiKey",
     "EmailVerificationToken",
     "PasswordResetToken",
+    # Phase 2
+    "ClientQuestionnaire",
+    "ClientGym",
+    "CoachingRequest",
+    "Booking",
+    "WaitlistEntry",
+    "PushToken",
+    "SmsLog",
     # Phase 1
     "GymChain",
     "Gym",
