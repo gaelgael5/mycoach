@@ -74,7 +74,10 @@ async def payment_history(
     items, total = await payment_repository.get_payment_history(
         db, client_id, current_user.id, offset=offset, limit=limit
     )
-    return {"items": items, "total": total, "offset": offset, "limit": limit}
+    return {
+        "items": [PaymentResponse.model_validate(p) for p in items],
+        "total": total, "offset": offset, "limit": limit,
+    }
 
 
 # ── Résumé heures ─────────────────────────────────────────────────────────────
