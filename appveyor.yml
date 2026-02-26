@@ -26,7 +26,6 @@ environment:
   DATABASE_URL: "postgresql+asyncpg://mycoach:mycoach_test@localhost:5432/mycoach_test"
 
   # Valeurs CI neutres — les vraies valeurs dans l'UI AppVeyor prennent la priorité
-  GOOGLE_CLIENT_ID: "ci_placeholder"
   APP_ENV: "test"
 
 # ─── Service PostgreSQL ───────────────────────────────────────────────────────
