@@ -102,9 +102,12 @@ L'application Android est **responsive dès le premier écran** :
 | Auth email | bcrypt credentials → API Key maison | Même système unifié |
 | Stockage Android | EncryptedSharedPreferences (AES-256) | Jamais en clair |
 | Révocation | `revoked = TRUE` en base | Multi-device, immédiat |
-| Tarification | Séance unitaire + forfaits (N séances, prix, validité) | Configurable par coach |
+| Tarification | Séance unitaire + forfaits (N séances, prix, validité) + **tarif groupe** (seuil N participants → prix/client réduit) | Configurable par coach par session |
 | Annulation | Pénalité si < délai configuré (défaut 24h) | Séance due au coach |
 | Liste d'attente | File FIFO, fenêtre 30 min par candidat | Automatique à chaque libération |
+| **Sessions multi-clients** | Table `session_participants` — `sessions` n'a plus de `client_id` direct | Chaque participant a son propre statut, prix et état d'annulation |
+| **Multi-coach** | Un client peut avoir N coachs simultanément — chaque coach gère ses propres sessions et forfaits | Chaque coach voit librement la liste des autres coachs du client |
+| **Traçabilité consommation** | Table `package_consumptions` — ligne par crédit consommé ou dû | Id_pack · Id_Payment · Id_Client · minutes · date planif · statut (Consommé / Due / En attente) |
 | **i18n** | **BCP 47 locale par utilisateur (fr-FR, en-US…)** | Zéro texte codé en dur |
 | Pays | ISO 3166-1 alpha-2 (FR, BE, US…) | Sur clubs, profils, devises |
 | Devises | ISO 4217 (EUR, USD, GBP…) stockées en centimes | Jamais de float pour les montants |
@@ -860,6 +863,33 @@ Modale :
   - La liste d'attente ne s'active qu'à partir de N+1
   - Vue coach : liste de tous les participants confirmés + file d'attente séparée
 
+**Architecture `session_participants` :**
+- `sessions` ne référence plus directement un client unique — le lien coach ↔ client(s) passe par `session_participants`
+- Chaque participant a son propre : statut, prix, message, état annulation, pénalité
+- La machine d'état du §24 s'applique **par participant**, pas par session globale
+
+**Tarif groupe :**
+- Le coach peut définir sur chaque session (ou sur un modèle de session) :
+  - `unit_price_cents` : tarif standard (1 client)
+  - `group_price_threshold` : à partir de N participants → tarif groupe s'applique
+  - `group_price_cents` : tarif par client quand le seuil est atteint
+- Le tarif est recalculé automatiquement lorsque le Nième participant confirme
+- Les participants déjà confirmés voient leur `price_cents` mis à jour dans `session_participants`
+- Exemple : 80€/séance solo → 50€/client à partir de 2 participants
+
+**Traçabilité consommation (`package_consumptions`) :**
+- À chaque séance confirmée : une ligne `pending` créée avec la durée et la date planifiée
+- À la fin de séance (statut `done`) : ligne passe à `consumed`
+- Annulation tardive ou no-show : ligne passe à `due`
+- Exonération coach : ligne passe à `waived`
+- Permet de répondre à tout instant : "Combien de minutes de ce forfait sont consommées, dues, ou en attente ?"
+
+**Multi-coach :**
+- Un client peut avoir plusieurs relations actives simultanément avec plusieurs coachs
+- Chaque coach gère ses propres sessions et forfaits pour ce client indépendamment
+- Un coach peut consulter la liste des autres coachs actifs d'un client (lecture seule)
+- La provenance de chaque donnée (workout_session, session, package) est toujours tracée via `coach_id`
+
 ---
 
 ## 11. PROFIL & RECHERCHE COACH (côté Client)
@@ -1545,6 +1575,7 @@ pending_coach_validation ──(24h expiration)──► auto_rejected
 | 1.3 | 25/02/2026 | Téléphone (E.164) sur Coach et Client · Jours de travail + horaires multi-créneaux sur Coach · Wizard minimaliste (1 seule étape obligatoire, "Terminer plus tard" dès étape 2) · Design responsive obligatoire · Bandeau de complétion de profil |
 | 1.4 | 25/02/2026 | §7.4 Sélection en masse (vue Jour) · §7.5 Annulation en masse avec workflow complet (confirmation → choix message → aperçu SMS par client → récapitulatif) · §7.6 SMS en masse coach + historique SMS · Wizard coach : étape 7/7 Messages d'annulation (1 template maladie pré-rempli, jusqu'à 5 templates, variables {prénom}/{date}/{heure}/{coach}, drag-and-drop) |
 | 1.5 | 26/02/2026 | §1.1 Prénom/Nom : max 50 → **max 150 chars** (noms internationaux) · Règle PII ajoutée : toutes les données personnelles chiffrées au repos (voir DEV_PATTERNS.md §1.9 + CODING_AGENT.md §5.1) |
+| 1.6 | 26/02/2026 | §10.4 Architecture multi-participants : `sessions` sans `client_id` → table `session_participants` (statut/prix/annulation par client) · Tarif groupe : seuil N → prix/client réduit · Multi-coach : client peut avoir N coachs simultanément, données tracées par `coach_id` · Traçabilité consommation : table `package_consumptions` (Id_pack · Id_Payment · Id_Client · minutes · date planif · statut Consommé/Due/En attente) |
 
 ---
 

@@ -672,6 +672,370 @@ FIELD_ENCRYPTION_KEY=<clé Fernet 32 bytes base64-urlsafe>
 # ⚠️ La changer nécessite un script de re-chiffrement sur toute la base
 ```
 
+---
+
+### 1.10 Architecture Sessions multi-participants + Consommation forfaits
+
+> **Trois décisions architecturales fondamentales (26/02/2026) :**
+> 1. `sessions` n'a plus de `client_id` — lien sessions ↔ clients via `session_participants`
+> 2. Un client peut avoir plusieurs coachs simultanément — traçabilité `coach_id` sur chaque entité
+> 3. Table `package_consumptions` — ligne par crédit, traçabilité complète consommé/dû/en attente
+
+#### Modèle `sessions` — version finale (sans client_id)
+
+```python
+# app/models/session.py
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import String, Integer, SmallInteger, Boolean, Enum as SAEnum
+import enum
+
+
+class SessionStatus(str, enum.Enum):
+    """Statut global de la session (indépendant du statut par participant)."""
+    OPEN        = "open"         # Session créée, accepte des participants
+    FULL        = "full"         # Toutes les places confirmées
+    DONE        = "done"         # Session réalisée
+    CANCELLED   = "cancelled"    # Annulée par le coach (tous participants annulés)
+
+
+class Session(Base):
+    __tablename__ = "sessions"
+
+    id:           Mapped[UUID]      = mapped_column(primary_key=True, default=uuid4)
+    coach_id:     Mapped[UUID]      = mapped_column(ForeignKey("users.id"), nullable=False, index=True)
+    session_type: Mapped[str]       = mapped_column(String(20), nullable=False)   # discovery | coached
+    status:       Mapped[str]       = mapped_column(String(20), nullable=False, default="open")
+    scheduled_at: Mapped[datetime]  = mapped_column(nullable=False, index=True)   # UTC
+    duration_min: Mapped[int]       = mapped_column(SmallInteger, nullable=False)  # 30/45/60/90
+    gym_id:       Mapped[UUID|None] = mapped_column(ForeignKey("gyms.id"), nullable=True)
+    initiated_by: Mapped[str]       = mapped_column(String(10), nullable=False)    # client | coach
+    coach_note:   Mapped[str|None]  = mapped_column(String(300), nullable=True)
+
+    # --- Capacité ---
+    max_participants: Mapped[int]   = mapped_column(SmallInteger, nullable=False, default=1)
+
+    # --- Tarification standard ---
+    unit_price_cents: Mapped[int|None] = mapped_column(Integer, nullable=True)   # null = hérité du profil coach
+    currency:         Mapped[str|None] = mapped_column(String(3), nullable=True) # ISO 4217
+
+    # --- Tarification groupe ---
+    # Si nb participants confirmés >= group_price_threshold → price_cents par participant = group_price_cents
+    group_price_threshold: Mapped[int|None] = mapped_column(SmallInteger, nullable=True)  # ex: 2
+    group_price_cents:     Mapped[int|None] = mapped_column(Integer, nullable=True)        # ex: 5000 = 50€
+
+    # --- Annulation globale (coach annule toute la session) ---
+    cancellation_reason: Mapped[str|None] = mapped_column(String(500), nullable=True)
+    cancelled_at:        Mapped[datetime|None] = mapped_column(nullable=True)
+
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relations
+    participants: Mapped[list["SessionParticipant"]] = relationship(back_populates="session", cascade="all, delete-orphan")
+```
+
+#### Modèle `session_participants` — statut et prix par client
+
+```python
+# app/models/session_participant.py
+import enum
+
+
+class ParticipantStatus(str, enum.Enum):
+    """
+    Machine d'état PAR participant (remplace l'ancienne machine d'état de sessions).
+    Chaque client dans une session a son propre cycle de vie.
+    """
+    PENDING_COACH_VALIDATION  = "pending_coach_validation"
+    PROPOSED_BY_COACH         = "proposed_by_coach"
+    CONFIRMED                 = "confirmed"
+    REJECTED                  = "rejected"
+    AUTO_REJECTED             = "auto_rejected"        # 24h sans réponse coach
+    CANCELLED_BY_CLIENT       = "cancelled_by_client"
+    CANCELLED_LATE_BY_CLIENT  = "cancelled_late_by_client"
+    CANCELLED_BY_COACH        = "cancelled_by_coach"
+    CANCELLED_BY_COACH_LATE   = "cancelled_by_coach_late"
+    NO_SHOW                   = "no_show"
+    DONE                      = "done"
+
+
+class SessionParticipant(Base):
+    __tablename__ = "session_participants"
+
+    id:         Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    session_id: Mapped[UUID] = mapped_column(ForeignKey("sessions.id"), nullable=False, index=True)
+    client_id:  Mapped[UUID] = mapped_column(ForeignKey("users.id"),    nullable=False, index=True)
+
+    # Statut individuel de ce participant dans cette session
+    status: Mapped[str] = mapped_column(String(40), nullable=False, default="pending_coach_validation")
+
+    # Prix appliqué à CE participant (peut différer du tarif standard si groupe)
+    price_cents: Mapped[int|None] = mapped_column(Integer, nullable=True)
+    currency:    Mapped[str|None] = mapped_column(String(3), nullable=True)
+
+    # Communication
+    client_message: Mapped[str|None] = mapped_column(EncryptedString(300), nullable=True)
+    initiated_by:   Mapped[str]      = mapped_column(String(10), nullable=False)  # client | coach
+
+    # Annulation individuelle
+    cancelled_at:        Mapped[datetime|None] = mapped_column(nullable=True)
+    is_late_cancellation: Mapped[bool]         = mapped_column(Boolean, nullable=False, default=False)
+
+    # Pénalité
+    penalty_waived:        Mapped[bool]         = mapped_column(Boolean, nullable=False, default=False)
+    penalty_waived_reason: Mapped[str|None]     = mapped_column(String(200), nullable=True)
+
+    # Crédit compensatoire (si coach annule tardivement)
+    compensatory_credit_cents: Mapped[int|None] = mapped_column(Integer, nullable=True)
+    compensatory_currency:     Mapped[str|None] = mapped_column(String(3), nullable=True)
+
+    # No-show
+    noshow_marked:    Mapped[bool]          = mapped_column(Boolean, nullable=False, default=False)
+    noshow_marked_at: Mapped[datetime|None] = mapped_column(nullable=True)
+
+    # Expiration validation automatique
+    auto_reject_deadline: Mapped[datetime|None] = mapped_column(nullable=True)  # scheduled_at - 24h
+
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    __table_args__ = (
+        UniqueConstraint("session_id", "client_id", name="uq_session_participant"),
+    )
+
+    # Relations
+    session:      Mapped["Session"]      = relationship(back_populates="participants")
+    consumption:  Mapped["PackageConsumption|None"] = relationship(back_populates="session_participant", uselist=False)
+```
+
+#### Logique de recalcul du tarif groupe (service)
+
+```python
+# app/services/session_service.py
+
+async def _recalculate_group_pricing(
+    db: AsyncSession,
+    session: Session,
+) -> None:
+    """
+    Appelé à chaque fois qu'un participant passe en statut 'confirmed'.
+    Si le nombre de participants confirmés atteint group_price_threshold,
+    on met à jour price_cents de TOUS les participants confirmés.
+    """
+    if not session.group_price_threshold or not session.group_price_cents:
+        return  # Pas de tarif groupe défini
+
+    confirmed_participants = [
+        p for p in session.participants
+        if p.status == ParticipantStatus.CONFIRMED
+    ]
+
+    if len(confirmed_participants) >= session.group_price_threshold:
+        for participant in confirmed_participants:
+            participant.price_cents = session.group_price_cents
+            participant.currency    = session.currency
+
+    await db.flush()
+```
+
+---
+
+#### Modèle `package_consumptions` — traçabilité complète des crédits
+
+```python
+# app/models/package_consumption.py
+import enum
+
+
+class ConsumptionStatus(str, enum.Enum):
+    PENDING   = "pending"    # Séance planifiée, pas encore réalisée — "En attente de consommation"
+    CONSUMED  = "consumed"   # Séance réalisée — "Consommé"
+    DUE       = "due"        # Annulation tardive ou no-show — "Due" (crédit débité sans séance)
+    WAIVED    = "waived"     # Pénalité exonérée par le coach
+
+
+class PackageConsumption(Base):
+    """
+    Une ligne par crédit-séance dans un forfait client.
+    Créée à la confirmation d'une session, mise à jour selon le déroulé.
+
+    Structure demandée par le product owner :
+      Id_pack · Id_Payment · Id_Client · Temps (min) · Date planif · Status
+    """
+    __tablename__ = "package_consumptions"
+
+    id:         Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+
+    # --- Qui, quoi, d'où ---
+    package_id:             Mapped[UUID]      = mapped_column(ForeignKey("client_packages.id"), nullable=False, index=True)
+    payment_id:             Mapped[UUID|None] = mapped_column(ForeignKey("payments.id"),        nullable=True)
+    client_id:              Mapped[UUID]      = mapped_column(ForeignKey("users.id"),           nullable=False, index=True)
+    coach_id:               Mapped[UUID]      = mapped_column(ForeignKey("users.id"),           nullable=False)  # traçabilité multi-coach
+    session_id:             Mapped[UUID|None] = mapped_column(ForeignKey("sessions.id"),        nullable=True)
+    session_participant_id: Mapped[UUID|None] = mapped_column(ForeignKey("session_participants.id"), nullable=True, unique=True)
+
+    # --- Durée et planning ---
+    duration_min: Mapped[int]      = mapped_column(SmallInteger, nullable=False)   # minutes associées
+    scheduled_at: Mapped[datetime] = mapped_column(nullable=False, index=True)     # date de planification (UTC)
+
+    # --- Statut ---
+    status: Mapped[str] = mapped_column(String(20), nullable=False, default="pending")
+
+    # --- Timestamps d'événements ---
+    consumed_at: Mapped[datetime|None] = mapped_column(nullable=True)  # quand session → done
+    due_at:      Mapped[datetime|None] = mapped_column(nullable=True)  # quand annulation tardive / no-show
+    waived_at:   Mapped[datetime|None] = mapped_column(nullable=True)  # quand exonération coach
+    waived_reason: Mapped[str|None]   = mapped_column(String(200), nullable=True)
+
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+
+    # Relations
+    package:            Mapped["ClientPackage"]             = relationship()
+    session_participant: Mapped["SessionParticipant|None"] = relationship(back_populates="consumption")
+```
+
+#### Service de gestion des consommations
+
+```python
+# app/services/consumption_service.py
+
+async def create_pending_consumption(
+    db: AsyncSession,
+    participant: SessionParticipant,
+    package: ClientPackage,
+    payment_id: UUID | None = None,
+) -> PackageConsumption:
+    """
+    Appelé quand un participant est confirmé sur une session.
+    Crée une ligne 'pending' dans package_consumptions.
+    """
+    session = participant.session
+    consumption = PackageConsumption(
+        package_id             = package.id,
+        payment_id             = payment_id,
+        client_id              = participant.client_id,
+        coach_id               = session.coach_id,
+        session_id             = session.id,
+        session_participant_id = participant.id,
+        duration_min           = session.duration_min,
+        scheduled_at           = session.scheduled_at,
+        status                 = ConsumptionStatus.PENDING,
+    )
+    db.add(consumption)
+    await db.flush()
+    return consumption
+
+
+async def mark_consumed(db: AsyncSession, consumption: PackageConsumption) -> None:
+    """Session terminée (done) → crédit consommé."""
+    consumption.status     = ConsumptionStatus.CONSUMED
+    consumption.consumed_at = datetime.utcnow()
+    await db.flush()
+
+
+async def mark_due(db: AsyncSession, consumption: PackageConsumption) -> None:
+    """Annulation tardive ou no-show → crédit dû (débité sans séance réalisée)."""
+    consumption.status = ConsumptionStatus.DUE
+    consumption.due_at  = datetime.utcnow()
+    await db.flush()
+
+
+async def mark_waived(
+    db: AsyncSession,
+    consumption: PackageConsumption,
+    reason: str,
+) -> None:
+    """Exonération de pénalité par le coach."""
+    consumption.status        = ConsumptionStatus.WAIVED
+    consumption.waived_at     = datetime.utcnow()
+    consumption.waived_reason = reason
+    await db.flush()
+
+
+async def get_package_summary(
+    db: AsyncSession, package_id: UUID
+) -> dict:
+    """
+    Retourne le récapitulatif comptable d'un forfait :
+    - Total crédits
+    - Consommés (done)
+    - Dus (late cancel / no-show)
+    - En attente (scheduled)
+    - Exonérés
+    - Restants (total - consumed - due)
+    """
+    rows = await db.execute(
+        select(PackageConsumption.status, func.count())
+        .where(PackageConsumption.package_id == package_id)
+        .group_by(PackageConsumption.status)
+    )
+    counts = {row.status: row.count for row in rows}
+    package = await db.get(ClientPackage, package_id)
+
+    consumed = counts.get("consumed", 0)
+    due      = counts.get("due", 0)
+    pending  = counts.get("pending", 0)
+    waived   = counts.get("waived", 0)
+
+    return {
+        "total":     package.session_count_total,
+        "consumed":  consumed,
+        "due":       due,
+        "pending":   pending,
+        "waived":    waived,
+        "remaining": package.session_count_total - consumed - due,
+        # NB : les waived ne sont PAS déduits — exonération = crédit récupéré
+    }
+```
+
+#### Vue d'ensemble des relations clés
+
+```
+sessions (1) ─────────────── (N) session_participants
+                                        │
+                                        │ (1:1)
+                                        ▼
+                               package_consumptions
+                                        │
+                              ┌─────────┼──────────┐
+                              │         │          │
+                         package_id  client_id  coach_id
+                              │         │
+                              ▼         ▼
+                       client_packages  users
+                              │
+                         payment_id (nullable)
+                              │
+                              ▼
+                           payments
+```
+
+#### Traçabilité multi-coach
+
+```python
+# Un client peut avoir N coachs simultanément.
+# Chaque entité liée à un coach porte un coach_id explicite.
+
+# ✅ Sessions : session.coach_id (le coach qui crée/gère la session)
+# ✅ Packages : client_packages.coach_id (le coach qui a créé ce forfait)
+# ✅ Consumptions : package_consumptions.coach_id (provenance du crédit)
+# ✅ Workout sessions : workout_sessions.input_by (qui a saisi : coach ou client)
+# ✅ Coach notes : coach_notes.(coach_id, client_id) — note privée par couple
+
+# Consulter les autres coachs d'un client (lecture seule, pas de restriction) :
+async def get_client_coaches(db: AsyncSession, client_id: UUID) -> list[User]:
+    result = await db.execute(
+        select(User)
+        .join(CoachClientRelationship, CoachClientRelationship.coach_id == User.id)
+        .where(
+            CoachClientRelationship.client_id == client_id,
+            CoachClientRelationship.status == "active",
+        )
+    )
+    return result.scalars().all()
+    # Retourne tous les coachs actifs — visible par n'importe quel coach du client
+```
+
 #### Script de rotation de clé (si nécessaire)
 
 ```python
@@ -1650,6 +2014,7 @@ keyGenerator.init(
 
 ---
 
-*Version 1.1 — 26/02/2026 — Ajout §1.9 PII Encryption + M9 Android PII rules + checklists*
+*Version 1.2 — 26/02/2026 — §1.10 Architecture sessions multi-participants : session_participants (statut/prix par client), tarif groupe (seuil N → recalcul), package_consumptions (pending/consumed/due/waived), multi-coach traçabilité coach_id*
+*Version 1.1 — 26/02/2026 — §1.9 PII Encryption + search_token + M9 Android PII rules + checklists*
 *Version 1.0 — 25/02/2026 — Document initial*
 *À relire avant chaque session de développement*
