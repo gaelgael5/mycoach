@@ -93,6 +93,7 @@ deploy_script:
       TAG_BUILD="${DOCKER_IMAGE}:build-${APPVEYOR_BUILD_NUMBER}"
       TAG_SHA="${DOCKER_IMAGE}:${APPVEYOR_REPO_COMMIT:0:8}"
 
+      cd "$APPVEYOR_BUILD_FOLDER"
       docker build \
         --label "build.number=${APPVEYOR_BUILD_NUMBER}" \
         --label "build.date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
