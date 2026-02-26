@@ -344,9 +344,12 @@ Affiché tant que le questionnaire est incomplet :
 
 ---
 
-### Étape 3/6 — Spécialités *(optionnel)*
-- Multi-select chips (aucun minimum requis pour passer)
-- Musculation / Cardio / HIIT / Yoga / Pilates / CrossFit / Boxe / Running / Triathlon / Natation / Cyclisme / Nutrition sportive / Préparation mentale / Rééducation / Stretching / Autre
+### Étape 3/6 — Disciplines proposées *(optionnel)*
+- Multi-select depuis la liste officielle des disciplines (voir `docs/DISCIPLINES.md`)
+- Affichage groupé par catégorie : Fitness & Musculation · Mind & Body · Cardio · Danse · Combat · Aquatique · Outdoor · Santé
+- Pour chaque discipline sélectionnée → capacité max par défaut pré-remplie (modifiable)
+- Aucun minimum requis pour passer l'étape
+- Ces disciplines apparaissent sur le profil public + servent aux filtres de recherche client
 
 ---
 
@@ -546,12 +549,18 @@ Dashboard | Clients | Agenda | Perfs | Profil
 
 ### 7.2 Créer une séance (coach)
 **Modal `CreateSessionModal` :**
-- Client (dropdown, clients actifs)
-- Type : Découverte / Encadrée
+- Client (dropdown, clients actifs — optionnel si cours collectif ouvert)
+- **Discipline** (dropdown — disciplines configurées par le coach, voir `docs/DISCIPLINES.md`)
+- Type : Découverte / Encadrée / Collectif
+- **Capacité max** (stepper 1–999, pré-rempli depuis la discipline, modifiable)
+  - Si capacité = 1 → séance individuelle
+  - Si capacité > 1 → cours collectif, liste d'attente activée automatiquement si complet
 - Date (datepicker, min = aujourd'hui + 1h)
 - Heure de début (time picker, par tranche de 15 min)
 - Durée (30 / 45 / 60 / 90 min)
 - Salle (parmi les salles du coach)
+- **Tarif** (pré-rempli depuis la discipline, modifiable)
+- **Tarif groupe** (optionnel — seuil N participants + prix/client réduit)
 - Note optionnelle pour le client (max 300 chars)
 - Bouton "Envoyer la proposition" → statut `proposed_by_coach` → notif client
 
@@ -1363,10 +1372,35 @@ Modale :
 
 ## 20. PAIEMENTS
 
+### 20.0 Disciplines & Capacité maximale (coach)
+
+> Voir **`docs/DISCIPLINES.md`** pour la liste complète des 80+ disciplines organisées en 8 catégories.
+
+**Profil coach → "Mes disciplines" :**
+- Le coach sélectionne les disciplines qu'il propose parmi la liste de référence (multi-select, chips)
+- Catégories : Fitness & Musculation · Mind & Body · Cardio & Endurance · Danse · Sports de Combat · Aquatique · Outdoor · Santé & Rééducation · Formats Spéciaux
+- Pour chaque discipline sélectionnée :
+  - **Capacité max par défaut** : pré-rempli selon la discipline (ex: Yoga → 12, Personal Training → 1), modifiable de 1 à 999
+  - **Tarif par défaut** pour cette discipline (pré-remplit la création de séance)
+- Ces réglages apparaissent comme chips sur le profil public du coach
+
+**Création de séance → champ discipline :**
+- Dropdown des disciplines configurées par le coach
+- Capacité max pré-remplie depuis le réglage de la discipline, modifiable à la séance
+- Tarif pré-rempli, modifiable
+- Si capacité max > 1 → le tarif groupe peut être activé (§10.4)
+
+**Forfait lié à une discipline :**
+- Un forfait peut être restreint à une ou plusieurs disciplines (ex: "10 séances de Yoga Vinyasa")
+- Ou générique (toutes disciplines — défaut)
+
+---
+
 ### 20.1 Définition des forfaits (coach)
 **Profil coach → "Mes forfaits" :**
 - Forfaits prédéfinis (modifiables à tout moment) :
-  - Nom (ex: "Pack 10 séances"), nb séances, prix total, prix unitaire (calculé)
+  - Nom (ex: "Pack 10 séances Yoga"), nb séances, prix total, prix unitaire (calculé)
+  - Disciplines couvertes : toutes (défaut) ou sélection restreinte depuis `docs/DISCIPLINES.md`
   - Option : durée de validité (ex: valable 3 mois)
 - Ces forfaits apparaissent dans la liste lors de l'attribution à un client
 
