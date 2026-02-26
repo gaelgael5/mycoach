@@ -105,6 +105,7 @@ L'application Android est **responsive dès le premier écran** :
 | Tarification | Séance unitaire + forfaits (N séances, prix, validité) + **tarif groupe** (seuil N participants → prix/client réduit) | Configurable par coach par session |
 | Annulation | Pénalité si < délai configuré (défaut 24h) | Séance due au coach |
 | Liste d'attente | File FIFO, fenêtre 30 min par candidat | Automatique à chaque libération |
+| **Crédit obligatoire** | Un client doit avoir un forfait `active` avec `sessions_remaining >= 1` pour réserver — ou `allow_unit_booking = TRUE` sur la relation client/coach — ou séance de type `discovery` | Vérifié par le backend au `POST /bookings` → 402 si non respecté |
 | **Sessions multi-clients** | Table `session_participants` — `sessions` n'a plus de `client_id` direct | Chaque participant a son propre statut, prix et état d'annulation |
 | **Multi-coach** | Un client peut avoir N coachs simultanément — chaque coach gère ses propres sessions et forfaits | Chaque coach voit librement la liste des autres coachs du client |
 | **Traçabilité consommation** | Table `package_consumptions` — ligne par crédit consommé ou dû | Id_pack · Id_Payment · Id_Client · minutes · date planif · statut (Consommé / Due / En attente) |
@@ -732,26 +733,105 @@ Modale :
 
 ## 8. RÉSERVATION PAR LE CLIENT
 
+### 8.0 Prérequis — Crédits validés
+
+> **Règle fondamentale :** un client ne peut réserver une séance encadrée qu'à condition d'avoir des **crédits validés** auprès du coach concerné.
+
+#### Définition d'un crédit valide
+
+Un crédit est valide si le client dispose d'un forfait (`client_package`) avec le coach en statut **`active`** ET `sessions_remaining >= 1`.
+
+Un forfait est `active` uniquement lorsque :
+1. Le coach a créé le forfait (`POST /clients/{id}/packages`)
+2. Le client a payé
+3. Le coach a **enregistré le paiement** (`POST /payments`) → le forfait passe de `awaiting_payment` à `active`
+
+#### Types de séance et règle de crédit
+
+| Type de séance | Crédit requis | Notes |
+|---------------|--------------|-------|
+| Séance encadrée (individuelle ou groupe) | ✅ Oui | Vérifié à la réservation |
+| Séance découverte | ❌ Non | Premier contact — gratuite ou payée hors app |
+| Cours collectif ouvert (non lié à un forfait) | ❌ Non | Paiement sur place ou en ligne hors app |
+
+#### Cas particulier : tarif à l'unité (sans forfait)
+
+Le coach peut accorder à un client spécifique **l'accès sans forfait** (réglement à l'unité après la séance) :
+- Profil coach → Fiche client → ⚙️ "Autoriser la réservation sans forfait"
+- Flag `client_coach_relation.allow_unit_booking = TRUE`
+- Dans ce cas, le crédit n'est pas vérifié, mais la séance est enregistrée et facturée manuellement par le coach
+
+---
+
 ### 8.1 Calendrier de disponibilités du coach
 **Accès :** Fiche coach → onglet "Réserver"
 - Vue semaine avec navigation avant/arrière
 - Limite : ne peut pas réserver au-delà de l'horizon configuré par le coach
+- **Vérification des crédits avant affichage :** `GET /coaches/{id}/availability` retourne également `client_can_book: bool` + `sessions_remaining: int`
 - Chaque créneau affiché :
-  - 🟢 Disponible : tap pour réserver
-  - 🟠 Dernière place (1 place restante) : tap pour réserver + avertissement
+  - 🟢 Disponible : tap pour réserver *(si `client_can_book = true`)*
+  - 🟠 Dernière place (1 place restante) : tap + avertissement *(si `client_can_book = true`)*
   - 🔴 Complet : tap → `WaitlistJoinModal`
   - ⬛ Non disponible (passé ou bloqué)
-  - 🟡 Déjà réservé par le client : non cliquable, indicateur "Votre séance"
+  - 🟡 Déjà réservé par le client : indicateur "Votre séance"
+  - 🔒 **Pas de crédit disponible** *(si `client_can_book = false`)* : tous les créneaux affichent une icône 🔒 et un bandeau :
+
+```
+┌─────────────────────────────────────────────────────┐
+│  🔒 Vous n'avez pas de séances disponibles          │
+│  Contactez [Prénom Coach] pour renouveler           │
+│  votre forfait.                                     │
+│                          [ Envoyer un message ]     │
+└─────────────────────────────────────────────────────┘
+```
 
 ### 8.2 Confirmation de réservation
 **Modal :**
-- Récapitulatif : coach, date, heure, durée, salle, tarif unitaire
-- Message optionnel pour le coach (max 300 chars, placeholder : "Précisez votre objectif pour cette séance...")
-- Bouton "Confirmer" → `POST /bookings` → statut `pending_coach_validation`
+- Récapitulatif : coach, date, heure, durée, salle, discipline, tarif
+- **Solde affiché :** "Il vous reste **N séance(s)** sur votre forfait [Nom du forfait]"
+- Message optionnel pour le coach (max 300 chars)
+- Bouton "Confirmer" → `POST /bookings`
+
+**Vérification backend à la réception de `POST /bookings` :**
+```
+1. Le client a-t-il un forfait active avec sessions_remaining >= 1 pour CE coach ?
+   OU allow_unit_booking = TRUE pour ce couple client/coach ?
+   OU la session est de type "discovery" ?
+   → Sinon : 402 Payment Required { detail: "no_credits_available" }
+
+2. Le créneau est-il encore disponible ?
+   → Sinon : 409 Conflict { detail: "slot_unavailable" }
+
+3. Créer le booking (statut: pending_coach_validation)
+```
+
+**Réponse en cas d'absence de crédit (Android) :**
+```
+┌────────────────────────────────────────┐
+│  ⚠️ Aucune séance disponible           │
+│                                        │
+│  Vous n'avez plus de séances sur votre │
+│  forfait avec [Coach].                 │
+│                                        │
+│  [ Contacter mon coach ]               │
+└────────────────────────────────────────┘
+```
+
+**En cas de succès :**
+- Statut booking → `pending_coach_validation`
 - Notifications :
   - Client : "Réservation envoyée — en attente de validation ⏳"
-  - Coach : "Nouvelle réservation de [Client] pour le [date] à [heure]"
+  - Coach : "Nouvelle réservation de [Client] pour le [date] à [heure] — [N-1] séances restantes sur le forfait"
 - Timer côté coach : 24h pour valider → si dépassé → auto-rejet + notif client + libération créneau
+
+### 8.3 Gestion de mes réservations (client)
+**Agenda Client → liste filtrée :**
+- À venir : statuts `pending_coach_validation`, `confirmed`
+- Passées : statuts `done`, `cancelled_*`
+- Chaque item avec statut lisible :
+  - "En attente de validation" (avec timer)
+  - "Confirmée ✓"
+  - "Annulée"
 
 ### 8.3 Gestion de mes réservations (client)
 **Agenda Client → liste filtrée :**

@@ -46,17 +46,34 @@ sequenceDiagram
 
     C->>A: Consulte le profil coach → onglet "Réserver"
     A->>B: GET /coaches/{id}/availability?week_start=2026-02-26T00:00:00Z
-    B-->>A: [{slot_id, datetime, status: available|full|unavailable}]
-    A-->>C: Affiche créneaux colorés (🟢 dispo / 🔴 complet)
+    B->>B: Vérifie crédits client pour ce coach :<br/>forfait active + sessions_remaining >= 1<br/>OU allow_unit_booking = TRUE
+    B-->>A: [{slot_id, datetime, status}, client_can_book: bool, sessions_remaining: int]
 
-    C->>A: Tap sur créneau disponible
-    A-->>C: Modal récapitulatif (date, heure, durée, salle, tarif)
-    C->>A: Message optionnel + "Confirmer"
-    A->>B: POST /bookings<br/>{session_id, message?}
-    B->>B: Vérifie disponibilité<br/>Crée booking (statut: pending_coach_validation)<br/>Crée package_consumption (statut: pending)
-    B->>N: Push coach "Nouvelle réservation de [Client]"
-    B-->>A: 201 Created<br/>{booking_id, status: "pending_coach_validation"}
-    A-->>C: "Réservation envoyée — en attente de validation ⏳"
+    alt client_can_book = false
+        A-->>C: 🔒 Bandeau "Aucune séance disponible<br/>Contactez votre coach pour renouveler"
+        note over C,A: Tous les créneaux sont verrouillés
+    else client_can_book = true
+        A-->>C: Affiche créneaux (🟢 dispo / 🔴 complet)<br/>+ solde "N séances restantes"
+
+        C->>A: Tap sur créneau disponible
+        A-->>C: Modal récapitulatif<br/>(date, heure, durée, salle, tarif)<br/>"Il vous reste N séance(s)"
+        C->>A: Message optionnel + "Confirmer"
+        A->>B: POST /bookings<br/>{session_id, message?}
+
+        B->>B: Vérifie crédit (dernière vérif côté serveur)
+        alt Crédit invalide entre-temps
+            B-->>A: 402 Payment Required<br/>{detail: "no_credits_available"}
+            A-->>C: ⚠️ "Aucune séance disponible"
+        else Créneau pris entre-temps
+            B-->>A: 409 Conflict<br/>{detail: "slot_unavailable"}
+            A-->>C: "Ce créneau n'est plus disponible"
+        else OK
+            B->>B: Crée booking (statut: pending_coach_validation)<br/>Crée package_consumption (statut: pending)
+            B->>N: Push coach "Nouvelle réservation de [Client] — N-1 séances restantes"
+            B-->>A: 201 Created<br/>{booking_id, status: "pending_coach_validation"}
+            A-->>C: "Réservation envoyée — en attente de validation ⏳"
+        end
+    end
 ```
 
 ---
