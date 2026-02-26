@@ -14,6 +14,9 @@ from app.models.workout_plan import (
     WorkoutPlan, PlanAssignment, PlannedSession, PlannedExercise, ExerciseVideo
 )
 
+# Phase 5 — Intégrations OAuth
+from app.models.integration import OAuthToken, BodyMeasurement
+
 # Phase 0 — Auth
 from app.models.user import User
 from app.models.api_key import ApiKey
@@ -91,4 +94,7 @@ __all__ = [
     "PlannedSession",
     "PlannedExercise",
     "ExerciseVideo",
+    # Phase 5
+    "OAuthToken",
+    "BodyMeasurement",
 ]
