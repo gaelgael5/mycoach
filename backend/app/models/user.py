@@ -13,7 +13,7 @@ from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, Index, Integer, SmallInteger, String, Text, func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import Mapped, mapped_column, validates
+from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 
 from app.core.encrypted_type import EncryptedString
 from app.core.encryption import hash_for_lookup, normalize_for_search
@@ -145,3 +145,11 @@ class User(Base):
 
     def __repr__(self) -> str:
         return f"<User id={self.id} role={self.role} status={self.status}>"
+
+    # Relations Phase 1 (résolues par string après import complet dans models/__init__.py)
+    coach_profile: Mapped["CoachProfile | None"] = relationship(  # type: ignore[name-defined]
+        "CoachProfile", back_populates="user", uselist=False
+    )
+    client_profile: Mapped["ClientProfile | None"] = relationship(  # type: ignore[name-defined]
+        "ClientProfile", back_populates="user", uselist=False
+    )

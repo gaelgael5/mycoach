@@ -11,7 +11,7 @@
 Dernière mise à jour : —
 Répertoire back : `backend/`
 Répertoire android : `android/`
-**Prochaine tâche : B1-01** — Modèle coach_profiles
+**Prochaine tâche : B2-01** — Modèle client_questionnaires
 
 ---
 
@@ -50,7 +50,7 @@ Répertoire android : `android/`
 ### Phase 1 — Espace Coach
 | ID | Tâche résumée | Statut | Notes |
 |----|--------------|--------|-------|
-| B1-01 à B1-28 | Voir TASKS_BACKEND.md | ⬜ | |
+| B1-01 à B1-35 | Phase 1 complète — 16 modèles, migration Alembic, 4 schemas, 4 repositories, 3 services, 4 routers, 42 tests (70/70 total) | ✅ | 26/02/2026 |
 
 ### Phase 2 — Client & Réservations
 | ID | Tâche résumée | Statut | Notes |
