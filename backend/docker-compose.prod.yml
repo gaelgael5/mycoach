@@ -1,0 +1,121 @@
+# Docker Compose PRODUCTION — MyCoach
+# Usage : docker compose -f docker-compose.prod.yml up -d
+#
+# Secrets : via Docker Secrets (fichiers montés en /run/secrets/)
+# ou variables d'environnement injectées par CI/CD (Render, Railway…)
+#
+# B6-11 — Hardening Docker :
+#   - Utilisateur non-root (mycoach uid/gid 1000)
+#   - no-new-privileges (escalade de privilèges désactivée)
+#   - Système de fichiers lecture seule (tmpfs pour /tmp)
+#   - Réseau isolé (bridge dédié)
+#   - Ressources limitées (CPU + mémoire)
+#   - Healthcheck sur API et DB
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-mycoach}
+      POSTGRES_USER: ${POSTGRES_USER:-mycoach}
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data:rw
+    expose:
+      - "5432"    # Non exposé hors du réseau interne
+    networks:
+      - mycoach_internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mycoach -d mycoach"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    # Hardening
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /run/postgresql
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+
+  backend:
+    image: blackbeardteam/mycoach:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env.prod
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-mycoach}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-mycoach}
+      APP_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    networks:
+      - mycoach_internal
+      - mycoach_external
+    # Hardening B6-11
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=100m,mode=1777
+      - /app/logs:size=50m
+    user: "1000:1000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 512M
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+  # Watchtower — mise à jour automatique des images
+  watchtower:
+    image: containrrr/watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_POLL_INTERVAL: "3600"   # Check toutes les heures
+      WATCHTOWER_INCLUDE_STOPPED: "false"
+    profiles:
+      - watchtower
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  mycoach_internal:
+    driver: bridge
+    internal: true           # Pas d'accès Internet direct pour DB
+  mycoach_external:
+    driver: bridge
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt

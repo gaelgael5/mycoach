@@ -21,7 +21,7 @@ import app.models  # noqa: F401 — charge tous les modèles pour SQLAlchemy map
 from app.routers import (
     auth, coaches, gyms, payments, cancellation_templates,
     clients, bookings, waitlist, push, bulk_actions,
-    performances, exercises, admin, programs, integrations,
+    performances, exercises, admin, programs, integrations, rgpd,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -164,7 +164,7 @@ app.include_router(exercises.router)
 app.include_router(admin.router)
 app.include_router(programs.router)
 app.include_router(integrations.router)
-# Phase 1+ : coaches, clients, gyms, bookings, etc. ajoutés ici
+app.include_router(rgpd.router)
 
 
 # ---------------------------------------------------------------------------

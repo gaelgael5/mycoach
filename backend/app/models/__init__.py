@@ -17,6 +17,9 @@ from app.models.workout_plan import (
 # Phase 5 — Intégrations OAuth
 from app.models.integration import OAuthToken, BodyMeasurement
 
+# Phase 6 — RGPD
+from app.models.consent import Consent
+
 # Phase 0 — Auth
 from app.models.user import User
 from app.models.api_key import ApiKey
@@ -97,4 +100,6 @@ __all__ = [
     # Phase 5
     "OAuthToken",
     "BodyMeasurement",
+    # Phase 6
+    "Consent",
 ]

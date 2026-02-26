@@ -27,6 +27,9 @@ FROM python:3.12-slim AS runtime
 
 LABEL maintainer="MyCoach Team"
 LABEL description="MyCoach FastAPI — image production"
+LABEL org.opencontainers.image.vendor="MyCoach"
+LABEL security.non-root="true"
+LABEL security.read-only-fs="partial"
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
