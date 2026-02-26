@@ -330,11 +330,16 @@ backend/
 | # | Tâche | Dépend de | Priorité |
 |---|-------|-----------|----------|
 | **B6-01** | Audit OWASP API Top 10 : revue de chaque endpoint (BOLA, rate limiting, validation, CORS, headers) | Toutes | 🔴 |
-| **B6-02** | RGPD : endpoint `DELETE /users/me` (anonymisation J+30), endpoint `GET /users/me/export` (dump données) | B0-22 | 🔴 |
-| **B6-03** | Optimisation : index PostgreSQL manquants, requêtes N+1, EXPLAIN ANALYZE sur les requêtes critiques | Toutes | 🟡 |
-| **B6-04** | Documentation OpenAPI : descriptions de tous les endpoints, exemples de requêtes/réponses | Toutes | 🟡 |
-| **B6-05** | Tests de charge (locust) : scénarios réservation simultanée, liste d'attente sous pression | Toutes | 🟡 |
-| **B6-06** | Hardening Docker : image non-root, secrets via Docker secrets, healthcheck sur tous les services | — | 🔴 |
+| **B6-02** | RGPD — Droit d'accès (Art. 15) : `GET /users/me/export` — dump complet JSON de toutes les données personnelles (profil, séances, paiements, messages chiffrés déchiffrés) | B0-22 | 🔴 |
+| **B6-03** | RGPD — Droit à l'effacement (Art. 17) : `DELETE /users/me` → statut `deletion_pending`, anonymisation effective J+30 (cron), suppression champs PII, conservation données comptables anonymisées | B0-22 | 🔴 |
+| **B6-04** | RGPD — Droit à la portabilité (Art. 20) : export `GET /users/me/export?format=csv` + format JSON structuré, téléchargeable 24h via lien signé | B6-02 | 🟡 |
+| **B6-05** | RGPD — Consentement & registre : modèle `consents` (type, version, accepted_at, ip_hash, user_agent_hash) · endpoints `POST /consents` · `GET /consents` · log immuable (pas de DELETE) | B0-22 | 🔴 |
+| **B6-06** | RGPD — Registre des traitements : document `docs/RGPD_REGISTRE.md` (finalités, base légale, durée conservation, sous-traitants — Twilio, Google, Strava, Withings) | — | 🔴 |
+| **B6-07** | RGPD — Notification violation de données : procédure `docs/RGPD_BREACH.md` (72h CNIL, template notification utilisateurs, log incidents) | — | 🟡 |
+| **B6-08** | Optimisation : index PostgreSQL manquants, requêtes N+1, EXPLAIN ANALYZE sur les requêtes critiques | Toutes | 🟡 |
+| **B6-09** | Documentation OpenAPI : descriptions de tous les endpoints, exemples de requêtes/réponses | Toutes | 🟡 |
+| **B6-10** | Tests de charge (locust) : scénarios réservation simultanée, liste d'attente sous pression | Toutes | 🟡 |
+| **B6-11** | Hardening Docker : image non-root, secrets via Docker secrets, healthcheck sur tous les services | — | 🔴 |
 
 ---
 

@@ -1569,6 +1569,120 @@ pending_coach_validation ──(24h expiration)──► auto_rejected
 
 ---
 
+## 25. CONFORMITÉ RGPD
+
+> Le RGPD (Règlement Général sur la Protection des Données) s'applique dès la première ligne de code — MyCoach traite des données de santé (poids, blessures, performances) classées comme **données sensibles (Art. 9)**.
+
+### 25.1 Droits des utilisateurs
+
+| Droit | Article | Endpoint | Délai |
+|-------|---------|----------|-------|
+| **Accès** | Art. 15 | `GET /users/me/export` | Immédiat |
+| **Portabilité** | Art. 20 | `GET /users/me/export?format=csv` | Lien valide 24h |
+| **Rectification** | Art. 16 | `PUT /users/me` | Immédiat |
+| **Effacement** | Art. 17 | `DELETE /users/me` | Anonymisation J+30 |
+| **Opposition** | Art. 21 | `PUT /users/me/notifications` (opt-out) | Immédiat |
+| **Limitation** | Art. 18 | Compte `suspended` par admin | Sur demande |
+
+### 25.2 Effacement — Règles d'anonymisation
+
+L'effacement **ne supprime pas les lignes** — il anonymise les champs PII pour préserver la cohérence comptable et les statistiques agrégées.
+
+**Données anonymisées (J+30) :**
+- `users` : `first_name = "Utilisateur"`, `last_name = "Supprimé"`, `email = NULL`, `phone = NULL`, `google_sub = NULL`, `avatar_url = NULL`
+- `email_hash` et `search_token` → vidés
+- `api_keys` : toutes révoquées
+- `coach_notes` : `content = NULL`
+- `sms_logs` : `phone_to = NULL`, `body = NULL`
+
+**Données conservées (base légale comptable — Art. 6(1)(c)) :**
+- `sessions`, `package_consumptions`, `payments` : montants, dates, statuts — conservés 10 ans (obligation légale comptable)
+- Référence via `user_id` qui pointe vers un compte anonyme (`role = "deleted"`)
+
+**Données supprimées physiquement :**
+- `email_verification_tokens`, `password_reset_tokens` : supprimés
+- `integration_tokens` : révoqués + tokens OAuth supprimés
+- `body_measurements` : supprimées (données de santé)
+- `workout_sessions`, `exercise_sets` : supprimées (données de performance)
+
+### 25.3 Export de données (portabilité)
+
+Format JSON structuré :
+```json
+{
+  "export_date": "2026-02-26T10:00:00Z",
+  "user": { "first_name": "...", "last_name": "...", "email": "..." },
+  "sessions": [...],
+  "packages": [...],
+  "payments": [...],
+  "body_measurements": [...],
+  "workout_sessions": [...]
+}
+```
+- Lien de téléchargement généré → valide 24h → stocké temporairement sur CDN
+- Données PII déchiffrées dans l'export (le fichier appartient à l'utilisateur)
+- Export chiffré (ZIP protégé par mot de passe envoyé par email séparé) — **Phase 2**
+
+### 25.4 Consentements
+
+Table `consents` (log immuable — jamais de DELETE) :
+
+| Champ | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | PK |
+| `user_id` | UUID | FK → users.id |
+| `type` | ENUM | `terms`, `privacy_policy`, `marketing_emails`, `data_processing_health` |
+| `version` | VARCHAR(10) | ex: `"v1.2"` |
+| `accepted` | BOOLEAN | TRUE = accepté, FALSE = retiré |
+| `accepted_at` | TIMESTAMPTZ | UTC |
+| `ip_hash` | CHAR(64) | SHA-256 de l'IP (non-reversible) |
+| `user_agent_hash` | CHAR(64) | SHA-256 du user-agent |
+
+**Consentements obligatoires à l'inscription :**
+- `terms` v1.0 — CGU
+- `privacy_policy` v1.0 — Politique de confidentialité
+- `data_processing_health` v1.0 — Traitement données de santé (Art. 9 RGPD)
+
+**Consentement optionnel :**
+- `marketing_emails` — Emails promotionnels
+
+### 25.5 Registre des traitements (Art. 30)
+
+Document `docs/RGPD_REGISTRE.md` — à tenir à jour :
+
+| Traitement | Finalité | Base légale | Durée conservation | Sous-traitants |
+|-----------|---------|-------------|-------------------|---------------|
+| Gestion comptes | Exécution contrat | Art. 6(1)(b) | Durée relation + 30j | — |
+| Sessions coaching | Exécution contrat | Art. 6(1)(b) | 10 ans (comptable) | — |
+| Données de santé | Consentement explicite | Art. 9(2)(a) | Durée relation + 30j | — |
+| Notifications SMS | Intérêt légitime | Art. 6(1)(f) | 12 mois | Twilio (DPA signé) |
+| Authentification Google | Consentement | Art. 6(1)(a) | Session | Google (DPA via OAuth) |
+| Intégration Strava | Consentement | Art. 6(1)(a) | Jusqu'à révocation | Strava (DPA) |
+
+### 25.6 Durées de conservation
+
+| Catégorie | Durée | Base |
+|-----------|-------|------|
+| Données de compte actif | Durée de vie du compte | Contrat |
+| Données post-suppression (comptables) | 10 ans | Art. L123-22 Code Commerce |
+| Logs d'authentification | 1 an | Recommandation CNIL |
+| Consentements | 5 ans après retrait | Preuve de conformité |
+| Tokens de vérification expirés | 30 jours | Nettoyage automatique (cron) |
+| Données de santé (poids, blessures) | Durée relation + 30j | Consentement |
+
+### 25.7 Sécurité des données (mesures techniques)
+
+- ✅ Chiffrement des données PII au repos (Fernet AES-128, `FIELD_ENCRYPTION_KEY`)
+- ✅ Chiffrement des tokens OAuth au repos (Fernet AES-128, `TOKEN_ENCRYPTION_KEY`)
+- ✅ Chiffrement en transit (HTTPS/TLS 1.3 obligatoire en production)
+- ✅ Hachage des mots de passe (bcrypt coût 12)
+- ✅ API Keys non stockées en clair (SHA-256)
+- ✅ Anonymisation des tokens dans les logs (`key_hash[:8]...`)
+- ✅ `FLAG_SECURE` sur les écrans sensibles (Android)
+- ✅ Pas de PII dans les logs applicatifs
+
+---
+
 ## CHANGELOG
 
 | Version | Date | Modifications |
@@ -1582,6 +1696,7 @@ pending_coach_validation ──(24h expiration)──► auto_rejected
 | 1.6 | 26/02/2026 | §10.4 Architecture multi-participants : `sessions` sans `client_id` → table `session_participants` (statut/prix/annulation par client) · Tarif groupe : seuil N → prix/client réduit · Multi-coach : client peut avoir N coachs simultanément, données tracées par `coach_id` · Traçabilité consommation : table `package_consumptions` (Id_pack · Id_Payment · Id_Client · minutes · date planif · statut Consommé/Due/En attente) |
 | 1.7 | 26/02/2026 | Décisions architecturales finales : Programme IA → `coach_id = NULL` + `source = 'ai'` · PRs → `is_pr = TRUE` sur `exercise_sets` (pas de table dédiée) + index partiel · Notation coach → Phase 2, aucun schéma anticipé |
 | 1.8 | 26/02/2026 | Chiffrement tokens OAuth → Python Fernet applicatif avec clé dédiée `TOKEN_ENCRYPTION_KEY` (séparée de `FIELD_ENCRYPTION_KEY`) · `EncryptedToken` TypeDecorator distinct · 2 clés = 2 périmètres de compromission indépendants |
+| 1.9 | 26/02/2026 | §25 Conformité RGPD ajouté : droits des utilisateurs (accès/portabilité/effacement/opposition), règles d'anonymisation J+30, table `consents` (log immuable), registre des traitements, durées de conservation, mesures techniques · `TASKS_BACKEND.md` : B6-02 → B6-07 (6 tâches RGPD détaillées), anciens B6-03→B6-06 renommés B6-08→B6-11 |
 
 ---
 
