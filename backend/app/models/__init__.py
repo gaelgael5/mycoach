@@ -3,6 +3,12 @@ Import de tous les modèles SQLAlchemy.
 Ce fichier est importé par alembic/env.py pour que target_metadata
 contienne toutes les tables lors de la génération des migrations.
 """
+# Phase 3 — Performances & Exercices
+from app.models.exercise_type import ExerciseType, ExerciseTypeMuscle
+from app.models.machine import Machine, MachineExercise
+from app.models.performance_session import PerformanceSession
+from app.models.exercise_set import ExerciseSet
+
 # Phase 0 — Auth
 from app.models.user import User
 from app.models.api_key import ApiKey
@@ -67,4 +73,11 @@ __all__ = [
     "Package",
     "Payment",
     "CancellationMessageTemplate",
+    # Phase 3
+    "ExerciseType",
+    "ExerciseTypeMuscle",
+    "Machine",
+    "MachineExercise",
+    "PerformanceSession",
+    "ExerciseSet",
 ]
