@@ -4,6 +4,27 @@
 
 ---
 
+## ✅ Définition du Done — Rappel (règle absolue)
+
+> **Une tâche n'est terminée que si elle est committée avec ses tests.**
+
+Pour chaque feature implémentée, le commit Git doit contenir :
+
+| Quoi | Critère |
+|------|---------|
+| **Code** | Feature complète selon les specs |
+| **Tests passants** | Au moins 1 test couvrant le cas nominal (happy path) |
+| **Tests non passants** | Au moins 1 test par règle métier (erreur, limite, accès refusé) |
+| **Tous les tests verts** | `pytest` ou `./gradlew test` → 0 failure, 0 error |
+| **PROGRESS.md** | Tâche marquée ✅ |
+
+> Format du message de commit : `[PHASE-X][TASK-Y] Description + tests`
+>
+> ⛔ **Commit interdit** si un test est rouge ou si les tests manquent.
+> Voir `docs/CODING_AGENT.md §10` pour les exemples complets (DoD + paires passant/non passant).
+
+---
+
 ## Vue d'ensemble
 
 ```mermaid

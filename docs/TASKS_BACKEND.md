@@ -5,7 +5,26 @@
 >
 > **Ordre d'exécution obligatoire au sein de chaque phase :**
 > Modèles BDD → Migration Alembic → Schemas Pydantic → Repository → Service → Router → Tests
+
+---
+
+> ### ⚠️ RÈGLE DE TEST — NON NÉGOCIABLE
 >
+> **Chaque tâche de type "Service" ou "Router" doit être committée avec ses tests.**
+> Le fichier de test correspondant fait partie de la même tâche — pas d'une tâche séparée.
+>
+> Pour chaque fonction de service et chaque endpoint :
+> - **1 test minimum "cas passant"** : l'appel nominal retourne le bon résultat
+> - **1 test minimum "cas non passant"** : erreur métier, accès refusé, donnée invalide, limite dépassée
+>
+> Commande de validation avant commit : `pytest tests/ -v`
+>
+> **Un commit sans tests = commit invalide. Une tâche sans tests = tâche non terminée.**
+>
+> Voir `docs/CODING_AGENT.md §10` pour des exemples complets.
+
+---
+
 > Le backend d'une phase doit être **complet et testé** avant de démarrer la phase suivante.
 
 ---

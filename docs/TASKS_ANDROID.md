@@ -5,7 +5,26 @@
 >
 > **Ordre d'exécution obligatoire au sein de chaque phase :**
 > Couche Data (ApiService + DTO + Repository) → ViewModel → UI (Fragment + Layout) → Tests
+
+---
+
+> ### ⚠️ RÈGLE DE TEST — NON NÉGOCIABLE
 >
+> **Chaque tâche "ViewModel" doit être committée avec ses tests unitaires.**
+> Les tests font partie de la même tâche — pas d'une tâche séparée.
+>
+> Pour chaque ViewModel et chaque Repository :
+> - **1 test minimum "cas passant"** : `UiState.Success` ou résultat nominal
+> - **1 test minimum "cas non passant"** : `UiState.Error`, exception réseau, règle métier violée, état vide
+>
+> Commande de validation avant commit : `./gradlew testDebugUnitTest`
+>
+> **Un commit sans tests = commit invalide. Une tâche sans tests = tâche non terminée.**
+>
+> Voir `docs/CODING_AGENT.md §10` pour des exemples complets.
+
+---
+
 > **Dépendance inter-plateformes :**
 > La couche Data de chaque phase Android ne peut être développée que lorsque les endpoints backend correspondants sont **déployés et testables**.
 > La couche UI peut être maquettée en parallèle avec des données mockées.

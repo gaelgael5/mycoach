@@ -43,11 +43,32 @@ Si un document manque ou est incomplet, signale-le avant de continuer.
 - Dès le premier fichier `.kt` ou `.py` produit, i18n est en place
 - Voir §4 pour les règles détaillées
 
-### 1.5 Chaque tâche = un commit Git propre
+### 1.5 Chaque tâche = un commit Git propre (avec les tests)
+
+> **Règle absolue : une tâche n'existe que si ses tests existent et passent.**
+> Le commit n'est valide que s'il contient à la fois le code de la feature ET ses tests.
+
 - Format du message de commit : `[PHASE-X][TASK-Y] Description courte`
-- Exemple : `[PHASE-0][TASK-3] Auth API Key - Google OAuth flow`
+- Exemple : `[PHASE-0][TASK-3] Auth API Key - Google OAuth flow + tests`
+- Le suffixe `+ tests` est obligatoire pour rappeler que les tests font partie du commit
+- **Ne jamais séparer** le code d'une feature et ses tests dans deux commits distincts
 - Ne pas regrouper plusieurs tâches dans un seul commit
 - Branche : `main` (projet solo) ou créer des branches feature si spécifié
+
+**Ce qui doit être dans chaque commit :**
+```
+✅ Code de la feature (models, schemas, repo, service, router / ViewModel, UI)
+✅ Tests couvrant les cas passants (happy path)
+✅ Tests couvrant les cas non passants (erreurs, invalide, limites)
+✅ Mise à jour de docs/PROGRESS.md (tâche = ✅)
+```
+
+**Ce qui ne doit PAS être dans un commit :**
+```
+❌ Code fonctionnel sans tests associés
+❌ Tests seuls sans le code qu'ils testent
+❌ Tâche marquée ✅ dans PROGRESS.md si les tests ne passent pas à 100%
+```
 
 ---
 
@@ -78,28 +99,57 @@ Pour chaque tâche de la liste, applique **exactement** ces étapes dans l'ordre
 └─────────────────────────┬───────────────────────────────────┘
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
-│  ÉTAPE 4 — TESTER                                           │
-│  Écris les tests unitaires couvrant :                       │
-│  - Le cas nominal (happy path)                              │
-│  - Les cas d'erreur définis dans les specs                  │
-│  - Les règles de validation champ par champ                 │
-│  Lance les tests. Tous doivent passer.                      │
+│  ÉTAPE 4 — TESTER  ← OBLIGATOIRE, NON NÉGOCIABLE           │
+│                                                             │
+│  Pour chaque fonction/endpoint/écran implémenté,            │
+│  tu dois écrire DES DEUX types de tests :                   │
+│                                                             │
+│  ✅ CAS PASSANTS (happy path)                               │
+│    - L'appel nominal fonctionne et retourne le bon résultat │
+│    - Chaque chemin logique "succès" est couvert             │
+│    - Les données retournées sont conformes au schéma        │
+│                                                             │
+│  ❌ CAS NON PASSANTS (error cases)                          │
+│    - Champ obligatoire manquant → erreur attendue           │
+│    - Valeur invalide (type, format, plage) → erreur         │
+│    - Doublon / contrainte unicité → erreur                  │
+│    - Accès non autorisé (autre user, rôle insuffisant)      │
+│    - Ressource inexistante (404)                            │
+│    - Limite métier dépassée (ex: max 5 templates)           │
+│    - Règle temporelle violée (ex: annulation < 24h)         │
+│                                                             │
+│  RÈGLE : au minimum 1 test passant + 1 test non passant     │
+│  par fonction de service / endpoint / ViewModel             │
+│                                                             │
+│  Backend : pytest + pytest-asyncio, base PostgreSQL test    │
+│  Android : JUnit5 + MockK/Mockito, coroutines test          │
+│                                                             │
+│  Lance : pytest (backend) ou ./gradlew test (Android)       │
+│  ⛔ Si un test échoue → corriger le code, pas le test       │
 └─────────────────────────┬───────────────────────────────────┘
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
 │  ÉTAPE 5 — VALIDER                                          │
 │  Relis le code produit et vérifie :                         │
 │  ✓ i18n respectée (aucune string codée en dur)              │
-│  ✓ Standards de code respectés                              │
+│  ✓ Standards de code §3 respectés                           │
 │  ✓ Tous les cas d'erreur des specs sont couverts            │
 │  ✓ Le modèle de données correspond aux specs                │
+│  ✓ Tous les tests passent (0 failure, 0 error)              │
+│  ✓ Couverture : au moins 1 cas passant + 1 non passant      │
+│    par fonction de service / par endpoint / par ViewModel   │
 └─────────────────────────┬───────────────────────────────────┘
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
-│  ÉTAPE 6 — COMMITER                                         │
+│  ÉTAPE 6 — COMMITER (code + tests ensemble)                 │
 │  `git add .`                                                │
-│  `git commit -m "[PHASE-X][TASK-Y] Description"`            │
+│  `git commit -m "[PHASE-X][TASK-Y] Description + tests"`    │
 │  Mets à jour `docs/PROGRESS.md` (tâche = ✅)               │
+│                                                             │
+│  ⛔ Commit INTERDIT si :                                    │
+│    - Tests manquants pour la feature committée              │
+│    - Un test échoue (rouge)                                 │
+│    - PROGRESS.md non mis à jour                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -402,6 +452,7 @@ Ne jamais improviser sur un point non spécifié — toujours demander.
 
 ## 9. CE QUE TU NE DOIS PAS FAIRE
 
+**Architecture & données :**
 - ❌ Commencer la Phase 1 sans que tous les tests de la Phase 0 passent
 - ❌ Utiliser SQLite (même pour les tests — utiliser PostgreSQL avec un container de test)
 - ❌ Stocker des montants en float (toujours en centimes entiers)
@@ -411,9 +462,93 @@ Ne jamais improviser sur un point non spécifié — toujours demander.
 - ❌ Écrire de la logique métier dans un Router ou un Fragment/Activity
 - ❌ Faire des appels réseau depuis le thread UI Android
 - ❌ Utiliser `!!` (null assertion) en Kotlin sans justification dans un commentaire
-- ❌ Merger une tâche sans tests unitaires associés
+
+**Tests (règles absolues) :**
+- ❌ **Commiter une feature sans ses tests** — interdit sans exception
+- ❌ **N'écrire que des cas passants** — les cas non passants sont obligatoires
+- ❌ Commiter si un test est rouge — corriger le code, jamais le test
+- ❌ Marquer une tâche ✅ dans PROGRESS.md si les tests ne passent pas à 100%
+- ❌ Séparer le code d'une feature et ses tests dans des commits différents
+- ❌ Utiliser des mocks pour masquer un vrai bug — les mocks servent à isoler, pas à cacher
+
+---
+
+## 10. DÉFINITION DU DONE (DoD)
+
+> Une tâche est **terminée** si et seulement si **tous** ces critères sont satisfaits :
+
+```
+CRITÈRES FONCTIONNELS
+□ La feature correspond exactement aux specs (FUNCTIONAL_SPECS_DETAILED.md)
+□ Tous les cas d'erreur des specs sont gérés (pas de comportement indéfini)
+□ Les messages d'erreur sont i18n (jamais de string codée en dur)
+
+CRITÈRES DE QUALITÉ CODE
+□ Structure en couches respectée (Router → Service → Repository)
+□ Aucune logique métier dans le Router (backend) ou Fragment/Activity (Android)
+□ Les exceptions métier sont typées (ex: LateCancellationError, DuplicateBookingError)
+
+CRITÈRES DE TEST — OBLIGATOIRES
+□ Au moins 1 test unitaire "cas passant" par fonction de service / endpoint / ViewModel
+□ Au moins 1 test unitaire "cas non passant" par règle métier implémentée
+□ Tous les tests existants passent (0 failure, 0 error, 0 skip non justifié)
+□ Les cas non passants testent bien un comportement attendu (erreur, rejet, exception)
+  et non une absence de comportement
+
+CRITÈRES DE COMMIT
+□ Commit contient : code de la feature + ses tests + mise à jour PROGRESS.md
+□ Message de commit au format : [PHASE-X][TASK-Y] Description + tests
+□ Branche propre (pas de fichiers temporaires, pas de .env commité)
+```
+
+### Exemples de paires passant / non passant
+
+**Backend — Service `create_template` (max 5 templates par coach) :**
+```python
+# ✅ CAS PASSANT
+async def test_create_template_ok(db, coach):
+    t = await create_template(db, coach.id, title="Maladie", body="Bonjour {prénom}...")
+    assert t.id is not None
+    assert t.position == 1
+
+# ❌ CAS NON PASSANT — limite dépassée
+async def test_create_template_max_5_raises(db, coach_with_5_templates):
+    with pytest.raises(TemplateLimitReachedError):
+        await create_template(db, coach_with_5_templates.id, title="6ème", body="...")
+
+# ❌ CAS NON PASSANT — coach inconnu
+async def test_create_template_unknown_coach(db):
+    with pytest.raises(CoachNotFoundError):
+        await create_template(db, uuid4(), title="Test", body="...")
+```
+
+**Android — ViewModel `CancellationTemplateViewModel` :**
+```kotlin
+// ✅ CAS PASSANT
+@Test fun `getTemplates emits Success with list`() = runTest {
+    coEvery { repo.getTemplates() } returns listOf(fakeTemplate)
+    viewModel.load()
+    assertIs<UiState.Success<*>>(viewModel.uiState.value)
+}
+
+// ❌ CAS NON PASSANT — erreur réseau
+@Test fun `getTemplates emits Error on network failure`() = runTest {
+    coEvery { repo.getTemplates() } throws IOException("timeout")
+    viewModel.load()
+    assertIs<UiState.Error>(viewModel.uiState.value)
+}
+
+// ❌ CAS NON PASSANT — création au-delà de 5
+@Test fun `createTemplate emits Error when limit reached`() = runTest {
+    coEvery { repo.getTemplates() } returns List(5) { fakeTemplate }
+    viewModel.onCreateClicked("nouveau", "corps")
+    val state = viewModel.uiState.value
+    assertIs<UiState.Error>(state)
+    assertEquals("template_limit_reached", (state as UiState.Error).code)
+}
+```
 
 ---
 
 *Ce document est la loi. En cas de doute, relis-le.*
-*Version 1.0 — 25/02/2026*
+*Version 1.1 — 26/02/2026 — Ajout DoD + règles test cas passants/non passants*
