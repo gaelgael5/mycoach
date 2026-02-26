@@ -4,13 +4,8 @@
 # Déclencheur : push sur main ou pull request
 #
 # Secrets à configurer dans AppVeyor UI (Settings → Environment variables) :
+#   DOCKER_PASSWORD      = dckr_pat_xxx…          (cocher "Encrypt value")
 #   DOCKER_USERNAME      = blackbeardteam
-#   DOCKER_PASSWORD      = dckr_pat_xxx…
-#   FIELD_ENCRYPTION_KEY = clé Fernet (python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())")
-#   TOKEN_ENCRYPTION_KEY = clé Fernet (idem)
-#   API_KEY_SALT         = secrets.token_hex(16)
-#   SECRET_KEY           = secrets.token_hex(32)
-#   GOOGLE_CLIENT_ID     = (optionnel — CI tests passent sans)
 # ─────────────────────────────────────────────────────────────────────────────
 
 version: "{build}"
@@ -20,38 +15,35 @@ image: Ubuntu2204
 # ─── Variables d'environnement ────────────────────────────────────────────────
 environment:
   DOCKER_IMAGE: blackbeardteam/mycoach-api
+  BACKEND_DIR: backend
 
-  # ── DB de test ──
-  POSTGRES_DB: mycoach_test
-  POSTGRES_USER: mycoach_ci
-  POSTGRES_PASSWORD: mycoach_ci_pass
+  # DB de test
   DATABASE_URL: "postgresql+asyncpg://mycoach_ci:mycoach_ci_pass@localhost:5432/mycoach_test"
 
-  # ── Secrets CI (valeurs fictives — overridées par les vraies valeurs dans AppVeyor UI) ──
-  # Si les variables sont définies dans les settings AppVeyor, elles prennent la priorité.
+  # Clés CI (valeurs neutres — pas de données réelles)
   FIELD_ENCRYPTION_KEY: "E-t_tJ-aMju6zR2pDlVGW-7-Gd6AeUHQxFa_tf3hmX4="
   TOKEN_ENCRYPTION_KEY: "zVj1eWKXXxxes5SdBoDepwNZwOubLi9JecItFudSLPY="
   API_KEY_SALT: "1cb955941fd48ac254d90b5dcc660b1e"
   SECRET_KEY: "2d830c8e7b93b6e27164cdf07fd4fe76d31dcfb97d3c64451d8f27b5d2a83331"
-  GOOGLE_CLIENT_ID: "ci_placeholder_not_used_for_tests"
+  GOOGLE_CLIENT_ID: "ci_placeholder"
   APP_ENV: "test"
 
-  # ── Docker Hub (à renseigner dans AppVeyor UI — marqué "secret") ──
+  # Docker Hub — à setter dans AppVeyor Settings > Environment (encryptés)
   DOCKER_USERNAME: "blackbeardteam"
-  DOCKER_PASSWORD: ""   # Set in AppVeyor project settings (encrypted)
+  DOCKER_PASSWORD: ""
 
-# ─── Service PostgreSQL ───────────────────────────────────────────────────────
+# ─── Service PostgreSQL (AppVeyor géré) ──────────────────────────────────────
 services:
   - postgresql
 
 # ─── Préparation ──────────────────────────────────────────────────────────────
 install:
-  # ── Python 3.12 ──
+  # Python 3.12 (deadsnakes PPA — non disponible par défaut sur Ubuntu 22.04)
+  - sudo add-apt-repository -y ppa:deadsnakes/ppa
   - sudo apt-get update -q
-  - sudo apt-get install -y --no-install-recommends python3.12 python3.12-venv python3.12-dev python3-pip
-  - python3.12 -m pip install --upgrade pip --quiet
+  - sudo apt-get install -y --no-install-recommends python3.12 python3.12-venv python3.12-dev python3.12-distutils gcc libpq-dev build-essential
 
-  # ── PostgreSQL : user + DB + extensions ──
+  # PostgreSQL — créer user + DB + extensions
   - sleep 3
   - psql -U postgres -c "CREATE USER mycoach_ci WITH PASSWORD 'mycoach_ci_pass';"
   - psql -U postgres -c "CREATE DATABASE mycoach_test OWNER mycoach_ci;"
@@ -59,89 +51,62 @@ install:
   - psql -U postgres -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
   - psql -U postgres -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
 
-  # ── Dépendances Python ──
-  - cd backend
-  - python3.12 -m pip install -r requirements.txt --quiet
-  - python3.12 -m pip install -r requirements-dev.txt --quiet
+  # Venv Python
+  - python3.12 -m venv backend/.venv
+  - backend/.venv/bin/pip install --upgrade pip --quiet
+  - backend/.venv/bin/pip install -r backend/requirements.txt --quiet
+  - backend/.venv/bin/pip install -r backend/requirements-dev.txt --quiet
 
-# ─── Build ────────────────────────────────────────────────────────────────────
+# ─── Build ───────────────────────────────────────────────────────────────────
 build_script:
-  - echo "Build script — lint + typecheck"
-
-  # Lint (ruff)
-  - python3.12 -m ruff check app/ --output-format=github || true
-
-  # Typecheck (mypy)
-  - python3.12 -m mypy app/ --ignore-missing-imports --no-error-summary || true
+  - echo "=== Lint (ruff) ==="
+  - backend/.venv/bin/python -m ruff check backend/app/ --output-format=github || true
+  - echo "=== Typecheck (mypy) ==="
+  - backend/.venv/bin/python -m mypy backend/app/ --ignore-missing-imports --no-error-summary || true
 
 # ─── Tests ────────────────────────────────────────────────────────────────────
 test_script:
   - |
-    python3.12 -m pytest tests/ \
-      -v \
-      --tb=short \
-      --cov=app \
-      --cov-report=xml:coverage.xml \
-      --cov-report=term-missing \
+    cd backend && PYTHONPATH=. .venv/bin/python -m pytest tests/ \
+      -v --tb=short \
+      --cov=app --cov-report=xml:coverage.xml --cov-report=term-missing \
       -x
-  - cd ..
 
 # ─── Artifacts ────────────────────────────────────────────────────────────────
 artifacts:
   - path: backend/coverage.xml
     name: coverage-report
 
-# ─── Deploy Docker Hub (main uniquement) ─────────────────────────────────────
+# ─── Deploy (main uniquement) ─────────────────────────────────────────────────
 deploy_script:
   - |
     set -e
     if [ "$APPVEYOR_REPO_BRANCH" = "main" ] && [ -z "$APPVEYOR_PULL_REQUEST_NUMBER" ]; then
-
       echo ">>> Branch main — build + push Docker Hub"
 
-      # Vérifier que les credentials Docker sont disponibles
       if [ -z "$DOCKER_PASSWORD" ]; then
-        echo "ERREUR : DOCKER_PASSWORD non défini dans AppVeyor settings"
+        echo "ERREUR : DOCKER_PASSWORD absent des settings AppVeyor"
         exit 1
       fi
 
-      # Login Docker Hub
       echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-      # Tags
       TAG_LATEST="${DOCKER_IMAGE}:latest"
       TAG_BUILD="${DOCKER_IMAGE}:build-${APPVEYOR_BUILD_NUMBER}"
       TAG_SHA="${DOCKER_IMAGE}:${APPVEYOR_REPO_COMMIT:0:8}"
 
-      # Build multi-stage depuis /backend/Dockerfile
       docker build \
         --label "build.number=${APPVEYOR_BUILD_NUMBER}" \
         --label "build.date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
         --label "git.commit=${APPVEYOR_REPO_COMMIT:0:8}" \
-        -t "$TAG_LATEST" \
-        -t "$TAG_BUILD" \
-        -t "$TAG_SHA" \
+        -t "$TAG_LATEST" -t "$TAG_BUILD" -t "$TAG_SHA" \
         ./backend/
 
-      # Push
       docker push "$TAG_LATEST"
       docker push "$TAG_BUILD"
       docker push "$TAG_SHA"
 
-      echo ">>> ✅ Images poussées :"
-      echo "    $TAG_LATEST"
-      echo "    $TAG_BUILD"
-      echo "    $TAG_SHA"
-
+      echo "✅ Images publiées : $TAG_LATEST | $TAG_BUILD | $TAG_SHA"
     else
-      echo ">>> Pas de push Docker (branch: $APPVEYOR_REPO_BRANCH, PR: $APPVEYOR_PULL_REQUEST_NUMBER)"
+      echo ">>> Pas de push Docker (branch: $APPVEYOR_REPO_BRANCH)"
     fi
-
-# ─── Notifications ────────────────────────────────────────────────────────────
-notifications:
-  - provider: GitHubPullRequest
-    auth_token:
-      secure: ""    # À renseigner si GitHub status checks voulus
-    template: "MyCoach CI — {{status}} en {{duration}}"
-    on_build_success: true
-    on_build_failure: true
