@@ -18,7 +18,7 @@ environment:
   BACKEND_DIR: backend
 
   # DB de test
-  DATABASE_URL: "postgresql+asyncpg://mycoach_ci:mycoach_ci_pass@localhost:5432/mycoach_test"
+  DATABASE_URL: "postgresql+asyncpg://mycoach:mycoach_test@localhost:5432/mycoach_test"
 
   # Clés CI (valeurs neutres — pas de données réelles)
   FIELD_ENCRYPTION_KEY: "E-t_tJ-aMju6zR2pDlVGW-7-Gd6AeUHQxFa_tf3hmX4="
@@ -51,8 +51,8 @@ install:
       echo "Attente PostgreSQL... ($i/20)"
       sleep 2
     done
-  - sudo -u postgres psql -c "CREATE USER mycoach_ci WITH PASSWORD 'mycoach_ci_pass';"
-  - sudo -u postgres psql -c "CREATE DATABASE mycoach_test OWNER mycoach_ci;"
+  - sudo -u postgres psql -c "CREATE USER mycoach WITH PASSWORD 'mycoach_test';"
+  - sudo -u postgres psql -c "CREATE DATABASE mycoach_test OWNER mycoach;"
   - sudo -u postgres psql -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
   - sudo -u postgres psql -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
   - sudo -u postgres psql -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
