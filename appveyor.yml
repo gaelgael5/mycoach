@@ -43,8 +43,14 @@ install:
   - sudo apt-get update -q
   - sudo apt-get install -y --no-install-recommends python3.12 python3.12-venv python3.12-dev gcc libpq-dev build-essential
 
-  # PostgreSQL — créer user + DB + extensions
-  - sleep 3
+  # PostgreSQL — démarrage + attente + user + DB + extensions
+  - sudo service postgresql start || true
+  - |
+    for i in $(seq 1 20); do
+      pg_isready -U postgres && break
+      echo "Attente PostgreSQL... ($i)"
+      sleep 2
+    done
   - psql -U postgres -c "CREATE USER mycoach_ci WITH PASSWORD 'mycoach_ci_pass';"
   - psql -U postgres -c "CREATE DATABASE mycoach_test OWNER mycoach_ci;"
   - psql -U postgres -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
