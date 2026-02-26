@@ -645,20 +645,160 @@ def downgrade():
         op.drop_column("users", col)
 ```
 
+#### Deux clés, deux périmètres — architecture finale
+
+> **Décision :** deux clés Fernet distinctes avec deux TypeDecorators distincts.
+> Compromission d'une clé n'expose pas l'autre catégorie de données.
+
+```
+FIELD_ENCRYPTION_KEY  ──► EncryptedString  ──► PII (noms, emails, téléphones, notes...)
+TOKEN_ENCRYPTION_KEY  ──► EncryptedToken   ──► Tokens OAuth (access_token, refresh_token)
+```
+
+```python
+# app/core/encryption.py — version finale avec 2 clés
+from cryptography.fernet import Fernet
+from functools import lru_cache
+from app.core.config import settings
+
+
+@lru_cache(maxsize=1)
+def _fernet_fields() -> Fernet:
+    """Clé A — champs PII (noms, emails, notes...)."""
+    return Fernet(settings.FIELD_ENCRYPTION_KEY.encode())
+
+
+@lru_cache(maxsize=1)
+def _fernet_tokens() -> Fernet:
+    """Clé B — tokens OAuth (access_token, refresh_token)."""
+    return Fernet(settings.TOKEN_ENCRYPTION_KEY.encode())
+
+
+# --- PII ---
+def encrypt_field(value: str | None) -> str | None:
+    if value is None: return None
+    return _fernet_fields().encrypt(value.encode("utf-8")).decode("ascii")
+
+def decrypt_field(value: str | None) -> str | None:
+    if value is None: return None
+    return _fernet_fields().decrypt(value.encode("ascii")).decode("utf-8")
+
+# --- Tokens OAuth ---
+def encrypt_token(value: str | None) -> str | None:
+    if value is None: return None
+    return _fernet_tokens().encrypt(value.encode("utf-8")).decode("ascii")
+
+def decrypt_token(value: str | None) -> str | None:
+    if value is None: return None
+    return _fernet_tokens().decrypt(value.encode("ascii")).decode("utf-8")
+
+# --- Hash de lookup (inchangé, pas de clé) ---
+def hash_for_lookup(value: str) -> str:
+    import hashlib
+    return hashlib.sha256(value.strip().lower().encode("utf-8")).hexdigest()
+```
+
+```python
+# app/core/encrypted_type.py — deux TypeDecorators
+from sqlalchemy import String, TypeDecorator
+from app.core.encryption import encrypt_field, decrypt_field, encrypt_token, decrypt_token
+
+
+class EncryptedString(TypeDecorator):
+    """Chiffre les champs PII via FIELD_ENCRYPTION_KEY."""
+    impl = String
+    cache_ok = True
+
+    def __init__(self, plaintext_max_length: int = 255, **kw):
+        super().__init__(plaintext_max_length * 2 + 100, **kw)
+
+    def process_bind_param(self, value, dialect):
+        return encrypt_field(value)
+
+    def process_result_value(self, value, dialect):
+        return decrypt_field(value)
+
+
+class EncryptedToken(TypeDecorator):
+    """
+    Chiffre les tokens OAuth via TOKEN_ENCRYPTION_KEY.
+    Clé distincte de EncryptedString — périmètre de compromission séparé.
+    Les tokens OAuth sont plus longs (JWT, Bearer...) → taille par défaut plus grande.
+    """
+    impl = String
+    cache_ok = True
+
+    def __init__(self, plaintext_max_length: int = 2048, **kw):
+        super().__init__(plaintext_max_length * 2 + 100, **kw)
+
+    def process_bind_param(self, value, dialect):
+        return encrypt_token(value)
+
+    def process_result_value(self, value, dialect):
+        return decrypt_token(value)
+```
+
+```python
+# app/models/integration_token.py
+class IntegrationToken(Base):
+    __tablename__ = "integration_tokens"
+
+    id:                  Mapped[UUID]      = mapped_column(primary_key=True, default=uuid4)
+    user_id:             Mapped[UUID]      = mapped_column(ForeignKey("users.id"), nullable=False, index=True)
+    provider:            Mapped[str]       = mapped_column(String(20), nullable=False)   # strava | google_calendar | withings | ...
+
+    # ← Chiffrés via TOKEN_ENCRYPTION_KEY (EncryptedToken)
+    access_token:        Mapped[str|None]  = mapped_column(EncryptedToken(2048), nullable=True)
+    refresh_token:       Mapped[str|None]  = mapped_column(EncryptedToken(2048), nullable=True)
+
+    # ← Plain — métadonnées non sensibles
+    expires_at:          Mapped[datetime|None] = mapped_column(nullable=True)
+    scopes:              Mapped[str|None]  = mapped_column(String(500), nullable=True)
+    provider_user_id:    Mapped[str|None]  = mapped_column(String(100), nullable=True)
+    provider_username:   Mapped[str|None]  = mapped_column(String(100), nullable=True)
+    provider_avatar_url: Mapped[str|None]  = mapped_column(Text, nullable=True)
+    auto_push_strava:    Mapped[bool]      = mapped_column(Boolean, nullable=True)
+    gcal_sync_enabled:   Mapped[bool]      = mapped_column(Boolean, nullable=True)
+    gcal_bidirectional:  Mapped[bool]      = mapped_column(Boolean, nullable=True)
+    connected_at:        Mapped[datetime]  = mapped_column(default=datetime.utcnow)
+    last_sync_at:        Mapped[datetime|None] = mapped_column(nullable=True)
+
+    __table_args__ = (
+        UniqueConstraint("user_id", "provider", name="uq_integration_token_user_provider"),
+    )
+```
+
 #### Champs chiffrés par table (référence complète)
 
-| Table | Champs chiffrés (EncryptedString) | Colonnes de recherche plain (non-PII) |
-|-------|----------------------------------|--------------------------------------|
-| `users` | `first_name`, `last_name`, `email`, `phone`, `google_sub` | `email_hash` SHA-256 · `search_token` unaccent+lower (GIN) |
-| `client_profiles` | `injuries_notes` | — |
-| `coach_profiles` | `bio` | — |
-| `coach_notes` | `content` | — |
-| `payments` | `reference`, `notes` | — |
-| `sms_logs` | `body`, `phone_to` | — |
-| `integration_tokens` | `access_token`, `refresh_token` | — |
-| `cancellation_message_templates` | `body` | — |
+| Table | TypeDecorator | Champs chiffrés | Colonnes plain de lookup |
+|-------|--------------|----------------|------------------------|
+| `users` | `EncryptedString` | `first_name`, `last_name`, `email`, `phone`, `google_sub` | `email_hash` (SHA-256) · `search_token` (GIN) |
+| `client_profiles` | `EncryptedString` | `injuries_notes` | — |
+| `coach_profiles` | `EncryptedString` | `bio` | — |
+| `coach_notes` | `EncryptedString` | `content` | — |
+| `payments` | `EncryptedString` | `reference`, `notes` | — |
+| `sms_logs` | `EncryptedString` | `body`, `phone_to` | — |
+| `cancellation_message_templates` | `EncryptedString` | `body` | — |
+| `integration_tokens` | **`EncryptedToken`** | `access_token`, `refresh_token` | — |
 
-> **Règle `search_token`** : jamais loggué, jamais retourné dans les réponses API, utilisé uniquement pour les clauses `WHERE` de recherche. Ce token dérivé n'est pas considéré PII car il ne permet pas de retrouver le nom exact (il est irréversible par design — pas de déchiffrement possible).
+> **Règle `search_token`** : jamais retourné dans les réponses API, jamais loggué — utilisé uniquement dans les clauses `WHERE`. Token dérivé irréversible, non-PII.
+
+#### Variables d'environnement requises
+
+```env
+# .env.dev / .env.prod
+
+# Générer avec :
+# python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+
+FIELD_ENCRYPTION_KEY=<clé Fernet A>   # Champs PII (noms, emails, notes...)
+TOKEN_ENCRYPTION_KEY=<clé Fernet B>   # Tokens OAuth (Strava, Google Calendar, Withings...)
+
+# ⚠️ Les deux clés sont INDÉPENDANTES — générées séparément
+# ⚠️ Ne jamais commiter dans git
+# ⚠️ En prod : stocker dans un secret manager (Vault, AWS Secrets Manager...)
+# ⚠️ Rotation d'une clé n'impacte pas l'autre
+```
 
 #### Variable d'environnement
 
@@ -1041,18 +1181,41 @@ async def get_client_coaches(db: AsyncSession, client_id: UUID) -> list[User]:
 ```python
 # scripts/rotate_encryption_key.py
 """
-Usage : python scripts/rotate_encryption_key.py --old-key OLD --new-key NEW
-Re-chiffre tous les champs PII avec la nouvelle clé.
-À exécuter en maintenance, avec la base en lecture seule.
+Rotation d'une des deux clés de chiffrement.
+
+Usage :
+  # Rotation clé PII
+  python scripts/rotate_encryption_key.py --scope fields --old-key OLD --new-key NEW
+
+  # Rotation clé tokens OAuth
+  python scripts/rotate_encryption_key.py --scope tokens --old-key OLD --new-key NEW
+
+À exécuter en maintenance planifiée (base en lecture seule ou faible charge).
+Les deux clés sont indépendantes — on peut en tourner une sans toucher l'autre.
 """
 from cryptography.fernet import Fernet
+import argparse
 
-def reencrypt_all(old_key: str, new_key: str):
-    old = Fernet(old_key.encode())
-    new = Fernet(new_key.encode())
+# Colonnes PII par table (scope=fields)
+PII_COLUMNS = {
+    "users":                          ["first_name", "last_name", "email", "phone", "google_sub"],
+    "client_profiles":                ["injuries_notes"],
+    "coach_profiles":                 ["bio"],
+    "coach_notes":                    ["content"],
+    "payments":                       ["reference", "notes"],
+    "sms_logs":                       ["body", "phone_to"],
+    "cancellation_message_templates": ["body"],
+}
 
-    # Pour chaque table/colonne PII : SELECT → decrypt(old) → encrypt(new) → UPDATE
-    # ...
+# Colonnes OAuth par table (scope=tokens)
+TOKEN_COLUMNS = {
+    "integration_tokens": ["access_token", "refresh_token"],
+}
+
+def reencrypt_table(old: Fernet, new: Fernet, table: str, columns: list[str]):
+    # Pour chaque ligne : SELECT → decrypt(old) → encrypt(new) → UPDATE
+    # Traitement par batch de 500 pour éviter les transactions trop longues
+    ...
 ```
 
 ---
@@ -2223,6 +2386,7 @@ keyGenerator.init(
 
 ---
 
+*Version 1.4 — 26/02/2026 — §1.9 Architecture chiffrement finale : 2 clés (FIELD_ENCRYPTION_KEY + TOKEN_ENCRYPTION_KEY) · 2 TypeDecorators (EncryptedString PII + EncryptedToken OAuth) · modèle IntegrationToken complet · script rotation 2 scopes · table référence complète*
 *Version 1.3 — 26/02/2026 — §1.11 Programme IA (coach_id NULL + source), §1.12 PRs sans table dédiée (is_pr + index partiel + recalcul), §1.13 Notation coach Phase 2 (pas de schéma anticipé)*
 *Version 1.2 — 26/02/2026 — §1.10 Architecture sessions multi-participants : session_participants (statut/prix par client), tarif groupe (seuil N → recalcul), package_consumptions (pending/consumed/due/waived), multi-coach traçabilité coach_id*
 *Version 1.1 — 26/02/2026 — §1.9 PII Encryption + search_token + M9 Android PII rules + checklists*

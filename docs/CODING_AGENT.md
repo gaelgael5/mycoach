@@ -458,11 +458,15 @@ lookup_hash = hashlib.sha256(email_input.lower().encode()).hexdigest()
 user = await db.execute(select(User).where(User.email_hash == lookup_hash))
 ```
 
-**Variable d'environnement requise :**
+**Variables d'environnement requises (2 clés distinctes) :**
 ```env
 # .env.dev
-FIELD_ENCRYPTION_KEY=<clé Fernet 32 bytes base64 — générer via Fernet.generate_key()>
+FIELD_ENCRYPTION_KEY=<clé Fernet A — champs PII (noms, emails, notes...)>
+TOKEN_ENCRYPTION_KEY=<clé Fernet B — tokens OAuth (Strava, Google Calendar, Withings...)>
+# Générer chaque clé avec : python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
 ```
+
+**Pourquoi 2 clés ?** Compromission d'une clé n'expose pas l'autre catégorie. Rotation indépendante (les tokens OAuth ont une durée de vie courte — on peut les re-fetcher via re-OAuth si nécessaire).
 
 **Implémentation Android — pas de PII en clair dans Room :**
 - Room : les tables locales ne cachent **jamais** les champs PII en clair
