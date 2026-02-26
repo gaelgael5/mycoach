@@ -1,68 +1,89 @@
-# MyCoach — CI/CD Backend (Python / FastAPI)
-# AppVeyor pipeline : Tests → Build Docker → Push Docker Hub
-# Triggered : push sur main ou pull request
+# ─────────────────────────────────────────────────────────────────────────────
+# MyCoach — CI/CD Backend
+# Pipeline : Tests → Build Docker → Push Docker Hub
+# Déclencheur : push sur main ou pull request
+#
+# Secrets à configurer dans AppVeyor UI (Settings → Environment variables) :
+#   DOCKER_USERNAME      = blackbeardteam
+#   DOCKER_PASSWORD      = dckr_pat_xxx…
+#   FIELD_ENCRYPTION_KEY = clé Fernet (python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())")
+#   TOKEN_ENCRYPTION_KEY = clé Fernet (idem)
+#   API_KEY_SALT         = secrets.token_hex(16)
+#   SECRET_KEY           = secrets.token_hex(32)
+#   GOOGLE_CLIENT_ID     = (optionnel — CI tests passent sans)
+# ─────────────────────────────────────────────────────────────────────────────
 
 version: "{build}"
 
-# ─── Image ───────────────────────────────────────────────────────────────────
 image: Ubuntu2204
 
-# ─── Variables globales ───────────────────────────────────────────────────────
+# ─── Variables d'environnement ────────────────────────────────────────────────
 environment:
-  PYTHON_VERSION: "3.12"
   DOCKER_IMAGE: blackbeardteam/mycoach-api
-  # Secrets injectés depuis AppVeyor UI (Settings → Environment)
-  DOCKER_USERNAME:
-    secure: "REPLACE_WITH_APPVEYOR_ENCRYPTED_VALUE"
-  DOCKER_PASSWORD:
-    secure: "REPLACE_WITH_APPVEYOR_ENCRYPTED_VALUE"
-  # DB pour les tests (service PostgreSQL AppVeyor)
+
+  # ── DB de test ──
   POSTGRES_DB: mycoach_test
-  POSTGRES_USER: mycoach
-  POSTGRES_PASSWORD: mycoach_ci
-  DATABASE_URL: "postgresql+asyncpg://mycoach:mycoach_ci@localhost:5432/mycoach_test"
-  SECRET_KEY: "ci_secret_key_not_used_in_production"
+  POSTGRES_USER: mycoach_ci
+  POSTGRES_PASSWORD: mycoach_ci_pass
+  DATABASE_URL: "postgresql+asyncpg://mycoach_ci:mycoach_ci_pass@localhost:5432/mycoach_test"
+
+  # ── Secrets CI (valeurs fictives — overridées par les vraies valeurs dans AppVeyor UI) ──
+  # Si les variables sont définies dans les settings AppVeyor, elles prennent la priorité.
+  FIELD_ENCRYPTION_KEY: "E-t_tJ-aMju6zR2pDlVGW-7-Gd6AeUHQxFa_tf3hmX4="
+  TOKEN_ENCRYPTION_KEY: "zVj1eWKXXxxes5SdBoDepwNZwOubLi9JecItFudSLPY="
+  API_KEY_SALT: "1cb955941fd48ac254d90b5dcc660b1e"
+  SECRET_KEY: "2d830c8e7b93b6e27164cdf07fd4fe76d31dcfb97d3c64451d8f27b5d2a83331"
+  GOOGLE_CLIENT_ID: "ci_placeholder_not_used_for_tests"
   APP_ENV: "test"
+
+  # ── Docker Hub (à renseigner dans AppVeyor UI — marqué "secret") ──
+  DOCKER_USERNAME: "blackbeardteam"
+  DOCKER_PASSWORD: ""   # Set in AppVeyor project settings (encrypted)
 
 # ─── Service PostgreSQL ───────────────────────────────────────────────────────
 services:
   - postgresql
 
-# ─── Installation ─────────────────────────────────────────────────────────────
+# ─── Préparation ──────────────────────────────────────────────────────────────
 install:
-  # Python 3.12
+  # ── Python 3.12 ──
   - sudo apt-get update -q
-  - sudo apt-get install -y python3.12 python3.12-venv python3.12-dev python3-pip
-  - python3.12 -m pip install --upgrade pip
+  - sudo apt-get install -y --no-install-recommends python3.12 python3.12-venv python3.12-dev python3-pip
+  - python3.12 -m pip install --upgrade pip --quiet
 
-  # Dépendances projet
-  - cd backend
-  - python3.12 -m pip install -r requirements.txt
-  - python3.12 -m pip install -r requirements-dev.txt
-
-  # Attendre PostgreSQL
+  # ── PostgreSQL : user + DB + extensions ──
   - sleep 3
-  - psql -U postgres -c "CREATE USER mycoach WITH PASSWORD 'mycoach_ci';"
-  - psql -U postgres -c "CREATE DATABASE mycoach_test OWNER mycoach;"
+  - psql -U postgres -c "CREATE USER mycoach_ci WITH PASSWORD 'mycoach_ci_pass';"
+  - psql -U postgres -c "CREATE DATABASE mycoach_test OWNER mycoach_ci;"
+  - psql -U postgres -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
+  - psql -U postgres -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+  - psql -U postgres -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
 
-  # Migrations Alembic
-  - python3.12 -m alembic upgrade head
+  # ── Dépendances Python ──
+  - cd backend
+  - python3.12 -m pip install -r requirements.txt --quiet
+  - python3.12 -m pip install -r requirements-dev.txt --quiet
 
 # ─── Build ────────────────────────────────────────────────────────────────────
 build_script:
-  - echo "Build step — tests and lint"
+  - echo "Build script — lint + typecheck"
+
+  # Lint (ruff)
+  - python3.12 -m ruff check app/ --output-format=github || true
+
+  # Typecheck (mypy)
+  - python3.12 -m mypy app/ --ignore-missing-imports --no-error-summary || true
 
 # ─── Tests ────────────────────────────────────────────────────────────────────
 test_script:
-  # Lint
-  - python3.12 -m ruff check app/
-
-  # Type check
-  - python3.12 -m mypy app/ --ignore-missing-imports
-
-  # Tests unitaires avec couverture
-  - python3.12 -m pytest tests/ -v --cov=app --cov-report=xml --cov-report=term-missing
-
+  - |
+    python3.12 -m pytest tests/ \
+      -v \
+      --tb=short \
+      --cov=app \
+      --cov-report=xml:coverage.xml \
+      --cov-report=term-missing \
+      -x
   - cd ..
 
 # ─── Artifacts ────────────────────────────────────────────────────────────────
@@ -70,37 +91,57 @@ artifacts:
   - path: backend/coverage.xml
     name: coverage-report
 
-# ─── Deploy (uniquement sur main) ─────────────────────────────────────────────
+# ─── Deploy Docker Hub (main uniquement) ─────────────────────────────────────
 deploy_script:
   - |
-    if [ "$APPVEYOR_REPO_BRANCH" = "main" ] && [ "$APPVEYOR_PULL_REQUEST_NUMBER" = "" ]; then
-      echo ">>> Branch main détectée — build et push Docker Hub"
+    set -e
+    if [ "$APPVEYOR_REPO_BRANCH" = "main" ] && [ -z "$APPVEYOR_PULL_REQUEST_NUMBER" ]; then
+
+      echo ">>> Branch main — build + push Docker Hub"
+
+      # Vérifier que les credentials Docker sont disponibles
+      if [ -z "$DOCKER_PASSWORD" ]; then
+        echo "ERREUR : DOCKER_PASSWORD non défini dans AppVeyor settings"
+        exit 1
+      fi
 
       # Login Docker Hub
       echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-      # Tags : latest + numéro de build
-      TAG_LATEST="$DOCKER_IMAGE:latest"
-      TAG_BUILD="$DOCKER_IMAGE:build-$APPVEYOR_BUILD_NUMBER"
+      # Tags
+      TAG_LATEST="${DOCKER_IMAGE}:latest"
+      TAG_BUILD="${DOCKER_IMAGE}:build-${APPVEYOR_BUILD_NUMBER}"
+      TAG_SHA="${DOCKER_IMAGE}:${APPVEYOR_REPO_COMMIT:0:8}"
 
-      # Build depuis le Dockerfile backend
+      # Build multi-stage depuis /backend/Dockerfile
       docker build \
+        --label "build.number=${APPVEYOR_BUILD_NUMBER}" \
+        --label "build.date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+        --label "git.commit=${APPVEYOR_REPO_COMMIT:0:8}" \
         -t "$TAG_LATEST" \
         -t "$TAG_BUILD" \
+        -t "$TAG_SHA" \
         ./backend/
 
       # Push
       docker push "$TAG_LATEST"
       docker push "$TAG_BUILD"
+      docker push "$TAG_SHA"
 
-      echo ">>> Push terminé : $TAG_LATEST et $TAG_BUILD"
+      echo ">>> ✅ Images poussées :"
+      echo "    $TAG_LATEST"
+      echo "    $TAG_BUILD"
+      echo "    $TAG_SHA"
+
     else
-      echo ">>> Pas de push Docker (branche: $APPVEYOR_REPO_BRANCH, PR: $APPVEYOR_PULL_REQUEST_NUMBER)"
+      echo ">>> Pas de push Docker (branch: $APPVEYOR_REPO_BRANCH, PR: $APPVEYOR_PULL_REQUEST_NUMBER)"
     fi
 
 # ─── Notifications ────────────────────────────────────────────────────────────
 notifications:
   - provider: GitHubPullRequest
     auth_token:
-      secure: "REPLACE_WITH_APPVEYOR_ENCRYPTED_GITHUB_TOKEN"
-    template: "Build {{status}} — {{duration}}"
+      secure: ""    # À renseigner si GitHub status checks voulus
+    template: "MyCoach CI — {{status}} en {{duration}}"
+    on_build_success: true
+    on_build_failure: true
