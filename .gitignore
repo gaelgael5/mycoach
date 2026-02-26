@@ -57,6 +57,15 @@ deploy/.env.prod
 deploy/.env
 deploy/nginx/ssl/
 
+# ─── Backend local ────────────────────────────────────────────────────────────
+backend/.env
+backend/.env.dev
+!backend/.env.dev.example
+!backend/.env.example
+
+# ─── Données (Datas/*.json sont commités — référentiels de salles) ───────────
+# Rien à ignorer ici : les JSON sont du référentiel de données publiques
+
 # ─── OS ───────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db

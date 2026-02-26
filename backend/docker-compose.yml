@@ -1,0 +1,116 @@
+# MyCoach — Docker Compose DÉVELOPPEMENT
+# ─────────────────────────────────────────────────────────────────────────────
+# Usage :
+#   cp .env.dev.example .env.dev
+#   docker compose --env-file .env.dev up
+#
+# Hot-reload activé : modif de code → rechargement automatique sans rebuild
+# Ports exposés : API sur 8000, Postgres sur 5432 (accès local depuis VSCode/DBeaver)
+
+services:
+
+  # ─── PostgreSQL 16 ─────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: mycoach-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-mycoach}
+      POSTGRES_USER: ${POSTGRES_USER:-mycoach}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mycoach_dev}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=fr_FR.UTF-8"
+    volumes:
+      # Données persistantes entre les redémarrages
+      - postgres_dev_data:/var/lib/postgresql/data
+      # Script d'init (extensions utiles)
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/00_init.sql:ro
+    ports:
+      # Accessible depuis l'hôte : psql -h localhost -U mycoach mycoach
+      - "5432:5432"
+    networks:
+      - mycoach-dev
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-mycoach} -d ${POSTGRES_DB:-mycoach}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  # ─── API FastAPI (dev avec hot-reload) ─────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: mycoach-api-dev
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # Base de données
+      DATABASE_URL: "postgresql+asyncpg://${POSTGRES_USER:-mycoach}:${POSTGRES_PASSWORD:-mycoach_dev}@postgres:5432/${POSTGRES_DB:-mycoach}"
+
+      # App
+      APP_ENV: development
+      APP_DEBUG: "true"
+      APP_PORT: 8000
+
+      # Sécurité
+      SECRET_KEY: ${SECRET_KEY:-dev_secret_change_in_production}
+
+      # Google OAuth (optionnel en dev)
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+
+      # CORS : autoriser l'émulateur Android + localhost
+      CORS_ORIGINS: '["http://localhost:8000","http://localhost:3000","http://10.0.2.2:8000"]'
+
+      # SMS : Console provider en dev (pas de vrai SMS)
+      SMS_PROVIDER: console
+
+    volumes:
+      # Hot-reload : monter le code source dans le container
+      - ./app:/app/app:rw
+      - ./alembic:/app/alembic:rw
+      - ./alembic.ini:/app/alembic.ini:ro
+      # Dossier uploads dev
+      - api_dev_uploads:/app/uploads
+    ports:
+      - "8000:8000"
+    networks:
+      - mycoach-dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ─── Adminer — UI DB légère (optionnel, accès http://localhost:8080) ────────
+  adminer:
+    image: adminer:latest
+    container_name: mycoach-adminer
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: pepa-linha
+    networks:
+      - mycoach-dev
+    profiles:
+      - tools    # Lancer avec : docker compose --profile tools up
+
+# ─── Volumes ──────────────────────────────────────────────────────────────────
+volumes:
+  postgres_dev_data:
+    driver: local
+  api_dev_uploads:
+    driver: local
+
+# ─── Réseau interne ───────────────────────────────────────────────────────────
+networks:
+  mycoach-dev:
+    driver: bridge
