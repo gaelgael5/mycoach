@@ -353,6 +353,121 @@ Ces règles s'appliquent à **chaque ligne de code produite**, sans exception.
 - **Rate limiting** : activer sur `/auth/google` et `/auth/login` (max 10 req/min par IP)
 - **SQL Injection** : utiliser uniquement les paramètres SQLAlchemy, jamais de f-string en SQL
 
+### 5.1 Chiffrement des données personnelles (PII) — Règle non négociable
+
+**Toute donnée à caractère personnel (PII) doit être chiffrée au repos en base de données.**
+
+> Le chiffrement est applicatif (Python), pas au niveau PostgreSQL — l'agent n'a jamais accès aux données en clair même avec un dump SQL.
+
+**Champs PII obligatoirement chiffrés côté backend :**
+
+| Entité | Champs chiffrés |
+|--------|----------------|
+| `users` | `first_name`, `last_name`, `email`, `phone`, `google_sub` |
+| `client_profiles` | `injuries_notes` |
+| `coach_profiles` | `bio` |
+| `coach_notes` | `content` |
+| `payments` | `reference`, `notes` |
+| `sms_logs` | `body`, `phone_to` |
+| `integration_tokens` | `access_token`, `refresh_token` |
+| `cancellation_message_templates` | `body` |
+
+**Champs NON chiffrés (données opérationnelles, non-PII) :**
+- IDs, statuts, timestamps, montants (centimes), codes pays/devise, booléens
+- `email` dans `api_keys` : remplacé par `key_hash` (SHA-256, pas de PII)
+
+**Implémentation backend — `EncryptedType` SQLAlchemy :**
+
+```python
+# app/core/encryption.py
+from cryptography.fernet import Fernet
+from app.core.config import settings
+
+_fernet = Fernet(settings.FIELD_ENCRYPTION_KEY)  # clé AES-128 Fernet, env var
+
+def encrypt(value: str | None) -> str | None:
+    if value is None:
+        return None
+    return _fernet.encrypt(value.encode()).decode()
+
+def decrypt(value: str | None) -> str | None:
+    if value is None:
+        return None
+    return _fernet.decrypt(value.encode()).decode()
+```
+
+```python
+# app/core/encrypted_type.py
+from sqlalchemy import String, TypeDecorator
+from app.core.encryption import encrypt, decrypt
+
+class EncryptedString(TypeDecorator):
+    """Chiffre/déchiffre automatiquement à l'écriture/lecture SQLAlchemy."""
+    impl = String
+    cache_ok = True
+
+    def process_bind_param(self, value, dialect):
+        return encrypt(value)
+
+    def process_result_value(self, value, dialect):
+        return decrypt(value)
+```
+
+```python
+# app/models/user.py — utilisation
+from app.core.encrypted_type import EncryptedString
+
+class User(Base):
+    __tablename__ = "users"
+    id: Mapped[UUID] = mapped_column(primary_key=True, ...)
+    first_name: Mapped[str] = mapped_column(EncryptedString(300))  # 150 chars → ~300 chiffrés
+    last_name:  Mapped[str] = mapped_column(EncryptedString(300))
+    email:      Mapped[str] = mapped_column(EncryptedString(500))
+    phone:      Mapped[str | None] = mapped_column(EncryptedString(100))
+    # ...
+```
+
+**Contraintes de ce choix :**
+- ❌ Impossible de faire `WHERE email = ?` directement — utiliser un **hash de recherche** : `email_hash = SHA256(lower(email))` stocké en clair pour les lookups
+- ❌ Impossible de trier/filtrer par prénom/nom en SQL — le tri se fait en Python après fetch
+- ✅ Dump SQL = illisible sans la clé `FIELD_ENCRYPTION_KEY`
+- ✅ Rotation de clé possible avec script de re-chiffrement
+
+**Pattern email avec hash de recherche :**
+
+```python
+# users table : 2 colonnes pour l'email
+email:      Mapped[str] = mapped_column(EncryptedString(500))  # valeur lisible
+email_hash: Mapped[str] = mapped_column(String(64), unique=True, index=True)  # SHA-256 pour lookup
+
+# À l'insertion :
+import hashlib
+user.email = email_address          # chiffré via EncryptedString
+user.email_hash = hashlib.sha256(email_address.lower().encode()).hexdigest()
+
+# À la recherche :
+lookup_hash = hashlib.sha256(email_input.lower().encode()).hexdigest()
+user = await db.execute(select(User).where(User.email_hash == lookup_hash))
+```
+
+**Variable d'environnement requise :**
+```env
+# .env.dev
+FIELD_ENCRYPTION_KEY=<clé Fernet 32 bytes base64 — générer via Fernet.generate_key()>
+```
+
+**Implémentation Android — pas de PII en clair dans Room :**
+- Room : les tables locales ne cachent **jamais** les champs PII en clair
+- Seules les données non-sensibles sont cachées localement (IDs, statuts, timestamps)
+- Les champs PII (prénom, nom, email, téléphone) → toujours re-fetchés depuis l'API
+- Si cache de profil nécessaire → chiffrer la valeur via Android Keystore avant insertion Room (voir DEV_PATTERNS.md §M9)
+
+**Longueur des champs prénom / nom :**
+- **max 150 caractères** (noms internationaux, noms composés, caractères Unicode)
+- Colonne `EncryptedString(300)` en base (le chiffrement Fernet augmente la taille ~1.3–1.5×)
+- Validation Pydantic : `min_length=2, max_length=150`
+- Validation Android : `InputFilter.LengthFilter(150)` + message d'erreur i18n
+
 ---
 
 ## 6. LISTES DE TÂCHES
@@ -552,3 +667,4 @@ async def test_create_template_unknown_coach(db):
 
 *Ce document est la loi. En cas de doute, relis-le.*
 *Version 1.1 — 26/02/2026 — Ajout DoD + règles test cas passants/non passants*
+*Version 1.2 — 26/02/2026 — §5.1 Chiffrement PII : EncryptedString SQLAlchemy, champs ciblés, email_hash lookup, FIELD_ENCRYPTION_KEY, longueur prénom/nom 150 chars*

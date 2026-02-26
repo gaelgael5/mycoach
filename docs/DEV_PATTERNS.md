@@ -340,6 +340,229 @@ async def list_clients(
 
 ---
 
+### 1.9 Pattern Chiffrement des données personnelles (PII)
+
+> **Règle non négociable.** Toute donnée à caractère personnel est chiffrée au repos en base, via un `TypeDecorator` SQLAlchemy. Un dump PostgreSQL brut doit être illisible sans la clé.
+
+#### Infrastructure de chiffrement
+
+```python
+# app/core/encryption.py
+from cryptography.fernet import Fernet
+from functools import lru_cache
+from app.core.config import settings
+
+
+@lru_cache(maxsize=1)
+def _get_fernet() -> Fernet:
+    """Instancié une seule fois — la clé ne doit jamais changer en prod sans re-chiffrement."""
+    return Fernet(settings.FIELD_ENCRYPTION_KEY.encode())
+
+
+def encrypt_field(value: str | None) -> str | None:
+    """Chiffre une chaîne → token Fernet (base64-urlsafe)."""
+    if value is None:
+        return None
+    return _get_fernet().encrypt(value.encode("utf-8")).decode("ascii")
+
+
+def decrypt_field(value: str | None) -> str | None:
+    """Déchiffre un token Fernet → chaîne originale."""
+    if value is None:
+        return None
+    return _get_fernet().decrypt(value.encode("ascii")).decode("utf-8")
+
+
+def hash_for_lookup(value: str) -> str:
+    """SHA-256 hex digest d'une valeur normalisée — utilisé pour les WHERE/index."""
+    import hashlib
+    return hashlib.sha256(value.strip().lower().encode("utf-8")).hexdigest()
+```
+
+```python
+# app/core/encrypted_type.py
+from sqlalchemy import String, TypeDecorator
+from app.core.encryption import encrypt_field, decrypt_field
+
+
+class EncryptedString(TypeDecorator):
+    """
+    Type SQLAlchemy transparent : chiffre à l'écriture, déchiffre à la lecture.
+    La colonne SQL stocke le token Fernet (texte ASCII).
+    Taille SQL = max_length * 1.5 environ (overhead Fernet).
+    """
+    impl = String
+    cache_ok = True
+
+    def __init__(self, plaintext_max_length: int = 255, **kw):
+        # Fernet token ~ 1.4× la taille originale + overhead fixe (~60 bytes)
+        encrypted_length = plaintext_max_length * 2 + 100
+        super().__init__(encrypted_length, **kw)
+
+    def process_bind_param(self, value, dialect):
+        return encrypt_field(value)
+
+    def process_result_value(self, value, dialect):
+        return decrypt_field(value)
+```
+
+#### Modèle User avec champs chiffrés
+
+```python
+# app/models/user.py
+import hashlib
+from sqlalchemy.orm import Mapped, mapped_column, validates
+from app.core.encrypted_type import EncryptedString
+from app.db.base import Base
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    # --- Colonnes PII chiffrées ---
+    first_name: Mapped[str]       = mapped_column(EncryptedString(150))
+    last_name:  Mapped[str]       = mapped_column(EncryptedString(150))
+    email:      Mapped[str]       = mapped_column(EncryptedString(255))
+    phone:      Mapped[str | None]= mapped_column(EncryptedString(20))
+    google_sub: Mapped[str | None]= mapped_column(EncryptedString(255))
+
+    # --- Hash de recherche (non-PII, indexé) ---
+    # Permet les WHERE email = ? sans déchiffrer toute la table
+    email_hash: Mapped[str] = mapped_column(String(64), unique=True, index=True, nullable=False)
+
+    # --- Colonnes non-PII (pas de chiffrement) ---
+    id:         Mapped[UUID]      = mapped_column(primary_key=True, default=uuid4)
+    role:       Mapped[str]       = mapped_column(String(20), nullable=False)
+    locale:     Mapped[str]       = mapped_column(String(10), default="fr-FR")
+    country:    Mapped[str]       = mapped_column(String(2), default="FR")
+    timezone:   Mapped[str]       = mapped_column(String(50), default="Europe/Paris")
+    status:     Mapped[str]       = mapped_column(String(20), default="unverified")
+    created_at: Mapped[datetime]  = mapped_column(default=datetime.utcnow)
+    updated_at: Mapped[datetime]  = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    @validates("email")
+    def _sync_email_hash(self, key, value):
+        """Synchronise email_hash à chaque modification de email."""
+        if value:
+            # Note : SQLAlchemy appelle validate avant process_bind_param
+            # donc `value` est ici la valeur en clair
+            self.email_hash = hashlib.sha256(value.strip().lower().encode()).hexdigest()
+        return value
+```
+
+#### Repository : lookup par email
+
+```python
+# app/repositories/user_repository.py
+from app.core.encryption import hash_for_lookup
+
+class UserRepository:
+
+    async def get_by_email(self, db: AsyncSession, email: str) -> User | None:
+        """Lookup via email_hash (index), jamais via scan du champ chiffré."""
+        h = hash_for_lookup(email)
+        result = await db.execute(select(User).where(User.email_hash == h))
+        return result.scalar_one_or_none()
+
+    async def create(self, db: AsyncSession, data: UserCreate) -> User:
+        user = User(
+            first_name=data.first_name,   # chiffré automatiquement par EncryptedString
+            last_name=data.last_name,
+            email=data.email,             # @validates déclenche _sync_email_hash
+            role=data.role,
+            # ...
+        )
+        db.add(user)
+        await db.flush()
+        return user
+```
+
+#### Schéma Pydantic avec validation longueur
+
+```python
+# app/schemas/auth.py
+from pydantic import BaseModel, field_validator, EmailStr
+from typing import Annotated
+from pydantic import Field
+
+
+class UserRegister(BaseModel):
+    first_name: Annotated[str, Field(min_length=2, max_length=150)]
+    last_name:  Annotated[str, Field(min_length=2, max_length=150)]
+    email:      EmailStr
+    password:   Annotated[str, Field(min_length=8, max_length=128)]
+
+    @field_validator("first_name", "last_name")
+    @classmethod
+    def strip_and_validate(cls, v: str) -> str:
+        v = v.strip()
+        if len(v) < 2:
+            raise ValueError("Minimum 2 caractères")
+        return v
+```
+
+#### Migration Alembic : taille des colonnes chiffrées
+
+```python
+# alembic/versions/xxxx_add_pii_encryption.py
+# Les colonnes PII stockent du texte Fernet → taille SQL = plaintext_max * 2 + 100
+# first_name(150) → VARCHAR(400)
+# email(255)      → VARCHAR(610)
+
+def upgrade():
+    op.alter_column("users", "first_name", type_=sa.String(400), nullable=False)
+    op.alter_column("users", "last_name",  type_=sa.String(400), nullable=False)
+    op.alter_column("users", "email",      type_=sa.String(610), nullable=False)
+    op.alter_column("users", "phone",      type_=sa.String(150), nullable=True)
+    # email_hash reste VARCHAR(64) — SHA-256 hex, jamais chiffré
+```
+
+#### Champs chiffrés par table (référence complète)
+
+| Table | Champs chiffrés | Champs de lookup (hash) |
+|-------|----------------|------------------------|
+| `users` | `first_name`, `last_name`, `email`, `phone`, `google_sub` | `email_hash` |
+| `client_profiles` | `injuries_notes` | — |
+| `coach_profiles` | `bio` | — |
+| `coach_notes` | `content` | — |
+| `payments` | `reference`, `notes` | — |
+| `sms_logs` | `body`, `phone_to` | — |
+| `integration_tokens` | `access_token`, `refresh_token` | — |
+| `cancellation_message_templates` | `body` | — |
+
+#### Variable d'environnement
+
+```env
+# .env.dev / .env.prod
+# Générer avec : python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+FIELD_ENCRYPTION_KEY=<clé Fernet 32 bytes base64-urlsafe>
+
+# ⚠️ Ne jamais commiter cette clé dans git
+# ⚠️ En prod : stocker dans un secret manager (Vault, AWS Secrets Manager, etc.)
+# ⚠️ La changer nécessite un script de re-chiffrement sur toute la base
+```
+
+#### Script de rotation de clé (si nécessaire)
+
+```python
+# scripts/rotate_encryption_key.py
+"""
+Usage : python scripts/rotate_encryption_key.py --old-key OLD --new-key NEW
+Re-chiffre tous les champs PII avec la nouvelle clé.
+À exécuter en maintenance, avec la base en lecture seule.
+"""
+from cryptography.fernet import Fernet
+
+def reencrypt_all(old_key: str, new_key: str):
+    old = Fernet(old_key.encode())
+    new = Fernet(new_key.encode())
+
+    # Pour chaque table/colonne PII : SELECT → decrypt(old) → encrypt(new) → UPDATE
+    # ...
+```
+
+---
+
 ## PARTIE 2 — ANDROID (Kotlin)
 
 ### 2.1 Architecture MVVM + Clean Architecture
@@ -1161,9 +1384,56 @@ Timber.plant(
 // ✅ Règle absolue de stockage selon la sensibilité
 
 // DONNÉES SENSIBLES (API Key, tokens OAuth) → EncryptedSharedPreferences
-// DONNÉES UTILISATEUR (cache profil, séances) → Room avec chiffrement
+// DONNÉES UTILISATEUR NON-PII (IDs, statuts, timestamps) → Room plain
+// DONNÉES PII (prénom, nom, email, téléphone) → NE PAS cacher en local
 // DONNÉES NON SENSIBLES (préférences UI, thème) → DataStore plain
 // FICHIERS TEMPORAIRES (photos avant upload) → getCacheDir() + suppression après
+
+// ✅ Règle PII Android : les champs personnels ne sont JAMAIS stockés en clair dans Room
+// Les champs PII (first_name, last_name, email, phone) sont toujours re-fetchés depuis l'API.
+// Si un cache de profil est absolument nécessaire (mode offline), chiffrer avant insertion :
+
+class EncryptedProfileCache(context: Context) {
+    // Utiliser SQLCipher pour Room ou chiffrement au niveau colonne via Android Keystore
+    private val keyAlias = "mycoach_profile_key"
+
+    fun encryptPiiField(value: String): String {
+        val keyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        val key = keyStore.getKey(keyAlias, null) as SecretKey
+        cipher.init(Cipher.ENCRYPT_MODE, key)
+        val iv = cipher.iv
+        val encrypted = cipher.doFinal(value.toByteArray(Charsets.UTF_8))
+        // Stocker iv + encrypted concaténés en base64
+        return Base64.encodeToString(iv + encrypted, Base64.NO_WRAP)
+    }
+
+    fun decryptPiiField(stored: String): String {
+        val raw = Base64.decode(stored, Base64.NO_WRAP)
+        val iv = raw.sliceArray(0 until 12)
+        val encrypted = raw.sliceArray(12 until raw.size)
+        val keyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        cipher.init(Cipher.DECRYPT_MODE, keyStore.getKey(keyAlias, null) as SecretKey, GCMParameterSpec(128, iv))
+        return String(cipher.doFinal(encrypted), Charsets.UTF_8)
+    }
+}
+
+// ✅ Validation de longueur prénom / nom (international : max 150 chars)
+// Dans le Fragment / Activity :
+val nameFilter = InputFilter.LengthFilter(150)
+binding.etFirstName.filters = arrayOf(nameFilter)
+binding.etLastName.filters = arrayOf(nameFilter)
+
+// ✅ Validation Kotlin côté ViewModel :
+fun validateName(name: String): String? {
+    return when {
+        name.isBlank()    -> getString(R.string.error_name_required)
+        name.length < 2   -> getString(R.string.error_name_too_short)
+        name.length > 150 -> getString(R.string.error_name_too_long)
+        else              -> null  // valide
+    }
+}
 
 // ✅ Ne pas logger l'écran sur les écrans sensibles (clavier, paiement)
 override fun onResume() {
@@ -1224,6 +1494,9 @@ keyGenerator.init(
 □ Pas de données sensibles dans les logs
 □ Pagination avec limite max sur les listes
 □ Validation des fichiers uploadés (MIME + taille)
+□ Champs PII écrits via EncryptedString (jamais en clair en base)
+□ Lookup email via email_hash (jamais WHERE email = ?)
+□ FIELD_ENCRYPTION_KEY chargée depuis l'environnement, jamais hardcodée
 ```
 
 ## CHECKLIST SÉCURITÉ PAR ÉCRAN ANDROID
@@ -1235,14 +1508,18 @@ keyGenerator.init(
 □ Aucune donnée sensible dans les logs (pas en release)
 □ Aucun appel réseau depuis le thread principal
 □ État UI modélisé avec UiState<T>
-□ Erreurs affichées en français (via strings.xml)
+□ Erreurs affichées via strings.xml (i18n)
 □ FLAG_SECURE activé si l'écran contient des données sensibles
 □ Permissions demandées au moment opportun (pas au démarrage)
-□ Données sensibles stockées dans EncryptedSharedPreferences
+□ API Key et tokens OAuth dans EncryptedSharedPreferences uniquement
+□ Champs PII (prénom, nom, email, téléphone) jamais stockés en clair dans Room
+□ Validation longueur prénom/nom : min 2, max 150 chars (InputFilter + ViewModel)
 □ Formatage des montants / dates / poids via les formatters i18n
+□ Données effacées à la déconnexion (EncryptedSharedPreferences + Room.clearAllTables)
 ```
 
 ---
 
-*Version 1.0 — 25/02/2026*
+*Version 1.1 — 26/02/2026 — Ajout §1.9 PII Encryption + M9 Android PII rules + checklists*
+*Version 1.0 — 25/02/2026 — Document initial*
 *À relire avant chaque session de développement*

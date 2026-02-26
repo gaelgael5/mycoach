@@ -119,8 +119,8 @@ L'application Android est **responsive dès le premier écran** :
 **Écran :** `RegisterScreen` (rôle = Coach)
 
 **Champs OBLIGATOIRES (unique étape bloquante) :**
-- Prénom (min 2 chars, max 50 chars)
-- Nom (min 2 chars, max 50 chars)
+- Prénom (min 2 chars, max 150 chars — noms internationaux supportés)
+- Nom (min 2 chars, max 150 chars — noms internationaux supportés)
 - Email (format RFC5322, unicité vérifiée côté serveur)
 - Mot de passe (min 8 chars, au moins 1 majuscule + 1 chiffre)
 - Confirmation mot de passe
@@ -1544,6 +1544,7 @@ pending_coach_validation ──(24h expiration)──► auto_rejected
 | 1.2 | 25/02/2026 | i18n first : locale BCP 47 + pays ISO 3166-1 + devise ISO 4217 + unité poids + timezone sur tous les profils · Pays sur clubs · Chaînes internationales ajoutées |
 | 1.3 | 25/02/2026 | Téléphone (E.164) sur Coach et Client · Jours de travail + horaires multi-créneaux sur Coach · Wizard minimaliste (1 seule étape obligatoire, "Terminer plus tard" dès étape 2) · Design responsive obligatoire · Bandeau de complétion de profil |
 | 1.4 | 25/02/2026 | §7.4 Sélection en masse (vue Jour) · §7.5 Annulation en masse avec workflow complet (confirmation → choix message → aperçu SMS par client → récapitulatif) · §7.6 SMS en masse coach + historique SMS · Wizard coach : étape 7/7 Messages d'annulation (1 template maladie pré-rempli, jusqu'à 5 templates, variables {prénom}/{date}/{heure}/{coach}, drag-and-drop) |
+| 1.5 | 26/02/2026 | §1.1 Prénom/Nom : max 50 → **max 150 chars** (noms internationaux) · Règle PII ajoutée : toutes les données personnelles chiffrées au repos (voir DEV_PATTERNS.md §1.9 + CODING_AGENT.md §5.1) |
 
 ---
 
