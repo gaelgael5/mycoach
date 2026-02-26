@@ -11,7 +11,7 @@
 Dernière mise à jour : —
 Répertoire back : `backend/`
 Répertoire android : `android/`
-**Prochaine tâche : B0-01** — Créer la structure du répertoire `backend/`
+**Prochaine tâche : B1-01** — Modèle coach_profiles
 
 ---
 
@@ -20,32 +20,32 @@ Répertoire android : `android/`
 ### Phase 0 — Fondations
 | ID | Tâche résumée | Statut | Notes |
 |----|--------------|--------|-------|
-| B0-01 | Structure dossiers backend/ | ⬜ | |
-| B0-02 | pyproject.toml (pytest, black, ruff) | ⬜ | |
-| B0-03 | requirements.txt | ⬜ | |
-| B0-04 | config.py (pydantic-settings) | ⬜ | |
-| B0-05 | database.py (SQLAlchemy async) | ⬜ | |
-| B0-06 | docker-compose.yml (PostgreSQL + backend) | ⬜ | |
-| B0-07 | Alembic init + env.py async | ⬜ | |
-| B0-08 | Modèle users | ⬜ | |
-| B0-09 | Modèle api_keys | ⬜ | |
-| B0-10 | Modèle email_verification_tokens | ⬜ | |
-| B0-11 | Modèle password_reset_tokens | ⬜ | |
-| B0-12 | Migration Alembic Phase 0 | ⬜ | |
-| B0-13 | Schemas auth.py (Pydantic) | ⬜ | |
-| B0-14 | utils/hashing.py | ⬜ | |
-| B0-15 | utils/i18n.py | ⬜ | |
-| B0-16 | locales/fr.json + locales/en.json | ⬜ | |
-| B0-17 | Repository user_repository.py | ⬜ | |
-| B0-18 | Repository api_key_repository.py | ⬜ | |
-| B0-19 | auth/utils.py (verify_google_token) | ⬜ | |
-| B0-20 | auth/middleware.py (get_current_user) | ⬜ | |
-| B0-21 | Service auth_service.py | ⬜ | |
-| B0-22 | Router auth.py (tous les endpoints /auth) | ⬜ | |
-| B0-23 | main.py (app, CORS, headers, rate limiter) | ⬜ | |
-| B0-24 | GET /health | ⬜ | |
-| B0-25 | tests/conftest.py (fixtures) | ⬜ | |
-| B0-26 | tests/test_auth.py | ⬜ | |
+| B0-01 | Structure dossiers backend/ | ✅ | 26/02/2026 |
+| B0-02 | pyproject.toml (pytest, black, ruff) | ✅ | 26/02/2026 |
+| B0-03 | requirements.txt | ✅ | 26/02/2026 |
+| B0-04 | config.py (pydantic-settings) | ✅ | 26/02/2026 |
+| B0-05 | database.py (SQLAlchemy async) | ✅ | 26/02/2026 |
+| B0-06 | docker-compose.yml (PostgreSQL + backend) | ✅ | 26/02/2026 |
+| B0-07 | Alembic init + env.py async | ✅ | 26/02/2026 |
+| B0-08 | Modèle users | ✅ | 26/02/2026 |
+| B0-09 | Modèle api_keys | ✅ | 26/02/2026 |
+| B0-10 | Modèle email_verification_tokens | ✅ | 26/02/2026 |
+| B0-11 | Modèle password_reset_tokens | ✅ | 26/02/2026 |
+| B0-12 | Migration Alembic Phase 0 | ✅ | 26/02/2026 |
+| B0-13 | Schemas auth.py (Pydantic) | ✅ | 26/02/2026 |
+| B0-14 | utils/hashing.py | ✅ | 26/02/2026 |
+| B0-15 | utils/i18n.py | ✅ | 26/02/2026 |
+| B0-16 | locales/fr.json + locales/en.json | ✅ | 26/02/2026 |
+| B0-17 | Repository user_repository.py | ✅ | 26/02/2026 |
+| B0-18 | Repository api_key_repository.py | ✅ | 26/02/2026 |
+| B0-19 | auth/utils.py (verify_google_token) | ✅ | 26/02/2026 |
+| B0-20 | auth/middleware.py (get_current_user) | ✅ | 26/02/2026 |
+| B0-21 | Service auth_service.py | ✅ | 26/02/2026 |
+| B0-22 | Router auth.py (tous les endpoints /auth) | ✅ | 26/02/2026 |
+| B0-23 | main.py (app, CORS, headers, rate limiter) | ✅ | 26/02/2026 |
+| B0-24 | GET /health | ✅ | 26/02/2026 |
+| B0-25 | tests/conftest.py (fixtures) | ✅ | 26/02/2026 |
+| B0-26 | tests/test_auth.py | ✅ | 26/02/2026 |
 
 ### Phase 1 — Espace Coach
 | ID | Tâche résumée | Statut | Notes |

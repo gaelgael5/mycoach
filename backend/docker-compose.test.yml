@@ -1,0 +1,18 @@
+services:
+  db_test:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: mycoach_test
+      POSTGRES_USER: mycoach
+      POSTGRES_PASSWORD: mycoach_test
+    volumes:
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mycoach -d mycoach_test"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    tmpfs:
+      - /var/lib/postgresql/data   # En RAM — tests rapides, pas de persistance

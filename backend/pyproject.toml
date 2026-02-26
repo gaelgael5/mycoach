@@ -1,0 +1,34 @@
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+env = [
+    "ENVIRONMENT=test",
+    "DATABASE_URL=postgresql+asyncpg://mycoach:mycoach_test@localhost:5432/mycoach_test",
+    "FIELD_ENCRYPTION_KEY=-vLB6MG1DyO3aEB7kD33a-8DxrS9ieeTjZVwN76F5Tw=",
+    "TOKEN_ENCRYPTION_KEY=TjldUOKvU7BGH3nAku0FA7Hg60HeeQhYRkNfShw12tY=",
+    "API_KEY_SALT=82e2247d6537360990881b9d7e23fae4",
+    "GOOGLE_CLIENT_ID=test_google_client_id",
+    "SECRET_KEY=c73d5abb600c78d680a3359d30228c4499031d9488ec1147f1895915a5cf3486",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.isort]
+known-first-party = ["app"]
+
+[tool.black]
+line-length = 100
+target-version = ["py312"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = false
+ignore_missing_imports = true

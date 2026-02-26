@@ -1,0 +1,51 @@
+{
+  "auth": {
+    "error": {
+      "email_already_used": "This email address is already in use.",
+      "invalid_credentials": "Invalid email or password.",
+      "account_not_verified": "Your email address has not been verified yet.",
+      "account_suspended": "Your account has been suspended. Please contact support.",
+      "account_pending_deletion": "This account is scheduled for deletion.",
+      "rate_limit_exceeded": "Too many attempts. Please try again in {minutes} minutes.",
+      "token_expired": "This link has expired. Please request a new one.",
+      "token_invalid": "Invalid or already-used link.",
+      "token_already_used": "This link has already been used.",
+      "google_token_invalid": "Invalid Google token. Please sign in again.",
+      "password_too_short": "Password must be at least 8 characters long.",
+      "password_needs_uppercase": "Password must contain at least one uppercase letter.",
+      "password_needs_digit": "Password must contain at least one digit.",
+      "passwords_do_not_match": "Passwords do not match.",
+      "name_too_short": "This field must be at least 2 characters long.",
+      "name_too_long": "This field cannot exceed 150 characters.",
+      "invalid_role": "Invalid role. Choose 'coach' or 'client'.",
+      "api_key_invalid": "Invalid or revoked authentication key.",
+      "api_key_revoked": "Your session has been revoked. Please sign in again.",
+      "unauthorized": "Authentication required.",
+      "forbidden": "You do not have permission to perform this action."
+    },
+    "success": {
+      "registered": "Account created. Please check your email.",
+      "email_verified": "Email verified. Welcome!",
+      "verification_email_sent": "A verification email has been sent.",
+      "password_reset_sent": "If this email exists, a reset link has been sent.",
+      "password_reset_done": "Password updated successfully.",
+      "logged_out": "Signed out.",
+      "logged_out_all": "All your devices have been signed out."
+    }
+  },
+  "validation": {
+    "required": "This field is required.",
+    "invalid_email": "Invalid email format.",
+    "invalid_phone": "Invalid phone format (e.g. +33612345678).",
+    "invalid_locale": "Invalid locale code (e.g. fr-FR).",
+    "invalid_country": "Invalid country code (e.g. FR).",
+    "invalid_currency": "Invalid currency code (e.g. EUR)."
+  },
+  "common": {
+    "error": {
+      "server_error": "An unexpected error occurred. Please try again.",
+      "not_found": "Resource not found.",
+      "conflict": "A conflict was detected. Please try again."
+    }
+  }
+}
