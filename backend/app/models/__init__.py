@@ -9,6 +9,11 @@ from app.models.machine import Machine, MachineExercise
 from app.models.performance_session import PerformanceSession
 from app.models.exercise_set import ExerciseSet
 
+# Phase 4 — Programmes d'entraînement
+from app.models.workout_plan import (
+    WorkoutPlan, PlanAssignment, PlannedSession, PlannedExercise, ExerciseVideo
+)
+
 # Phase 0 — Auth
 from app.models.user import User
 from app.models.api_key import ApiKey
@@ -80,4 +85,10 @@ __all__ = [
     "MachineExercise",
     "PerformanceSession",
     "ExerciseSet",
+    # Phase 4
+    "WorkoutPlan",
+    "PlanAssignment",
+    "PlannedSession",
+    "PlannedExercise",
+    "ExerciseVideo",
 ]
