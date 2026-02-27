@@ -13,7 +13,7 @@ Dans cet ordre strict :
 1. `docs/FUNCTIONAL_SPECS.md` — Vue d'ensemble fonctionnelle, modèle de données, intégrations
 2. `docs/FUNCTIONAL_SPECS_DETAILED.md` — Détail de chaque écran, action, validation, règle métier
 3. `docs/DEV_ROADMAP.md` — Phases de développement, stack technique, décisions arrêtées
-4. `docs/DEV_PATTERNS.md` — Patterns d'architecture, design patterns Python/Kotlin, OWASP API Top 10, OWASP Mobile Top 10
+4. `docs/DEV_PATTERNS.md` — Patterns d'architecture, design patterns Python/Dart Flutter, OWASP API Top 10, OWASP Mobile Top 10
 5. `docs/CODING_AGENT.md` — Ce fichier (méthodologie d'exécution)
 
 **Tu ne peux pas commencer à coder avant d'avoir lu les 4 documents.**
@@ -39,7 +39,7 @@ Si un document manque ou est incomplet, signale-le avant de continuer.
 - Si quelque chose est complexe et doit attendre, documente-le dans `docs/BACKLOG.md` (crée-le si nécessaire)
 
 ### 1.4 L'i18n n'est pas optionnelle
-- **Aucune chaîne de caractères codée en dur** dans le code Android ou Backend
+- **Aucune chaîne de caractères codée en dur** dans le code Flutter ou Backend
 - Dès le premier fichier `.kt` ou `.py` produit, i18n est en place
 - Voir §4 pour les règles détaillées
 
@@ -57,7 +57,7 @@ Si un document manque ou est incomplet, signale-le avant de continuer.
 
 **Ce qui doit être dans chaque commit :**
 ```
-✅ Code de la feature (models, schemas, repo, service, router / ViewModel, UI)
+✅ Code de la feature (models, schemas, repo, service, router / Riverpod Provider/Notifier, UI)
 ✅ Tests couvrant les cas passants (happy path)
 ✅ Tests couvrant les cas non passants (erreurs, invalide, limites)
 ✅ Mise à jour de docs/PROGRESS.md (tâche = ✅)
@@ -94,8 +94,8 @@ Pour chaque tâche de la liste, applique **exactement** ces étapes dans l'ordre
 ┌─────────────────────────▼───────────────────────────────────┐
 │  ÉTAPE 3 — IMPLÉMENTER                                      │
 │  Code la fonctionnalité complète, selon les standards §3.   │
-│  Backend d'abord (modèle → repository → service → route),   │
-│  puis Android (ViewModel → Repository → UI).                │
+│  Backend d'abord (modèle → repository → service → route),
+│  puis Flutter (Provider → Repository → UI).                │
 └─────────────────────────┬───────────────────────────────────┘
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
@@ -119,12 +119,12 @@ Pour chaque tâche de la liste, applique **exactement** ces étapes dans l'ordre
 │    - Règle temporelle violée (ex: annulation < 24h)         │
 │                                                             │
 │  RÈGLE : au minimum 1 test passant + 1 test non passant     │
-│  par fonction de service / endpoint / ViewModel             │
+│  par fonction de service / endpoint / Provider             │
 │                                                             │
 │  Backend : pytest + pytest-asyncio, base PostgreSQL test    │
-│  Android : JUnit5 + MockK/Mockito, coroutines test          │
+│  Flutter : flutter_test + mockito, async test          │
 │                                                             │
-│  Lance : pytest (backend) ou ./gradlew test (Android)       │
+│  Lance : pytest (backend) ou flutter test (Flutter)       │
 │  ⛔ Si un test échoue → corriger le code, pas le test       │
 └─────────────────────────┬───────────────────────────────────┘
                           │
@@ -137,7 +137,7 @@ Pour chaque tâche de la liste, applique **exactement** ces étapes dans l'ordre
 │  ✓ Le modèle de données correspond aux specs                │
 │  ✓ Tous les tests passent (0 failure, 0 error)              │
 │  ✓ Couverture : au moins 1 cas passant + 1 non passant      │
-│    par fonction de service / par endpoint / par ViewModel   │
+│    par fonction de service / par endpoint / par Provider   │
 └─────────────────────────┬───────────────────────────────────┘
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
@@ -221,105 +221,102 @@ class User(Base):
 
 ---
 
-### 3.2 Android (Kotlin)
+### 3.2 Flutter (Dart)
 
 **Structure des dossiers :**
 ```
-android/app/src/main/
-├── kotlin/com/mycoach/app/
-│   ├── MyCoachApplication.kt     ← init DI, Hilt
-│   ├── MainActivity.kt           ← NavHost, bottom nav
-│   ├── auth/                     ← login, register, role selection
-│   ├── coach/                    ← tous les écrans coach
-│   │   ├── dashboard/
-│   │   ├── clients/
-│   │   ├── agenda/
-│   │   ├── programs/
-│   │   └── payments/
-│   ├── client/                   ← tous les écrans client
-│   │   ├── dashboard/
-│   │   ├── search/
-│   │   ├── booking/
-│   │   ├── performances/
-│   │   └── solo/
-│   ├── shared/                   ← composants partagés coach+client
-│   │   ├── ui/                   ← design system (couleurs, typo, composants)
-│   │   ├── network/              ← ApiClient, ApiKeyInterceptor
-│   │   ├── data/                 ← Room, DataStore, repositories
-│   │   └── utils/                ← extensions, formatters i18n
-│   └── backoffice/               ← écrans admin (si dans la même app)
-├── res/
-│   ├── values/strings.xml        ← langue par défaut (EN)
-│   ├── values-fr/strings.xml     ← Français
-│   ├── values-es/strings.xml     ← Espagnol
-│   └── values-pt/strings.xml     ← Portugais BR
-└── AndroidManifest.xml
+frontend/lib/
+├── main.dart                     ← ProviderScope + MaterialApp.router
+├── core/
+│   ├── api/                      ← Client Dio + ApiKeyInterceptor
+│   ├── storage/                  ← flutter_secure_storage wrapper
+│   ├── theme/                    ← AppTheme (light/dark, Inter font)
+│   ├── router/                   ← go_router configuration
+│   └── providers/                ← Providers globaux (dio, storage…)
+├── features/
+│   ├── auth/                     ← login, register, OTP, email verify
+│   ├── home/                     ← Dashboard client / coach
+│   ├── booking/                  ← Réservation, agenda, liste d'attente
+│   ├── profile/                  ← Profil, liens sociaux, paramètres santé
+│   ├── performances/             ← Saisie, historique, graphiques, PRs
+│   ├── programs/                 ← Programmes assignés / création
+│   ├── payments/                 ← Forfaits, paiements, solde
+│   ├── integrations/             ← Strava, Withings, Google Calendar
+│   ├── feedback/                 ← Suggestions, bug reports
+│   ├── health/                   ← Paramètres de santé, partage
+│   └── admin/                    ← Back-office admin (web uniquement)
+└── shared/
+    ├── widgets/                  ← Widgets réutilisables
+    ├── models/                   ← Modèles Dart partagés (json_serializable)
+    └── utils/                    ← Helpers, formatters, validators
 ```
 
-**Règles Kotlin :**
-- Architecture MVVM : `Screen → ViewModel → Repository → ApiService`
-- Un `ViewModel` par écran, pas de logique dans les Fragments/Activities
-- Coroutines + Flow pour tout ce qui est async
-- Hilt pour l'injection de dépendances
-- `StateFlow<UiState>` pour l'état UI : `Loading | Success(data) | Error(message)`
-- Jamais d'appel réseau dans un Fragment ou Activity
+**Règles Dart/Flutter :**
+- Architecture MVVM : `Screen → Riverpod Provider/Notifier → Repository → ApiService (Dio)`
+- Un `Notifier` / `AsyncNotifier` par écran, pas de logique dans les Widgets
+- `async/await` + Riverpod pour tout ce qui est async
+- Riverpod pour l'injection de dépendances (pas de DI framework externe)
+- `AsyncValue<T>` pour l'état UI : `loading | data(T) | error`
+- Jamais d'appel réseau dans un Widget
 
-**Nommage :**
-- Fichiers : `PascalCase.kt`
+**Nommage Dart :**
+- Fichiers : `snake_case.dart`
 - Classes/Interfaces : `PascalCase`
 - Fonctions/variables : `camelCase`
-- Constantes : `UPPER_SNAKE_CASE`
-- Resources XML : `snake_case`
-- IDs XML : `camelCase` (ex: `android:id="@+id/btnConfirm"`)
+- Constantes : `lowerCamelCase` (Dart convention) ou `UPPER_SNAKE_CASE` pour les constantes globales
+- Widgets : `PascalCase`
 
-**i18n Android — règle absolue :**
-```kotlin
+**i18n Flutter — règle absolue :**
+```dart
 // ❌ JAMAIS
-Text("Confirmer la réservation")
-Toast.makeText(context, "Erreur réseau", Toast.LENGTH_SHORT).show()
+Text('Confirmer la réservation')
+ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Erreur réseau')));
 
-// ✅ TOUJOURS
-Text(stringResource(R.string.booking_confirm_button))
-Toast.makeText(context, getString(R.string.error_network), Toast.LENGTH_SHORT).show()
+// ✅ TOUJOURS (avec flutter_localizations + AppLocalizations)
+Text(AppLocalizations.of(context)!.bookingConfirmButton)
+ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(content: Text(AppLocalizations.of(context)!.errorNetwork)),
+);
 ```
 
-**API Key — intercepteur Retrofit :**
-```kotlin
-class ApiKeyInterceptor(private val keyStore: ApiKeyStore) : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val key = keyStore.getApiKey() ?: throw UnauthorizedException()
-        val request = chain.request().newBuilder()
-            .addHeader("X-API-Key", key)
-            .addHeader("Accept-Language", keyStore.getUserLocale())
-            .build()
-        return chain.proceed(request)
+**API Key — intercepteur Dio :**
+```dart
+class ApiKeyInterceptor extends Interceptor {
+  final FlutterSecureStorage _storage;
+  ApiKeyInterceptor(this._storage);
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    final apiKey = await _storage.read(key: 'mycoach_api_key');
+    if (apiKey != null) {
+      options.headers['X-API-Key'] = apiKey;
     }
+    super.onRequest(options, handler);
+  }
 }
 ```
 
 **Formatage des données selon locale :**
-```kotlin
+```dart
+import 'package:intl/intl.dart';
+
 // Devise
-fun formatPrice(cents: Int, currency: String, locale: Locale): String {
-    val amount = cents / 100.0
-    val format = NumberFormat.getCurrencyInstance(locale)
-    format.currency = Currency.getInstance(currency)
-    return format.format(amount)
+String formatPrice(int cents, String currency, String locale) {
+  final amount = cents / 100.0;
+  final format = NumberFormat.currency(locale: locale, symbol: currency);
+  return format.format(amount);
 }
 
 // Poids (kg ou lb)
-fun formatWeight(kg: Double, unit: WeightUnit, locale: Locale): String {
-    return if (unit == WeightUnit.LB) "${(kg * 2.20462).roundToInt()} lb"
-    else "${kg} kg"
+String formatWeight(double kg, WeightUnit unit) {
+  if (unit == WeightUnit.lb) return '${(kg * 2.20462).round()} lb';
+  return '$kg kg';
 }
 
 // Dates (toujours depuis UTC vers timezone user)
-fun formatDateTime(utc: Instant, timezone: ZoneId, locale: Locale): String {
-    return DateTimeFormatter
-        .ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
-        .withLocale(locale)
-        .withZone(timezone)
-        .format(utc)
+String formatDateTime(DateTime utc, String locale) {
+  final local = utc.toLocal();
+  return DateFormat.yMMMd(locale).add_Hm().format(local);
 }
 ```
 
@@ -329,10 +326,10 @@ fun formatDateTime(utc: Instant, timezone: ZoneId, locale: Locale): String {
 
 Ces règles s'appliquent à **chaque ligne de code produite**, sans exception.
 
-| # | Règle | Backend | Android |
+| # | Règle | Backend | Flutter |
 |---|-------|---------|---------|
-| 1 | Zéro string UI codée en dur | Messages d'erreur dans `locales/*.json` | Tout dans `strings.xml` |
-| 2 | Locale transmise dans chaque requête | Header `Accept-Language` lu côté backend | Intercepteur Retrofit |
+| 1 | Zéro string UI codée en dur | Messages d'erreur dans `locales/*.json` | Tout dans les fichiers .arb (flutter_localizations) |
+| 2 | Locale transmise dans chaque requête | Header `Accept-Language` lu côté backend | Intercepteur Dio |
 | 3 | Montants = centimes + devise ISO 4217 | `price_cents INT + currency VARCHAR(3)` | Formater avec `NumberFormat` |
 | 4 | Dates = UTC en base | `datetime` PostgreSQL TIMESTAMPTZ | Afficher avec `ZoneId` user |
 | 5 | Poids = kg en base | `weight_kg NUMERIC(5,2)` | Convertir selon `weight_unit` user |
@@ -468,17 +465,17 @@ TOKEN_ENCRYPTION_KEY=<clé Fernet B — tokens OAuth (Strava, Google Calendar, W
 
 **Pourquoi 2 clés ?** Compromission d'une clé n'expose pas l'autre catégorie. Rotation indépendante (les tokens OAuth ont une durée de vie courte — on peut les re-fetcher via re-OAuth si nécessaire).
 
-**Implémentation Android — pas de PII en clair dans Room :**
-- Room : les tables locales ne cachent **jamais** les champs PII en clair
+**Implémentation Flutter — pas de PII en clair dans Drift :**
+- Drift : les tables locales ne cachent **jamais** les champs PII en clair
 - Seules les données non-sensibles sont cachées localement (IDs, statuts, timestamps)
 - Les champs PII (prénom, nom, email, téléphone) → toujours re-fetchés depuis l'API
-- Si cache de profil nécessaire → chiffrer la valeur via Android Keystore avant insertion Room (voir DEV_PATTERNS.md §M9)
+- Si cache de profil nécessaire → chiffrer la valeur via flutter_secure_storage avant insertion Drift (voir DEV_PATTERNS.md §M9 (Flutter adaptation))
 
 **Longueur des champs prénom / nom :**
 - **max 150 caractères** (noms internationaux, noms composés, caractères Unicode)
 - Colonne `EncryptedString(300)` en base (le chiffrement Fernet augmente la taille ~1.3–1.5×)
 - Validation Pydantic : `min_length=2, max_length=150`
-- Validation Android : `InputFilter.LengthFilter(150)` + message d'erreur i18n
+- Validation Flutter : maxLength: 150 sur TextField + message d'erreur i18n
 
 ---
 
@@ -489,7 +486,7 @@ Les tâches sont réparties dans deux fichiers dédiés, un par plateforme :
 | Fichier | Plateforme | Répertoire cible |
 |---------|-----------|-----------------|
 | `docs/TASKS_BACKEND.md` | Python / FastAPI | `backend/` |
-| `docs/TASKS_ANDROID.md` | Kotlin / Android | `android/` |
+| `docs/TASKS_FLUTTER.md` | Flutter / Dart | `frontend/` |
 
 **Règles d'utilisation :**
 - Chaque tâche est numérotée (`B0-01`, `A0-01`…) et référence ses dépendances
@@ -502,15 +499,15 @@ Les tâches sont réparties dans deux fichiers dédiés, un par plateforme :
 ```
 Phase 0 Back (B0-01→B0-26)
        │
-       ├──► Phase 0 Android (A0-01→A0-31)    ← peut démarrer en parallèle (UI mocks)
+       ├──► Phase 0 Flutter (A0-01→A0-10)    ← peut démarrer en parallèle (UI mocks)
        │
 Phase 1 Back (B1-01→B1-28)
        │
-       ├──► Phase 1 Android (A1-01→A1-20)
+       ├──► Phase 1 Flutter (A1-01→A1-08)
        │
 Phase 2 Back (B2-01→B2-26)
        │
-       └──► Phase 2 Android (A2-01→A2-26)
+       └──► Phase 2 Flutter (A2-01→A2-04)
                      ...
 ```
 
@@ -518,13 +515,13 @@ Phase 2 Back (B2-01→B2-26)
 
 > 📋 **Les tâches détaillées sont dans :**
 > - `docs/TASKS_BACKEND.md` — toutes les tâches Python/FastAPI (B0-xx → B6-xx)
-> - `docs/TASKS_ANDROID.md` — toutes les tâches Kotlin/Android (A0-xx → A6-xx)
+> - `docs/TASKS_FLUTTER.md` — toutes les tâches Flutter/Dart (A0-xx → A7-xx)
 
 ---
 
 ### Résumé des phases (vue d'ensemble)
 
-| Phase | Back (TASKS_BACKEND.md) | Android (TASKS_ANDROID.md) | Sem. |
+| Phase | Back (TASKS_BACKEND.md) | Flutter (TASKS_FLUTTER.md) | Sem. |
 |-------|------------------------|---------------------------|------|
 | 0 — Fondations | B0-01 → B0-26 (infra, auth, API Key, i18n) | A0-01 → A0-31 (setup, design, login) | 1–2 |
 | 1 — Coach | B1-01 → B1-28 (profil, tarifs, clients, paiements) | A1-01 → A1-20 (onboarding, dashboard, clients) | 3–5 |
@@ -538,7 +535,7 @@ Phase 2 Back (B2-01→B2-26)
 
 ---
 
-#### SUPPRIMÉ — voir TASKS_BACKEND.md et TASKS_ANDROID.md pour le détail complet
+#### SUPPRIMÉ — voir TASKS_BACKEND.md et TASKS_FLUTTER.md pour le détail complet
 ---
 
 ## 7. FICHIER DE PROGRESSION
@@ -583,12 +580,12 @@ Ne jamais improviser sur un point non spécifié — toujours demander.
 - ❌ Commencer la Phase 1 sans que tous les tests de la Phase 0 passent
 - ❌ Utiliser SQLite (même pour les tests — utiliser PostgreSQL avec un container de test)
 - ❌ Stocker des montants en float (toujours en centimes entiers)
-- ❌ Coder une string UI en dur dans le code Android ou Backend
+- ❌ Coder une string UI en dur dans le code Flutter ou Backend
 - ❌ Stocker des secrets dans le code source (utiliser `.env`, jamais commiter `.env`)
 - ❌ Créer un endpoint sans middleware d'authentification (sauf `/auth/*` et `/health`)
-- ❌ Écrire de la logique métier dans un Router ou un Fragment/Activity
-- ❌ Faire des appels réseau depuis le thread UI Android
-- ❌ Utiliser `!!` (null assertion) en Kotlin sans justification dans un commentaire
+- ❌ Écrire de la logique métier dans un Router ou un Widget
+- ❌ Faire des appels réseau depuis un Widget (appeler via Provider)
+- ❌ Utiliser `!` (null assertion) en Dart sans justification dans un commentaire
 
 **Tests (règles absolues) :**
 - ❌ **Commiter une feature sans ses tests** — interdit sans exception
@@ -612,11 +609,11 @@ CRITÈRES FONCTIONNELS
 
 CRITÈRES DE QUALITÉ CODE
 □ Structure en couches respectée (Router → Service → Repository)
-□ Aucune logique métier dans le Router (backend) ou Fragment/Activity (Android)
+□ Aucune logique métier dans le Router (backend) ou Widget (Flutter)
 □ Les exceptions métier sont typées (ex: LateCancellationError, DuplicateBookingError)
 
 CRITÈRES DE TEST — OBLIGATOIRES
-□ Au moins 1 test unitaire "cas passant" par fonction de service / endpoint / ViewModel
+□ Au moins 1 test unitaire "cas passant" par fonction de service / endpoint / Provider
 □ Au moins 1 test unitaire "cas non passant" par règle métier implémentée
 □ Tous les tests existants passent (0 failure, 0 error, 0 skip non justifié)
 □ Les cas non passants testent bien un comportement attendu (erreur, rejet, exception)
@@ -649,30 +646,31 @@ async def test_create_template_unknown_coach(db):
         await create_template(db, uuid4(), title="Test", body="...")
 ```
 
-**Android — ViewModel `CancellationTemplateViewModel` :**
-```kotlin
+**Flutter — Riverpod Notifier `CancellationTemplateNotifier` :**
+```dart
 // ✅ CAS PASSANT
-@Test fun `getTemplates emits Success with list`() = runTest {
-    coEvery { repo.getTemplates() } returns listOf(fakeTemplate)
-    viewModel.load()
-    assertIs<UiState.Success<*>>(viewModel.uiState.value)
-}
+test('getTemplates returns list on success', () async {
+  when(() => mockRepo.getTemplates()).thenAnswer((_) async => [fakeTemplate]);
+  final notifier = CancellationTemplateNotifier(mockRepo);
+  await notifier.load();
+  expect(notifier.state, isA<AsyncData<List<Template>>>());
+});
 
 // ❌ CAS NON PASSANT — erreur réseau
-@Test fun `getTemplates emits Error on network failure`() = runTest {
-    coEvery { repo.getTemplates() } throws IOException("timeout")
-    viewModel.load()
-    assertIs<UiState.Error>(viewModel.uiState.value)
-}
+test('getTemplates returns error on network failure', () async {
+  when(() => mockRepo.getTemplates()).thenThrow(DioException(requestOptions: RequestOptions()));
+  final notifier = CancellationTemplateNotifier(mockRepo);
+  await notifier.load();
+  expect(notifier.state, isA<AsyncError>());
+});
 
 // ❌ CAS NON PASSANT — création au-delà de 5
-@Test fun `createTemplate emits Error when limit reached`() = runTest {
-    coEvery { repo.getTemplates() } returns List(5) { fakeTemplate }
-    viewModel.onCreateClicked("nouveau", "corps")
-    val state = viewModel.uiState.value
-    assertIs<UiState.Error>(state)
-    assertEquals("template_limit_reached", (state as UiState.Error).code)
-}
+test('createTemplate throws when limit reached', () async {
+  when(() => mockRepo.getTemplates()).thenAnswer((_) async => List.generate(5, (_) => fakeTemplate));
+  final notifier = CancellationTemplateNotifier(mockRepo);
+  await notifier.load();
+  expect(() => notifier.onCreate('nouveau', 'corps'), throwsA(isA<TemplateLimitReachedException>()));
+});
 ```
 
 ---
@@ -680,3 +678,4 @@ async def test_create_template_unknown_coach(db):
 *Ce document est la loi. En cas de doute, relis-le.*
 *Version 1.1 — 26/02/2026 — Ajout DoD + règles test cas passants/non passants*
 *Version 1.2 — 26/02/2026 — §5.1 Chiffrement PII : EncryptedString SQLAlchemy, champs ciblés, email_hash lookup, FIELD_ENCRYPTION_KEY, longueur prénom/nom 150 chars*
+*Version 1.3 — 27/02/2026 — Migration frontend Kotlin/Android → Flutter (Dart) : §3.2 Flutter (Dart), tests dart flutter_test, intercepteur Dio, Riverpod Notifier, i18n flutter_localizations*

@@ -377,7 +377,7 @@ backend/
 ### B7-04 — Évolution liste plateformes (futur)
 - [ ] Table `social_platforms` (admin CRUD) — slug, label, icon_url, active
 - [ ] Endpoint `GET /social-platforms` — liste publique des plateformes actives
-- [ ] Android : charger dynamiquement la liste depuis l'API
+- [ ] Flutter : charger dynamiquement la liste depuis l'API
 
 ---
 

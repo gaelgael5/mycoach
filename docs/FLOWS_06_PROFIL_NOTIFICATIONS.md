@@ -9,7 +9,7 @@
 ```mermaid
 sequenceDiagram
     actor C as Client
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     C->>A: Barre de recherche + filtres
@@ -32,7 +32,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor C as Client
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant N as Notifications
 
@@ -59,7 +59,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     K->>A: Profil → Disponibilités
@@ -91,7 +91,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor C as Client
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     C->>A: Profil → Confidentialité → "Partager mes performances"
@@ -163,7 +163,7 @@ mindmap
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant C as Prospect
 
@@ -206,7 +206,7 @@ flowchart TD
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur (Coach ou Client)
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     U->>A: Profil → Réseaux sociaux
@@ -262,7 +262,7 @@ flowchart LR
 ```mermaid
 sequenceDiagram
     actor C as Client / Visiteur
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     C->>A: Page profil coach → section Réseaux sociaux

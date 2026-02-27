@@ -2,6 +2,8 @@
 
 > Document de référence complet. Chaque module décrit les écrans, actions, validations, règles métier, cas d'erreur et notifications.
 
+**Frontend :** Flutter 3.x — Android · iOS · Web (Riverpod + go_router + Dio)
+
 ---
 
 ## 🌍 INTERNATIONALISATION (i18n) — PRINCIPES FONDATEURS
@@ -9,8 +11,8 @@
 L'application est **internationale dès le premier commit**. Ces règles s'appliquent à toutes les phases de développement, sans exception.
 
 ### Règles de développement (non négociables)
-- **Zéro texte codé en dur** dans le code (Android ou Backend) — tout passe par les fichiers de ressources
-- **Android :** `res/values/strings.xml` (défaut) + `res/values-fr/strings.xml`, `res/values-en/strings.xml`, etc.
+- **Zéro texte codé en dur** dans le code (Flutter ou Backend) — tout passe par les fichiers de ressources
+- **Flutter :** fichiers .arb (flutter_localizations) par langue (`intl_fr.arb`, `intl_en.arb`, etc.)
 - **Backend :** Répertoire `locales/` avec fichiers JSON par langue (`fr.json`, `en.json`, `es.json`…) — messages d'erreur, notifications, emails
 - **Dates :** toujours stockées en UTC en base, converties en affichage selon `user.timezone`
 - **Devises :** stockées en centimes (entier) + code ISO 4217 (`EUR`, `USD`, `GBP`…), jamais en float
@@ -20,10 +22,10 @@ L'application est **internationale dès le premier commit**. Ces règles s'appli
 - **Codes langue/culture :** BCP 47 (`fr-FR`, `en-US`, `es-ES`, `pt-BR`…)
 
 ### Sélection de la culture (utilisateur)
-- Détectée automatiquement depuis la locale système de l'appareil (Android : `Locale.getDefault()`)
+- Détectée automatiquement depuis la locale système de l'appareil (Android : `PlatformDispatcher.instance.locale`)
 - Modifiable dans Profil → Préférences → Langue
 - Persistée en base (`user.locale`) → synchronisée sur tous les appareils
-- Tout changement → rechargement de l'UI sans redémarrage (Android : `recreate()`)
+- Tout changement → rechargement de l'UI sans redémarrage (Android : `setState / ref.refresh()`)
 
 ### Ce que la locale contrôle
 | Élément | Exemple fr-FR | Exemple en-US |
@@ -39,12 +41,12 @@ L'application est **internationale dès le premier commit**. Ces règles s'appli
 
 ## 📱 DESIGN RESPONSIVE — PRINCIPE FONDATEUR
 
-L'application Android est **responsive dès le premier écran** :
-- Layouts en `ConstraintLayout` ou `LinearLayout` avec `wrap_content` / `match_parent`
-- Textes en `sp`, marges/paddings en `dp` (jamais en px)
+L'application Flutter est **responsive dès le premier écran** :
+- Layouts avec `Flexible`, `Expanded`, `LayoutBuilder` — jamais de tailles fixes
+- Textes avec `TextStyle` + `MediaQuery.textScaleFactor` — jamais en px fixes
 - Aucune taille fixe codée en dur pour les éléments UI
-- Testé sur : écrans compacts (360dp), standard (411dp), grands (600dp+)
-- Orientation portrait principale, paysage supporté sans crash
+- Testé sur : mobile compact (360dp), standard (411dp), tablette (600dp+), desktop web
+- Orientation portrait principale, paysage supporté sans crash (Flutter OrientationBuilder)
 
 ---
 
@@ -100,7 +102,7 @@ L'application Android est **responsive dès le premier écran** :
 | Auth API | **API Key SHA-256** | `X-API-Key` header sur tous les appels |
 | Auth Google | ID Token → `POST /auth/google` → API Key maison | 1 vérif Google puis lookup local |
 | Auth email | bcrypt credentials → API Key maison | Même système unifié |
-| Stockage Android | EncryptedSharedPreferences (AES-256) | Jamais en clair |
+| Stockage Flutter | flutter_secure_storage (AES-256) | Jamais en clair |
 | Révocation | `revoked = TRUE` en base | Multi-device, immédiat |
 | Tarification | Séance unitaire + forfaits (N séances, prix, validité) + **tarif groupe** (seuil N participants → prix/client réduit) | Configurable par coach par session |
 | Annulation | Pénalité si < délai configuré (défaut 24h) | Séance due au coach |
@@ -406,7 +408,7 @@ Après vérification email → redirect `ClientOnboardingScreen` (questionnaire,
 - Mot de passe (toggle afficher/masquer)
 
 **Actions :**
-- "Se connecter" → `POST /auth/login` → vérif bcrypt → génère `SHA256(email+hash+salt)` → `{ "api_key": "..." }` → stocké en `EncryptedSharedPreferences` → redirect selon rôle
+- "Se connecter" → `POST /auth/login` → vérif bcrypt → génère `SHA256(email+hash+salt)` → `{ "api_key": "..." }` → stocké en `flutter_secure_storage` → redirect selon rôle
 - "Mot de passe oublié" → `ForgotPasswordScreen`
 - "Créer un compte" → `RegisterScreen`
 - "Connexion avec Google" → OAuth2 Google
@@ -426,7 +428,7 @@ Après vérification email → redirect `ClientOnboardingScreen` (questionnaire,
 - Si utilisateur existant → retourne `{ "api_key": "..." }` → login direct
 
 **Auto-login :**
-- Au lancement → lecture API Key depuis `EncryptedSharedPreferences`
+- Au lancement → lecture API Key depuis `flutter_secure_storage`
 - Si présente → `GET /auth/me` avec `X-API-Key` → si 200 → auto-login silencieux → redirect dashboard
 - Si 401 (clé révoquée ou expirée) → effacement locale → `LoginScreen`
 
@@ -446,7 +448,7 @@ Après vérification email → redirect `ClientOnboardingScreen` (questionnaire,
 ### 1.5 Déconnexion
 - Menu Profil → "Se déconnecter" → confirmation
 - `DELETE /auth/logout` avec `X-API-Key` → `revoked = TRUE` en base
-- Suppression locale de l'API Key (`EncryptedSharedPreferences`)
+- Suppression locale de l'API Key (`flutter_secure_storage`)
 - Redirect `LoginScreen`
 
 **Déconnexion tous les appareils :**
@@ -488,7 +490,7 @@ Le téléphone est **obligatoire pour les coaches** et doit être validé par OT
 - Génération via `secrets.choice` (CSPRNG)
 - Exemples : `"a3f7k2"`, `"9x2m4p"`, `"b0z5r1"`
 
-**SMS format (compatible Android SMS Retriever API) :**
+**SMS format (compatible sms_autofill (sms_autofill (Android SMS Retriever + iOS AutoFill) + iOS AutoFill)) :**
 ```
 <#> Votre code MyCoach : a3f7k2
 Expire dans 10 minutes.
@@ -496,7 +498,7 @@ FA+9qCX9VSu
 ```
 
 **Android SMS auto-read :**
-Sur Android, l'application utilise l'[Android SMS Retriever API](https://developers.google.com/identity/sms-retriever) pour lire automatiquement le code sans intervention de l'utilisateur. Le hash applicatif en fin de SMS (11 chars) permet l'association avec l'app.
+Sur Android, l'application utilise l'[sms_autofill (sms_autofill (Android SMS Retriever + iOS AutoFill) + iOS AutoFill)](https://developers.google.com/identity/sms-retriever) pour lire automatiquement le code sans intervention de l'utilisateur. Le hash applicatif en fin de SMS (11 chars) permet l'association avec l'app.
 
 **Règles de sécurité :**
 - Expiration : 10 minutes
@@ -1112,7 +1114,7 @@ Le coach peut accorder à un client spécifique **l'accès sans forfait** (régl
 3. Créer le booking (statut: pending_coach_validation)
 ```
 
-**Réponse en cas d'absence de crédit (Android) :**
+**Réponse en cas d'absence de crédit (Flutter) :**
 ```
 ┌────────────────────────────────────────┐
 │  ⚠️ Aucune séance disponible           │
@@ -1869,7 +1871,7 @@ Libellé suggéré : "COACHING MARIE MARS 2026"
 ```
 
 - Bouton **"Copier l'IBAN"** → copie dans le presse-papier (toast "IBAN copié ✓")
-- Bouton **"Partager"** → share sheet natif Android (pour envoyer à son app bancaire)
+- Bouton **"Partager"** → share sheet natif (share_plus Flutter) (pour envoyer à son app bancaire)
 - Historique des RIBs reçus : client → Mes paiements → "Coordonnées reçues" (liste triée par date)
 
 ---
@@ -2228,7 +2230,7 @@ Document `docs/RGPD_REGISTRE.md` — à tenir à jour :
 - ✅ Hachage des mots de passe (bcrypt coût 12)
 - ✅ API Keys non stockées en clair (SHA-256)
 - ✅ Anonymisation des tokens dans les logs (`key_hash[:8]...`)
-- ✅ `FLAG_SECURE` sur les écrans sensibles (Android)
+- ✅ `FlutterSecureScreen (platform channel)` sur les écrans sensibles (Android + iOS)
 - ✅ Pas de PII dans les logs applicatifs
 
 ---
@@ -2494,6 +2496,7 @@ https://mycoach.app/enroll/{token}   ← Lien web (futur)
 | 2.3 | 27/02/2026 | §0.4 Matrice des accès : tableau complet de toutes les fonctionnalités × 3 rôles (client / coach / admin) — 70+ fonctionnalités documentées en 12 catégories |
 | 2.4 | 27/02/2026 | §27 Suggestions & Bug Reports · §28 Paramètres de santé modulables + historique + partage par coach par paramètre |
 | 2.5 | 27/02/2026 | §29 Liens d'enrôlement coach : token sécurisé (label / expiration / max_uses) · `/coaches/me/enrollment-tokens` CRUD · `/enroll/{token}` public · `enrollment_token` optionnel à l'inscription → coaching_relation auto · §0.4 Matrice Onboarding mise à jour |
+| 3.0 | 27/02/2026 | Migration frontend Kotlin/Android → Flutter (Android + iOS + Web) · Riverpod + go_router + Dio · Scaffold projet frontend/ · TASKS_FLUTTER.md créé · DEV_ENVIRONMENT, DEV_ROADMAP, CODING_AGENT mis à jour |
 
 ---
 

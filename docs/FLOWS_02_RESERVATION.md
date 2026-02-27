@@ -40,7 +40,7 @@ stateDiagram-v2
 ```mermaid
 sequenceDiagram
     actor C as Client
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant N as Notifications
 
@@ -83,7 +83,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant N as Notifications
 
@@ -118,7 +118,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor C as Client
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant N as Notifications
 
@@ -153,7 +153,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant N as Notifications
 
@@ -185,7 +185,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant S as SMS Provider
 
@@ -223,7 +223,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor C as Client
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant N as Notifications
 
@@ -263,7 +263,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant N as Notifications
 

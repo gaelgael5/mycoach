@@ -1,0 +1,103 @@
+name: mycoach
+description: MyCoach — Application de coaching sportif (Android · iOS · Web)
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State management
+  flutter_riverpod: ^2.4.0
+  riverpod_annotation: ^2.3.0
+
+  # Navigation
+  go_router: ^12.0.0
+
+  # HTTP & API
+  dio: ^5.3.0
+  retrofit: ^4.1.0
+  json_annotation: ^4.8.0
+
+  # Stockage sécurisé
+  flutter_secure_storage: ^9.0.0
+
+  # Cache local
+  drift: ^2.13.0
+  sqlite3_flutter_libs: ^0.5.0
+
+  # Auth
+  google_sign_in: ^6.1.0
+
+  # Push notifications
+  firebase_messaging: ^14.7.0
+  flutter_local_notifications: ^16.1.0
+
+  # Calendrier
+  device_calendar: ^4.3.0
+  table_calendar: ^3.0.9
+
+  # Bluetooth (balances BLE)
+  flutter_blue_plus: ^1.22.0
+
+  # Médias
+  image_picker: ^1.0.4
+  cached_network_image: ^3.3.0
+
+  # Biométrie
+  local_auth: ^2.1.8
+
+  # SMS OTP
+  sms_autofill: ^2.3.0
+
+  # QR Code
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^3.5.0
+
+  # i18n
+  intl: ^0.18.0
+
+  # Utilitaires
+  url_launcher: ^6.2.0
+  share_plus: ^7.2.0
+  package_info_plus: ^5.0.0
+  permission_handler: ^11.0.0
+
+  # UI
+  fl_chart: ^0.66.0
+  flutter_svg: ^2.0.9
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.6
+  riverpod_generator: ^2.3.0
+  retrofit_generator: ^8.0.0
+  json_serializable: ^6.7.0
+  drift_dev: ^2.13.0
+  mockito: ^5.4.4
+
+flutter:
+  uses-material-design: true
+  generate: true  # pour i18n
+  assets:
+    - assets/avatars/
+    - assets/images/
+    - assets/icons/
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700

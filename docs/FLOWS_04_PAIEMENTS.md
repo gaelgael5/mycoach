@@ -9,7 +9,7 @@
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant N as Notifications
 
@@ -37,7 +37,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant N as Notifications
 
@@ -101,7 +101,7 @@ stateDiagram-v2
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     K->>A: Fiche client → Paiements → séance "Annulation tardive" → "Exonérer"
@@ -120,7 +120,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     K->>A: Fiche client → Paiements → "Exporter"

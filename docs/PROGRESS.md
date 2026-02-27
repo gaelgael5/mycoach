@@ -2,7 +2,7 @@
 
 > Ce fichier est maintenu par l'agent IA codeur.
 > Mis à jour après chaque tâche terminée.
-> Le détail des tâches est dans : `docs/TASKS_BACKEND.md` et `docs/TASKS_ANDROID.md`
+> Le détail des tâches est dans : `docs/TASKS_BACKEND.md` et `docs/TASKS_FLUTTER.md`
 >
 > Statuts : ⬜ À faire | 🔄 En cours | ✅ Terminé | ⛔ Bloqué
 
@@ -79,12 +79,12 @@ Répertoire android : `android/`
 
 ---
 
-## Android (android/) — TASKS_ANDROID.md
+## Flutter (frontend/) — TASKS_FLUTTER.md
 
-### Phase 0 — Fondations Android
+### Phase A0 — Setup & infrastructure Flutter
 | ID | Tâche résumée | Statut | Notes |
 |----|--------------|--------|-------|
-| A0-01 | Init projet Android | ⬜ | |
+| A0-01 | Initialiser projet Flutter | ⬜ | |
 | A0-02 | build.gradle.kts (dépendances) | ⬜ | |
 | A0-03 | network_security_config.xml | ⬜ | |
 | A0-04 | backup_rules.xml | ⬜ | |
@@ -116,35 +116,35 @@ Répertoire android : `android/`
 | A0-30 | strings.xml EN + FR (Phase 0) | ⬜ | |
 | A0-31 | Tests unitaires auth ViewModels | ⬜ | |
 
-### Phase 1 — Coach Android
+### Phase A1 — Authentification Flutter
 | ID | Tâche résumée | Statut | Notes |
 |----|--------------|--------|-------|
-| A1-01 à A1-20 | Voir TASKS_ANDROID.md | ⬜ | |
+| A1-01 à A1-08 | Voir TASKS_FLUTTER.md | ⬜ | |
 
-### Phase 2 — Client Android
+### Phase A2 — Onboarding Flutter
 | ID | Tâche résumée | Statut | Notes |
 |----|--------------|--------|-------|
-| A2-01 à A2-26 | Voir TASKS_ANDROID.md | ⬜ | |
+| A2-01 à A2-04 | Voir TASKS_FLUTTER.md | ⬜ | |
 
-### Phase 3 — Performances Android
+### Phase A3 — Profil & Paramètres Flutter
 | ID | Tâche résumée | Statut | Notes |
 |----|--------------|--------|-------|
-| A3-01 à A3-20 | Voir TASKS_ANDROID.md | ⬜ | |
+| A3-01 à A3-08 | Voir TASKS_FLUTTER.md | ⬜ | |
 
-### Phase 4 — IA & Programmes Android
+### Phase A4 — Fonctionnalités Client Flutter
 | ID | Tâche résumée | Statut | Notes |
 |----|--------------|--------|-------|
-| A4-01 à A4-17 | Voir TASKS_ANDROID.md | ⬜ | |
+| A4-01 à A4-10 | Voir TASKS_FLUTTER.md | ⬜ | |
 
-### Phase 5 — Intégrations Android
+### Phase A5 — Fonctionnalités Coach Flutter
 | ID | Tâche résumée | Statut | Notes |
 |----|--------------|--------|-------|
-| A5-01 à A5-12 | Voir TASKS_ANDROID.md | ⬜ | |
+| A5-01 à A5-10 | Voir TASKS_FLUTTER.md | ⬜ | |
 
-### Phase 6 — Launch Android
+### Phase A6 — Intégrations & Phase A7 — Web Flutter
 | ID | Tâche résumée | Statut | Notes |
 |----|--------------|--------|-------|
-| A6-01 à A6-12 | Voir TASKS_ANDROID.md | ⬜ | |
+| A6-01 à A6-08, A7-01 à A7-05 | Voir TASKS_FLUTTER.md | ⬜ | |
 
 ---
 

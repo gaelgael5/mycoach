@@ -9,7 +9,7 @@
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant G as Google OAuth
 
@@ -43,7 +43,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor C as Client
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant S as Strava API
 
@@ -79,7 +79,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor C as Client
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant W as Withings API
 
@@ -141,7 +141,7 @@ flowchart LR
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     U->>A: Profil → "Exporter mes données"
@@ -166,7 +166,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant E as Email Service
 
@@ -190,7 +190,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     note over U,B: Premier lancement — acceptation des CGU

@@ -9,7 +9,7 @@
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur (Client ou Coach)
-    participant A as Android App
+    participant A as Flutter App
     participant CAM as Caméra (QR)
     participant B as Backend API
     participant N as Notifications
@@ -82,7 +82,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant N as Notifications
 
@@ -110,7 +110,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     U->>A: Onglet "Stats" ou PerformanceHistoryScreen
@@ -143,7 +143,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor C as Client
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     C->>A: Dashboard → "Mon programme"
@@ -195,7 +195,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor K as Coach
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant N as Notifications
 

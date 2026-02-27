@@ -9,7 +9,7 @@
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant E as Email Service
 
@@ -36,7 +36,7 @@ sequenceDiagram
     actor U as Utilisateur
     participant L as Lien Email
     participant B as Backend API
-    participant A as Android App
+    participant A as Flutter App
 
     U->>L: Clique sur le lien de vérification
     L->>B: GET /auth/verify-email?token=xxx
@@ -59,7 +59,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
-    participant A as Android App
+    participant A as Flutter App
     participant S as EncryptedSharedPrefs
     participant B as Backend API
 
@@ -90,7 +90,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
-    participant A as Android App
+    participant A as Flutter App
     participant G as Google SDK
     participant B as Backend API
     participant S as EncryptedSharedPrefs
@@ -119,7 +119,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant A as Android App
+    participant A as Flutter App
     participant S as EncryptedSharedPrefs
     participant B as Backend API
 
@@ -146,7 +146,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
-    participant A as Android App
+    participant A as Flutter App
     participant S as EncryptedSharedPrefs
     participant B as Backend API
 
@@ -173,7 +173,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant E as Email Service
 
@@ -235,7 +235,7 @@ flowchart TD
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
     participant S as SMS Provider
 

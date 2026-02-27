@@ -1,11 +1,11 @@
 # MyCoach — Environnement de Développement
 
-> Version : 1.0 — 2026-02-25
+> Version : 2.0 — 2026-02-27
 > Auteur : Tom ⚡
 
 Ce document décrit l'environnement de développement recommandé pour les deux composantes de MyCoach :
 - **Backend** : Python 3.12 + FastAPI + PostgreSQL 16
-- **Android** : Kotlin 1.9 + Android SDK 34
+- **Frontend** : Flutter 3.x (Android · iOS · Web)
 
 ---
 
@@ -14,7 +14,7 @@ Ce document décrit l'environnement de développement recommandé pour les deux 
 1. [Vue d'ensemble](#1-vue-densemble)
 2. [Environnement commun](#2-environnement-commun)
 3. [Backend Python — Setup](#3-backend-python--setup)
-4. [Android Kotlin — Setup](#4-android-kotlin--setup)
+4. [Frontend Flutter — Setup](#4-frontend-flutter--setup)
 5. [VSCode — Configuration recommandée](#5-vscode--configuration-recommandée)
 6. [Workflows de build locaux](#6-workflows-de-build-locaux)
 7. [CI/CD AppVeyor](#7-cicd-appveyor)
@@ -27,22 +27,21 @@ Ce document décrit l'environnement de développement recommandé pour les deux 
 ```
 mycoach/
 ├── backend/              ← Python/FastAPI (source principale)
-├── android/              ← App Kotlin/Android
+├── frontend/             ← App Flutter (Android · iOS · Web)
 ├── docs/                 ← Documentation (ce fichier, specs, tâches…)
 ├── deploy/               ← Fichiers de déploiement (Compose, Nginx, scripts)
 │   ├── docker-compose.yml
 │   ├── nginx/
 │   └── scripts/
-├── appveyor.yml          ← CI/CD backend (Python → Docker Hub)
-└── android/appveyor.yml  ← CI/CD Android (APK → Artifacts)
+└── appveyor.yml          ← CI/CD backend (Python → Docker Hub)
 ```
 
 **Flux de développement :**
 ```
-Code local (VSCode)
+Code local (VSCode / Android Studio)
     → git push → GitHub
         → AppVeyor CI → Tests + Build
-            → Docker Hub (backend) / APK artifact (Android)
+            → Docker Hub (backend) / APK+IPA artifacts (Flutter)
                 → Proxmox LXC via Watchtower (backend auto-deploy)
 ```
 
@@ -58,32 +57,36 @@ Code local (VSCode)
 | Docker Desktop | ≥ 25 | PostgreSQL local + build images |
 | VSCode | ≥ 1.87 | Éditeur principal |
 | Python | 3.12.x | Backend |
-| JDK | 17 (LTS) | Android Gradle build |
-| Android SDK | 34 (API 34) | Android build |
+| Flutter SDK | 3.x | Frontend Flutter (Android · iOS · Web) |
+| Android Studio | 2024.x | Émulateur Android + debug Flutter |
+| Xcode | 15+ | Builds iOS (macOS uniquement) |
 
-### Installation JDK 17 (Windows)
-
-```powershell
-# Via winget
-winget install Microsoft.OpenJDK.17
-
-# Vérifier
-java -version  # doit afficher 17.x
-```
-
-### Installation JDK 17 (macOS)
+### Installation Flutter SDK (Windows/Linux)
 
 ```bash
-brew install openjdk@17
-echo 'export JAVA_HOME=$(brew --prefix openjdk@17)' >> ~/.zshrc
+# Télécharger depuis https://flutter.dev/docs/get-started/install
+# Ajouter au PATH
+export PATH="$PATH:/path/to/flutter/bin"
+
+# Vérifier l'installation
+flutter doctor
+```
+
+### Installation Flutter SDK (macOS)
+
+```bash
+brew install flutter
+# ou téléchargement manuel depuis flutter.dev
+flutter doctor
 ```
 
 ### Variables d'environnement globales
 
 ```bash
 # À ajouter dans ~/.bashrc ou ~/.zshrc (ou variables système Windows)
-export JAVA_HOME=/path/to/jdk17
-export ANDROID_HOME=$HOME/Android/Sdk        # Windows: %USERPROFILE%\AppData\Local\Android\Sdk
+export PATH="$PATH:/path/to/flutter/bin"
+# Android SDK (pour builds Android via Flutter)
+export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 ```
@@ -228,127 +231,90 @@ backend/
 
 ---
 
-## 4. Android Kotlin — Setup
+## 4. Frontend Flutter — Setup
 
-### Option A : Android Studio (recommandé pour debug/émulateur)
+### Prérequis
+- Flutter SDK 3.x : https://flutter.dev/docs/get-started/install
+- Dart SDK (inclus avec Flutter)
+- Android Studio (avec plugin Flutter) ou VS Code (avec extension Flutter)
+- Xcode 15+ (macOS uniquement — pour builds iOS)
+- Chrome (pour développement web)
 
-1. Télécharger [Android Studio](https://developer.android.com/studio) (Meerkat 2024.3.1+)
-2. Ouvrir le dossier `android/` (pas la racine du repo)
-3. Laisser Gradle sync se terminer
-4. Créer un AVD (Android Virtual Device) : API 34, Pixel 6
-
-> Android Studio sert principalement pour :
-> - Lancer l'émulateur
-> - Déboguer (breakpoints, Logcat, profiler)
-> - Inspecter le layout (Layout Inspector)
-
-### Option B : VSCode + Gradle en ligne de commande (pour les modifications manuelles)
-
-VSCode peut éditer les fichiers Kotlin/XML. Le build se fait via terminal.
-
-**Extensions VSCode recommandées pour Android :**
-- `mathiasfrohlich.Kotlin` — Kotlin language support
-- `vscjava.vscode-java-pack` — Java/JVM support (utile pour Gradle)
-- `esbenp.prettier-vscode` — formatage XML layouts
-
-**Build via terminal :**
+### Installation
 
 ```bash
-cd android/
+# Vérifier l'installation
+flutter doctor
 
-# Compiler en mode debug
-./gradlew assembleDebug
+# Cloner et installer les dépendances
+git clone https://github.com/gaelgael5/mycoach.git
+cd mycoach/frontend
+flutter pub get
 
-# APK généré dans :
-# app/build/outputs/apk/debug/app-debug.apk
-
-# Compiler en mode release (nécessite keystore)
-./gradlew assembleRelease
-
-# Lancer les tests unitaires
-./gradlew test
-
-# Lancer les tests instrumentés (émulateur ou device requis)
-./gradlew connectedAndroidTest
-
-# Vérifier le code (Lint Android)
-./gradlew lint
+# Générer les fichiers de code (json_serializable, riverpod_generator, drift)
+dart run build_runner build --delete-conflicting-outputs
 ```
 
-**Déployer sur device/émulateur depuis terminal :**
+### Lancer l'application
 
 ```bash
-# Vérifier les devices connectés
-adb devices
+# Web (développement)
+flutter run -d chrome --dart-define=API_BASE_URL=http://localhost:8000
 
-# Installer l'APK debug
-adb install app/build/outputs/apk/debug/app-debug.apk
+# Android (émulateur ou device)
+flutter run -d android --dart-define=API_BASE_URL=http://192.168.10.63:8200
 
-# Ou directement via Gradle (émulateur doit tourner)
-./gradlew installDebug
+# iOS (simulateur — macOS requis)
+flutter run -d ios --dart-define=API_BASE_URL=http://192.168.10.63:8200
 ```
 
-### Keystore pour release (à créer une seule fois)
+### Tests
 
 ```bash
-# Générer le keystore (à stocker hors du repo — en sécurité)
-keytool -genkey -v \
-  -keystore mycoach-release.keystore \
-  -alias mycoach \
-  -keyalg RSA \
-  -keysize 2048 \
-  -validity 10000
-
-# Le keystore ne doit PAS être commité dans GitHub
-# Le stocker dans un coffre (ex: Bitwarden, 1Password)
-# Pour AppVeyor : utiliser les variables secrètes (voir §7)
+flutter test                    # Unit + widget tests
+flutter test integration_test/  # Integration tests
 ```
 
-### Structure du répertoire `android/`
+### Structure du répertoire `frontend/`
 
 ```
-android/
-├── app/
-│   ├── build.gradle.kts
-│   ├── google-services.json          ← Firebase config (JAMAIS commité)
-│   └── src/
-│       ├── main/
-│       │   ├── AndroidManifest.xml
-│       │   ├── kotlin/com/mycoach/app/
-│       │   │   ├── MyCoachApplication.kt   ← Hilt Application
-│       │   │   ├── core/
-│       │   │   │   ├── di/              ← Modules Hilt
-│       │   │   │   ├── network/         ← Retrofit, OkHttp, interceptors
-│       │   │   │   ├── security/        ← EncryptedSharedPreferences
-│       │   │   │   └── util/            ← Extensions, DateUtils…
-│       │   │   ├── data/
-│       │   │   │   ├── api/             ← ApiService (Retrofit interfaces)
-│       │   │   │   ├── dto/             ← Data Transfer Objects
-│       │   │   │   ├── local/           ← Room DB + DAOs
-│       │   │   │   ├── mapper/          ← DTO ↔ Domain ↔ Entity
-│       │   │   │   └── repository/      ← Implémentations des repos
-│       │   │   ├── domain/
-│       │   │   │   ├── model/           ← Modèles domaine (purs Kotlin)
-│       │   │   │   ├── repository/      ← Interfaces des repos
-│       │   │   │   └── usecase/         ← Use cases
-│       │   │   └── ui/
-│       │   │       ├── auth/            ← Login / Register screens
-│       │   │       ├── coach/           ← Espace coach
-│       │   │       ├── client/          ← Espace client
-│       │   │       ├── common/          ← Composants partagés
-│       │   │       └── MainActivity.kt
-│       │   └── res/
-│       │       ├── layout/              ← XML layouts
-│       │       ├── values/strings.xml   ← Strings (langue par défaut = EN)
-│       │       ├── values-fr/strings.xml
-│       │       └── drawable/
-│       └── test/                       ← Tests unitaires (JUnit5)
-│       └── androidTest/                ← Tests instrumentés (Espresso)
-├── build.gradle.kts                    ← Projet Gradle (root)
-├── settings.gradle.kts
-├── gradle.properties
-├── local.properties                    ← JAMAIS commité (sdk.dir=…)
-└── appveyor.yml                        ← CI/CD Android
+frontend/
+├── lib/
+│   ├── main.dart                    ← Point d'entrée (ProviderScope + MaterialApp.router)
+│   ├── core/
+│   │   ├── api/                     ← Client Dio + ApiKeyInterceptor
+│   │   ├── storage/                 ← flutter_secure_storage wrapper
+│   │   ├── theme/                   ← AppTheme (light/dark, Inter font)
+│   │   ├── router/                  ← go_router configuration
+│   │   └── providers/               ← Providers globaux (dio, storage…)
+│   ├── features/
+│   │   ├── auth/                    ← Login, Register, OTP, Email verify
+│   │   ├── home/                    ← Dashboard client / coach
+│   │   ├── booking/                 ← Réservation, agenda, liste d'attente
+│   │   ├── profile/                 ← Profil, liens sociaux, paramètres santé
+│   │   ├── performances/            ← Saisie, historique, graphiques, PRs
+│   │   ├── programs/                ← Programmes assignés / création
+│   │   ├── payments/                ← Forfaits, paiements, solde
+│   │   ├── integrations/            ← Strava, Withings, Google Calendar
+│   │   ├── feedback/                ← Suggestions, bug reports
+│   │   ├── health/                  ← Paramètres de santé, partage
+│   │   └── admin/                   ← Back-office admin (web uniquement)
+│   └── shared/
+│       ├── widgets/                 ← Widgets réutilisables
+│       ├── models/                  ← Modèles Dart partagés
+│       └── utils/                   ← Helpers, formatters, validators
+├── test/
+│   ├── unit/
+│   ├── widget/
+│   └── integration/
+├── assets/
+│   ├── avatars/                     ← Avatars SVG par défaut
+│   ├── images/
+│   ├── icons/
+│   └── fonts/                       ← Inter font family
+├── pubspec.yaml                     ← Dépendances Flutter
+├── .gitignore
+└── README.md
 ```
 
 ---
@@ -366,12 +332,10 @@ ms-python.mypy-type-checker
 ms-azuretools.vscode-docker
 ```
 
-**Android Kotlin :**
+**Flutter / Dart :**
 ```
-mathiasfrohlich.Kotlin
-vscjava.vscode-java-pack
-redhat.vscode-xml
-esbenp.prettier-vscode
+dart-code.flutter
+dart-code.dart-code
 ```
 
 **Général :**
@@ -397,9 +361,10 @@ streetsidesoftware.code-spell-checker
   },
   "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
 
-  "[kotlin]": {
-    "editor.tabSize": 4,
-    "editor.insertSpaces": true
+  "[dart]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true
   },
 
   "ruff.lint.args": ["--config", "${workspaceFolder}/backend/pyproject.toml"],
@@ -408,7 +373,7 @@ streetsidesoftware.code-spell-checker
     "**/__pycache__": true,
     "**/.pytest_cache": true,
     "**/build": true,
-    "**/.gradle": true
+    "**/.dart_tool": true
   }
 }
 ```
@@ -474,20 +439,26 @@ docker-pg-stop:
 	docker stop mycoach-pg && docker rm mycoach-pg
 ```
 
-### Android — commandes rapides
+### Flutter — commandes rapides
 
 ```bash
-# Build debug + install sur device/émulateur connecté
-cd android && ./gradlew installDebug
+# Installer les dépendances
+cd frontend && flutter pub get
 
-# Tests unitaires avec rapport HTML
-./gradlew test && open app/build/reports/tests/testDebugUnitTest/index.html
+# Lancer sur web (Chrome)
+flutter run -d chrome --dart-define=API_BASE_URL=http://localhost:8000
+
+# Tests unitaires + widget
+flutter test
+
+# Générer les fichiers de code
+dart run build_runner build --delete-conflicting-outputs
+
+# Analyser le code
+flutter analyze
 
 # Nettoyer le build
-./gradlew clean
-
-# Vérifier les dépendances obsolètes
-./gradlew dependencyUpdates
+flutter clean
 ```
 
 ---
@@ -499,7 +470,7 @@ cd android && ./gradlew installDebug
 | Pipeline | Fichier | Trigger | Output |
 |----------|---------|---------|--------|
 | Backend Python | `appveyor.yml` (racine) | push sur `main` ou PR | Docker image → Docker Hub |
-| Android | `android/appveyor.yml` | push sur `main` ou PR | APK debug → Artifact AppVeyor |
+| Flutter | `frontend/appveyor.yml` | push sur `main` ou PR | APK/web build → Artifact AppVeyor |
 
 ### 7.1 Backend — `appveyor.yml`
 
@@ -512,20 +483,18 @@ Voir le fichier `appveyor.yml` à la racine du repo.
 4. Exécuter `pytest` avec couverture
 5. Sur `main` seulement : build image Docker + push `blackbeardteam/mycoach-api:latest`
 
-### 7.2 Android — `android/appveyor.yml`
-
-Voir le fichier `android/appveyor.yml`.
+### 7.2 Flutter — `frontend/appveyor.yml`
 
 **Ce que fait le pipeline :**
-1. Ubuntu image avec Android SDK 34 préinstallé
-2. Gradle cache
-3. `./gradlew assembleDebug`
-4. Publier `app-debug.apk` comme artifact AppVeyor téléchargeable
+1. Ubuntu image avec Flutter SDK préinstallé
+2. `flutter pub get`
+3. `flutter test` (unit + widget tests)
+4. `flutter build apk --debug` (Android)
+5. `flutter build web` (Web)
+6. Publier les artifacts AppVeyor téléchargeables
 
-> ⚠️ **Limitation AppVeyor / Android :**
-> AppVeyor ne peut pas pousser directement sur le Google Play Store.
-> Pour une distribution automatique, utiliser **Fastlane** (future évolution).
-> Pour l'instant, l'APK debug est disponible en artifact AppVeyor → téléchargement manuel.
+> ⚠️ **Distribution :**
+> Pour une distribution automatique sur Google Play/App Store, utiliser **Fastlane** (future évolution).
 
 ### Variables secrètes AppVeyor (à configurer dans l'UI AppVeyor)
 
@@ -539,11 +508,11 @@ Voir le fichier `android/appveyor.yml`.
 | `GOOGLE_CLIENT_ID` | *(OAuth Client ID)* |
 | `GOOGLE_CLIENT_SECRET` | *(OAuth Client Secret)* |
 
-**Projet Android (`mycoach-android`) :**
+**Projet Flutter (`mycoach-flutter`) :**
 
 | Variable | Valeur |
 |----------|--------|
-| `KEYSTORE_BASE64` | *(keystore encodé en base64)* |
+| `KEYSTORE_BASE64` | *(keystore Android encodé en base64)* |
 | `KEYSTORE_PASSWORD` | *(mot de passe keystore)* |
 | `KEY_ALIAS` | `mycoach` |
 | `KEY_PASSWORD` | *(mot de passe clé)* |
@@ -606,7 +575,7 @@ Voir le fichier `deploy/docker-compose.yml`.
 ### HTTPS (optionnel, si Tailscale)
 
 Avec Tailscale, le trafic est chiffré end-to-end entre les devices.
-L'app Android peut se connecter directement à `http://<tailscale-ip>:8000` en dev.
+L'app Flutter peut se connecter directement à `http://<tailscale-ip>:8000` en dev (via `--dart-define=API_BASE_URL=...`).
 Pour la production mobile publique, un certificat SSL via Let's Encrypt + domaine public sera nécessaire.
 
 ---
@@ -621,13 +590,12 @@ Pour la production mobile publique, un certificat SSL via Let's Encrypt + domain
 - [ ] Lint OK (`ruff check`)
 - [ ] `Dockerfile` présent dans `backend/`
 
-### Android
-- [ ] `local.properties` ajouté à `.gitignore`
+### Flutter
 - [ ] `google-services.json` ajouté à `.gitignore`
-- [ ] Keystore **hors** du repo
-- [ ] Build debug OK (`./gradlew assembleDebug`)
-- [ ] Tests unitaires OK (`./gradlew test`)
-- [ ] `android/appveyor.yml` présent
+- [ ] Keystore Android **hors** du repo
+- [ ] Build web OK (`flutter build web`)
+- [ ] Tests unitaires OK (`flutter test`)
+- [ ] `frontend/pubspec.yaml` présent et à jour
 
 ---
 

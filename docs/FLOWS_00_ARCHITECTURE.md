@@ -8,7 +8,7 @@
 
 ```mermaid
 flowchart TB
-    subgraph Mobile ["📱 Android App (Kotlin)"]
+    subgraph Mobile ["📱 Flutter App (Dart)"]
         direction TB
         UI[UI — Fragments + ViewModels]
         REPO[Repositories]
@@ -60,7 +60,7 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-    A[Android App] -->|Toute requête authentifiée| H["Header: X-API-Key: SHA256(...)"]
+    A[Flutter App] -->|Toute requête authentifiée| H["Header: X-API-Key: SHA256(...)"]
     H --> MW[AuthMiddleware Backend]
     MW -->|Lookup api_keys table| DB[(PostgreSQL)]
     DB -->|revoked=FALSE| OK[✅ get_current_user injecté]
@@ -130,7 +130,7 @@ flowchart TD
 sequenceDiagram
     participant B as Backend API
     participant FCM as Firebase FCM
-    participant A as Android App
+    participant A as Flutter App
     actor U as Utilisateur
 
     note over B: Événement déclencheur (ex: séance confirmée)
@@ -315,7 +315,7 @@ flowchart TD
 ```mermaid
 sequenceDiagram
     actor K as Coach (aussi Client)
-    participant A as Android App
+    participant A as Flutter App
     participant B as Backend API
 
     note over K,B: Un coach peut réserver une séance chez un autre coach
