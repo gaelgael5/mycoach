@@ -416,5 +416,61 @@
       "percent": { "type": "int" }
     }
   },
-  "completionBannerAction": "Compléter"
+  "completionBannerAction": "Compléter",
+
+  "profileEdit": "Modifier",
+  "profileSocialLinks": "Liens sociaux",
+  "profileHealthParams": "Paramètres de santé",
+  "profileHealthSharing": "Partage de santé",
+  "profilePrivacy": "Confidentialité",
+  "profileNotifications": "Notifications",
+  "profileFeedback": "Donner un avis",
+
+  "socialLinksTitle": "Mes liens",
+  "socialLinksAdd": "Ajouter un lien",
+  "socialLinksMax": "{count}/20 liens",
+  "@socialLinksMax": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "socialLinkPlatform": "Plateforme",
+  "socialLinkUrl": "URL",
+  "socialLinkLabel": "Label (optionnel)",
+  "socialLinkVisibility": "Visibilité",
+  "socialLinkPublic": "Public",
+  "socialLinkCoachesOnly": "Coachs uniquement",
+  "socialLinkDelete": "Supprimer",
+
+  "healthParamsTitle": "Mes paramètres de santé",
+  "healthParamsAdd": "Ajouter une mesure",
+  "healthParamsEmpty": "Aucune mesure enregistrée",
+
+  "healthSharingTitle": "Partage de données santé",
+  "healthSharingWith": "Partagé avec {coach}",
+  "@healthSharingWith": {
+    "placeholders": { "coach": { "type": "String" } }
+  },
+
+  "privacyTitle": "Confidentialité & RGPD",
+  "privacyAnalytics": "Analytics",
+  "privacyMarketing": "Marketing",
+  "privacyDownload": "Télécharger mes données",
+  "privacyDelete": "Supprimer mon compte",
+  "privacyDeleteConfirm": "Cette action est irréversible. Confirmer ?",
+
+  "notifTitle": "Notifications",
+  "notifBookings": "Réservations",
+  "notifMessages": "Messages",
+  "notifPromos": "Promotions",
+
+  "feedbackTitle": "Donner un avis",
+  "feedbackTypeSuggestion": "Suggestion",
+  "feedbackTypeBug": "Signaler un bug",
+  "feedbackTitleField": "Titre",
+  "feedbackDescription": "Description",
+  "feedbackSend": "Envoyer",
+  "feedbackSent": "Merci pour votre retour !",
+  "feedbackHistory": "Mes retours",
+  "feedbackStatusPending": "En attente",
+  "feedbackStatusReview": "En cours",
+  "feedbackStatusDone": "Traité"
 }

@@ -400,5 +400,61 @@
       "percent": { "type": "int" }
     }
   },
-  "completionBannerAction": "Complete"
+  "completionBannerAction": "Complete",
+
+  "profileEdit": "Edit",
+  "profileSocialLinks": "Social links",
+  "profileHealthParams": "Health parameters",
+  "profileHealthSharing": "Health sharing",
+  "profilePrivacy": "Privacy",
+  "profileNotifications": "Notifications",
+  "profileFeedback": "Give feedback",
+
+  "socialLinksTitle": "My links",
+  "socialLinksAdd": "Add a link",
+  "socialLinksMax": "{count}/20 links",
+  "@socialLinksMax": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "socialLinkPlatform": "Platform",
+  "socialLinkUrl": "URL",
+  "socialLinkLabel": "Label (optional)",
+  "socialLinkVisibility": "Visibility",
+  "socialLinkPublic": "Public",
+  "socialLinkCoachesOnly": "Coaches only",
+  "socialLinkDelete": "Delete",
+
+  "healthParamsTitle": "My health parameters",
+  "healthParamsAdd": "Add a measurement",
+  "healthParamsEmpty": "No measurement recorded",
+
+  "healthSharingTitle": "Health data sharing",
+  "healthSharingWith": "Shared with {coach}",
+  "@healthSharingWith": {
+    "placeholders": { "coach": { "type": "String" } }
+  },
+
+  "privacyTitle": "Privacy & GDPR",
+  "privacyAnalytics": "Analytics",
+  "privacyMarketing": "Marketing",
+  "privacyDownload": "Download my data",
+  "privacyDelete": "Delete my account",
+  "privacyDeleteConfirm": "This action is irreversible. Confirm?",
+
+  "notifTitle": "Notifications",
+  "notifBookings": "Bookings",
+  "notifMessages": "Messages",
+  "notifPromos": "Promotions",
+
+  "feedbackTitle": "Give feedback",
+  "feedbackTypeSuggestion": "Suggestion",
+  "feedbackTypeBug": "Report a bug",
+  "feedbackTitleField": "Title",
+  "feedbackDescription": "Description",
+  "feedbackSend": "Send",
+  "feedbackSent": "Thank you for your feedback!",
+  "feedbackHistory": "My feedbacks",
+  "feedbackStatusPending": "Pending",
+  "feedbackStatusReview": "In review",
+  "feedbackStatusDone": "Done"
 }

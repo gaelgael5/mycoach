@@ -14,6 +14,13 @@ import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/onboarding/presentation/screens/client_onboarding_screen.dart';
 import '../../features/onboarding/presentation/screens/coach_onboarding_screen.dart';
 import '../../features/onboarding/presentation/screens/enrollment_link_screen.dart';
+import '../../features/profile/presentation/screens/profile_screen.dart';
+import '../../features/profile/presentation/screens/social_links_screen.dart';
+import '../../features/profile/presentation/screens/health_params_screen.dart';
+import '../../features/profile/presentation/screens/health_sharing_screen.dart';
+import '../../features/profile/presentation/screens/privacy_settings_screen.dart';
+import '../../features/profile/presentation/screens/notification_preferences_screen.dart';
+import '../../features/profile/presentation/screens/feedback_screen.dart';
 
 // ── Noms des routes (évite les strings libres) ───────────────────────────────
 
@@ -50,6 +57,15 @@ abstract class AppRoutes {
   static const exerciseDetail = '/workout/exercise/:exerciseId';
   static const restTimer      = '/workout/rest';
   static const workoutSummary = '/workout/summary';
+
+  // Profil & Paramètres (Phase A3)
+  static const profile              = '/profile';
+  static const profileSocialLinks   = '/profile/social-links';
+  static const profileHealthParams  = '/profile/health-params';
+  static const profileHealthSharing = '/profile/health-sharing';
+  static const profilePrivacy       = '/profile/privacy';
+  static const profileNotifications = '/profile/notifications';
+  static const profileFeedback      = '/profile/feedback';
 
   // Coach — navigation principale
   static const coachHome      = '/coach/home';
@@ -154,6 +170,43 @@ final routerProvider = Provider<GoRouter>((ref) {
           final token = state.pathParameters['token'] ?? '';
           return EnrollmentLinkScreen(token: token);
         },
+      ),
+
+      // ── Profil & Paramètres (Phase A3) ───────────────────────────────────
+      GoRoute(
+        path: AppRoutes.profile,
+        name: 'profile',
+        builder: (ctx, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.profileSocialLinks,
+        name: 'profile-social-links',
+        builder: (ctx, state) => const SocialLinksScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.profileHealthParams,
+        name: 'profile-health-params',
+        builder: (ctx, state) => const HealthParamsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.profileHealthSharing,
+        name: 'profile-health-sharing',
+        builder: (ctx, state) => const HealthSharingScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.profilePrivacy,
+        name: 'profile-privacy',
+        builder: (ctx, state) => const PrivacySettingsScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.profileNotifications,
+        name: 'profile-notifications',
+        builder: (ctx, state) => const NotificationPreferencesScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.profileFeedback,
+        name: 'profile-feedback',
+        builder: (ctx, state) => const FeedbackScreen(),
       ),
 
       // ── Client — shell avec Bottom Nav ────────────────────────────────────
