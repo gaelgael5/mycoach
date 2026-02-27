@@ -356,5 +356,65 @@
   "@registerCguRequired": { "description": "CGU non acceptées" },
 
   "emailVerifResendSuccess": "Email de vérification renvoyé avec succès.",
-  "@emailVerifResendSuccess": { "description": "Succès renvoi email" }
+  "@emailVerifResendSuccess": { "description": "Succès renvoi email" },
+
+  "onboardingClientTitle": "Bienvenue !",
+  "onboardingClientSubtitle": "Configurons votre profil en quelques étapes",
+  "onboardingCoachTitle": "Créez votre profil coach",
+  "onboardingStep": "Étape {current} sur {total}",
+  "@onboardingStep": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "onboardingNext": "Suivant",
+  "onboardingBack": "Retour",
+  "onboardingSkip": "Passer",
+  "onboardingFinish": "Commencer",
+  "onboardingGoals": "Vos objectifs",
+  "onboardingGoalsSubtitle": "Sélectionnez vos objectifs principaux",
+  "onboardingGoalWeightLoss": "Perte de poids",
+  "onboardingGoalMuscleGain": "Prise de masse",
+  "onboardingGoalEndurance": "Endurance",
+  "onboardingGoalFlexibility": "Flexibilité",
+  "onboardingGoalWellness": "Bien-être",
+  "onboardingGoalSportCompetition": "Sport compétitif",
+  "onboardingGoalRehabilitation": "Rééducation",
+  "onboardingGoalOther": "Autre",
+  "onboardingGyms": "Vos salles",
+  "onboardingGymsSubtitle": "Ajoutez jusqu'à 5 salles (optionnel)",
+  "onboardingGymSearch": "Rechercher une salle...",
+  "onboardingGymAdd": "Ajouter",
+  "onboardingGymRemove": "Retirer",
+  "onboardingSpecialties": "Vos spécialités",
+  "onboardingSpecialtiesSubtitle": "Sélectionnez au moins une spécialité",
+  "onboardingSpecialtyRequired": "Sélectionnez au moins une spécialité",
+  "onboardingBio": "Votre présentation",
+  "onboardingBioHint": "Décrivez votre expérience et votre approche...",
+  "onboardingBioStepSubtitle": "Présentez-vous aux futurs clients",
+  "onboardingCity": "Ville",
+  "onboardingPricingTitle": "Tarifs & Expérience",
+  "onboardingHourlyRate": "Tarif horaire (€)",
+  "onboardingExperience": "Années d'expérience",
+  "onboardingMaxClients": "Nombre max de clients",
+  "onboardingDiscovery": "Offrir une séance découverte gratuite",
+  "onboardingDiscoveryHint": "La première séance est offerte gratuitement aux nouveaux clients",
+  "onboardingPublish": "Publier mon profil",
+  "onboardingRecapTitle": "Récapitulatif",
+  "onboardingRecapSubtitle": "Vérifiez vos informations avant de commencer",
+  "onboardingRecapPersonalInfo": "Informations personnelles",
+  "onboardingCoachRecapSubtitle": "Vérifiez votre profil avant de le publier",
+  "enrollmentTitle": "Invitation coach",
+  "enrollmentSubtitle": "Vous avez été invité par",
+  "enrollmentJoin": "Rejoindre ce coach",
+  "enrollmentInvalidToken": "Ce lien d'invitation est invalide ou expiré",
+  "enrollmentSuccess": "Vous avez rejoint ce coach avec succès !",
+  "completionBannerTitle": "Profil complété à {percent}%",
+  "@completionBannerTitle": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "completionBannerAction": "Compléter"
 }

@@ -11,6 +11,9 @@ import '../../features/auth/presentation/screens/otp_sms_screen.dart';
 import '../../features/auth/presentation/screens/email_verification_screen.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
+import '../../features/onboarding/presentation/screens/client_onboarding_screen.dart';
+import '../../features/onboarding/presentation/screens/coach_onboarding_screen.dart';
+import '../../features/onboarding/presentation/screens/enrollment_link_screen.dart';
 
 // ── Noms des routes (évite les strings libres) ───────────────────────────────
 
@@ -135,12 +138,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.onboardingClient,
         name: 'onboarding-client',
-        builder: (ctx, state) => const _PlaceholderScreen(label: 'Onboarding Client'),
+        builder: (ctx, state) => const ClientOnboardingScreen(),
       ),
       GoRoute(
         path: AppRoutes.onboardingCoach,
         name: 'onboarding-coach',
-        builder: (ctx, state) => const _PlaceholderScreen(label: 'Onboarding Coach'),
+        builder: (ctx, state) => const CoachOnboardingScreen(),
       ),
 
       // ── Deep link enrollment ─────────────────────────────────────────────
@@ -149,7 +152,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'enroll',
         builder: (ctx, state) {
           final token = state.pathParameters['token'] ?? '';
-          return _PlaceholderScreen(label: 'Enrôlement ($token)');
+          return EnrollmentLinkScreen(token: token);
         },
       ),
 

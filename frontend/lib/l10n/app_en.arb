@@ -340,5 +340,65 @@
   "validationPhoneInvalid": "Invalid format — use international format (+1…)",
   "validationBirthYearInvalid": "Invalid year",
   "registerCguRequired": "You must accept the Terms of Service to continue.",
-  "emailVerifResendSuccess": "Verification email resent successfully."
+  "emailVerifResendSuccess": "Verification email resent successfully.",
+
+  "onboardingClientTitle": "Welcome!",
+  "onboardingClientSubtitle": "Let's set up your profile in a few steps",
+  "onboardingCoachTitle": "Create your coach profile",
+  "onboardingStep": "Step {current} of {total}",
+  "@onboardingStep": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "onboardingNext": "Next",
+  "onboardingBack": "Back",
+  "onboardingSkip": "Skip",
+  "onboardingFinish": "Get started",
+  "onboardingGoals": "Your goals",
+  "onboardingGoalsSubtitle": "Select your main goals",
+  "onboardingGoalWeightLoss": "Weight loss",
+  "onboardingGoalMuscleGain": "Muscle gain",
+  "onboardingGoalEndurance": "Endurance",
+  "onboardingGoalFlexibility": "Flexibility",
+  "onboardingGoalWellness": "Wellness",
+  "onboardingGoalSportCompetition": "Competitive sport",
+  "onboardingGoalRehabilitation": "Rehabilitation",
+  "onboardingGoalOther": "Other",
+  "onboardingGyms": "Your gyms",
+  "onboardingGymsSubtitle": "Add up to 5 gyms (optional)",
+  "onboardingGymSearch": "Search for a gym...",
+  "onboardingGymAdd": "Add",
+  "onboardingGymRemove": "Remove",
+  "onboardingSpecialties": "Your specialties",
+  "onboardingSpecialtiesSubtitle": "Select at least one specialty",
+  "onboardingSpecialtyRequired": "Please select at least one specialty",
+  "onboardingBio": "Your presentation",
+  "onboardingBioHint": "Describe your experience and approach...",
+  "onboardingBioStepSubtitle": "Introduce yourself to future clients",
+  "onboardingCity": "City",
+  "onboardingPricingTitle": "Pricing & Experience",
+  "onboardingHourlyRate": "Hourly rate (€)",
+  "onboardingExperience": "Years of experience",
+  "onboardingMaxClients": "Max number of clients",
+  "onboardingDiscovery": "Offer a free discovery session",
+  "onboardingDiscoveryHint": "The first session is free for new clients",
+  "onboardingPublish": "Publish my profile",
+  "onboardingRecapTitle": "Summary",
+  "onboardingRecapSubtitle": "Review your information before getting started",
+  "onboardingRecapPersonalInfo": "Personal information",
+  "onboardingCoachRecapSubtitle": "Review your profile before publishing",
+  "enrollmentTitle": "Coach invitation",
+  "enrollmentSubtitle": "You have been invited by",
+  "enrollmentJoin": "Join this coach",
+  "enrollmentInvalidToken": "This invitation link is invalid or expired",
+  "enrollmentSuccess": "You have successfully joined this coach!",
+  "completionBannerTitle": "Profile {percent}% complete",
+  "@completionBannerTitle": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "completionBannerAction": "Complete"
 }
