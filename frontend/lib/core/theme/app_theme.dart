@@ -116,7 +116,7 @@ class AppGradients {
     colors: [AppColors.accent, AppColors.accentLight],
   );
 
-  static const LinearGradient splash = RadialGradient(
+  static const RadialGradient splash = RadialGradient(
     center: Alignment(0, -0.4),
     radius: 1.2,
     colors: [Color(0x1FFF4D00), AppColors.bgDark],
@@ -133,15 +133,18 @@ class AppTheme {
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.bgDark,
     colorScheme: ColorScheme(
-      brightness: Brightness.dark,
-      primary:          AppColors.accent,
-      onPrimary:        AppColors.white,
-      secondary:        AppColors.accentLight,
-      onSecondary:      AppColors.white,
-      surface:          AppColors.bgCard,
-      onSurface:        AppColors.white,
-      error:            AppColors.red,
-      onError:          AppColors.white,
+      brightness:   Brightness.dark,
+      primary:      AppColors.accent,
+      onPrimary:    AppColors.white,
+      secondary:    AppColors.accentLight,
+      onSecondary:  AppColors.white,
+      surface:      AppColors.bgCard,
+      onSurface:    AppColors.white,
+      // background / onBackground requis avant Flutter 3.22
+      background:   AppColors.bgDark,
+      onBackground: AppColors.white,
+      error:        AppColors.red,
+      onError:      AppColors.white,
     ),
     textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme).copyWith(
       displayLarge:  AppTextStyles.headline1(AppColors.white),

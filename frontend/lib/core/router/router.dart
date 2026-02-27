@@ -65,7 +65,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       // Pas encore d'état connu → on laisse passer (SplashScreen gère l'auto-login)
       if (role == null) return null;
       // Connecté sur route d'auth → redirect dashboard
-      if (role != null && isOnAuth) {
+      if (isOnAuth) {
         return role == 'coach' ? AppRoutes.coachHome : AppRoutes.clientHome;
       }
       return null;
