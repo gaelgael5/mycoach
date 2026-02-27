@@ -456,5 +456,62 @@
   "feedbackHistory": "My feedbacks",
   "feedbackStatusPending": "Pending",
   "feedbackStatusReview": "In review",
-  "feedbackStatusDone": "Done"
+  "feedbackStatusDone": "Done",
+
+  "coachSearchTitle": "Find a coach",
+  "coachSearchHint": "Name, specialty, city...",
+  "coachSearchFilters": "Filters",
+  "coachDiscoveryBadge": "Discovery session",
+  "coachProfileBook": "Book",
+  "coachProfileRate": "{rate}€/h",
+  "@coachProfileRate": {
+    "placeholders": { "rate": { "type": "int" } }
+  },
+  "bookingCalTitle": "Choose a slot",
+  "bookingConfirmStandard": "Standard session",
+  "bookingConfirmDiscovery": "Discovery session",
+  "bookingNoCredits": "Insufficient balance",
+  "bookingNoCreditsAction": "Buy a package",
+  "myBookingsTitle": "My bookings",
+  "myBookingsUpcoming": "Upcoming",
+  "myBookingsPast": "Past",
+  "myBookingsCancelled": "Cancelled",
+  "bookingCancel": "Cancel",
+  "bookingCancelConfirm": "Cancel this booking?",
+  "waitlistLeave": "Leave waitlist",
+  "agendaTitle": "Agenda",
+  "packagesTitle": "Packages",
+  "packagesBalance": "{sessions} session(s) remaining",
+  "@packagesBalance": {
+    "placeholders": { "sessions": { "type": "int" } }
+  },
+  "packagesExpires": "Expires on {date}",
+  "@packagesExpires": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "packagesBuy": "Buy",
+  "packagesBuyConfirm": "Confirm purchase of {name} for {price}€?",
+  "@packagesBuyConfirm": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "price": { "type": "String" }
+    }
+  },
+  "paymentsTitle": "Payment history",
+  "paymentStatusPending": "Pending",
+  "paymentStatusCompleted": "Paid",
+  "paymentStatusFailed": "Failed",
+  "paymentStatusRefunded": "Refunded",
+  "performanceTitle": "My performances",
+  "performancePR": "Personal record",
+  "performanceEmpty": "No performance recorded",
+  "programTitle": "My program",
+  "programEmpty": "No program assigned",
+  "programDay": "Day {number}",
+  "@programDay": {
+    "placeholders": { "number": { "type": "int" } }
+  },
+  "slotAvailable": "Available",
+  "slotBooked": "Taken",
+  "slotMine": "Pending"
 }

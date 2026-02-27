@@ -472,5 +472,62 @@
   "feedbackHistory": "Mes retours",
   "feedbackStatusPending": "En attente",
   "feedbackStatusReview": "En cours",
-  "feedbackStatusDone": "Traité"
+  "feedbackStatusDone": "Traité",
+
+  "coachSearchTitle": "Trouver un coach",
+  "coachSearchHint": "Nom, spécialité, ville...",
+  "coachSearchFilters": "Filtres",
+  "coachDiscoveryBadge": "Séance découverte",
+  "coachProfileBook": "Réserver",
+  "coachProfileRate": "{rate}€/h",
+  "@coachProfileRate": {
+    "placeholders": { "rate": { "type": "int" } }
+  },
+  "bookingCalTitle": "Choisir un créneau",
+  "bookingConfirmStandard": "Séance standard",
+  "bookingConfirmDiscovery": "Séance découverte",
+  "bookingNoCredits": "Solde insuffisant",
+  "bookingNoCreditsAction": "Acheter un forfait",
+  "myBookingsTitle": "Mes réservations",
+  "myBookingsUpcoming": "À venir",
+  "myBookingsPast": "Passées",
+  "myBookingsCancelled": "Annulées",
+  "bookingCancel": "Annuler",
+  "bookingCancelConfirm": "Annuler cette réservation ?",
+  "waitlistLeave": "Se retirer",
+  "agendaTitle": "Agenda",
+  "packagesTitle": "Forfaits",
+  "packagesBalance": "{sessions} séance(s) restante(s)",
+  "@packagesBalance": {
+    "placeholders": { "sessions": { "type": "int" } }
+  },
+  "packagesExpires": "Expire le {date}",
+  "@packagesExpires": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "packagesBuy": "Acheter",
+  "packagesBuyConfirm": "Confirmer l'achat de {name} pour {price}€ ?",
+  "@packagesBuyConfirm": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "price": { "type": "String" }
+    }
+  },
+  "paymentsTitle": "Historique des paiements",
+  "paymentStatusPending": "En attente",
+  "paymentStatusCompleted": "Payé",
+  "paymentStatusFailed": "Échoué",
+  "paymentStatusRefunded": "Remboursé",
+  "performanceTitle": "Mes performances",
+  "performancePR": "Record personnel",
+  "performanceEmpty": "Aucune performance enregistrée",
+  "programTitle": "Mon programme",
+  "programEmpty": "Aucun programme assigné",
+  "programDay": "Jour {number}",
+  "@programDay": {
+    "placeholders": { "number": { "type": "int" } }
+  },
+  "slotAvailable": "Disponible",
+  "slotBooked": "Occupé",
+  "slotMine": "En attente"
 }

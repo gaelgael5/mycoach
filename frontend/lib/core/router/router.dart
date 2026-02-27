@@ -21,6 +21,18 @@ import '../../features/profile/presentation/screens/health_sharing_screen.dart';
 import '../../features/profile/presentation/screens/privacy_settings_screen.dart';
 import '../../features/profile/presentation/screens/notification_preferences_screen.dart';
 import '../../features/profile/presentation/screens/feedback_screen.dart';
+import '../../features/client/presentation/screens/coach_search_screen.dart';
+import '../../features/client/presentation/screens/coach_profile_screen.dart';
+import '../../features/client/presentation/screens/booking_calendar_screen.dart';
+import '../../features/client/presentation/screens/booking_confirm_screen.dart';
+import '../../features/client/presentation/screens/my_bookings_screen.dart';
+import '../../features/client/presentation/screens/waitlist_screen.dart';
+import '../../features/client/presentation/screens/client_agenda_screen.dart';
+import '../../features/client/presentation/screens/packages_screen.dart';
+import '../../features/client/presentation/screens/payment_history_screen.dart';
+import '../../features/client/presentation/screens/performance_history_screen.dart';
+import '../../features/client/presentation/screens/my_program_screen.dart';
+import '../../shared/models/slot.dart';
 
 // ── Noms des routes (évite les strings libres) ───────────────────────────────
 
@@ -66,6 +78,13 @@ abstract class AppRoutes {
   static const profilePrivacy       = '/profile/privacy';
   static const profileNotifications = '/profile/notifications';
   static const profileFeedback      = '/profile/feedback';
+
+  // Client — pages secondaires
+  static const myBookings      = '/my-bookings';
+  static const packages        = '/packages';
+  static const payments        = '/payments';
+  static const performances    = '/performances';
+  static const myProgram       = '/program';
 
   // Coach — navigation principale
   static const coachHome      = '/coach/home';
@@ -221,25 +240,37 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppRoutes.coachSearch,
             name: 'coach-search',
-            builder: (ctx, state) => const _PlaceholderScreen(label: 'Recherche Coachs'),
+            builder: (ctx, state) => const CoachSearchScreen(),
             routes: [
               GoRoute(
                 path: ':id',
                 name: 'coach-profile',
                 builder: (ctx, state) {
                   final id = state.pathParameters['id']!;
-                  return _PlaceholderScreen(label: 'Profil Coach $id');
+                  return CoachProfileScreen(coachId: id);
                 },
                 routes: [
                   GoRoute(
                     path: 'book',
                     name: 'booking-cal',
-                    builder: (ctx, state) => const _PlaceholderScreen(label: 'Calendrier Réservation'),
+                    builder: (ctx, state) {
+                      final id = state.pathParameters['id']!;
+                      return BookingCalendarScreen(coachId: id);
+                    },
                     routes: [
                       GoRoute(
                         path: 'confirm',
                         name: 'booking-confirm',
-                        builder: (ctx, state) => const _PlaceholderScreen(label: 'Confirmation Réservation'),
+                        builder: (ctx, state) {
+                          final id = state.pathParameters['id']!;
+                          final slot = state.extra as Slot?;
+                          if (slot == null) {
+                            return const _PlaceholderScreen(
+                                label: 'Confirmation Réservation');
+                          }
+                          return BookingConfirmScreen(
+                              coachId: id, slot: slot);
+                        },
                       ),
                     ],
                   ),
@@ -250,12 +281,38 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppRoutes.clientAgenda,
             name: 'client-agenda',
-            builder: (ctx, state) => const _PlaceholderScreen(label: 'Agenda Client'),
+            builder: (ctx, state) => const ClientAgendaScreen(),
           ),
           GoRoute(
             path: AppRoutes.workoutStart,
             name: 'workout-start',
-            builder: (ctx, state) => const _PlaceholderScreen(label: 'Démarrer Séance'),
+            builder: (ctx, state) =>
+                const _PlaceholderScreen(label: 'Démarrer Séance'),
+          ),
+          GoRoute(
+            path: AppRoutes.myBookings,
+            name: 'my-bookings',
+            builder: (ctx, state) => const MyBookingsScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.packages,
+            name: 'packages',
+            builder: (ctx, state) => const PackagesScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.payments,
+            name: 'payments',
+            builder: (ctx, state) => const PaymentHistoryScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.performances,
+            name: 'performances',
+            builder: (ctx, state) => const PerformanceHistoryScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.myProgram,
+            name: 'my-program',
+            builder: (ctx, state) => const MyProgramScreen(),
           ),
         ],
       ),
@@ -264,10 +321,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.waitlist,
         name: 'waitlist',
-        builder: (ctx, state) {
-          final id = state.pathParameters['bookingId']!;
-          return _PlaceholderScreen(label: 'Liste attente ($id)');
-        },
+        builder: (ctx, state) => const WaitlistScreen(),
       ),
 
       // ── Workout (hors shell — plein écran) ───────────────────────────────
@@ -367,10 +421,62 @@ class _ClientShell extends StatelessWidget {
 class _ClientBottomNav extends StatelessWidget {
   const _ClientBottomNav();
 
+  static const _routes = [
+    AppRoutes.clientHome,
+    AppRoutes.coachSearch,
+    AppRoutes.clientAgenda,
+    AppRoutes.performances,
+    AppRoutes.profile,
+  ];
+
+  int _selectedIndex(String location) {
+    if (location.startsWith(AppRoutes.coachSearch)) return 1;
+    if (location.startsWith(AppRoutes.clientAgenda)) return 2;
+    if (location.startsWith(AppRoutes.performances)) return 3;
+    if (location.startsWith(AppRoutes.profile)) return 4;
+    return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Placeholder — remplacé en Phase A4 par le vrai bottom nav avec go_router
-    return const BottomAppBar(child: SizedBox(height: 56));
+    final location = GoRouterState.of(context).uri.path;
+    final selected = _selectedIndex(location);
+    return BottomNavigationBar(
+      currentIndex: selected,
+      onTap: (i) {
+        final route = _routes[i];
+        if (!location.startsWith(route)) {
+          context.go(route);
+        }
+      },
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          activeIcon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          activeIcon: Icon(Icons.search),
+          label: 'Coachs',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_today_outlined),
+          activeIcon: Icon(Icons.calendar_today),
+          label: 'Agenda',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.show_chart),
+          activeIcon: Icon(Icons.show_chart),
+          label: 'Perfs',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_outline),
+          activeIcon: Icon(Icons.person),
+          label: 'Profil',
+        ),
+      ],
+    );
   }
 }
 
