@@ -179,6 +179,159 @@ get_current_user → tout utilisateur authentifié (sans contrainte de rôle)
 
 ---
 
+### 0.4 Matrice des accès par fonctionnalité
+
+> ✅ Accessible · ❌ Non accessible · 👁 Lecture seule
+
+#### Authentification & Compte
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Inscription (email + mot de passe) | ✅ | ✅ | ✅ |
+| Connexion email / Google OAuth | ✅ | ✅ | ✅ |
+| Vérification email | ✅ | ✅ | ✅ |
+| Réinitialisation mot de passe | ✅ | ✅ | ✅ |
+| Déconnexion / révocation API Key | ✅ | ✅ | ✅ |
+| Refus inscription domaine jetable (yopmail…) | ✅ | ✅ | ✅ |
+
+#### Profil utilisateur
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Modifier prénom / nom / email / photo | ✅ | ✅ | ✅ |
+| Préférences langue, timezone, pays | ✅ | ✅ | ✅ |
+| Bandeau de complétion de profil | ✅ | ✅ | ✅ |
+| Liens réseaux sociaux (ajouter / modifier / supprimer) | ✅ | ✅ | ✅ |
+| Créer un profil client | ✅ | ✅ | ✅ |
+| Créer un profil coach | ❌ | ✅ | ✅ |
+| Modifier bio, certifications, spécialités | ❌ | ✅ | ✅ |
+| Gérer ses salles de sport associées | ❌ | ✅ | ✅ |
+| Gérer ses disponibilités / horaires | ❌ | ✅ | ✅ |
+| Politique d'annulation | ❌ | ✅ | ✅ |
+| Templates de messages d'annulation (SMS) | ❌ | ✅ | ✅ |
+| Partager son profil (QR code / lien) | ❌ | ✅ | ✅ |
+| RIB / Coordonnées bancaires | ❌ | ✅ | ✅ |
+
+#### Onboarding
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Questionnaire onboarding client | ✅ | ✅ | ✅ |
+| Wizard onboarding coach (7 étapes) | ❌ | ✅ | ✅ |
+
+#### Recherche & Découverte
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Rechercher un coach (filtres, localisation) | ✅ | ✅ | ✅ |
+| Voir la fiche publique d'un coach | ✅ | ✅ | ✅ |
+| Voir les liens sociaux publics d'un coach | ✅ | ✅ | ✅ |
+| Demander une séance découverte | ✅ | ✅ | ✅ |
+
+#### Réservations — côté client
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Réserver une séance | ✅ | ✅ | ✅ |
+| Annuler une réservation | ✅ | ✅ | ✅ |
+| Voir ses réservations | ✅ | ✅ | ✅ |
+| Rejoindre une liste d'attente | ✅ | ✅ | ✅ |
+| Quitter une liste d'attente | ✅ | ✅ | ✅ |
+| Signaler une erreur de saisie de performance | ✅ | ✅ | ✅ |
+
+#### Réservations — côté coach
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Voir les demandes de réservation | ❌ | ✅ | ✅ |
+| Accepter / refuser une réservation | ❌ | ✅ | ✅ |
+| Proposer un créneau à un client | ❌ | ✅ | ✅ |
+| Marquer une séance comme no-show | ❌ | ✅ | ✅ |
+| Annuler une séance (côté coach) | ❌ | ✅ | ✅ |
+| Annulation en masse (vue jour) | ❌ | ✅ | ✅ |
+| Diffusion SMS en masse aux clients | ❌ | ✅ | ✅ |
+| Gérer sa liste de clients | ❌ | ✅ | ✅ |
+| Ajouter des notes sur un client | ❌ | ✅ | ✅ |
+
+#### Agenda
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Voir son agenda (vue client) | ✅ | ✅ | ✅ |
+| Voir son agenda (vue coach avec gestion) | ❌ | ✅ | ✅ |
+| Synchronisation Google Calendar | ✅ | ✅ | ✅ |
+
+#### Performances & Suivi
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Voir ses propres performances | ✅ | ✅ | ✅ |
+| Historique et graphiques de progression | ✅ | ✅ | ✅ |
+| Records personnels (PRs) | ✅ | ✅ | ✅ |
+| Séances solo guidées (IA) | ✅ | ✅ | ✅ |
+| Paramètres de confidentialité (partage perfs) | ✅ | ✅ | ✅ |
+| Saisir les performances d'un client | ❌ | ✅ | ✅ |
+| Voir l'historique d'un client | ❌ | ✅ | ✅ |
+
+#### Programmes
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Voir son programme assigné | ✅ | ✅ | ✅ |
+| Créer / modifier / archiver un programme | ❌ | ✅ | ✅ |
+| Assigner un programme à un client | ❌ | ✅ | ✅ |
+| Suggestions programme par IA | ✅ | ✅ | ✅ |
+
+#### Paiements & Forfaits
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Voir son solde de séances restantes | ✅ | ✅ | ✅ |
+| Acheter un forfait | ✅ | ✅ | ✅ |
+| Historique de ses paiements | ✅ | ✅ | ✅ |
+| Créer / configurer ses forfaits et tarifs | ❌ | ✅ | ✅ |
+| Voir ses revenus et paiements reçus | ❌ | ✅ | ✅ |
+| Tarification groupe (seuil N clients) | ❌ | ✅ | ✅ |
+
+#### Intégrations
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Connecter Strava | ✅ | ✅ | ✅ |
+| Connecter une balance Withings | ✅ | ✅ | ✅ |
+| Révoquer une intégration OAuth | ✅ | ✅ | ✅ |
+
+#### Notifications
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Recevoir des notifications push | ✅ | ✅ | ✅ |
+| Gérer ses préférences de notifications | ✅ | ✅ | ✅ |
+| Envoyer des SMS à ses clients | ❌ | ✅ | ✅ |
+
+#### Conformité RGPD
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Exporter ses données personnelles | ✅ | ✅ | ✅ |
+| Demander la suppression de son compte | ✅ | ✅ | ✅ |
+| Gérer ses consentements | ✅ | ✅ | ✅ |
+| Révoquer un consentement marketing | ✅ | ✅ | ✅ |
+
+#### Administration (back-office)
+
+| Fonctionnalité | Client | Coach | Admin |
+|----------------|--------|-------|-------|
+| Tableau de bord admin | ❌ | ❌ | ✅ |
+| Gestion des utilisateurs (liste, suspension, suppression) | ❌ | ❌ | ✅ |
+| Validation des certifications coach | ❌ | ❌ | ✅ |
+| Gestion de la blocklist email (domaines jetables) | ❌ | ❌ | ✅ |
+| Gestion des chaînes de salles de sport | ❌ | ❌ | ✅ |
+| Statistiques globales de la plateforme | ❌ | ❌ | ✅ |
+| Modération du contenu | ❌ | ❌ | ✅ |
+
+---
+
 ## 1. AUTHENTIFICATION
 
 ### 1.1 Inscription Coach
@@ -2089,6 +2242,7 @@ Table `user_social_links` :
 | 2.0 | 27/02/2026 | §26 Liens réseaux sociaux : coaches ET clients · liste évolutive (Instagram, TikTok, YouTube, LinkedIn, X, Facebook, Strava, site web) + liens custom (platform=NULL, label requis) · max 20 liens · visibilité par lien (public/coaches_only) · UPSERT standard, INSERT custom · DELETE/PUT par ID · Table user_social_links avec index partiel UNIQUE (user_id, platform) WHERE platform IS NOT NULL |
 | 2.1 | 27/02/2026 | Blocklist domaines email : refus à l'inscription des adresses jetables (yopmail, mailinator…) · Table blocked_email_domains · seed ~55 domaines · admin CRUD /admin/blocked-domains · insensible à la casse · BlockedDomainError → HTTP 422 |
 | 2.2 | 27/02/2026 | §0 Architecture des rôles : **Admin ⊇ Coach ⊇ Client** (hiérarchie inclusive) · `require_client` → tout utilisateur authentifié · `require_coach` → coach + admin · `require_admin` → admin uniquement · Un admin a accès à TOUT · Un coach a toutes les fonctionnalités client en plus des siennes |
+| 2.3 | 27/02/2026 | §0.4 Matrice des accès : tableau complet de toutes les fonctionnalités × 3 rôles (client / coach / admin) — 70+ fonctionnalités documentées en 12 catégories |
 
 ---
 
