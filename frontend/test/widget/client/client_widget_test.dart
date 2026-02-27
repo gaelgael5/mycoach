@@ -181,15 +181,6 @@ Booking get _sampleBooking => Booking(
       type: BookingType.individual,
     );
 
-WaitlistEntry get _sampleWaitlist => WaitlistEntry(
-      id: 'wl1',
-      bookingId: 'bk1',
-      slotStartAt: DateTime.now().add(const Duration(days: 2)),
-      coachName: 'Alice Dupont',
-      position: 1,
-      createdAt: DateTime.now(),
-    );
-
 PerformanceSession get _samplePerfSession => PerformanceSession(
       id: 'ps1',
       date: DateTime.now().subtract(const Duration(days: 7)),
@@ -458,10 +449,9 @@ void main() {
   // ── Widget: CoachCard ──────────────────────────────────────────────────────
   group('CoachCard widget', () {
     testWidgets('17. CoachCard renders coach name', (tester) async {
-      bool tapped = false;
       await tester.pumpWidget(_wrap(CoachCard(
         coach: _sampleCoach,
-        onTap: () => tapped = true,
+        onTap: () {},
       )));
       await tester.pumpAndSettle();
       expect(find.text('Alice Dupont'), findsOneWidget);
@@ -522,10 +512,9 @@ void main() {
 
     testWidgets('23. BookingTile shows cancel button for future booking',
         (tester) async {
-      bool cancelled = false;
       await tester.pumpWidget(_wrap(BookingTile(
         booking: _sampleBooking,
-        onCancel: () => cancelled = true,
+        onCancel: () {},
       )));
       await tester.pumpAndSettle();
       expect(find.byType(TextButton), findsOneWidget);

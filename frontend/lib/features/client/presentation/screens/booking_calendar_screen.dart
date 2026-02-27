@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/extensions/context_ext.dart';
 import '../../../../core/router/router.dart';
-import '../../../../shared/models/slot.dart';
 import '../providers/coach_search_providers.dart';
 import '../widgets/slot_grid.dart';
 
