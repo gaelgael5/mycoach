@@ -92,8 +92,12 @@ jobs:
         working-directory: frontend
         run: |
           flutter create . --platforms android --org com.mycoach.app
-          # flutter_blue_plus requiert minSdkVersion >= 21 (la spec MyCoach est minSdk 26)
-          sed -i 's/minSdkVersion [0-9]*/minSdkVersion 21/' android/app/build.gradle
+          # flutter_blue_plus requiert minSdkVersion >= 21
+          # La génération produit "minSdkVersion flutter.minSdkVersion" (pas un entier)
+          # On remplace toute valeur après minSdkVersion par 21
+          sed -i 's/minSdkVersion.*/minSdkVersion 21/' android/app/build.gradle
+          echo "--- build.gradle après patch ---"
+          grep -n "minSdk\|targetSdk" android/app/build.gradle
 
       - name: Generate l10n
         working-directory: frontend
