@@ -156,3 +156,11 @@ class User(Base):
     social_links: Mapped[list["SocialLink"]] = relationship(  # type: ignore[name-defined]
         "SocialLink", back_populates="user", cascade="all, delete-orphan"
     )
+
+    # Phase 8 — Feedback & Santé
+    feedbacks: Mapped[list["UserFeedback"]] = relationship(  # type: ignore[name-defined]
+        "UserFeedback", back_populates="user"
+    )
+    health_logs: Mapped[list["HealthLog"]] = relationship(  # type: ignore[name-defined]
+        "HealthLog", back_populates="user", cascade="all, delete-orphan"
+    )

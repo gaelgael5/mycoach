@@ -272,6 +272,10 @@ get_current_user → tout utilisateur authentifié (sans contrainte de rôle)
 | Paramètres de confidentialité (partage perfs) | ✅ | ✅ | ✅ |
 | Saisir les performances d'un client | ❌ | ✅ | ✅ |
 | Voir l'historique d'un client | ❌ | ✅ | ✅ |
+| Enregistrer des paramètres de santé | ✅ | ✅ | ✅ |
+| Historique santé (graphiques) | ✅ | ✅ | ✅ |
+| Configurer le partage santé avec ses coaches | ✅ | ✅ | ✅ |
+| Voir les paramètres de santé partagés d'un client | ❌ | ✅ | ✅ |
 
 #### Programmes
 
@@ -329,6 +333,8 @@ get_current_user → tout utilisateur authentifié (sans contrainte de rôle)
 | Gestion des chaînes de salles de sport | ❌ | ❌ | ✅ |
 | Statistiques globales de la plateforme | ❌ | ❌ | ✅ |
 | Modération du contenu | ❌ | ❌ | ✅ |
+| Gérer la liste des paramètres de santé | ❌ | ❌ | ✅ |
+| Consulter et modérer les feedbacks | ❌ | ❌ | ✅ |
 
 ---
 
@@ -2225,6 +2231,134 @@ Table `user_social_links` :
 
 ---
 
+## 27. Suggestions & Rapports de bugs
+
+### 27.1 Vue d'ensemble
+Depuis l'application, tout utilisateur peut soumettre une suggestion d'amélioration ou un rapport de bug. Les feedbacks sont stockés côté serveur pour analyse ultérieure par l'équipe.
+
+### 27.2 Règles
+- Deux types : `suggestion` | `bug_report`
+- Titre : max 200 caractères
+- Description : max 5 000 caractères
+- Informations techniques optionnelles : version de l'app, plateforme (android/ios/web)
+- Statuts (gérés par admin) : `pending` → `reviewing` → `resolved` | `rejected`
+
+### 27.3 Modèle de données — `user_feedback`
+
+| Champ | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | PK |
+| `user_id` | UUID NULLABLE | FK → users.id (SET NULL si supprimé) |
+| `type` | VARCHAR(20) | `suggestion` ou `bug_report` |
+| `title` | VARCHAR(200) | Titre court |
+| `description` | TEXT | Description détaillée |
+| `app_version` | VARCHAR(30) NULLABLE | Ex : "1.2.3" |
+| `platform` | VARCHAR(20) NULLABLE | `android` / `ios` / `web` |
+| `status` | VARCHAR(20) | `pending` / `reviewing` / `resolved` / `rejected` |
+| `admin_note` | TEXT NULLABLE | Note interne de l'équipe |
+| `created_at` | TIMESTAMPTZ | UTC |
+| `updated_at` | TIMESTAMPTZ | UTC |
+
+### 27.4 API
+
+| Méthode | Endpoint | Auth | Description |
+|---------|----------|------|-------------|
+| POST | `/feedback` | Tout utilisateur | Soumettre un feedback |
+| GET | `/feedback/mine` | Tout utilisateur | Mes feedbacks |
+| GET | `/admin/feedback` | Admin | Liste tous les feedbacks |
+| GET | `/admin/feedback/{id}` | Admin | Détail d'un feedback |
+| PATCH | `/admin/feedback/{id}` | Admin | Mettre à jour statut + note |
+
+---
+
+## 28. Historique des Paramètres de Santé
+
+### 28.1 Vue d'ensemble
+Tout utilisateur (coach ou client) peut enregistrer un historique de ses paramètres de santé. La liste des paramètres est administrable (admin peut ajouter/désactiver). L'utilisateur contrôle ce qu'il partage avec chacun de ses coaches, paramètre par paramètre.
+
+### 28.2 Paramètres initiaux
+
+| Slug | Label FR | Unité | Catégorie |
+|------|----------|-------|-----------|
+| `weight_kg` | Poids | kg | morphologie |
+| `body_fat_pct` | % Masse grasse | % | morphologie |
+| `muscle_mass_kg` | Masse musculaire | kg | morphologie |
+| `bmi` | IMC | — | morphologie |
+| `resting_heart_rate_bpm` | FC au repos | bpm | cardiovasculaire |
+| `blood_pressure_systolic` | Tension systolique | mmHg | cardiovasculaire |
+| `blood_pressure_diastolic` | Tension diastolique | mmHg | cardiovasculaire |
+| `spo2_pct` | Saturation O₂ | % | cardiovasculaire |
+| `vo2max` | VO₂max | mL/kg/min | forme |
+| `sleep_hours` | Heures de sommeil | h | sommeil |
+| `sleep_quality` | Qualité du sommeil | /10 | sommeil |
+| `stress_level` | Niveau de stress | /10 | autre |
+| `water_intake_ml` | Hydratation | mL | nutrition |
+| `steps_daily` | Pas quotidiens | pas | forme |
+
+### 28.3 Règles de partage (opt-out)
+- Par défaut : **tout est partagé** avec tous les coaches actifs
+- L'utilisateur peut masquer un paramètre spécifique pour un coach spécifique
+- Le coach ne voit que les paramètres dont `shared = TRUE` (ou sans ligne = partagé)
+- La préférence est sauvegardée par triplet (user_id, coach_id, parameter_id)
+
+### 28.4 Modèles de données
+
+**`health_parameters`** (liste administrable) :
+
+| Champ | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | PK |
+| `slug` | VARCHAR(50) UNIQUE | Identifiant technique |
+| `label` | JSONB | i18n {"fr": "...", "en": "..."} |
+| `unit` | VARCHAR(20) NULLABLE | Unité de mesure |
+| `data_type` | VARCHAR(10) | `float` ou `int` |
+| `category` | VARCHAR(30) | morphology/cardiovascular/sleep/fitness/nutrition/other |
+| `active` | BOOLEAN | Visible dans l'app |
+| `position` | SMALLINT | Ordre d'affichage |
+
+**`health_logs`** (historique des mesures) :
+
+| Champ | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | PK |
+| `user_id` | UUID | FK → users.id CASCADE |
+| `parameter_id` | UUID | FK → health_parameters.id CASCADE |
+| `value` | NUMERIC(10,3) | Valeur numérique |
+| `note` | TEXT NULLABLE | Note libre |
+| `source` | VARCHAR(20) | `manual` / `withings` / `strava` / `import` |
+| `logged_at` | TIMESTAMPTZ | Date/heure de la mesure |
+| `created_at` | TIMESTAMPTZ | Date de saisie |
+
+**`health_sharing_settings`** (préférences de partage) :
+
+| Champ | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | PK |
+| `user_id` | UUID | FK → users.id CASCADE |
+| `coach_id` | UUID | FK → users.id CASCADE |
+| `parameter_id` | UUID | FK → health_parameters.id CASCADE |
+| `shared` | BOOLEAN | FALSE = masqué pour ce coach |
+
+UNIQUE (user_id, coach_id, parameter_id)
+
+### 28.5 API
+
+| Méthode | Endpoint | Auth | Description |
+|---------|----------|------|-------------|
+| GET | `/health/parameters` | Tout utilisateur | Liste paramètres actifs |
+| POST | `/health/logs` | Tout utilisateur | Ajouter une mesure |
+| GET | `/health/logs` | Tout utilisateur | Mon historique (filtres: parameter_id, from, to) |
+| DELETE | `/health/logs/{id}` | Propriétaire | Supprimer une mesure |
+| GET | `/health/sharing/{coach_id}` | Tout utilisateur | Mes préférences de partage |
+| PATCH | `/health/sharing/{coach_id}` | Tout utilisateur | Mettre à jour le partage |
+| GET | `/health/clients/{client_id}/logs` | Coach | Mesures partagées d'un client |
+| GET | `/admin/health/parameters` | Admin | Liste tous les paramètres |
+| POST | `/admin/health/parameters` | Admin | Ajouter un paramètre |
+| PATCH | `/admin/health/parameters/{id}` | Admin | Modifier un paramètre |
+| DELETE | `/admin/health/parameters/{id}` | Admin | Désactiver un paramètre |
+
+---
+
 ## CHANGELOG
 
 | Version | Date | Modifications |
@@ -2243,6 +2377,7 @@ Table `user_social_links` :
 | 2.1 | 27/02/2026 | Blocklist domaines email : refus à l'inscription des adresses jetables (yopmail, mailinator…) · Table blocked_email_domains · seed ~55 domaines · admin CRUD /admin/blocked-domains · insensible à la casse · BlockedDomainError → HTTP 422 |
 | 2.2 | 27/02/2026 | §0 Architecture des rôles : **Admin ⊇ Coach ⊇ Client** (hiérarchie inclusive) · `require_client` → tout utilisateur authentifié · `require_coach` → coach + admin · `require_admin` → admin uniquement · Un admin a accès à TOUT · Un coach a toutes les fonctionnalités client en plus des siennes |
 | 2.3 | 27/02/2026 | §0.4 Matrice des accès : tableau complet de toutes les fonctionnalités × 3 rôles (client / coach / admin) — 70+ fonctionnalités documentées en 12 catégories |
+| 2.4 | 27/02/2026 | §27 Suggestions & Bug Reports · §28 Paramètres de santé modulables + historique + partage par coach par paramètre |
 
 ---
 

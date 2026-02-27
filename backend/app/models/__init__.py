@@ -26,6 +26,12 @@ from app.models.social_link import SocialLink
 # Phase 7 — Blocklist domaines email
 from app.models.blocked_email_domain import BlockedEmailDomain
 
+# Phase 8 — Feedback & Santé
+from app.models.user_feedback import UserFeedback
+from app.models.health_parameter import HealthParameter
+from app.models.health_log import HealthLog
+from app.models.health_sharing_setting import HealthSharingSetting
+
 # Phase 0 — Auth
 from app.models.user import User
 from app.models.api_key import ApiKey
@@ -111,4 +117,9 @@ __all__ = [
     # Phase 7
     "SocialLink",
     "BlockedEmailDomain",
+    # Phase 8
+    "UserFeedback",
+    "HealthParameter",
+    "HealthLog",
+    "HealthSharingSetting",
 ]
