@@ -3,6 +3,11 @@ Middleware d'authentification API Key.
 
 Toutes les routes sauf /auth/* et /health nécessitent X-API-Key.
 Les dépendances FastAPI (get_current_user, require_coach, etc.) sont injectées via Depends().
+
+Hiérarchie des rôles : Admin ⊇ Coach ⊇ Client
+  - require_admin  → admin uniquement
+  - require_coach  → coach + admin
+  - require_client → client + coach + admin (tout utilisateur authentifié)
 """
 import logging
 
@@ -62,8 +67,12 @@ async def get_current_user(
 async def require_coach(
     current_user: User = Depends(get_current_user),
 ) -> User:
-    """Dépendance — l'utilisateur courant doit être un coach."""
-    if current_user.role != "coach":
+    """Dépendance — fonctionnalités coach (coach + admin).
+
+    Hiérarchie : Admin ⊇ Coach ⊇ Client
+    Un admin a accès à tout, y compris les endpoints coach.
+    """
+    if current_user.role not in ("coach", "admin"):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="forbidden",
@@ -74,23 +83,20 @@ async def require_coach(
 async def require_client(
     current_user: User = Depends(get_current_user),
 ) -> User:
-    """Dépendance — l'utilisateur doit pouvoir utiliser les fonctionnalités client.
+    """Dépendance — fonctionnalités client (client + coach + admin).
 
-    Un coach a TOUTES les fonctionnalités d'un client en plus des siennes.
-    Seuls les admins sont exclus des endpoints client.
+    Hiérarchie : Admin ⊇ Coach ⊇ Client
+    Tout utilisateur authentifié a accès aux endpoints client.
     """
-    if current_user.role not in ("client", "coach"):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="forbidden",
-        )
+    # Tous les rôles sont autorisés (la vérification d'authentification
+    # est déjà faite par get_current_user ci-dessus)
     return current_user
 
 
 async def require_admin(
     current_user: User = Depends(get_current_user),
 ) -> User:
-    """Dépendance — l'utilisateur courant doit être un admin."""
+    """Dépendance — admin uniquement."""
     if current_user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

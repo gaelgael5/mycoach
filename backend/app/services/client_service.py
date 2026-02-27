@@ -34,11 +34,7 @@ async def create_profile(
     existing = await client_repository.get_profile_by_user_id(db, user.id)
     if existing:
         raise ProfileAlreadyExistsError("Un profil client existe déjà")
-    # Un coach a toutes les fonctionnalités client — il peut aussi créer un profil client.
-    # Seuls les admins sont exclus.
-    if user.role not in ("client", "coach"):
-        from app.services.coach_service import NotAuthorizedError
-        raise NotAuthorizedError("Les administrateurs ne peuvent pas créer un profil client")
+    # Hiérarchie Admin ⊇ Coach ⊇ Client : tout le monde peut créer un profil client.
 
     profile = await client_repository.create_profile(db, user.id, **data.model_dump())
     return profile

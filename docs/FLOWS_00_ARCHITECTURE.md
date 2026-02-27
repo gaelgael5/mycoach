@@ -264,34 +264,53 @@ flowchart LR
 
 ---
 
-## 6. Architecture des rôles — Coach ⊇ Client
+## 6. Architecture des rôles — Admin ⊇ Coach ⊇ Client
 
 ```mermaid
 flowchart TD
-    subgraph ROLES["Modèle de rôles"]
+    subgraph ROLES["Hiérarchie des rôles (inclusive)"]
+        ADMIN["⚙️ Admin
+        ─────────────────
+        Accès total
+        (toutes fonctionnalités)"]
+
         COACH["🏋️ Coach
         ─────────────────
         Fonctionnalités Coach
-        + Toutes fonctionnalités Client"]
+        + toutes fonctionnalités Client"]
 
         CLIENT["👤 Client
         ─────────────────
         Fonctionnalités Client uniquement"]
-
-        ADMIN["⚙️ Admin
-        ─────────────────
-        Administration uniquement
-        (pas de fonctionnalités coach/client)"]
     end
 
-    COACH -->|"peut aussi"| BOOK["Réserver une séance\n(chez un autre coach)"]
-    COACH -->|"peut aussi"| PERF["Suivre ses propres\nperformances"]
-    COACH -->|"peut aussi"| PACK["Acheter/utiliser\ndes forfaits"]
-    COACH -->|"peut aussi"| WLIST["Rejoindre\nune liste d'attente"]
-    COACH -->|"peut aussi"| CPROFIL["Avoir un profil client\ncomplet"]
+    ADMIN -->|"inclut"| COACH
+    COACH -->|"inclut"| CLIENT
 
-    COACH -->|"exclusif"| CCOACH["Gérer son agenda coach\nAccepter des réservations\nSaisir perfs clients\nCréer programmes\nGérer tarifs + RIB"]
+    CLIENT --> F1["Réserver une séance"]
+    CLIENT --> F2["Suivre ses performances"]
+    CLIENT --> F3["Acheter des forfaits"]
+    CLIENT --> F4["Liste d'attente"]
+    CLIENT --> F5["Profil client complet"]
+
+    COACH --> F6["Gérer son agenda coach"]
+    COACH --> F7["Accepter des réservations"]
+    COACH --> F8["Saisir perfs de ses clients"]
+    COACH --> F9["Créer des programmes"]
+    COACH --> F10["Gérer tarifs + RIB"]
+
+    ADMIN --> F11["Back-office admin"]
+    ADMIN --> F12["Gestion utilisateurs"]
+    ADMIN --> F13["Blocklist emails, etc."]
 ```
+
+**Règles middleware :**
+
+| Dépendance | Rôles autorisés | Cas d'usage |
+|-----------|----------------|-------------|
+| `require_client` | client, coach, admin | Réservation, performances, forfaits... |
+| `require_coach` | coach, admin | Agenda coach, saisie perfs clients... |
+| `require_admin` | admin uniquement | Back-office, configuration... |
 
 ```mermaid
 sequenceDiagram
@@ -302,12 +321,18 @@ sequenceDiagram
     note over K,B: Un coach peut réserver une séance chez un autre coach
     K->>A: Recherche un coach → réservation
     A->>B: POST /bookings {coach_id: autre_coach}
-    B->>B: require_client → role in (client, coach) ✅
+    B->>B: require_client → tout rôle ✅
     B-->>A: 201 Created
 
     note over K,B: Le même coach peut accepter des séances
     K->>A: Tableau de bord coach → valide une demande
     A->>B: PATCH /bookings/{id}/confirm
-    B->>B: require_coach → role == coach ✅
+    B->>B: require_coach → role in (coach, admin) ✅
     B-->>A: 200 OK
+
+    note over K,B: Un admin peut tout faire
+    actor ADM as Admin
+    ADM->>B: Accès /admin/... ET /coaches/... ET /clients/...
+    B->>B: require_admin ✅ / require_coach ✅ / require_client ✅
+    B-->>ADM: 200 OK
 ```
