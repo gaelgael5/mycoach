@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mycoach/core/theme/app_theme.dart';
 
 void main() {
+  // google_fonts essaie de télécharger les polices depuis fonts.gstatic.com.
+  // TestWidgetsFlutterBinding bloque toutes les requêtes HTTP → erreur.
+  // Solution : désactiver le runtime fetching pour tous les tests.
+  setUpAll(() {
+    GoogleFonts.config.allowRuntimeFetching = false;
+  });
+
   group('AppColors', () {
     test('accent color is brand orange #FF4D00', () {
       expect(AppColors.accent.value, 0xFFFF4D00);
