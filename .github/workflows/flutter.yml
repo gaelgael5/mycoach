@@ -88,6 +88,10 @@ jobs:
         working-directory: frontend
         run: flutter pub get
 
+      - name: Generate platform files (android)
+        working-directory: frontend
+        run: flutter create . --platforms android --org com.mycoach.app
+
       - name: Generate l10n
         working-directory: frontend
         run: flutter gen-l10n
@@ -128,6 +132,10 @@ jobs:
       - name: Install dependencies
         working-directory: frontend
         run: flutter pub get
+
+      - name: Generate platform files (web)
+        working-directory: frontend
+        run: flutter create . --platforms web --org com.mycoach.app
 
       - name: Generate l10n
         working-directory: frontend
