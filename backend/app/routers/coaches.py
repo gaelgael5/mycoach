@@ -307,3 +307,22 @@ async def update_note(
     await coach_service.update_note(db, current_user, client_id, data.content)
     await db.commit()
     return {"message": "Note mise à jour"}
+
+
+# ── Liens réseaux sociaux publics ─────────────────────────────────────────────
+
+@router.get("/{coach_id}/social-links")
+async def get_coach_social_links(
+    coach_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+):
+    """Retourne les liens réseaux sociaux publics d'un coach (sans authentification)."""
+    from app.repositories.user_repository import user_repository
+    from app.repositories.social_link_repository import get_by_user
+    from app.schemas.social_link import SocialLinkResponse
+
+    user = await user_repository.get_by_id(db, coach_id)
+    if user is None or user.role != "coach":
+        raise HTTPException(status_code=404, detail="Coach introuvable")
+    links = await get_by_user(db, coach_id)
+    return [SocialLinkResponse.model_validate(link) for link in links]

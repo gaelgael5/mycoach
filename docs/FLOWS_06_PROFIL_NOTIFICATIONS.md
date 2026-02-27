@@ -198,3 +198,54 @@ flowchart TD
     S1 --> note1
     S2 --> note1
 ```
+
+---
+
+## 8. Gestion des liens réseaux sociaux
+
+```mermaid
+sequenceDiagram
+    actor U as Utilisateur (Coach ou Client)
+    participant A as Android App
+    participant B as Backend API
+
+    U->>A: Profil → Réseaux sociaux
+    A->>B: GET /users/me/social-links
+    B-->>A: [{platform: "instagram", url: "https://instagram.com/..."}, ...]
+    A-->>U: Liste des liens avec icônes plateformes
+
+    U->>A: Tap "Ajouter" → sélectionne Instagram → saisit URL
+    A->>B: POST /users/me/social-links\n{platform: "instagram", url: "https://instagram.com/monprofil"}
+    B->>B: Valide URL (https://, max 500 chars)\nUPSERT (user_id, platform)
+    B-->>A: 200 OK {id, platform, url, created_at}
+    A-->>U: Lien ajouté ✓ (icône Instagram apparaît)
+
+    U->>A: Tap icône "Supprimer" sur Instagram
+    A->>B: DELETE /users/me/social-links/instagram
+    B->>B: Supprime la ligne
+    B-->>A: 204 No Content
+    A-->>U: Lien supprimé
+
+    note over U,B: Mise à jour d'un lien existant
+    U->>A: Tap sur lien existant → modifie URL
+    A->>B: POST /users/me/social-links\n{platform: "instagram", url: "https://instagram.com/nouveau"}
+    B->>B: UPSERT → remplace l'URL existante
+    B-->>A: 200 OK {url mis à jour}
+```
+
+### Accès public aux liens d'un coach
+
+```mermaid
+sequenceDiagram
+    actor C as Client
+    participant A as Android App
+    participant B as Backend API
+
+    C->>A: Page profil coach → section Réseaux sociaux
+    A->>B: GET /coaches/{id}/social-links
+    B->>B: Vérifie role=coach\nRetourne liens du coach
+    B-->>A: [{platform, url}, ...]
+    A-->>C: Icônes Instagram / YouTube / ... cliquables
+    C->>A: Tap icône Instagram
+    A-->>C: Ouvre Instagram dans navigateur externe
+```

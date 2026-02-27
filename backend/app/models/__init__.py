@@ -20,6 +20,9 @@ from app.models.integration import OAuthToken, BodyMeasurement
 # Phase 6 — RGPD
 from app.models.consent import Consent
 
+# Phase 7 — Réseaux sociaux
+from app.models.social_link import SocialLink
+
 # Phase 0 — Auth
 from app.models.user import User
 from app.models.api_key import ApiKey
@@ -102,4 +105,6 @@ __all__ = [
     "BodyMeasurement",
     # Phase 6
     "Consent",
+    # Phase 7
+    "SocialLink",
 ]

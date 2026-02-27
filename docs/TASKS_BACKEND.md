@@ -350,3 +350,23 @@ backend/
 | 🔴 | Bloquant — ne pas passer à la suite sans cette tâche |
 | 🟡 | Important — à faire dans la phase mais non bloquant pour les suivantes |
 | 🟢 | Optionnel — amélioration, peut être différé |
+
+---
+
+## Phase 7 — Réseaux sociaux (B7)
+
+### B7-01 — Modèle user_social_links
+- [ ] Model SocialLink (SQLAlchemy)
+- [ ] Migration 008_phase7_social_links
+- [ ] Relation sur User
+
+### B7-02 — API CRUD liens sociaux
+- [ ] Repository social_link_repository
+- [ ] Service social_link_service
+- [ ] Router /users/me/social-links (GET, POST, DELETE)
+- [ ] Endpoint public GET /coaches/{id}/social-links
+- [ ] Tests : 12+ tests
+
+### B7-03 — Intégration profil coach
+- [ ] Inclure social_links dans CoachProfileResponse
+- [ ] Inclure dans GET /coaches/search (liste des liens)

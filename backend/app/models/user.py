@@ -153,3 +153,6 @@ class User(Base):
     client_profile: Mapped["ClientProfile | None"] = relationship(  # type: ignore[name-defined]
         "ClientProfile", back_populates="user", uselist=False
     )
+    social_links: Mapped[list["SocialLink"]] = relationship(  # type: ignore[name-defined]
+        "SocialLink", back_populates="user", cascade="all, delete-orphan"
+    )

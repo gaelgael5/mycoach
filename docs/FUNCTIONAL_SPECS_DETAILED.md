@@ -1926,6 +1926,55 @@ Document `docs/RGPD_REGISTRE.md` — à tenir à jour :
 
 ---
 
+## 21. Liens Réseaux Sociaux
+
+### 21.1 Vue d'ensemble
+Chaque utilisateur (coach et client) peut renseigner jusqu'à 8 liens vers ses profils sur les réseaux sociaux.
+
+### 21.2 Plateformes supportées
+| Plateforme | Slug | Description |
+|-----------|------|-------------|
+| Instagram | `instagram` | Profil Instagram |
+| TikTok | `tiktok` | Profil TikTok |
+| YouTube | `youtube` | Chaîne YouTube |
+| LinkedIn | `linkedin` | Profil LinkedIn |
+| X (Twitter) | `x` | Profil X |
+| Facebook | `facebook` | Page/Profil Facebook |
+| Strava | `strava` | Profil Strava |
+| Site web | `website` | Site personnel ou professionnel |
+
+### 21.3 Règles
+- Max 1 lien par plateforme par utilisateur
+- URL : doit commencer par `http://` ou `https://`, max 500 caractères
+- Pas de chiffrement (URLs publiques par nature)
+- Modification par UPSERT : poster sur une plateforme existante remplace l'URL
+
+### 21.4 Visibilité
+- **Coach** : liens affichés publiquement sur sa fiche (GET /coaches/{id})
+- **Client** : liens visibles uniquement par les coachs ayant une relation active
+
+### 21.5 Modèle de données
+Table `user_social_links` :
+| Champ | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | PK |
+| `user_id` | UUID | FK → users.id CASCADE |
+| `platform` | VARCHAR(20) | slug plateforme (ENUM) |
+| `url` | TEXT | URL complète (https://...) |
+| `created_at` | TIMESTAMPTZ | UTC |
+| `updated_at` | TIMESTAMPTZ | UTC — onupdate |
+UNIQUE (user_id, platform)
+
+### 21.6 API
+| Méthode | Endpoint | Auth | Description |
+|---------|----------|------|-------------|
+| GET | /users/me/social-links | Tout utilisateur | Liste mes liens |
+| POST | /users/me/social-links | Tout utilisateur | Ajouter/modifier un lien |
+| DELETE | /users/me/social-links/{platform} | Tout utilisateur | Supprimer un lien |
+| GET | /coaches/{id}/social-links | Public | Liens publics d'un coach |
+
+---
+
 ## CHANGELOG
 
 | Version | Date | Modifications |
@@ -1940,6 +1989,7 @@ Document `docs/RGPD_REGISTRE.md` — à tenir à jour :
 | 1.7 | 26/02/2026 | Décisions architecturales finales : Programme IA → `coach_id = NULL` + `source = 'ai'` · PRs → `is_pr = TRUE` sur `exercise_sets` (pas de table dédiée) + index partiel · Notation coach → Phase 2, aucun schéma anticipé |
 | 1.8 | 26/02/2026 | Chiffrement tokens OAuth → Python Fernet applicatif avec clé dédiée `TOKEN_ENCRYPTION_KEY` (séparée de `FIELD_ENCRYPTION_KEY`) · `EncryptedToken` TypeDecorator distinct · 2 clés = 2 périmètres de compromission indépendants |
 | 1.9 | 26/02/2026 | §25 Conformité RGPD ajouté : droits des utilisateurs (accès/portabilité/effacement/opposition), règles d'anonymisation J+30, table `consents` (log immuable), registre des traitements, durées de conservation, mesures techniques · `TASKS_BACKEND.md` : B6-02 → B6-07 (6 tâches RGPD détaillées), anciens B6-03→B6-06 renommés B6-08→B6-11 |
+| 2.0 | 27/02/2026 | §21 Liens réseaux sociaux : tous les utilisateurs peuvent renseigner leurs liens sociaux (Instagram, TikTok, YouTube, LinkedIn, X, Facebook, Strava, site web) · Table user_social_links · UPSERT par plateforme · Visibilité publique coach / coaches-only client |
 
 ---
 

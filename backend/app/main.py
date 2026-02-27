@@ -22,6 +22,7 @@ from app.routers import (
     auth, coaches, gyms, payments, cancellation_templates,
     clients, bookings, waitlist, push, bulk_actions,
     performances, exercises, admin, programs, integrations, rgpd,
+    social_links,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -165,6 +166,7 @@ app.include_router(admin.router)
 app.include_router(programs.router)
 app.include_router(integrations.router)
 app.include_router(rgpd.router)
+app.include_router(social_links.router)
 
 
 # ---------------------------------------------------------------------------
