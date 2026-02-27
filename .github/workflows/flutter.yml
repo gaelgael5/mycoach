@@ -90,7 +90,10 @@ jobs:
 
       - name: Generate platform files (android)
         working-directory: frontend
-        run: flutter create . --platforms android --org com.mycoach.app
+        run: |
+          flutter create . --platforms android --org com.mycoach.app
+          # flutter_blue_plus requiert minSdkVersion >= 21 (la spec MyCoach est minSdk 26)
+          sed -i 's/minSdkVersion [0-9]*/minSdkVersion 21/' android/app/build.gradle
 
       - name: Generate l10n
         working-directory: frontend
