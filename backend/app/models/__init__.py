@@ -32,6 +32,9 @@ from app.models.health_parameter import HealthParameter
 from app.models.health_log import HealthLog
 from app.models.health_sharing_setting import HealthSharingSetting
 
+# Phase 9 — Liens d'enrôlement coach
+from app.models.coach_enrollment_token import CoachEnrollmentToken
+
 # Phase 0 — Auth
 from app.models.user import User
 from app.models.api_key import ApiKey
@@ -122,4 +125,6 @@ __all__ = [
     "HealthParameter",
     "HealthLog",
     "HealthSharingSetting",
+    # Phase 9
+    "CoachEnrollmentToken",
 ]

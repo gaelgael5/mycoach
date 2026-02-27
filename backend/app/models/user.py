@@ -164,3 +164,8 @@ class User(Base):
     health_logs: Mapped[list["HealthLog"]] = relationship(  # type: ignore[name-defined]
         "HealthLog", back_populates="user", cascade="all, delete-orphan"
     )
+
+    # Phase 9 — Liens d'enrôlement coach
+    enrollment_tokens: Mapped[list["CoachEnrollmentToken"]] = relationship(  # type: ignore[name-defined]
+        "CoachEnrollmentToken", back_populates="coach", cascade="all, delete-orphan"
+    )

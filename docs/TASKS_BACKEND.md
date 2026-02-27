@@ -378,3 +378,29 @@ backend/
 - [ ] Table `social_platforms` (admin CRUD) — slug, label, icon_url, active
 - [ ] Endpoint `GET /social-platforms` — liste publique des plateformes actives
 - [ ] Android : charger dynamiquement la liste depuis l'API
+
+---
+
+## Phase 9 — Liens d'enrôlement coach (B9)
+
+### B9-01 — Modèle CoachEnrollmentToken ✅
+- [x] Model `CoachEnrollmentToken` (SQLAlchemy) — token, label, expires_at, max_uses, uses_count, active
+- [x] Migration `011_phase9_enrollment_tokens` — table + index UNIQUE sur token + index coach_id
+- [x] Relation `User.enrollment_tokens` (cascade all, delete-orphan)
+
+### B9-02 — API CRUD tokens d'enrôlement ✅
+- [x] `enrollment_repository` — create_token, get_by_token, get_by_id, list_by_coach, increment_uses, deactivate
+- [x] `enrollment_service` — create_token, list_tokens, deactivate_token, validate_token, get_coach_info_for_token, consume_token
+- [x] Router `POST /coaches/me/enrollment-tokens` — créer un lien (label/expires_at/max_uses optionnels)
+- [x] Router `GET /coaches/me/enrollment-tokens` — lister ses liens
+- [x] Router `DELETE /coaches/me/enrollment-tokens/{id}` — désactiver un lien
+- [x] Endpoint public `GET /enroll/{token}` — infos coach pour l'écran de pré-inscription
+
+### B9-03 — Intégration inscription ✅
+- [x] `RegisterRequest.enrollment_token` (optionnel)
+- [x] `auth_service.register()` — consomme le token après création user
+- [x] Token invalide/expiré → inscription réussit quand même (pas de blocage)
+- [x] coaching_relation créée si token valide (status="active")
+
+### B9-04 — Tests ✅
+- [x] 13 tests couvrant : création, label, auth, liste, désactivation, ownership, infos publiques, inscription avec token valide/expiré/invalide, max_uses, uses_count

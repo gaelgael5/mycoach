@@ -89,6 +89,7 @@ class AuthService:
         locale: str = "fr-FR",
         country: str = "FR",
         device_label: str | None = None,
+        enrollment_token: str | None = None,
     ) -> AuthResult:
         """
         Inscription : crée l'utilisateur + génère un token de vérification email.
@@ -123,6 +124,18 @@ class AuthService:
         logger.info(
             "Token vérification email pour user %s : %s [ENV_DEV]", user.id, plain_token
         )
+
+        # Consomme le token d'enrôlement si fourni (associe client ↔ coach)
+        if enrollment_token:
+            try:
+                from app.services.enrollment_service import (
+                    validate_token,
+                    consume_token,
+                )
+                token_obj = await validate_token(db, enrollment_token)
+                await consume_token(db, token_obj, user.id)
+            except Exception:
+                pass  # Token invalide → inscription réussit quand même, juste sans association
 
         # Génère l'API Key (l'utilisateur est connecté immédiatement)
         plain_key, _ = await api_key_repository.create(db, user.id, device_label)

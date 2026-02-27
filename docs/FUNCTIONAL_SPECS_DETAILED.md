@@ -218,6 +218,8 @@ get_current_user → tout utilisateur authentifié (sans contrainte de rôle)
 |----------------|--------|-------|-------|
 | Questionnaire onboarding client | ✅ | ✅ | ✅ |
 | Wizard onboarding coach (7 étapes) | ❌ | ✅ | ✅ |
+| Générer un lien d'enrôlement | ❌ | ✅ | ✅ |
+| Gérer ses liens d'enrôlement | ❌ | ✅ | ✅ |
 
 #### Recherche & Découverte
 
@@ -2359,6 +2361,51 @@ UNIQUE (user_id, coach_id, parameter_id)
 
 ---
 
+## 29. Liens d'enrôlement coach
+
+### 29.1 Vue d'ensemble
+Un coach peut générer des liens d'enrôlement personnalisés à partager avec ses clients. Quand un nouveau client s'inscrit via ce lien, il est automatiquement associé au coach (coaching_relation créée sans étape manuelle).
+
+### 29.2 Règles
+- Chaque lien contient un token unique (cryptographiquement sécurisé, 64 chars)
+- Le coach peut créer autant de liens qu'il veut (ex : un par groupe, un par campagne)
+- Options disponibles par lien :
+  - **Label** : ex "Groupe yoga janvier" (max 100 chars)
+  - **Expiration** : date/heure après laquelle le lien ne fonctionne plus
+  - **Max utilisations** : nb max de clients pouvant s'enrôler via ce lien
+- Si le token est invalide/expiré/épuisé lors de l'inscription → l'inscription réussit quand même, juste sans association automatique
+- Le coach peut désactiver un lien à tout moment
+
+### 29.3 Format du lien
+```
+mycoach://enroll/{token}             ← Deep link app
+https://mycoach.app/enroll/{token}   ← Lien web (futur)
+```
+
+### 29.4 Modèle de données — `coach_enrollment_tokens`
+| Champ | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | PK |
+| `coach_id` | UUID | FK → users.id CASCADE |
+| `token` | VARCHAR(64) UNIQUE | Token sécurisé (urlsafe_b64) |
+| `label` | VARCHAR(100) NULLABLE | Libellé du lien |
+| `expires_at` | TIMESTAMPTZ NULLABLE | Expiration optionnelle |
+| `max_uses` | INTEGER NULLABLE | Nb max d'utilisations (NULL=illimité) |
+| `uses_count` | INTEGER | Nb d'utilisations effectives |
+| `active` | BOOLEAN | Peut être désactivé manuellement |
+| `created_at` | TIMESTAMPTZ | UTC |
+
+### 29.5 API
+| Méthode | Endpoint | Auth | Description |
+|---------|----------|------|-------------|
+| POST | `/coaches/me/enrollment-tokens` | Coach | Créer un lien d'enrôlement |
+| GET | `/coaches/me/enrollment-tokens` | Coach | Lister ses liens |
+| DELETE | `/coaches/me/enrollment-tokens/{id}` | Coach | Désactiver un lien |
+| GET | `/enroll/{token}` | Public | Infos coach pré-inscription |
+| POST | `/auth/register` | — | `enrollment_token` optionnel → association auto |
+
+---
+
 ## CHANGELOG
 
 | Version | Date | Modifications |
@@ -2378,6 +2425,7 @@ UNIQUE (user_id, coach_id, parameter_id)
 | 2.2 | 27/02/2026 | §0 Architecture des rôles : **Admin ⊇ Coach ⊇ Client** (hiérarchie inclusive) · `require_client` → tout utilisateur authentifié · `require_coach` → coach + admin · `require_admin` → admin uniquement · Un admin a accès à TOUT · Un coach a toutes les fonctionnalités client en plus des siennes |
 | 2.3 | 27/02/2026 | §0.4 Matrice des accès : tableau complet de toutes les fonctionnalités × 3 rôles (client / coach / admin) — 70+ fonctionnalités documentées en 12 catégories |
 | 2.4 | 27/02/2026 | §27 Suggestions & Bug Reports · §28 Paramètres de santé modulables + historique + partage par coach par paramètre |
+| 2.5 | 27/02/2026 | §29 Liens d'enrôlement coach : token sécurisé (label / expiration / max_uses) · `/coaches/me/enrollment-tokens` CRUD · `/enroll/{token}` public · `enrollment_token` optionnel à l'inscription → coaching_relation auto · §0.4 Matrice Onboarding mise à jour |
 
 ---
 

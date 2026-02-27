@@ -5,7 +5,7 @@ Toutes les validations métier (longueur, format, règles password) sont ici.
 import re
 import uuid
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, Optional
 
 from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
 
@@ -52,6 +52,7 @@ class RegisterRequest(BaseModel):
     confirm_password: str
     role: str = Field(pattern="^(coach|client)$")
     device_label: str | None = Field(default=None, max_length=100)
+    enrollment_token: Optional[str] = None
 
     @field_validator("first_name", "last_name")
     @classmethod

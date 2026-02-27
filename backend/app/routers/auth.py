@@ -58,6 +58,7 @@ async def register(
             last_name=body.last_name,
             email=str(body.email),
             password=body.password,
+            enrollment_token=body.enrollment_token,
             role=body.role,
             device_label=body.device_label,
         )
