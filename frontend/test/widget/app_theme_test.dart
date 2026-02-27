@@ -169,9 +169,6 @@ void main() {
           home: const Scaffold(body: SizedBox()),
         ),
       );
-      final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
-      // Le fond n'est pas défini sur le widget directement,
-      // mais le theme est appliqué — on vérifie via Theme.of
       final ctx = tester.element(find.byType(Scaffold));
       expect(Theme.of(ctx).scaffoldBackgroundColor, AppColors.bgDark);
     });
