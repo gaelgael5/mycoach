@@ -31,6 +31,7 @@ from app.services.auth_service import (
     TokenInvalidError,
     auth_service,
 )
+from app.services.email_domain_service import BlockedDomainError
 from app.utils.hashing import hash_api_key
 from app.utils.i18n import get_locale_from_request, t
 
@@ -69,6 +70,11 @@ async def register(
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=t("auth.error.email_already_used", locale),
+        )
+    except BlockedDomainError as e:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e),
         )
 
 

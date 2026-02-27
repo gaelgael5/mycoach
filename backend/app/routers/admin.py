@@ -1,10 +1,12 @@
-"""Router admin — B3-14 (validation machines)."""
+"""Router admin — B3-14 (validation machines) + blocklist domaines email."""
 
 from __future__ import annotations
 
 import uuid
+from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,6 +14,7 @@ from app.auth.middleware import get_current_user
 from app.database import get_db
 from app.models.machine import Machine
 from app.models.user import User
+from app.repositories import blocked_domain_repository
 from app.schemas.common import MessageResponse
 from app.schemas.performance import MachineResponse
 
@@ -68,3 +71,66 @@ async def reject_machine(
     await db.delete(machine)
     await db.commit()
     return {"message": "Machine rejetée et supprimée"}
+
+
+# ---------------------------------------------------------------------------
+# Blocklist domaines email — Schémas
+# ---------------------------------------------------------------------------
+
+class BlockedDomainCreate(BaseModel):
+    domain: str
+    reason: str | None = None
+
+
+class BlockedDomainResponse(BaseModel):
+    id: uuid.UUID
+    domain: str
+    reason: str | None
+    created_at: datetime
+    model_config = {"from_attributes": True}
+
+
+# ---------------------------------------------------------------------------
+# Blocklist domaines email — Endpoints
+# ---------------------------------------------------------------------------
+
+@router.get("/blocked-domains", response_model=list[BlockedDomainResponse])
+async def list_blocked_domains(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Liste tous les domaines bloqués (admin seulement)."""
+    _require_admin(current_user)
+    return await blocked_domain_repository.list_all(db)
+
+
+@router.post("/blocked-domains", response_model=BlockedDomainResponse, status_code=201)
+async def add_blocked_domain(
+    data: BlockedDomainCreate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Ajoute un domaine à la blocklist (admin seulement)."""
+    _require_admin(current_user)
+    try:
+        entry = await blocked_domain_repository.add(db, data.domain, data.reason)
+        await db.commit()
+        await db.refresh(entry)
+        return entry
+    except Exception:
+        await db.rollback()
+        raise HTTPException(status_code=409, detail="Ce domaine est déjà dans la liste")
+
+
+@router.delete("/blocked-domains/{domain}", status_code=204)
+async def remove_blocked_domain(
+    domain: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Supprime un domaine de la blocklist (admin seulement)."""
+    _require_admin(current_user)
+    deleted = await blocked_domain_repository.remove(db, domain)
+    await db.commit()
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Domaine introuvable")

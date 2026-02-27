@@ -23,6 +23,9 @@ from app.models.consent import Consent
 # Phase 7 — Réseaux sociaux
 from app.models.social_link import SocialLink
 
+# Phase 7 — Blocklist domaines email
+from app.models.blocked_email_domain import BlockedEmailDomain
+
 # Phase 0 — Auth
 from app.models.user import User
 from app.models.api_key import ApiKey
@@ -107,4 +110,5 @@ __all__ = [
     "Consent",
     # Phase 7
     "SocialLink",
+    "BlockedEmailDomain",
 ]

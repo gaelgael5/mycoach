@@ -15,6 +15,7 @@ from app.auth.utils import GoogleTokenError, extract_google_user_info, verify_go
 from app.models.user import User
 from app.repositories.api_key_repository import api_key_repository
 from app.repositories.user_repository import user_repository
+from app.services.email_domain_service import BlockedDomainError, check_email_domain
 from app.utils.hashing import hash_password, hash_token, verify_password
 
 logger = logging.getLogger(__name__)
@@ -95,10 +96,14 @@ class AuthService:
 
         Raises:
             EmailAlreadyUsedError: si l'email est déjà utilisé.
+            BlockedDomainError: si le domaine de l'email est dans la blocklist.
         """
         existing = await user_repository.get_by_email(db, email)
         if existing is not None:
             raise EmailAlreadyUsedError(email)
+
+        # Vérifie que le domaine n'est pas dans la blocklist
+        await check_email_domain(db, email)
 
         user = await user_repository.create(
             db,

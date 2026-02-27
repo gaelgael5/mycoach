@@ -230,6 +230,26 @@ Après vérification email → redirect `ClientOnboardingScreen` (questionnaire,
 
 ---
 
+### 1.6 Validation du domaine email
+
+Lors de l'inscription, le serveur vérifie que le domaine de l'adresse email n'est pas dans la liste noire des services de messagerie jetable/temporaire.
+
+**Comportement :**
+- Si le domaine est bloqué → 422 avec message explicite
+- Liste configurable par les admins via l'API (GET/POST/DELETE `/admin/blocked-domains`)
+- Seed initial : ~55 domaines connus (yopmail, mailinator, tempmail, guerrillamail…)
+- Insensible à la casse : `USER@YOPMAIL.COM` et `user@yopmail.com` sont équivalents
+
+**Modèle de données** — Table `blocked_email_domains` :
+| Champ | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | PK |
+| `domain` | VARCHAR(100) | Domaine en minuscules, UNIQUE |
+| `reason` | TEXT NULLABLE | Raison du blocage |
+| `created_at` | TIMESTAMPTZ | UTC |
+
+---
+
 ## 2. ONBOARDING CLIENT (questionnaire)
 ## 2. ONBOARDING CLIENT (questionnaire)
 
