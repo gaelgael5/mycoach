@@ -35,6 +35,9 @@ from app.models.health_sharing_setting import HealthSharingSetting
 # Phase 9 — Liens d'enrôlement coach
 from app.models.coach_enrollment_token import CoachEnrollmentToken
 
+# Phase 9 — Vérification téléphone OTP
+from app.models.phone_verification_token import PhoneVerificationToken
+
 # Phase 0 — Auth
 from app.models.user import User
 from app.models.api_key import ApiKey
@@ -127,4 +130,5 @@ __all__ = [
     "HealthSharingSetting",
     # Phase 9
     "CoachEnrollmentToken",
+    "PhoneVerificationToken",
 ]

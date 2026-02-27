@@ -53,6 +53,8 @@ class RegisterRequest(BaseModel):
     role: str = Field(pattern="^(coach|client)$")
     device_label: str | None = Field(default=None, max_length=100)
     enrollment_token: Optional[str] = None
+    gender: Optional[str] = None   # 'male' | 'female' | 'other'
+    birth_year: Optional[int] = None  # ex: 1990
 
     @field_validator("first_name", "last_name")
     @classmethod
@@ -129,12 +131,17 @@ class UserResponse(BaseModel):
     country: str
     profile_completion_pct: int
     email_verified: bool
+    gender: Optional[str] = None
+    birth_year: Optional[int] = None
+    resolved_avatar_url: str
+    phone_verified: bool = False
     created_at: datetime
 
     model_config = {"from_attributes": True}
 
     @classmethod
     def from_user(cls, user) -> "UserResponse":
+        from app.schemas.common import resolve_avatar_url
         return cls(
             id=user.id,
             role=user.role,
@@ -147,6 +154,10 @@ class UserResponse(BaseModel):
             country=user.country,
             profile_completion_pct=user.profile_completion_pct,
             email_verified=user.email_verified_at is not None,
+            gender=user.gender,
+            birth_year=user.birth_year,
+            resolved_avatar_url=resolve_avatar_url(user.avatar_url, user.gender),
+            phone_verified=user.phone_verified_at is not None,
             created_at=user.created_at,
         )
 

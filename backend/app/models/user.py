@@ -89,6 +89,29 @@ class User(Base):
     )  # 0–100
 
     # -----------------------------------------------------------------------
+    # Identité & démographie (non-PII, non chiffrés)
+    # -----------------------------------------------------------------------
+    gender: Mapped[str | None] = mapped_column(
+        String(10), nullable=True
+    )  # 'male' | 'female' | 'other'
+
+    birth_year: Mapped[int | None] = mapped_column(
+        SmallInteger, nullable=True
+    )  # Année de naissance ex: 1990
+
+    # -----------------------------------------------------------------------
+    # Téléphone — vérification
+    # -----------------------------------------------------------------------
+    phone_verified_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    # Hash SHA-256 du numéro de téléphone (lookup, non-PII)
+    phone_hash: Mapped[str | None] = mapped_column(
+        String(64), nullable=True, index=True
+    )
+
+    # -----------------------------------------------------------------------
     # Timestamps (non-PII)
     # -----------------------------------------------------------------------
     email_verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
@@ -143,6 +166,15 @@ class User(Base):
             self.search_token = normalize_for_search(f"{current_first} {value}")
         return value
 
+    @validates("phone")
+    def _sync_phone_hash(self, key: str, value: str | None) -> str | None:
+        """Synchronise phone_hash à chaque modification de phone."""
+        if value:
+            self.phone_hash = hash_for_lookup(value)
+        else:
+            self.phone_hash = None
+        return value
+
     def __repr__(self) -> str:
         return f"<User id={self.id} role={self.role} status={self.status}>"
 
@@ -168,4 +200,9 @@ class User(Base):
     # Phase 9 — Liens d'enrôlement coach
     enrollment_tokens: Mapped[list["CoachEnrollmentToken"]] = relationship(  # type: ignore[name-defined]
         "CoachEnrollmentToken", back_populates="coach", cascade="all, delete-orphan"
+    )
+
+    # Phase 9 — Vérification téléphone OTP
+    phone_verification_tokens: Mapped[list["PhoneVerificationToken"]] = relationship(  # type: ignore[name-defined]
+        "PhoneVerificationToken", back_populates="user", cascade="all, delete-orphan"
     )

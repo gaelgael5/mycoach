@@ -201,6 +201,9 @@ get_current_user → tout utilisateur authentifié (sans contrainte de rôle)
 | Modifier prénom / nom / email / photo | ✅ | ✅ | ✅ |
 | Préférences langue, timezone, pays | ✅ | ✅ | ✅ |
 | Bandeau de complétion de profil | ✅ | ✅ | ✅ |
+| Renseigner son genre | ✅ | ✅ | ✅ |
+| Renseigner son année de naissance | ✅ | ✅ | ✅ |
+| Valider son numéro de téléphone (OTP SMS) | ✅ | ✅ | ✅ |
 | Liens réseaux sociaux (ajouter / modifier / supprimer) | ✅ | ✅ | ✅ |
 | Créer un profil client | ✅ | ✅ | ✅ |
 | Créer un profil coach | ❌ | ✅ | ✅ |
@@ -357,6 +360,10 @@ get_current_user → tout utilisateur authentifié (sans contrainte de rôle)
 - Pays : auto-détecté depuis la locale système
 - Langue : auto-détectée depuis la locale système
 
+**Champs OPTIONNELS (différables, complétables depuis le profil) :**
+- Genre : `male` | `female` | `other` (non chiffré)
+- Année de naissance : ex. 1990 (l'âge est calculé à l'affichage)
+
 > ℹ️ Téléphone, photo, spécialités, salles, tarifs, horaires → tous différables, complétables depuis le profil.
 
 **Validations en temps réel :**
@@ -466,6 +473,67 @@ Lors de l'inscription, le serveur vérifie que le domaine de l'adresse email n'e
 | `domain` | VARCHAR(100) | Domaine en minuscules, UNIQUE |
 | `reason` | TEXT NULLABLE | Raison du blocage |
 | `created_at` | TIMESTAMPTZ | UTC |
+
+---
+
+### 1.7 Validation du numéro de téléphone (OTP SMS)
+
+Le téléphone est **obligatoire pour les coaches** et doit être validé par OTP SMS.
+
+**Déclenchement :** pendant l'onboarding coach (étape "Informations de contact") ou depuis Profil → Téléphone.
+
+**Algorithme OTP :**
+- 6 caractères aléatoires parmi `[0-9a-z]` (36 chars)
+- 36^6 = 2 176 782 336 combinaisons possibles (~31 bits d'entropie)
+- Génération via `secrets.choice` (CSPRNG)
+- Exemples : `"a3f7k2"`, `"9x2m4p"`, `"b0z5r1"`
+
+**SMS format (compatible Android SMS Retriever API) :**
+```
+<#> Votre code MyCoach : a3f7k2
+Expire dans 10 minutes.
+FA+9qCX9VSu
+```
+
+**Android SMS auto-read :**
+Sur Android, l'application utilise l'[Android SMS Retriever API](https://developers.google.com/identity/sms-retriever) pour lire automatiquement le code sans intervention de l'utilisateur. Le hash applicatif en fin de SMS (11 chars) permet l'association avec l'app.
+
+**Règles de sécurité :**
+- Expiration : 10 minutes
+- Max 3 tentatives par OTP (au-delà → invalider, demander un nouveau code)
+- Rate limit : max 3 OTPs envoyés par heure par numéro
+
+**API :**
+| Méthode | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/auth/verify-phone/request` | Envoie un OTP SMS |
+| POST | `/auth/verify-phone/confirm` | Valide le code reçu |
+
+---
+
+### 1.8 Genre et année de naissance (optionnels)
+
+Tout utilisateur peut renseigner :
+- **Genre** : homme (`male`) / femme (`female`) / autre (`other`) — 3 valeurs
+- **Année de naissance** : ex. 1990 (l'âge est calculé à l'affichage)
+
+Ces informations sont optionnelles et modifiables à tout moment via `PATCH /users/me/profile`.
+
+**API :**
+| Méthode | Endpoint | Description |
+|---------|----------|-------------|
+| PATCH | `/users/me/profile` | Modifie gender et/ou birth_year |
+
+---
+
+### 1.9 Avatar par défaut
+
+Tant que l'utilisateur n'a pas défini de photo de profil, un avatar par défaut est affiché selon son genre :
+- Homme → `/static/avatars/default_male.svg`
+- Femme → `/static/avatars/default_female.svg`
+- Autre / non renseigné → `/static/avatars/default_neutral.svg`
+
+Le champ `resolved_avatar_url` dans les réponses API retourne toujours une URL valide (avatar perso ou défaut). Ce champ est présent dans **toutes** les réponses API contenant un profil utilisateur.
 
 ---
 

@@ -24,6 +24,8 @@ from app.routers import (
     performances, exercises, admin, programs, integrations, rgpd,
     social_links, feedback, health, enrollment,
 )
+from app.routers import phone_verification
+from app.routers import users as users_router
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -170,6 +172,8 @@ app.include_router(social_links.router)
 app.include_router(feedback.router)
 app.include_router(health.router)
 app.include_router(enrollment.router)
+app.include_router(phone_verification.router)
+app.include_router(users_router.router)
 
 
 # ---------------------------------------------------------------------------

@@ -227,3 +227,49 @@ flowchart TD
     ALL_REQUESTS --> HEADER["Header: X-API-Key: SHA256(...)"]
     HEADER -->|401| LOGIN
 ```
+
+---
+
+## 9. Validation du numéro de téléphone (OTP SMS)
+
+```mermaid
+sequenceDiagram
+    actor U as Utilisateur
+    participant A as Android App
+    participant B as Backend API
+    participant S as SMS Provider
+
+    U->>A: Onboarding / Profil → saisit numéro de téléphone
+    A->>B: POST /auth/verify-phone/request
+    B->>B: Vérifie rate limit (max 3/heure)<br/>Génère OTP 6 chars [0-9a-z]<br/>Stocke en DB (expire 10min)
+    B->>S: Envoie SMS "<#> Code : {otp}\n{hash}"
+    B-->>A: 204 No Content
+    A-->>U: "Code envoyé par SMS"
+
+    alt Android SMS Retriever API disponible
+        S-->>A: SMS reçu automatiquement
+        A->>A: Extrait le code du SMS (hash match)
+        A-->>U: Champ code auto-rempli ✓
+    else Saisie manuelle
+        U->>A: Saisit le code à 6 caractères
+    end
+
+    A->>B: POST /auth/verify-phone/confirm {code: "a3f7k2"}
+    B->>B: Vérifie : code correct + non expiré + tentatives < 3
+    alt Code valide
+        B->>B: phone_verified_at = now()
+        B-->>A: 204 No Content
+        A-->>U: "Téléphone vérifié ✓"
+    else Code invalide
+        B->>B: attempts_count++
+        B-->>A: 400 Code invalide (tentative N/3)
+        U->>A: Corrige le code
+    end
+```
+
+**Règles métier :**
+- OTP : 6 caractères `[0-9a-z]`, 36^6 = 2.17 milliards de combinaisons (~31 bits)
+- Expiration : 10 minutes
+- Max 3 tentatives par OTP (au-delà → invalider le code, demander un nouveau)
+- Rate limit : max 3 OTPs par heure par numéro
+- Format SMS compatible **Android SMS Retriever API** (hash applicatif en fin de message)

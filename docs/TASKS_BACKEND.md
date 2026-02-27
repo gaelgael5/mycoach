@@ -404,3 +404,31 @@ backend/
 
 ### B9-04 — Tests ✅
 - [x] 13 tests couvrant : création, label, auth, liste, désactivation, ownership, infos publiques, inscription avec token valide/expiré/invalide, max_uses, uses_count
+
+---
+
+## Phase 9 (suite) — Validation téléphone + Profil utilisateur (B9-bis)
+
+### B9-05 — Champs User (genre, naissance, téléphone vérification) ✅
+- [x] Migration `012_phase9_user_profile_fields` — colonnes `gender`, `birth_year`, `phone_verified_at`, `phone_hash` + index
+- [x] Table `phone_verification_tokens` — `code`, `expires_at`, `attempts_count`, `verified_at`
+- [x] Modèle `User` — nouveaux champs + relation `phone_verification_tokens` + `@validates("phone")` → `phone_hash`
+- [x] Modèle `PhoneVerificationToken` — SQLAlchemy avec relation inverse
+
+### B9-06 — Vérification téléphone OTP ✅
+- [x] `app/utils/otp.py` — `generate_otp()` + `format_sms()`, alphabet `[0-9a-z]`, 36^6 combos, Android SMS Retriever
+- [x] `phone_verification_repository` — create_token, get_latest_for_user, get_valid_for_user, increment_attempts, mark_verified, count_sent_last_hour
+- [x] `phone_verification_service` — request_phone_verification (rate limit), confirm_phone_verification (max attempts)
+- [x] Router `POST /auth/verify-phone/request` — envoie OTP → 204 / 400 / 429
+- [x] Router `POST /auth/verify-phone/confirm` — valide OTP → 204 / 400
+
+### B9-07 — Avatar par défaut + profil utilisateur ✅
+- [x] `resolve_avatar_url(avatar_url, gender)` dans `app/schemas/common.py`
+- [x] Champ `resolved_avatar_url` dans `UserResponse` (toujours non-null)
+- [x] Champs `gender`, `birth_year`, `phone_verified` dans `UserResponse`
+- [x] Router `PATCH /users/me/profile` — modifier gender/birth_year avec validation (gender ∈ {male,female,other}, 1900 ≤ birth_year ≤ année courante)
+
+### B9-08 — Tests ✅
+- [x] 10 tests `test_phone_verification.py` — request, confirm ok/ko, expiré, max_attempts, déjà vérifié, sans phone, sans auth, format OTP, rate limit
+- [x] 8 tests `test_user_profile.py` — gender, birth_year, validations, avatars par défaut et custom
+- [x] Total : 322 tests (0 régression)
