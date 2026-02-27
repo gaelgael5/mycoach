@@ -143,7 +143,7 @@ void main() {
       expect(theme.colorScheme.primary, AppColors.accent);
     });
 
-    testWidgets('ElevatedButton uses accent background', (tester) async {
+    testWidgets('ElevatedButton theme uses accent background', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: _testTheme,
@@ -155,10 +155,14 @@ void main() {
           ),
         ),
       );
-      // Vérifie que le bouton est affiché sans erreur de layout
       expect(find.text('Test'), findsOneWidget);
-      final btn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
-      final bg = btn.style?.backgroundColor?.resolve({});
+      // Le style du widget est null (hérité du thème) — on vérifie via le thème
+      final ctx = tester.element(find.byType(ElevatedButton));
+      final bg = Theme.of(ctx)
+          .elevatedButtonTheme
+          .style
+          ?.backgroundColor
+          ?.resolve({});
       expect(bg, AppColors.accent);
     });
 
