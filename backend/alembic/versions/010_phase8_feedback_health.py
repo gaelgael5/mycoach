@@ -95,7 +95,7 @@ def upgrade() -> None:
     # 5. Seed des paramètres de santé
     health_params_table = sa.table(
         "health_parameters",
-        sa.column("id", postgresql.UUID),
+        sa.column("id", postgresql.UUID(as_uuid=True)),
         sa.column("slug", sa.String),
         sa.column("label", postgresql.JSONB),
         sa.column("unit", sa.String),
@@ -108,7 +108,7 @@ def upgrade() -> None:
         health_params_table,
         [
             {
-                "id": str(uuid.uuid4()),
+                "id": uuid.uuid4(),
                 "slug": p["slug"],
                 "label": p["label"],
                 "unit": p["unit"],

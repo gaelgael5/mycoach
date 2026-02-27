@@ -7,6 +7,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, timezone
 import sqlalchemy as sa
+from sqlalchemy.dialects import postgresql
 from alembic import op
 from sqlalchemy.dialects import postgresql
 
@@ -52,11 +53,11 @@ def upgrade() -> None:
         d = domain.lower().strip()
         if d not in seen:
             seen.add(d)
-            rows.append({"id": str(uuid.uuid4()), "domain": d, "reason": "Service email jetable", "created_at": now})
+            rows.append({"id": uuid.uuid4(), "domain": d, "reason": "Service email jetable", "created_at": now})
     if rows:
         op.bulk_insert(
             sa.table("blocked_email_domains",
-                sa.column("id", sa.String),
+                sa.column("id", postgresql.UUID(as_uuid=True)),
                 sa.column("domain", sa.String),
                 sa.column("reason", sa.Text),
                 sa.column("created_at", sa.DateTime(timezone=True)),
