@@ -63,11 +63,15 @@ dependencies:
   # i18n
   intl: ^0.18.0
 
+  # Typographie (Outfit + JetBrains Mono via Google Fonts)
+  google_fonts: ^6.1.0
+
   # Utilitaires
   url_launcher: ^6.2.0
   share_plus: ^7.2.0
   package_info_plus: ^5.0.0
   permission_handler: ^11.0.0
+  equatable: ^2.0.5
 
   # UI
   fl_chart: ^0.66.0
@@ -86,18 +90,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  generate: true  # pour i18n
+  generate: true  # pour i18n (flutter_localizations)
   assets:
     - assets/avatars/
     - assets/images/
     - assets/icons/
-  fonts:
-    - family: Inter
-      fonts:
-        - asset: assets/fonts/Inter-Regular.ttf
-        - asset: assets/fonts/Inter-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Inter-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Inter-Bold.ttf
-          weight: 700

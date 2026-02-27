@@ -51,17 +51,17 @@ test/
   integration/
 ```
 
-## Phase A0 — Setup & infrastructure
-- [ ] A0-01 : Initialiser le projet Flutter (`flutter create mycoach`)
-- [ ] A0-02 : Configurer pubspec.yaml avec toutes les dépendances
-- [ ] A0-03 : Architecture dossiers (feature-first)
-- [ ] A0-04 : Client Dio avec intercepteur API Key (X-API-Key header)
-- [ ] A0-05 : flutter_secure_storage — stockage API Key
-- [ ] A0-06 : go_router — routes de base (auth, home, coach, client)
-- [ ] A0-07 : ThemeData — couleurs, typographie, dark/light mode
-- [ ] A0-08 : i18n — flutter_localizations + fichiers fr.arb / en.arb
-- [ ] A0-09 : Modèles Dart (User, Coach, Client, Booking...) — json_serializable
-- [ ] A0-10 : CI/CD Flutter (GitHub Actions ou AppVeyor)
+## Phase A0 — Setup & infrastructure ✅ COMPLETE
+- [x] A0-01 : Initialiser le projet Flutter (`flutter create mycoach`) — scaffold existant
+- [x] A0-02 : Configurer pubspec.yaml avec toutes les dépendances (+ google_fonts, equatable)
+- [x] A0-03 : Architecture dossiers (feature-first) — scaffold existant
+- [x] A0-04 : Client Dio avec intercepteur API Key (X-API-Key header) + AppDioException
+- [x] A0-05 : flutter_secure_storage — wrapper AppSecureStorage + StorageKeys
+- [x] A0-06 : go_router — 24 routes complètes + ShellRoute client/coach + auth redirect
+- [x] A0-07 : ThemeData dark — palette JSX (#FF4D00 orange, #0A0A0F dark) + AppColors + AppTextStyles (Outfit + JetBrains Mono)
+- [x] A0-08 : i18n — l10n.yaml + app_fr.arb + app_en.arb (200+ clés couvrant tous les écrans)
+- [x] A0-09 : Modèles Dart — User, CoachProfile, Gym, Booking, Workout, SocialLink (fromJson/toJson)
+- [x] A0-10 : CI/CD GitHub Actions — flutter analyze + unit tests + widget tests + APK debug + Web build
 
 ## Phase A1 — Authentification
 - [ ] A1-01 : RegisterScreen (rôle coach / client, genre, année naissance)

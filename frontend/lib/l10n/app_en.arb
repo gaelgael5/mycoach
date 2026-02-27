@@ -1,0 +1,336 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2026-02-27",
+
+  "appName": "MyCoach",
+  "tagline": "Train smarter",
+
+  "btnContinue": "Continue →",
+  "btnConfirm": "Confirm ✓",
+  "btnCancel": "Cancel",
+  "btnSave": "Save",
+  "btnSend": "Send",
+  "btnBack": "Back",
+  "btnSkip": "Skip",
+  "btnFinishLater": "Finish later",
+  "btnClose": "Close",
+  "btnRetry": "Retry",
+  "btnDelete": "Delete",
+  "btnEdit": "Edit",
+  "btnAdd": "Add",
+
+  "errorGeneric": "Something went wrong. Please try again.",
+  "errorNetwork": "Cannot connect. Check your internet connection.",
+  "errorUnauthorized": "Session expired. Please log in again.",
+  "errorServer": "Server error. Please try again later.",
+
+  "labelEmail": "Email",
+  "labelPassword": "Password",
+  "labelPasswordConfirm": "Confirm password",
+  "labelFirstName": "First name",
+  "labelLastName": "Last name",
+  "labelPhone": "Phone",
+  "labelBirthYear": "Birth year",
+  "labelGender": "Gender",
+  "labelBio": "Biography",
+  "labelOptional": "optional",
+
+  "genderMale": "Male",
+  "genderFemale": "Female",
+  "genderOther": "Other",
+
+  "loginTitle": "Welcome back 💪",
+  "loginSubtitle": "Sign in to continue",
+  "loginButton": "Sign in",
+  "loginForgotPassword": "Forgot password?",
+  "loginNoAccount": "Don't have an account?",
+  "loginSignUp": "Sign up",
+  "loginWithGoogle": "Continue with Google",
+  "loginInvalidCredentials": "Incorrect email or password.",
+  "loginEmailNotVerified": "Your email is not verified yet.",
+  "loginAccountSuspended": "Your account has been suspended. Contact support.",
+  "loginTooManyAttempts": "Too many attempts. Try again in {minutes} minutes.",
+  "@loginTooManyAttempts": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+
+  "registerTitle": "Sign up",
+  "registerRoleQuestion": "You are…",
+  "registerRoleCoach": "Coach",
+  "registerRoleCoachDesc": "Manage clients, schedules, payments.",
+  "registerRoleClient": "Athlete",
+  "registerRoleClientDesc": "Find a coach, track your performance.",
+  "registerCoachTitle": "Coach Sign Up",
+  "registerClientTitle": "Athlete Sign Up",
+  "registerPhoneMandatoryInfo": "Phone number required — verified by SMS.",
+  "registerPhoneAlreadyExists": "This phone number is already linked to an account.",
+  "registerEmailAlreadyExists": "This email address is already in use.",
+  "registerEmailBlocked": "This email address is not accepted.",
+  "registerPasswordWeak": "Password too weak (min 8 chars, 1 uppercase, 1 digit).",
+  "registerPasswordMismatch": "Passwords do not match.",
+  "registerCgu": "I agree to the ",
+  "registerCguLink": "Terms of Service",
+  "registerCreateAccount": "Create my account",
+  "registerPasswordStrengthWeak": "Weak",
+  "registerPasswordStrengthMedium": "Fair",
+  "registerPasswordStrengthStrong": "Strong",
+
+  "otpTitle": "SMS Verification",
+  "otpSubtitle": "Code sent to {phone}",
+  "@otpSubtitle": {
+    "placeholders": { "phone": { "type": "String" } }
+  },
+  "otpVerifyButton": "Verify",
+  "otpResend": "Resend code",
+  "otpResendCooldown": "Resend ({seconds}s)",
+  "@otpResendCooldown": {
+    "placeholders": { "seconds": { "type": "int" } }
+  },
+  "otpWrongNumber": "Change my number",
+  "otpInvalid": "Incorrect code ({remaining} attempt(s) remaining).",
+  "@otpInvalid": {
+    "placeholders": { "remaining": { "type": "int" } }
+  },
+  "otpMaxAttempts": "Too many attempts — request a new code.",
+  "otpAutoFilled": "Code received automatically ✓",
+
+  "emailVerifTitle": "Verify your email",
+  "emailVerifSubtitle": "Link sent to {email}",
+  "@emailVerifSubtitle": {
+    "placeholders": { "email": { "type": "String" } }
+  },
+  "emailVerifResend": "Resend email",
+  "emailVerifWrongEmail": "Wrong email? Back to sign up",
+
+  "forgotPasswordTitle": "Forgot password",
+  "forgotPasswordSubtitle": "Enter your email to receive a reset link.",
+  "forgotPasswordButton": "Send link",
+  "forgotPasswordSuccess": "If this email exists, a link has been sent.",
+  "resetPasswordTitle": "New password",
+  "resetPasswordButton": "Reset password",
+  "resetPasswordSuccess": "Password updated successfully.",
+  "resetPasswordLinkExpired": "Invalid or expired link.",
+
+  "onboardingClientStep1Title": "Welcome! 🎯",
+  "onboardingClientStep1Subtitle": "A few details to personalize your experience.",
+  "onboardingAccessApp": "Go to app →",
+  "onboardingFillQuestionnaire": "Fill questionnaire",
+  "onboardingCoachStep1Title": "Welcome Coach! 🏋️",
+  "onboardingAccessCoachSpace": "Go to my space →",
+  "onboardingContinueSetup": "Continue setup",
+  "onboardingPhoneVerified": "✓ Verified",
+
+  "objectiveWeightLoss": "Weight loss",
+  "objectiveMuscle": "Muscle gain",
+  "objectiveEndurance": "Endurance",
+  "objectiveFitness": "Fitness",
+  "objectivePerformance": "Performance",
+  "objectiveOther": "Other",
+
+  "dashClientGreeting": "Hey {name} 👋",
+  "@dashClientGreeting": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "dashCoachGreeting": "Hello {name} 👋",
+  "@dashCoachGreeting": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "dashNextSession": "Next session",
+  "dashNewRecord": "New record! 🏆",
+
+  "navHome": "Home",
+  "navCoaches": "Coaches",
+  "navAgenda": "Agenda",
+  "navPerfs": "Perfs",
+  "navProfile": "Profile",
+  "navDashboard": "Dashboard",
+  "navClients": "Clients",
+
+  "searchCoachPlaceholder": "Search coaches, specialties…",
+  "searchFilterAll": "All",
+  "searchFilterCertified": "✓ Certified",
+  "searchFilterDiscovery": "🎁 Discovery",
+  "searchFilterAvailable": "📅 Available",
+  "searchSortRelevance": "Relevance",
+  "searchSortPriceAsc": "Price: low to high",
+  "searchSortPriceDesc": "Price: high to low",
+  "searchSortBestRated": "Top rated",
+  "searchNResults": "{count} results",
+  "@searchNResults": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "searchDiscoveryBadge": "🎁 Free discovery session",
+
+  "coachProfileAbout": "About",
+  "coachProfileCertifications": "Certifications",
+  "coachProfileGyms": "Gyms",
+  "coachProfilePricing": "Pricing",
+  "coachProfileAvailability": "Availability",
+  "coachProfileDiscoveryButton": "Request discovery session 🎁",
+  "coachProfileBookButton": "View slots",
+  "coachProfilePendingButton": "Request pending",
+  "coachProfileActiveButton": "Your coach",
+  "coachProfileCertifiedBadge": "✓ Certified",
+  "coachProfileRating": "⭐ {rating} ({count} reviews)",
+  "@coachProfileRating": {
+    "placeholders": {
+      "rating": { "type": "double" },
+      "count": { "type": "int" }
+    }
+  },
+  "coachProfilePricePerSession": "{price}€/session",
+  "@coachProfilePricePerSession": {
+    "placeholders": { "price": { "type": "int" } }
+  },
+  "coachProfileDiscoveryFree": "Free",
+
+  "gymSearchTitle": "Gyms 🏢",
+  "gymTabMyGyms": "My gyms",
+  "gymTabSearch": "Search",
+  "gymSearchCity": "City",
+  "gymSearchCityPlaceholder": "E.g. London, Manchester…",
+  "gymSearchBrand": "Brand",
+  "gymNoFavorites": "No gym added yet.",
+  "gymAddButton": "+ Add a gym",
+  "gymCoachesCount": "{count} coaches available",
+  "@gymCoachesCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "bookingTitle": "Book — {coachName}",
+  "@bookingTitle": {
+    "placeholders": { "coachName": { "type": "String" } }
+  },
+  "bookingSlotAvailable": "Available",
+  "bookingSlotLastPlace": "Last spot",
+  "bookingSlotFull": "Full",
+  "bookingSlotBooked": "Unavailable",
+  "bookingSlotMine": "Your session",
+  "bookingSlotPending": "⏳ Pending",
+  "bookingSlotConfirmed": "✓ Confirmed",
+  "bookingSlotReserve": "Book →",
+  "bookingSlotWaitlist": "Join waitlist →",
+  "bookingPackageRemaining": "{remaining} session(s) left on {name}",
+  "@bookingPackageRemaining": {
+    "placeholders": {
+      "remaining": { "type": "int" },
+      "name": { "type": "String" }
+    }
+  },
+  "bookingNoCredits": "🔒 No sessions available",
+  "bookingContactCoach": "Contact {coachName} to renew your package.",
+  "@bookingContactCoach": {
+    "placeholders": { "coachName": { "type": "String" } }
+  },
+
+  "bookingConfirmTitle": "Confirm booking",
+  "bookingConfirmCoach": "Coach",
+  "bookingConfirmDate": "Date",
+  "bookingConfirmTime": "Time",
+  "bookingConfirmGym": "Gym",
+  "bookingConfirmDiscipline": "Discipline",
+  "bookingConfirmRate": "Rate",
+  "bookingConfirmMessagePlaceholder": "Message to coach (optional)",
+  "bookingConfirmButton": "Confirm ✓",
+
+  "waitlistTitle": "Waitlist",
+  "waitlistSlotFull": "Session full",
+  "waitlistSubtitle": "Join the waitlist to be notified if a spot opens.",
+  "waitlistPlaces": "{count}/4 (full)",
+  "@waitlistPlaces": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "waitlistWaiting": "{count} people waiting",
+  "@waitlistWaiting": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "waitlistConfirmWindow": "⏱️ If a spot opens, you'll have {minutes} minutes to confirm.",
+  "@waitlistConfirmWindow": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+  "waitlistJoinButton": "Join waitlist (position #{position})",
+  "@waitlistJoinButton": {
+    "placeholders": { "position": { "type": "int" } }
+  },
+  "waitlistBackToSlots": "Back to slots",
+
+  "workoutStartTitle": "New session",
+  "workoutStartSubtitle": "Let's go! 🔥",
+  "workoutTypeSolo": "Free",
+  "workoutTypeSoloDesc": "Build your session on the fly",
+  "workoutTypeProgram": "Program",
+  "workoutTypeProgramDesc": "Follow your planned program",
+  "workoutGymOptional": "Gym (optional)",
+  "workoutStartButton": "Start 💪",
+
+  "workoutSessionCancel": "✕ Cancel",
+  "workoutSessionExercises": "{count} exercises",
+  "@workoutSessionExercises": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "workoutSessionFinish": "Finish session ✓",
+  "workoutSessionAddExercise": "+ Add exercise",
+  "workoutSessionMinExercise": "Add at least one exercise",
+
+  "addExerciseScanTab": "📷 Scan QR",
+  "addExerciseManualTab": "✏️ Manual",
+  "addExerciseScanHint": "Scan the machine's QR code",
+  "addExerciseScanNote": "The QR is usually on the machine frame",
+  "addExerciseScanManual": "Enter manually →",
+  "addExerciseSearch": "Search exercises, machines…",
+  "addExerciseScanUnknown": "Machine not found in our database",
+  "addExerciseCatMachines": "🏋️ Machines",
+  "addExerciseCatCardio": "🏃 Cardio",
+  "addExerciseCatFreeWeights": "🔩 Free weights",
+  "addExerciseCatBodyweight": "🤸 Bodyweight",
+
+  "exerciseDetailSeries": "SET",
+  "exerciseDetailReps": "REPS",
+  "exerciseDetailWeight": "WEIGHT (kg)",
+  "exerciseDetailAddSet": "+ Add set",
+  "exerciseDetailVideoGuide": "📹 View guide video",
+  "exerciseDetailNote": "Note (optional)",
+  "exerciseDetailNotePlaceholder": "How it felt, adjustments…",
+  "exerciseDetailValidate": "Confirm exercise ✓",
+  "exerciseDetailRestTimer": "Rest time",
+  "exerciseDetailRestAuto": "Timer starts automatically after each completed set",
+
+  "restTimerTitle": "Rest",
+  "restTimerNextSet": "Next set →",
+  "restTimerSkip": "Skip rest",
+
+  "workoutSummaryTitle": "Session complete",
+  "workoutSummaryCongrats": "Nice work!",
+  "workoutSummarySubtitle": "Session completed successfully",
+  "workoutSummaryDuration": "Duration",
+  "workoutSummaryExercises": "Exercises",
+  "workoutSummarySets": "Sets",
+  "workoutSummaryVolume": "Total volume",
+  "workoutSummaryDetail": "Details",
+  "workoutSummaryFeeling": "Feeling",
+  "workoutSummaryNewRecord": "New record!",
+  "workoutSummarySave": "Save ✓",
+
+  "profileTitle": "Profile",
+  "profileMyGyms": "My gyms",
+  "profileSettings": "Settings",
+  "profileLogout": "Log out",
+  "profileLogoutAll": "Log out from all devices",
+  "profileLogoutConfirm": "Are you sure you want to log out?",
+  "profileDeleteAccount": "Delete account",
+  "profileDeleteConfirm": "Your account will be permanently deleted in 30 days.",
+  "profileCompletionBanner": "💡 Complete your profile for better suggestions",
+
+  "enrollTitle": "Join a coach",
+  "enrollCoachInvite": "{coachName} invites you to join MyCoach.",
+  "@enrollCoachInvite": {
+    "placeholders": { "coachName": { "type": "String" } }
+  },
+  "enrollJoinButton": "Join {coachName}",
+  "@enrollJoinButton": {
+    "placeholders": { "coachName": { "type": "String" } }
+  },
+  "enrollTokenInvalid": "This invitation link is invalid or expired.",
+
+  "splashTagline": "Train smarter"
+}
