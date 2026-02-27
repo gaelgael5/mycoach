@@ -332,5 +332,13 @@
   },
   "enrollTokenInvalid": "This invitation link is invalid or expired.",
 
-  "splashTagline": "Train smarter"
+  "splashTagline": "Train smarter",
+
+  "orSeparator": "or",
+  "validationRequired": "This field is required",
+  "validationEmailInvalid": "Invalid email address",
+  "validationPhoneInvalid": "Invalid format — use international format (+1…)",
+  "validationBirthYearInvalid": "Invalid year",
+  "registerCguRequired": "You must accept the Terms of Service to continue.",
+  "emailVerifResendSuccess": "Verification email resent successfully."
 }

@@ -335,5 +335,26 @@
   },
   "enrollTokenInvalid": "Ce lien d'invitation est invalide ou expiré.",
 
-  "splashTagline": "Train smarter"
+  "splashTagline": "Train smarter",
+
+  "orSeparator": "ou",
+  "@orSeparator": { "description": "Séparateur 'ou' entre les méthodes de connexion" },
+
+  "validationRequired": "Ce champ est obligatoire",
+  "@validationRequired": { "description": "Erreur champ vide" },
+
+  "validationEmailInvalid": "Adresse email invalide",
+  "@validationEmailInvalid": { "description": "Erreur format email" },
+
+  "validationPhoneInvalid": "Format invalide — utilisez le format international (+33…)",
+  "@validationPhoneInvalid": { "description": "Erreur format téléphone E.164" },
+
+  "validationBirthYearInvalid": "Année invalide",
+  "@validationBirthYearInvalid": { "description": "Erreur année de naissance" },
+
+  "registerCguRequired": "Vous devez accepter les CGU pour continuer.",
+  "@registerCguRequired": { "description": "CGU non acceptées" },
+
+  "emailVerifResendSuccess": "Email de vérification renvoyé avec succès.",
+  "@emailVerifResendSuccess": { "description": "Succès renvoi email" }
 }

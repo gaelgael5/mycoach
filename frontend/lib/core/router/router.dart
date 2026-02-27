@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/core_providers.dart';
+import '../../features/auth/presentation/screens/splash_screen.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/register_role_screen.dart';
+import '../../features/auth/presentation/screens/register_client_screen.dart';
+import '../../features/auth/presentation/screens/register_coach_screen.dart';
+import '../../features/auth/presentation/screens/otp_sms_screen.dart';
+import '../../features/auth/presentation/screens/email_verification_screen.dart';
+import '../../features/auth/presentation/screens/forgot_password_screen.dart';
+import '../../features/auth/presentation/screens/reset_password_screen.dart';
 
 // ── Noms des routes (évite les strings libres) ───────────────────────────────
 
@@ -75,49 +84,51 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.splash,
         name: 'splash',
-        builder: (ctx, state) => const _PlaceholderScreen(label: 'Splash'),
+        builder: (ctx, state) => const SplashScreen(),
       ),
 
       // ── Auth ────────────────────────────────────────────────────────────
       GoRoute(
         path: AppRoutes.login,
         name: 'login',
-        builder: (ctx, state) => const _PlaceholderScreen(label: 'Login'),
+        builder: (ctx, state) => const LoginScreen(),
       ),
       GoRoute(
         path: AppRoutes.registerRole,
         name: 'register-role',
-        builder: (ctx, state) => const _PlaceholderScreen(label: 'Choix rôle'),
+        builder: (ctx, state) => const RegisterRoleScreen(),
       ),
       GoRoute(
         path: AppRoutes.registerClient,
         name: 'register-client',
-        builder: (ctx, state) => const _PlaceholderScreen(label: 'Inscription Client'),
+        builder: (ctx, state) => const RegisterClientScreen(),
       ),
       GoRoute(
         path: AppRoutes.registerCoach,
         name: 'register-coach',
-        builder: (ctx, state) => const _PlaceholderScreen(label: 'Inscription Coach'),
+        builder: (ctx, state) => const RegisterCoachScreen(),
       ),
       GoRoute(
         path: AppRoutes.verifyPhone,
         name: 'verify-phone',
-        builder: (ctx, state) => const _PlaceholderScreen(label: 'OTP SMS'),
+        builder: (ctx, state) => const OtpSmsScreen(),
       ),
       GoRoute(
         path: AppRoutes.verifyEmail,
         name: 'verify-email',
-        builder: (ctx, state) => const _PlaceholderScreen(label: 'Vérification Email'),
+        builder: (ctx, state) => const EmailVerificationScreen(),
       ),
       GoRoute(
         path: AppRoutes.forgotPassword,
         name: 'forgot-password',
-        builder: (ctx, state) => const _PlaceholderScreen(label: 'Mot de passe oublié'),
+        builder: (ctx, state) => const ForgotPasswordScreen(),
       ),
       GoRoute(
         path: AppRoutes.resetPassword,
         name: 'reset-password',
-        builder: (ctx, state) => const _PlaceholderScreen(label: 'Réinitialisation'),
+        builder: (ctx, state) => ResetPasswordScreen(
+          token: state.uri.queryParameters['token'],
+        ),
       ),
 
       // ── Onboarding ──────────────────────────────────────────────────────
