@@ -65,7 +65,7 @@ flowchart LR
     MW -->|Lookup api_keys table| DB[(PostgreSQL)]
     DB -->|revoked=FALSE| OK[✅ get_current_user injecté]
     DB -->|revoked=TRUE ou absent| ERR[❌ 401 Unauthorized]
-    ERR --> APP[Android: efface API Key → LoginScreen]
+    ERR --> APP[Flutter: efface API Key → LoginScreen]
 ```
 
 ---
@@ -74,9 +74,12 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    REG[Inscription + Vérification email] --> E1
+    REG["Inscription coach\n(prénom, nom, email, téléphone, password, genre?, CGU)"]
+    REG --> OTP["📱 Vérification SMS OTP\n(6 chars [0-9a-z] — auto-lu Android / AutoFill iOS)"]
+    OTP -->|Code valide| EMAILV["📧 Vérification Email\n(lien 24h)"]
+    EMAILV -->|Lien cliqué| E1
 
-    E1["Étape 1/7 — Obligatoire\nPrénom · Nom · Photo · Tel · Bio"] -->|Accéder à l'app| DASH
+    E1["Étape 1/7 — Obligatoire\nPrénom · Nom · Photo · Bio\n(téléphone déjà vérifié ✓)"] -->|Accéder à l'app| DASH
     E1 -->|Continuer le setup| E2
 
     E2["Étape 2/7 — Jours & horaires"] -->|Terminer plus tard| DASH
@@ -106,7 +109,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    REG[Inscription + Vérification email] --> E1
+    REG["Inscription client\n(prénom, nom, email, password, genre?, CGU)\n→ Vérification email"] --> E1
 
     E1["Étape 1/6 — Obligatoire\nPrénom · Nom · Photo · Tel"] -->|Accéder à l'app| DASH
     E1 -->|Remplir mon questionnaire| E2
@@ -181,6 +184,8 @@ mindmap
       POST /auth/forgot-password
       POST /auth/reset-password
       GET /auth/verify-email
+      POST /auth/verify-phone/request
+      POST /auth/verify-phone/confirm
     Coaches
       GET|PATCH /coaches/me
       GET /coaches/search
@@ -191,6 +196,11 @@ mindmap
       GET|PATCH /clients/me
       POST /clients/questionnaire
       GET /clients/{id}
+    Gyms
+      GET /gyms/search
+      GET /users/me/gyms
+      POST /users/me/gyms
+      DELETE /users/me/gyms/{gym_id}
     Bookings
       POST /bookings
       GET /bookings
@@ -335,4 +345,66 @@ sequenceDiagram
     ADM->>B: Accès /admin/... ET /coaches/... ET /clients/...
     B->>B: require_admin ✅ / require_coach ✅ / require_client ✅
     B-->>ADM: 200 OK
+```
+
+---
+
+## 9. Découverte Coachs — Flux Salles & Recherche
+
+```mermaid
+flowchart TD
+    START([Client ou Coach]) --> TAB["Onglet 'Coachs'\n(barre de navigation)"]
+
+    TAB --> SEARCH["Recherche directe de coachs\npar nom / spécialité / filtre"]
+    SEARCH -->|filtre Salle| GYM_FILTER["Filtre 'Salle'\n(parmi les salles favorites du client)"]
+    GYM_FILTER --> RESULTS
+
+    SEARCH --> RESULTS["Liste coachs\n(filtres: certifié / découverte / dispo / tarif)"]
+    RESULTS --> CARD["Tap card coach\n(badge 🎁 si offers_discovery + 1ère relation)"]
+    CARD --> PROFILE["Profil public coach\n(bio, certifications, salles, tarifs)"]
+
+    PROFILE -->|offers_discovery = true\nET pas de relation préalable| DISCO["Demander séance découverte 🎁\n→ booking type discovery\n→ gratuite ou tarif réduit"]
+    PROFILE -->|relation active| BOOK["Réserver une séance\n→ BookingCalendarScreen"]
+    DISCO --> PENDING["Statut: pending_coach_validation\n→ notif coach + client"]
+
+    subgraph GYMS ["Gestion des salles (via Profil)"]
+        PROFIL_USR["Profil → Mes salles"] --> ADD_GYM["Recherche salle\n(par ville + enseigne)"]
+        ADD_GYM --> FAV["POST /users/me/gyms\n→ salle favorite ajoutée"]
+        FAV --> GYM_FILTER
+    end
+```
+
+---
+
+## 10. `offers_discovery` — Cycle de vie du badge découverte
+
+```mermaid
+sequenceDiagram
+    actor Coach as Coach
+    actor Client as Client
+    participant A as Flutter App
+    participant B as Backend API
+
+    note over Coach,B: Configuration par le coach
+    Coach->>A: Profil → Tarifs → Toggle "Séance découverte"
+    A->>B: PATCH /coaches/me/profile {offers_discovery: true,<br/>discovery_price: 0, discovery_duration: 60}
+    B-->>A: 200 OK — flag activé
+
+    note over Client,B: Recherche côté client
+    Client->>A: Onglet Coachs → recherche
+    A->>B: GET /coaches/search?...
+    B->>B: Pour chaque coach :<br/>Si offers_discovery=true\nET pas de relation existante avec ce client\n→ badge affiché
+    B-->>A: [{coach_id, ..., shows_discovery_badge: true}, ...]
+    A-->>Client: Badge "🎁 Séance découverte" visible sur la card
+
+    note over Client,B: Réservation découverte
+    Client->>A: Tap "Demander une séance découverte 🎁"
+    A->>B: POST /bookings {type: "discovery", coach_id: ...}
+    B->>B: Vérifie pas de relation préalable\n→ crée booking type=discovery (pas de crédit requis)
+    B-->>A: 201 Created {status: "pending_coach_validation"}
+
+    note over Client,B: Badge masqué après consommation
+    Coach->>B: PATCH /bookings/{id}/done
+    B->>B: session.status = "done"\nRelation active entre client et coach\n→ shows_discovery_badge = false pour ce couple
+    B-->>Client: Push "Séance découverte effectuée ✓"
 ```

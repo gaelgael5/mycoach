@@ -63,13 +63,15 @@ L'application Flutter est **responsive dès le premier écran** :
 ### Informations obligatoires (non différables)
 | Rôle | Obligatoire au premier lancement |
 |------|----------------------------------|
-| Coach | Prénom + Nom + Email + Password (ou Google) + CGU |
+| Coach | Prénom + Nom + Email + Password (ou Google) + **Téléphone (E.164)** + CGU |
 | Client | Prénom + Nom + Email + Password (ou Google) + CGU |
+
+> ⚠️ **Le téléphone est obligatoire pour les coaches dès l'inscription** — validé par OTP SMS *avant* la vérification email.
 
 ### Informations différables (complétables plus tard)
 | Champ | Coach | Client |
 |-------|-------|--------|
-| Téléphone | ✅ Plus tard | ✅ Plus tard |
+| Téléphone | ❌ Obligatoire à l'inscription | ✅ Plus tard |
 | Photo de profil | ✅ Plus tard | ✅ Plus tard |
 | Pays / Langue | Auto-détecté (modifiable plus tard) | Auto-détecté |
 | Biographie | ✅ Plus tard | — |
@@ -83,7 +85,8 @@ L'application Flutter est **responsive dès le premier écran** :
 | Poids / Taille | — | ✅ Plus tard |
 
 ### Comportement du wizard
-1. **Étape 1** : Prénom + Nom + Email + Password + CGU → bouton "Créer mon compte"
+1. **Étape 1 (Client)** : Prénom + Nom + Email + Password + CGU → "Créer mon compte" → vérification email → Onboarding
+1. **Étape 1 (Coach)** : Prénom + Nom + Email + Password + Téléphone + CGU → "Créer mon compte" → **OTP SMS** → vérification email → Onboarding
 2. Après création : l'utilisateur est connecté et voit son profil incomplet
 3. Un **bandeau de complétion** (barre de progression en haut du Dashboard) indique le % de profil rempli
 4. Chaque section manquante affiche un bouton "Compléter" avec une explication courte
@@ -210,7 +213,7 @@ get_current_user → tout utilisateur authentifié (sans contrainte de rôle)
 | Créer un profil client | ✅ | ✅ | ✅ |
 | Créer un profil coach | ❌ | ✅ | ✅ |
 | Modifier bio, certifications, spécialités | ❌ | ✅ | ✅ |
-| Gérer ses salles de sport associées | ❌ | ✅ | ✅ |
+| Gérer ses salles de sport associées | ✅ | ✅ | ✅ |
 | Gérer ses disponibilités / horaires | ❌ | ✅ | ✅ |
 | Politique d'annulation | ❌ | ✅ | ✅ |
 | Templates de messages d'annulation (SMS) | ❌ | ✅ | ✅ |
@@ -230,10 +233,13 @@ get_current_user → tout utilisateur authentifié (sans contrainte de rôle)
 
 | Fonctionnalité | Client | Coach | Admin |
 |----------------|--------|-------|-------|
-| Rechercher un coach (filtres, localisation) | ✅ | ✅ | ✅ |
+| Rechercher une salle de sport (par ville/enseigne) | ✅ | ✅ | ✅ |
+| Enregistrer des salles favorites | ✅ | ✅ | ✅ |
+| Déclarer ses salles de travail (profil coach) | ❌ | ✅ | ✅ |
+| Rechercher un coach (filtres, localisation, salle) | ✅ | ✅ | ✅ |
 | Voir la fiche publique d'un coach | ✅ | ✅ | ✅ |
 | Voir les liens sociaux publics d'un coach | ✅ | ✅ | ✅ |
-| Demander une séance découverte | ✅ | ✅ | ✅ |
+| Demander une séance découverte (si flag actif) | ✅ | ✅ | ✅ |
 
 #### Réservations — côté client
 
@@ -354,6 +360,7 @@ get_current_user → tout utilisateur authentifié (sans contrainte de rôle)
 - Prénom (min 2 chars, max 150 chars — noms internationaux supportés)
 - Nom (min 2 chars, max 150 chars — noms internationaux supportés)
 - Email (format RFC5322, unicité vérifiée côté serveur)
+- **Téléphone (E.164)** — indicatif pays auto-détecté depuis la locale (sélecteur modifiable) ; format +33 6 12 34 56 78
 - Mot de passe (min 8 chars, au moins 1 majuscule + 1 chiffre)
 - Confirmation mot de passe
 - Case "J'accepte les CGU"
@@ -362,41 +369,55 @@ get_current_user → tout utilisateur authentifié (sans contrainte de rôle)
 - Pays : auto-détecté depuis la locale système
 - Langue : auto-détectée depuis la locale système
 
-**Champs OPTIONNELS (différables, complétables depuis le profil) :**
-- Genre : `male` | `female` | `other` (non chiffré)
+**Champs OPTIONNELS à l'inscription (complétables ici ou plus tard) :**
+- Genre : `male` | `female` | `other` (non chiffré) — affiché dès le formulaire d'inscription
 - Année de naissance : ex. 1990 (l'âge est calculé à l'affichage)
 
-> ℹ️ Téléphone, photo, spécialités, salles, tarifs, horaires → tous différables, complétables depuis le profil.
+> ℹ️ Photo, spécialités, salles, tarifs, horaires → différables, complétables depuis le profil.
 
 **Validations en temps réel :**
 - Email : vérification format à la sortie du champ
+- Téléphone : validation format E.164 + indicatif pays
 - Password strength indicator (faible / moyen / fort)
 - Confirm password : comparaison en temps réel
 
 **Action "S'inscrire" :**
-- Disabled tant que tous les champs ne sont pas valides
+- Disabled tant que tous les champs obligatoires ne sont pas valides
 - Tap → loader → appel API `POST /auth/register`
-- Succès → création compte (statut `unverified`) → envoi email de vérification → redirect `EmailVerificationScreen`
-- Erreur email déjà utilisé → message inline sous le champ : "Cette adresse email est déjà utilisée"
-- Erreur serveur → toast : "Erreur lors de l'inscription, veuillez réessayer"
+- Succès → **flux en 2 temps :**
 
-**Écran EmailVerificationScreen :**
+**Étape A — Vérification SMS (OTP) :**
+- Redirect `PhoneVerificationScreen`
+- SMS envoyé automatiquement au numéro saisi
+- 6 cases d'entrée du code (`[0-9a-z]`, 6 chars)
+- Android : SMS auto-lu via SMS Retriever (aucune saisie manuelle)
+- iOS : suggestion AutoFill clavier (textContentType: oneTimeCode)
+- Bouton "Renvoyer le code" (cooldown 60s)
+- Bouton "Modifier mon numéro" → retour formulaire
+- Succès OTP → compte `phone_verified` → redirect `EmailVerificationScreen`
+
+**Étape B — Vérification email :**
 - Message : "Un email a été envoyé à [email]"
-- Bouton "Renvoyer l'email" (cooldown 60s entre chaque envoi, compteur visible)
+- Bouton "Renvoyer l'email" (cooldown 60s)
 - Lien "Mauvais email ? → Retour à l'inscription"
 - Durée de validité du lien : 24h
-
-**Clic sur le lien email :**
-- Token vérifié côté serveur → compte activé → deep link → app ouverte
+- Clic sur le lien : token vérifié → compte `active` → deep link → app ouverte
 - Si token expiré → page web d'erreur avec bouton "Renvoyer un nouveau lien"
-- Si token invalide → message "Lien invalide"
-- Succès → redirect `CoachOnboardingScreen` (étape 1/5)
+- Succès → redirect `CoachOnboardingScreen` (étape 1/7)
+
+**Erreurs inscription :**
+- Email déjà utilisé → message inline : "Cette adresse email est déjà utilisée"
+- Téléphone déjà utilisé → message inline : "Ce numéro est déjà associé à un compte"
+- Erreur serveur → toast : "Erreur lors de l'inscription, veuillez réessayer"
 
 ---
 
 ### 1.2 Inscription Client
-Identique à 1.1 avec rôle = Client.
-Après vérification email → redirect `ClientOnboardingScreen` (questionnaire, étape 1/6)
+Similaire à 1.1 avec les différences suivantes :
+- **Téléphone : optionnel** à l'inscription (pas de validation OTP immédiate)
+- **Genre** : optionnel, affiché sur le formulaire d'inscription (comme pour le coach)
+- Flux : Inscription → Vérification email → `ClientOnboardingScreen` (questionnaire, étape 1/6)
+- Pas d'étape OTP SMS à l'inscription (le téléphone peut être ajouté et validé plus tard depuis le profil)
 
 ---
 
@@ -480,9 +501,11 @@ Lors de l'inscription, le serveur vérifie que le domaine de l'adresse email n'e
 
 ### 1.7 Validation du numéro de téléphone (OTP SMS)
 
-Le téléphone est **obligatoire pour les coaches** et doit être validé par OTP SMS.
+Le téléphone est **obligatoire pour les coaches** (saisi à l'inscription) et **optionnel pour les clients** (différable, depuis le profil).
 
-**Déclenchement :** pendant l'onboarding coach (étape "Informations de contact") ou depuis Profil → Téléphone.
+**Déclenchement :**
+- **Coach** : immédiatement après le formulaire d'inscription, avant la vérification email
+- **Client** : depuis Profil → Téléphone (si le client souhaite ajouter/valider son numéro)
 
 **Algorithme OTP :**
 - 6 caractères aléatoires parmi `[0-9a-z]` (36 chars)
@@ -519,7 +542,14 @@ Tout utilisateur peut renseigner :
 - **Genre** : homme (`male`) / femme (`female`) / autre (`other`) — 3 valeurs
 - **Année de naissance** : ex. 1990 (l'âge est calculé à l'affichage)
 
-Ces informations sont optionnelles et modifiables à tout moment via `PATCH /users/me/profile`.
+**Saisie possible dès le formulaire d'inscription** (coach ET client) — affichés comme champs optionnels directement dans le formulaire pour favoriser la complétion. Modifiables à tout moment depuis le profil.
+
+**Composant UI (Flutter) :** 3 boutons segmentés avec icônes
+- ♂ Homme / ♀ Femme / ⚧ Autre
+- Non renseigné par défaut (aucun pré-sélectionné)
+- Peut être ignoré sans blocage
+
+**Impact avatar :** Le choix du genre détermine l'avatar par défaut affiché (§1.9).
 
 **API :**
 | Méthode | Endpoint | Description |
@@ -608,6 +638,93 @@ Affiché tant que le questionnaire est incomplet :
 └─────────────────────────────────────────────────────────┘
 ```
 
+---
+
+## 3. GESTION DES SALLES DE SPORT
+
+> Les salles de sport sont le point d'entrée pour trouver un coach. Les deux rôles (client et coach) interagissent avec les salles, mais différemment.
+
+### 3.1 Rôle des salles par type d'utilisateur
+
+| Utilisateur | Usage | Description |
+|-------------|-------|-------------|
+| **Coach** | Salles de travail | Déclare les clubs où il exerce → alimente son profil public + filtres de recherche |
+| **Client** | Salles favorites | Enregistre les clubs qu'il fréquente → permet de filtrer les coachs disponibles dans ces salles |
+
+### 3.2 Salles favorites côté client
+
+**Accès :** Profil → Mes salles *(ou prompt à la première recherche de coach)*
+
+**Fonctionnement :**
+- Le client peut rechercher et enregistrer jusqu'à **10 salles favorites**
+- Ces salles sont utilisées comme filtre pré-sélectionné lors de la recherche de coachs
+- Elles peuvent être utilisées lors de la saisie d'une séance de tracking libre
+
+**Recherche d'une salle :**
+- Barre de recherche par **ville** ou **code postal**
+- Filtre par **enseigne** (multi-select : Fitness Park, Basic-Fit, CMG Sports Club, Neoness, Keep Cool, L'Orange Bleue, Cercle, Episod, etc.)
+- Résultats : nom salle, adresse, enseigne, nb de coachs disponibles dans cette salle
+- Tap → ajout en favoris
+
+**Gestion :**
+- Liste "Mes salles" avec bouton ✕ pour retirer une salle
+- Bouton "+ Ajouter une salle" → revient à la recherche
+
+**Modèle de données — Table `user_gym_favorites` :**
+| Champ | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | PK |
+| `user_id` | UUID FK | Utilisateur (client ou coach) |
+| `gym_id` | UUID FK | Référence `gyms.id` |
+| `added_at` | TIMESTAMPTZ | UTC |
+
+**Contrainte :** `UNIQUE (user_id, gym_id)` — pas de doublons
+
+**API :**
+| Méthode | Endpoint | Auth | Description |
+|---------|----------|------|-------------|
+| GET | `/users/me/gyms` | Client/Coach | Lister ses salles favorites |
+| POST | `/users/me/gyms` | Client/Coach | Ajouter une salle `{ gym_id }` |
+| DELETE | `/users/me/gyms/{gym_id}` | Client/Coach | Retirer une salle |
+
+### 3.3 Salles de travail côté coach
+
+**Accès :** Onboarding étape 5/7 OU Profil coach → Mes salles
+
+**Fonctionnement :**
+- Le coach déclare les clubs où il exerce (multi-select, pas de limite fixe)
+- Ces salles apparaissent sur son profil public (§11.2) comme chips cliquables
+- Elles alimentent les résultats de recherche : un coach n'apparaît dans les résultats d'une salle que s'il y est déclaré
+- Gérées via le même endpoint `users/me/gyms` (la distinction coach/client est faite par le rôle)
+
+### 3.4 Recherche de salles (moteur commun)
+
+**Endpoint :** `GET /gyms/search`
+
+**Paramètres :**
+| Paramètre | Type | Description |
+|-----------|------|-------------|
+| `q` | string | Ville, CP, ou nom de salle |
+| `brand` | string[] | Filtre enseigne (slug : `fitness_park`, `basic_fit`, `neoness`…) |
+| `country` | string | ISO 3166-1 alpha-2 (défaut = pays de l'utilisateur) |
+| `page` / `limit` | int | Pagination |
+
+**Réponse par salle :**
+```json
+{
+  "id": "uuid",
+  "name": "Fitness Park Bondy",
+  "brand": "fitness_park",
+  "address": "12 rue de la République",
+  "city": "Bondy",
+  "postal_code": "93140",
+  "country": "FR",
+  "coaches_count": 8,
+  "is_favorite": true
+}
+```
+
+---
 
 > **Philosophie : wizard minimaliste. Seule l'étape 1 est obligatoire.**
 > Le coach peut accéder au Dashboard dès l'étape 1 validée.
@@ -1081,8 +1198,8 @@ Le coach peut accorder à un client spécifique **l'accès sans forfait** (régl
   - 🟢 Disponible : tap pour réserver *(si `client_can_book = true`)*
   - 🟠 Dernière place (1 place restante) : tap + avertissement *(si `client_can_book = true`)*
   - 🔴 Complet : tap → `WaitlistJoinModal`
-  - ⬛ Non disponible (passé ou bloqué)
-  - 🟡 Déjà réservé par le client : indicateur "Votre séance"
+  - ⬛ **Non disponible** (`booked`) : créneau indisponible — soit occupé par un autre client (séance individuelle complète), soit bloqué par le coach (repos, congé, indisponibilité personnelle). Affiché grisé, non tappable.
+  - 🟡 **Votre séance** (`mine`) : le client a déjà une réservation sur ce créneau — statut `pending_coach_validation` (en attente de confirmation du coach) ou `confirmed`. Indicateur "⏳ En attente" si `pending_coach_validation`, "✓ Confirmée" si `confirmed`.
   - 🔒 **Pas de crédit disponible** *(si `client_can_book = false`)* : tous les créneaux affichent une icône 🔒 et un bandeau :
 
 ```
@@ -1303,13 +1420,19 @@ Le coach peut accorder à un client spécifique **l'accès sans forfait** (régl
 - Club spécifique (dépend de la chaîne sélectionnée)
 - Spécialité (multi-select)
 - Tarif max (slider 20€–200€, par incrément de 5€)
-- Séance découverte gratuite (toggle)
+- Séance découverte (toggle) — filtre `offers_discovery = true`
 - Badge "Certifié ✓" (toggle)
 - Disponible cette semaine (toggle)
 
+**Badge "Séance découverte gratuite" sur les cards résultats :**
+- Affiché uniquement si `coach_profile.offers_discovery = true`
+- Apparaît sur la card dans la liste de résultats
+- Visible seulement pour les clients qui **n'ont jamais eu de séance avec ce coach** (1ère relation)
+- Si la séance découverte a déjà été consommée avec ce coach → badge masqué
+
 **Résultats :**
 - Liste (défaut) ou grille (switch)
-- Chaque card : photo, nom, spécialités (3 max avec badge overflow "+2"), tarif/séance, note (si disponible), badge certifié
+- Chaque card : photo, nom, spécialités (3 max avec badge overflow "+2"), tarif/séance, note (si disponible), badge certifié, badge découverte (si applicable)
 - Tri : Pertinence / Prix croissant / Prix décroissant / Les mieux notés
 - Pagination ou scroll infini
 
@@ -1324,19 +1447,29 @@ Le coach peut accorder à un client spécifique **l'accès sans forfait** (régl
 - Disponibilités : "Généralement disponible : Lun, Mer, Ven — 9h–19h"
 - Note et avis (phase 2)
 - Bouton principal :
-  - "Demander une séance découverte" si disponible et pas encore en relation
-  - "Réserver une séance" si déjà en relation active
-  - "Demande en cours" (grisé) si demande déjà envoyée
-  - "Votre coach" (grisé) si relation active
+  - **"Demander une séance découverte 🎁"** si `coach_profile.offers_discovery = true` ET client sans relation préalable avec ce coach
+  - **"Réserver une séance"** si déjà en relation active
+  - **"Demande en cours"** (grisé) si demande découverte déjà envoyée et non traitée
+  - **"Votre coach"** (grisé) si relation active
+  - *(Le bouton découverte disparaît définitivement après consommation de la 1ère séance avec ce coach)*
 
 ### 11.3 Demande de découverte
-- Tap "Demander une séance découverte"
+
+**Règle métier `offers_discovery` :**
+- Flag `coach_profile.offers_discovery: bool` — configurable par le coach dans ses tarifs (§6 Onboarding étape 6/7)
+- Quand `true` : affiché sur le profil public + badge dans les résultats de recherche
+- La séance découverte est une **première prise de contact**, gratuite ou à tarif réduit selon config du coach
+- **Visibilité du badge :** uniquement pour les clients sans relation préalable avec ce coach — disparaît après consommation de la 1ère séance
+
+**Flux :**
+- Tap "Demander une séance découverte 🎁"
 - Modal :
-  - Info : tarif de la découverte (gratuite ou payante selon config coach)
+  - Info : tarif de la découverte (gratuite ou payante selon config coach), durée
   - Message optionnel pour le coach (placeholder : "Parlez-lui de vos objectifs...")
   - Bouton "Envoyer la demande"
-- → Statut `pending` → notif coach → notif client "Demande envoyée ✓"
-- Client peut annuler la demande tant que le coach n'a pas répondu (bouton dans onglet "Mes coachs")
+- → Création booking type `discovery` → statut `pending_coach_validation` → notif coach → notif client "Demande envoyée ✓"
+- Client peut annuler la demande tant que le coach n'a pas confirmé (bouton dans onglet "Mes coachs")
+- **Pas de crédit requis** pour une séance `discovery` (exception à la règle §8)
 
 ---
 
@@ -1431,14 +1564,27 @@ Le coach peut accorder à un client spécifique **l'accès sans forfait** (régl
 - Bouton "📹 Voir la vidéo guide" → mini player inline
 - Liste des séries :
   - Chaque série : Série N | [stepper reps] | [input poids kg] | ✓ (done toggle)
+  - Validation d'une série (tap ✓) → **déclenche automatiquement le timer de repos** (si activé)
   - Swipe gauche sur une série → bouton rouge "Supprimer"
   - Bouton "+ Ajouter une série" (copie valeurs de la dernière série par défaut)
+
+**⏱️ Timer de repos — configuration par exercice :**
+- Toggle "Temps de repos automatique" (activé par défaut)
+- Quand activé :
+  - Presets rapides : **30s / 1min / 1m30 / 2min / 3min** (sélectionnable en un tap)
+  - Valeur retenue par exercice (mémorisée pour cet exercice dans la session)
+  - Le timer se lance automatiquement après chaque série validée → `RestTimerScreen` (plein écran)
+  - Sur `RestTimerScreen` : +30s / −15s, ignorer le repos, série suivante
+- Quand désactivé : aucun timer, enchaînement libre des séries
+
+> **Distinction avec le temps de repos global (programmes)** : les programmes (§14.3) définissent un temps de repos *recommandé global* pour la séance. En séance libre (`WorkoutStartScreen`), le temps de repos est configuré *par exercice* dans ce modal. Les deux coexistent — le temps par exercice a priorité en séance libre.
+
 - Note sur cet exercice (texte libre, max 200 chars)
 - Bouton "Valider" → retour à `WorkoutSessionScreen`
 
 **Validations :**
 - Reps : min 1, max 999, entier
-- Poids : min 0 (corps du corps), max 999, décimale possible (ex: 22.5 kg)
+- Poids : min 0 (poids du corps), max 999, décimale possible (ex: 22.5 kg)
 - Au moins 1 série requise pour valider
 
 ### 13.6 Fin de séance
@@ -2003,13 +2149,19 @@ CREATE INDEX idx_bank_accounts_coach ON coach_bank_accounts (coach_id);
 
 ### 22.1 Paramètres Coach
 - Modifier photo, prénom, nom, bio
+- **Genre** (optionnel : Homme / Femme / Autre)
+- **Année de naissance** (optionnel)
+- **Numéro de téléphone** (obligatoire, validé OTP — modifiable si besoin de changer de numéro)
 - **Pays** (ISO 3166-1 — affecte la devise par défaut et le filtrage des salles)
 - **Langue / Culture** (BCP 47 : `fr-FR`, `en-US`, `es-ES`… — change l'UI immédiatement)
 - **Devise** (ISO 4217 : EUR, USD, GBP… — appliquée à tous les tarifs)
 - Spécialités (ajout/suppression)
 - Certifications (ajout/suppression/modification)
-- Salles (ajout/suppression, filtrées par pays)
-- Tarifs et forfaits
+- Salles de travail (ajout/suppression, filtrées par pays) — §3.3
+- Tarifs et forfaits :
+  - Séance unitaire
+  - Forfaits
+  - **Toggle "Séance découverte" (`offers_discovery`)** — active/désactive le badge et la fonctionnalité de 1ère séance découverte ; configurable : gratuite ou tarif réduit + durée
 - Disponibilités (modifier les créneaux récurrents)
 - Politique d'annulation (§9.6)
 - Intégrations : Google Calendar, Strava
@@ -2021,12 +2173,15 @@ CREATE INDEX idx_bank_accounts_coach ON coach_bank_accounts (coach_id);
 
 ### 22.2 Paramètres Client
 - Modifier photo, prénom, nom
+- **Genre** (optionnel : Homme / Femme / Autre)
+- **Année de naissance** (optionnel)
+- **Numéro de téléphone** (optionnel — si renseigné : validé par OTP SMS)
 - **Pays** (ISO 3166-1 — affecte les salles disponibles et la devise affichée)
 - **Langue / Culture** (BCP 47 — change l'UI immédiatement)
 - **Unité de poids** (kg / lb — affecte l'affichage des perfs et de la balance)
 - Fuseau horaire (auto-détecté, modifiable — affecte l'affichage des horaires de séances)
 - Refaire le questionnaire (objectif, fréquence, équipement)
-- Salles fréquentées (filtrées par pays)
+- **Mes salles favorites** (ajout/suppression, filtrage par pays) — §3.2
 - Poids et taille (pour calcul IMC, stocké en kg, affiché selon préférence)
 - Poids cible (optionnel)
 - Intégrations : Strava, Google Calendar, Balance connectée
@@ -2043,7 +2198,7 @@ CREATE INDEX idx_bank_accounts_coach ON coach_bank_accounts (coach_id);
 ## 23. BACK-OFFICE ADMIN
 
 ### 23.1 Dashboard admin
-- KPIs : Coachs actifs / Clients actifs / Séances ce mois / Machines en attente de modération / Vidéos en génération
+- KPIs : Coachs actifs / Clients actifs / Séances ce mois / Machines en attente de modération / Vidéos en génération / **Coachs sans téléphone vérifié** / **Coachs avec séance découverte active**
 - Graphiques : inscriptions par jour (courbe 30j), séances par jour
 
 ### 23.2 Modération machines
@@ -2073,7 +2228,16 @@ CREATE INDEX idx_bank_accounts_coach ON coach_bank_accounts (coach_id);
 - Historique des générations par exercice (date, statut, prompt utilisé)
 - Coût estimé API (si disponible)
 
-### 23.5 Gestion du répertoire salles
+### 23.5 Gestion des profils coaches
+- Tableau filtrable : tous coachs / **sans téléphone vérifié** / **avec découverte active**
+- Colonnes : Nom, Email, Téléphone (✓ vérifié / ✗ non vérifié), `offers_discovery`, Nb clients, Salles déclarées, Inscrit le
+- Actions :
+  - Voir le profil complet
+  - Envoyer un rappel de vérification téléphone (si non vérifié)
+  - Suspendre / réactiver le coach
+  - Forcer la désactivation de `offers_discovery` si abus signalé
+
+### 23.6 Gestion du répertoire salles
 - Tableau filtrable par : chaîne, **pays (ISO 3166-1)**, ville, CP
 - Bouton "Importer CSV" → format attendu :
   ```
@@ -2497,6 +2661,7 @@ https://mycoach.app/enroll/{token}   ← Lien web (futur)
 | 2.4 | 27/02/2026 | §27 Suggestions & Bug Reports · §28 Paramètres de santé modulables + historique + partage par coach par paramètre |
 | 2.5 | 27/02/2026 | §29 Liens d'enrôlement coach : token sécurisé (label / expiration / max_uses) · `/coaches/me/enrollment-tokens` CRUD · `/enroll/{token}` public · `enrollment_token` optionnel à l'inscription → coaching_relation auto · §0.4 Matrice Onboarding mise à jour |
 | 3.0 | 27/02/2026 | Migration frontend Kotlin/Android → Flutter (Android + iOS + Web) · Riverpod + go_router + Dio · Scaffold projet frontend/ · TASKS_FLUTTER.md créé · DEV_ENVIRONMENT, DEV_ROADMAP, CODING_AGENT mis à jour |
+| 3.1 | 27/02/2026 | **Téléphone coach obligatoire à l'inscription** — OTP SMS avant vérification email (nouveau flux Coach : inscription → OTP → email → onboarding) · **Téléphone client optionnel** (différable depuis profil) · **Genre affiché dès le formulaire d'inscription** (coach et client) · **§3 Gestion des salles** : client ET coach ont des salles (table `user_gym_favorites`) ; coach = salles de travail, client = salles favorites · **Matrice accès §0.4** : salles mises à ✅ pour Client + nouvelles lignes recherche salle · **`offers_discovery`** flag sur `coach_profile` : configurable dans tarifs, badge visible en recherche jusqu'à 1ère séance consommée · **Statuts créneaux clarifiés** : `mine` = `pending_coach_validation`, `booked` = occupé/bloqué · **Timer de repos par exercice** (`ExerciseDetailModal`) coexiste avec le temps global des programmes · **§22 Paramètres** : genre + téléphone + salles ajoutés profils coach et client · **§23.5 (nouveau)** Gestion profils coaches back-office + §23.6 renommé salles |
 
 ---
 

@@ -4,7 +4,7 @@
 
 ---
 
-## 1. Inscription (Email)
+## 1a. Inscription Client (Email)
 
 ```mermaid
 sequenceDiagram
@@ -13,17 +13,86 @@ sequenceDiagram
     participant B as Backend API
     participant E as Email Service
 
-    U->>A: Saisit prénom, nom, email, password, accepte CGU
+    U->>A: Saisit prénom, nom, email, password<br/>± genre (optionnel), accepte CGU
     A->>A: Validation temps réel (format email, force password)
-    A->>B: POST /auth/register<br/>{first_name, last_name, email, password, role}
+    A->>B: POST /auth/register<br/>{first_name, last_name, email, password, role: "client",<br/>gender? (optionnel)}
     alt Email déjà utilisé
         B-->>A: 409 Conflict<br/>{detail: "email_already_exists"}
         A-->>U: Message inline "Cette adresse email est déjà utilisée"
+    else Domaine email bloqué
+        B-->>A: 422 Unprocessable<br/>{detail: "blocked_email_domain"}
+        A-->>U: "Cette adresse email n'est pas acceptée"
     else Succès
         B->>B: Hash bcrypt(password)<br/>Génère email_hash = SHA256(lower(email))<br/>Crée user (statut: unverified)
         B->>E: Envoie email de vérification (token 24h)
         B-->>A: 201 Created<br/>{user_id, email, role}
         A-->>U: Redirect → EmailVerificationScreen
+    end
+```
+
+---
+
+## 1b. Inscription Coach (Email + OTP SMS obligatoire)
+
+> ⚠️ Le coach doit valider son téléphone **avant** la vérification email.
+
+```mermaid
+sequenceDiagram
+    actor U as Coach
+    participant A as Flutter App
+    participant B as Backend API
+    participant S as SMS Provider
+    participant E as Email Service
+
+    U->>A: Saisit prénom, nom, email, téléphone (E.164),<br/>password ± genre (optionnel), accepte CGU
+    A->>A: Validation temps réel
+    A->>B: POST /auth/register<br/>{first_name, last_name, email, phone, password,<br/>role: "coach", gender? (optionnel)}
+
+    alt Email déjà utilisé
+        B-->>A: 409 {detail: "email_already_exists"}
+        A-->>U: "Cette adresse email est déjà utilisée"
+    else Téléphone déjà utilisé
+        B-->>A: 409 {detail: "phone_already_exists"}
+        A-->>U: "Ce numéro est déjà associé à un compte"
+    else Domaine email bloqué
+        B-->>A: 422 {detail: "blocked_email_domain"}
+        A-->>U: "Cette adresse email n'est pas acceptée"
+    else Succès création
+        B->>B: Hash bcrypt(password) · Crée user (statut: unverified)<br/>Stocke phone_hash en attente de vérification<br/>Génère OTP 6 chars [0-9a-z] (expire 10min)
+        B->>S: SMS "<#> Votre code MyCoach : {otp}\n{app_hash}"
+        B-->>A: 201 Created {user_id, role, phone_pending_verification: true}
+        A-->>U: Redirect → PhoneVerificationScreen
+
+        note over U,S: ── Vérification SMS (étape A) ──
+
+        alt Android SMS Retriever disponible
+            S-->>A: SMS reçu auto
+            A->>A: Extrait code (hash match)
+            A-->>U: Code auto-rempli ✓ (zéro saisie)
+        else Saisie manuelle
+            U->>A: Saisit le code à 6 caractères
+        end
+
+        A->>B: POST /auth/verify-phone/confirm {code: "a3f7k2"}
+        alt Code valide
+            B->>B: phone_verified_at = now()
+            B->>E: Envoie email de vérification (token 24h)
+            B-->>A: 204 No Content
+            A-->>U: Redirect → EmailVerificationScreen
+
+            note over U,E: ── Vérification Email (étape B) ──
+
+            U->>E: Clique lien email
+            B->>B: user.status = "active"
+            B-->>A: Deep link → mycoach://verify?success=true
+            A-->>U: Redirect → CoachOnboardingScreen (étape 1/7)
+        else Code invalide / expiré
+            B-->>A: 400 {detail: "invalid_otp", attempts_left: N}
+            A-->>U: "Code incorrect (N tentative(s) restante(s))"
+        else Max tentatives atteint
+            B-->>A: 429 {detail: "otp_max_attempts"}
+            A-->>U: "Trop de tentatives — demandez un nouveau code"
+        end
     end
 ```
 
@@ -218,7 +287,9 @@ flowchart TD
 
     POST_LOGIN -->|Succès| STORE[Stocke API Key<br/>EncryptedSharedPrefs AES-256]
     POST_GOOGLE -->|Succès| STORE
-    POST_REGISTER -->|Succès| EMAIL_VERIF[Vérification Email]
+    POST_REGISTER -->|Client| EMAIL_VERIF[Vérification Email]
+    POST_REGISTER -->|Coach| OTP_VERIF[Vérification SMS OTP]
+    OTP_VERIF -->|Code valide| EMAIL_VERIF
     EMAIL_VERIF -->|Token vérifié| STORE
 
     STORE --> DASH
@@ -232,6 +303,9 @@ flowchart TD
 
 ## 9. Validation du numéro de téléphone (OTP SMS)
 
+> **Coach :** déclenchée automatiquement à l'inscription (après création du compte, avant email).
+> **Client :** déclenchée depuis Profil → Téléphone (optionnel, différable).
+
 ```mermaid
 sequenceDiagram
     actor U as Utilisateur
@@ -239,7 +313,8 @@ sequenceDiagram
     participant B as Backend API
     participant S as SMS Provider
 
-    U->>A: Onboarding / Profil → saisit numéro de téléphone
+    note over U,S: Coach: déclenché auto à l'inscription<br/>Client: déclenché depuis Profil → Téléphone
+    U->>A: [Coach] Après inscription — [Client] Profil → Téléphone
     A->>B: POST /auth/verify-phone/request
     B->>B: Vérifie rate limit (max 3/heure)<br/>Génère OTP 6 chars [0-9a-z]<br/>Stocke en DB (expire 10min)
     B->>S: Envoie SMS "<#> Code : {otp}\n{hash}"
