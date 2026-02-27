@@ -33,14 +33,14 @@ class TestClientProfile:
         resp = await client.post("/clients/profile", json=BASE_CLIENT, headers={"X-API-Key": client_api_key})
         assert resp.status_code == 409
 
-    async def test_create_profile_wrong_role(
+    async def test_coach_can_also_create_client_profile(
         self, client: AsyncClient, coach_api_key: str
     ):
-        """❌ Coach ne peut pas créer un profil client → 403."""
+        """✅ Un coach peut aussi créer un profil client (un coach a toutes les fonctionnalités client)."""
         resp = await client.post(
             "/clients/profile", json=BASE_CLIENT, headers={"X-API-Key": coach_api_key}
         )
-        assert resp.status_code == 403
+        assert resp.status_code == 201
 
     async def test_get_profile_ok(
         self, client: AsyncClient, client_api_key: str

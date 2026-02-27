@@ -74,8 +74,12 @@ async def require_coach(
 async def require_client(
     current_user: User = Depends(get_current_user),
 ) -> User:
-    """Dépendance — l'utilisateur courant doit être un client."""
-    if current_user.role != "client":
+    """Dépendance — l'utilisateur doit pouvoir utiliser les fonctionnalités client.
+
+    Un coach a TOUTES les fonctionnalités d'un client en plus des siennes.
+    Seuls les admins sont exclus des endpoints client.
+    """
+    if current_user.role not in ("client", "coach"):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="forbidden",

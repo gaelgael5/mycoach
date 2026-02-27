@@ -260,3 +260,54 @@ flowchart LR
     F4 --> note1
     F5 --> note2
 ```
+
+
+---
+
+## 6. Architecture des rôles — Coach ⊇ Client
+
+```mermaid
+flowchart TD
+    subgraph ROLES["Modèle de rôles"]
+        COACH["🏋️ Coach
+        ─────────────────
+        Fonctionnalités Coach
+        + Toutes fonctionnalités Client"]
+
+        CLIENT["👤 Client
+        ─────────────────
+        Fonctionnalités Client uniquement"]
+
+        ADMIN["⚙️ Admin
+        ─────────────────
+        Administration uniquement
+        (pas de fonctionnalités coach/client)"]
+    end
+
+    COACH -->|"peut aussi"| BOOK["Réserver une séance\n(chez un autre coach)"]
+    COACH -->|"peut aussi"| PERF["Suivre ses propres\nperformances"]
+    COACH -->|"peut aussi"| PACK["Acheter/utiliser\ndes forfaits"]
+    COACH -->|"peut aussi"| WLIST["Rejoindre\nune liste d'attente"]
+    COACH -->|"peut aussi"| CPROFIL["Avoir un profil client\ncomplet"]
+
+    COACH -->|"exclusif"| CCOACH["Gérer son agenda coach\nAccepter des réservations\nSaisir perfs clients\nCréer programmes\nGérer tarifs + RIB"]
+```
+
+```mermaid
+sequenceDiagram
+    actor K as Coach (aussi Client)
+    participant A as Android App
+    participant B as Backend API
+
+    note over K,B: Un coach peut réserver une séance chez un autre coach
+    K->>A: Recherche un coach → réservation
+    A->>B: POST /bookings {coach_id: autre_coach}
+    B->>B: require_client → role in (client, coach) ✅
+    B-->>A: 201 Created
+
+    note over K,B: Le même coach peut accepter des séances
+    K->>A: Tableau de bord coach → valide une demande
+    A->>B: PATCH /bookings/{id}/confirm
+    B->>B: require_coach → role == coach ✅
+    B-->>A: 200 OK
+```

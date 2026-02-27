@@ -121,6 +121,58 @@ L'application Android est **responsive dès le premier écran** :
 
 ---
 
+## 0. ARCHITECTURE DES RÔLES
+
+### 0.1 Principe fondateur : Coach ⊇ Client
+
+> **Un coach possède toutes les fonctionnalités d'un client, en plus de ses fonctionnalités propres.**
+
+```
+┌──────────────────────────────────────────────┐
+│                    COACH                      │
+│                                               │
+│   ┌────────────────────────────────────┐      │
+│   │             CLIENT                 │      │
+│   │  - Réserver une séance             │      │
+│   │  - Gérer son agenda                │      │
+│   │  - Suivre ses performances         │      │
+│   │  - Voir ses programmes             │      │
+│   │  - Gérer ses paiements/forfaits    │      │
+│   │  - Liste d'attente                 │      │
+│   │  - Profil client complet           │      │
+│   │  - Liens réseaux sociaux           │      │
+│   └────────────────────────────────────┘      │
+│                                               │
+│  + Gérer son agenda coach                     │
+│  + Accepter/refuser des réservations          │
+│  + Saisir les performances de ses clients     │
+│  + Créer et assigner des programmes           │
+│  + Gérer ses tarifs et forfaits               │
+│  + Annulation en masse + SMS clients          │
+│  + RIB et paiements reçus                     │
+│  + Back-office de ses clients                 │
+└──────────────────────────────────────────────┘
+```
+
+### 0.2 Cas d'usage typique
+Un coach peut **aussi être client d'un autre coach** : il réserve des séances, suit ses propres performances, utilise ses propres forfaits.
+
+### 0.3 Implémentation backend
+- `role = "coach"` → accès aux endpoints `/coaches/...` (coach features)
+- `role = "coach"` → accès **aussi** aux endpoints `/clients/...`, `/bookings`, `/waitlist`, `/programs` (client features)
+- `role = "client"` → accès aux endpoints clients uniquement
+- `role = "admin"` → accès aux endpoints `/admin/...` uniquement
+
+**Règle middleware :**
+```
+require_coach   → role == "coach"
+require_client  → role in ("client", "coach")   ← les deux ont les fonctionnalités client
+require_admin   → role == "admin"
+get_current_user → tout utilisateur authentifié
+```
+
+---
+
 ## 1. AUTHENTIFICATION
 
 ### 1.1 Inscription Coach
@@ -2029,6 +2081,8 @@ Table `user_social_links` :
 | 1.8 | 26/02/2026 | Chiffrement tokens OAuth → Python Fernet applicatif avec clé dédiée `TOKEN_ENCRYPTION_KEY` (séparée de `FIELD_ENCRYPTION_KEY`) · `EncryptedToken` TypeDecorator distinct · 2 clés = 2 périmètres de compromission indépendants |
 | 1.9 | 26/02/2026 | §25 Conformité RGPD ajouté : droits des utilisateurs (accès/portabilité/effacement/opposition), règles d'anonymisation J+30, table `consents` (log immuable), registre des traitements, durées de conservation, mesures techniques · `TASKS_BACKEND.md` : B6-02 → B6-07 (6 tâches RGPD détaillées), anciens B6-03→B6-06 renommés B6-08→B6-11 |
 | 2.0 | 27/02/2026 | §26 Liens réseaux sociaux : coaches ET clients · liste évolutive (Instagram, TikTok, YouTube, LinkedIn, X, Facebook, Strava, site web) + liens custom (platform=NULL, label requis) · max 20 liens · visibilité par lien (public/coaches_only) · UPSERT standard, INSERT custom · DELETE/PUT par ID · Table user_social_links avec index partiel UNIQUE (user_id, platform) WHERE platform IS NOT NULL |
+| 2.1 | 27/02/2026 | Blocklist domaines email : refus à l'inscription des adresses jetables (yopmail, mailinator…) · Table blocked_email_domains · seed ~55 domaines · admin CRUD /admin/blocked-domains · insensible à la casse · BlockedDomainError → HTTP 422 |
+| 2.2 | 27/02/2026 | §0 Architecture des rôles : **Coach ⊇ Client** (principe fondateur) · `require_client` middleware étendu à `role in ("client","coach")` · Un coach peut aussi avoir un profil client, réserver des séances, utiliser des forfaits, etc. · `client_service.create_profile()` autorise les coaches |
 
 ---
 
