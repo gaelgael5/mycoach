@@ -202,7 +202,7 @@ class _GymTile extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.red.withValues(alpha: 0.15) : AppColors.accentGlow,
+                  color: isSelected ? AppColors.red.withOpacity(0.15) : AppColors.accentGlow,
                   borderRadius: BorderRadius.circular(AppRadius.pill),
                   border: Border.all(
                     color: isSelected ? AppColors.red : AppColors.accent,
