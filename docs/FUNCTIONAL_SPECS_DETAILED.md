@@ -1926,12 +1926,16 @@ Document `docs/RGPD_REGISTRE.md` — à tenir à jour :
 
 ---
 
-## 21. Liens Réseaux Sociaux
+## 26. Liens Réseaux Sociaux
 
-### 21.1 Vue d'ensemble
-Chaque utilisateur (coach et client) peut renseigner jusqu'à 8 liens vers ses profils sur les réseaux sociaux.
+### 26.1 Vue d'ensemble
+Chaque utilisateur (coach et client) peut renseigner jusqu'à **20 liens** vers ses profils réseaux sociaux ou URL personnalisées.
 
-### 21.2 Plateformes supportées
+Deux types de liens coexistent :
+- **Standard** : plateforme choisie dans la liste connue (instagram, tiktok…) → 1 seul par plateforme, UPSERT
+- **Custom** : URL libre + label personnalisé (platform = NULL) → plusieurs autorisés, max 20 au total
+
+### 26.2 Plateformes standard (liste évolutive)
 | Plateforme | Slug | Description |
 |-----------|------|-------------|
 | Instagram | `instagram` | Profil Instagram |
@@ -1943,35 +1947,50 @@ Chaque utilisateur (coach et client) peut renseigner jusqu'à 8 liens vers ses p
 | Strava | `strava` | Profil Strava |
 | Site web | `website` | Site personnel ou professionnel |
 
-### 21.3 Règles
-- Max 1 lien par plateforme par utilisateur
+> La liste est évolutive — de nouvelles plateformes peuvent être ajoutées sans migration.
+
+### 26.3 Liens personnalisés (custom)
+- `platform = NULL` : lien custom, label requis (ex : "Mon portfolio", "Ma boutique")
+- Plusieurs liens custom autorisés par utilisateur (dans la limite des 20 total)
+- UPSERT non applicable (chaque custom est une entrée distincte)
+
+### 26.4 Règles
+- **Max 20 liens** par utilisateur (tous types confondus) — 422 si dépassé
 - URL : doit commencer par `http://` ou `https://`, max 500 caractères
+- Label custom : max 100 caractères, obligatoire si `platform = NULL`
 - Pas de chiffrement (URLs publiques par nature)
-- Modification par UPSERT : poster sur une plateforme existante remplace l'URL
+- UPSERT standard : poster sur une plateforme existante remplace l'URL
 
-### 21.4 Visibilité
-- **Coach** : liens affichés publiquement sur sa fiche (GET /coaches/{id})
-- **Client** : liens visibles uniquement par les coachs ayant une relation active
+### 26.5 Visibilité par lien
+Chaque lien a une visibilité indépendante :
+- `'public'` *(défaut)* : visible par tous (visiteurs, clients, coachs)
+- `'coaches_only'` : visible uniquement par les coachs avec relation active
 
-### 21.5 Modèle de données
+### 26.6 Modèle de données
 Table `user_social_links` :
+
 | Champ | Type | Description |
 |-------|------|-------------|
 | `id` | UUID | PK |
 | `user_id` | UUID | FK → users.id CASCADE |
-| `platform` | VARCHAR(20) | slug plateforme (ENUM) |
+| `platform` | VARCHAR(50) NULLABLE | Slug standard ou NULL (custom) |
+| `label` | VARCHAR(100) NULLABLE | Libellé affiché — requis si platform IS NULL |
 | `url` | TEXT | URL complète (https://...) |
+| `visibility` | VARCHAR(20) | `'public'` ou `'coaches_only'` |
+| `position` | SMALLINT | Ordre d'affichage (tri croissant) |
 | `created_at` | TIMESTAMPTZ | UTC |
 | `updated_at` | TIMESTAMPTZ | UTC — onupdate |
-UNIQUE (user_id, platform)
 
-### 21.6 API
+**Index** : UNIQUE partiel `(user_id, platform) WHERE platform IS NOT NULL` — autorise plusieurs custom, interdit doublons standard
+
+### 26.7 API
 | Méthode | Endpoint | Auth | Description |
 |---------|----------|------|-------------|
-| GET | /users/me/social-links | Tout utilisateur | Liste mes liens |
-| POST | /users/me/social-links | Tout utilisateur | Ajouter/modifier un lien |
-| DELETE | /users/me/social-links/{platform} | Tout utilisateur | Supprimer un lien |
-| GET | /coaches/{id}/social-links | Public | Liens publics d'un coach |
+| GET | `/users/me/social-links` | Tout utilisateur | Liste tous mes liens |
+| POST | `/users/me/social-links` | Tout utilisateur | Créer/remplacer un lien |
+| PUT | `/users/me/social-links/{id}` | Propriétaire | Modifier label/url/visibility/position |
+| DELETE | `/users/me/social-links/{id}` | Propriétaire | Supprimer un lien par ID |
+| GET | `/coaches/{id}/social-links` | Public | Liens `visibility='public'` d'un coach |
 
 ---
 
@@ -1989,7 +2008,7 @@ UNIQUE (user_id, platform)
 | 1.7 | 26/02/2026 | Décisions architecturales finales : Programme IA → `coach_id = NULL` + `source = 'ai'` · PRs → `is_pr = TRUE` sur `exercise_sets` (pas de table dédiée) + index partiel · Notation coach → Phase 2, aucun schéma anticipé |
 | 1.8 | 26/02/2026 | Chiffrement tokens OAuth → Python Fernet applicatif avec clé dédiée `TOKEN_ENCRYPTION_KEY` (séparée de `FIELD_ENCRYPTION_KEY`) · `EncryptedToken` TypeDecorator distinct · 2 clés = 2 périmètres de compromission indépendants |
 | 1.9 | 26/02/2026 | §25 Conformité RGPD ajouté : droits des utilisateurs (accès/portabilité/effacement/opposition), règles d'anonymisation J+30, table `consents` (log immuable), registre des traitements, durées de conservation, mesures techniques · `TASKS_BACKEND.md` : B6-02 → B6-07 (6 tâches RGPD détaillées), anciens B6-03→B6-06 renommés B6-08→B6-11 |
-| 2.0 | 27/02/2026 | §21 Liens réseaux sociaux : tous les utilisateurs peuvent renseigner leurs liens sociaux (Instagram, TikTok, YouTube, LinkedIn, X, Facebook, Strava, site web) · Table user_social_links · UPSERT par plateforme · Visibilité publique coach / coaches-only client |
+| 2.0 | 27/02/2026 | §26 Liens réseaux sociaux : coaches ET clients · liste évolutive (Instagram, TikTok, YouTube, LinkedIn, X, Facebook, Strava, site web) + liens custom (platform=NULL, label requis) · max 20 liens · visibilité par lien (public/coaches_only) · UPSERT standard, INSERT custom · DELETE/PUT par ID · Table user_social_links avec index partiel UNIQUE (user_id, platform) WHERE platform IS NOT NULL |
 
 ---
 

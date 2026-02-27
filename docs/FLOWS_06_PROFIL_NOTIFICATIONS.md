@@ -211,41 +211,65 @@ sequenceDiagram
 
     U->>A: Profil → Réseaux sociaux
     A->>B: GET /users/me/social-links
-    B-->>A: [{platform: "instagram", url: "https://instagram.com/..."}, ...]
-    A-->>U: Liste des liens avec icônes plateformes
+    B-->>A: [{id, platform: "instagram", url: "...", visibility: "public", position: 0}, ...]
+    A-->>U: Liste des liens (icônes plateformes + liens custom avec label)
 
-    U->>A: Tap "Ajouter" → sélectionne Instagram → saisit URL
-    A->>B: POST /users/me/social-links\n{platform: "instagram", url: "https://instagram.com/monprofil"}
-    B->>B: Valide URL (https://, max 500 chars)\nUPSERT (user_id, platform)
-    B-->>A: 200 OK {id, platform, url, created_at}
-    A-->>U: Lien ajouté ✓ (icône Instagram apparaît)
+    note over U,B: Ajouter un lien standard (ex : Instagram)
+    U->>A: Tap "+" → choisit Instagram dans liste → saisit URL
+    A->>B: POST /users/me/social-links<br/>{platform: "instagram", url: "https://instagram.com/monprofil", visibility: "public"}
+    B->>B: Valide URL (https://, max 500 chars)<br/>UPSERT sur (user_id, platform) — remplace si existant
+    B-->>A: 200 OK {id, platform, url, visibility, ...}
+    A-->>U: Lien Instagram ajouté ✓
 
-    U->>A: Tap icône "Supprimer" sur Instagram
-    A->>B: DELETE /users/me/social-links/instagram
-    B->>B: Supprime la ligne
+    note over U,B: Ajouter un lien personnalisé (URL libre)
+    U->>A: Tap "+" → choisit "Personnalisé" → saisit label + URL
+    A->>B: POST /users/me/social-links<br/>{platform: null, label: "Mon portfolio", url: "https://portfolio.fr", visibility: "coaches_only"}
+    B->>B: Vérifie max 20 liens<br/>INSERT (platform=NULL, plusieurs autorisés)
+    B-->>A: 200 OK {id, platform: null, label: "Mon portfolio", ...}
+    A-->>U: Lien "Mon portfolio" ajouté ✓
+
+    note over U,B: Modifier un lien existant
+    U->>A: Tap sur lien → modifie URL ou bascule visibilité
+    A->>B: PUT /users/me/social-links/{id}<br/>{visibility: "coaches_only"}
+    B->>B: Vérifie ownership (user_id)<br/>Met à jour les champs fournis
+    B-->>A: 200 OK {lien mis à jour}
+    A-->>U: Lien modifié ✓
+
+    note over U,B: Supprimer un lien
+    U->>A: Swipe ou tap corbeille → confirmation
+    A->>B: DELETE /users/me/social-links/{id}
+    B->>B: Vérifie ownership → supprime
     B-->>A: 204 No Content
     A-->>U: Lien supprimé
+```
 
-    note over U,B: Mise à jour d'un lien existant
-    U->>A: Tap sur lien existant → modifie URL
-    A->>B: POST /users/me/social-links\n{platform: "instagram", url: "https://instagram.com/nouveau"}
-    B->>B: UPSERT → remplace l'URL existante
-    B-->>A: 200 OK {url mis à jour}
+### Visibilité des liens
+
+```mermaid
+flowchart LR
+    LINK[Lien réseau social]
+
+    LINK -->|visibility = public| PUB[Visible par tous\nvisiteurs · clients · coachs]
+    LINK -->|visibility = coaches_only| PRIV[Visible uniquement\npar coachs avec relation active]
+
+    PUB --> COACH_PROFILE[GET /coaches/{id}/social-links\nRetourné ✓]
+    PRIV --> COACH_PROFILE_HIDDEN[GET /coaches/{id}/social-links\nFiltré — non retourné]
+    PRIV --> SELF[GET /users/me/social-links\nToujours visible par le propriétaire ✓]
 ```
 
 ### Accès public aux liens d'un coach
 
 ```mermaid
 sequenceDiagram
-    actor C as Client
+    actor C as Client / Visiteur
     participant A as Android App
     participant B as Backend API
 
     C->>A: Page profil coach → section Réseaux sociaux
-    A->>B: GET /coaches/{id}/social-links
-    B->>B: Vérifie role=coach\nRetourne liens du coach
-    B-->>A: [{platform, url}, ...]
-    A-->>C: Icônes Instagram / YouTube / ... cliquables
-    C->>A: Tap icône Instagram
+    A->>B: GET /coaches/{id}/social-links (sans auth)
+    B->>B: Vérifie role=coach (404 sinon)<br/>Filtre visibility='public' uniquement
+    B-->>A: [{platform: "instagram", url: "..."}, {platform: null, label: "Portfolio", url: "..."}]
+    A-->>C: Icônes + labels cliquables (liens coaches_only masqués)
+    C->>A: Tap sur Instagram
     A-->>C: Ouvre Instagram dans navigateur externe
 ```

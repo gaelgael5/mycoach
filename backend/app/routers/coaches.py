@@ -316,13 +316,16 @@ async def get_coach_social_links(
     coach_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
 ):
-    """Retourne les liens réseaux sociaux publics d'un coach (sans authentification)."""
+    """Retourne les liens réseaux sociaux publics d'un coach (sans authentification).
+
+    Filtre : visibility='public' uniquement.
+    """
     from app.repositories.user_repository import user_repository
-    from app.repositories.social_link_repository import get_by_user
+    from app.repositories.social_link_repository import get_by_user_public
     from app.schemas.social_link import SocialLinkResponse
 
     user = await user_repository.get_by_id(db, coach_id)
     if user is None or user.role != "coach":
         raise HTTPException(status_code=404, detail="Coach introuvable")
-    links = await get_by_user(db, coach_id)
+    links = await get_by_user_public(db, coach_id)
     return [SocialLinkResponse.model_validate(link) for link in links]

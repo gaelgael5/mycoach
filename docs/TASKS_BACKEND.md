@@ -355,18 +355,26 @@ backend/
 
 ## Phase 7 — Réseaux sociaux (B7)
 
-### B7-01 — Modèle user_social_links
-- [ ] Model SocialLink (SQLAlchemy)
-- [ ] Migration 008_phase7_social_links
-- [ ] Relation sur User
+### B7-01 — Modèle user_social_links ✅
+- [x] Model SocialLink (SQLAlchemy) — platform nullable, label, visibility, position
+- [x] Migration `008_phase7_social_links` — index partiel UNIQUE (user_id, platform) WHERE platform IS NOT NULL
+- [x] Relation `User.social_links` (cascade all, delete-orphan)
 
-### B7-02 — API CRUD liens sociaux
-- [ ] Repository social_link_repository
-- [ ] Service social_link_service
-- [ ] Router /users/me/social-links (GET, POST, DELETE)
-- [ ] Endpoint public GET /coaches/{id}/social-links
-- [ ] Tests : 12+ tests
+### B7-02 — API CRUD liens sociaux ✅
+- [x] `social_link_repository` — upsert_standard, create_custom, get_by_id, count_by_user, update_link, delete_link, get_by_user_public
+- [x] `social_link_service` — create_or_upsert_link, update_link, delete_link, list_public_links + TooManyLinksError
+- [x] Router `GET /users/me/social-links` — liste complète (owner)
+- [x] Router `POST /users/me/social-links` — upsert standard OU insert custom (max 20)
+- [x] Router `PUT /users/me/social-links/{id}` — modifier url/label/visibility/position
+- [x] Router `DELETE /users/me/social-links/{id}` — suppression par ID
+- [x] Endpoint public `GET /coaches/{id}/social-links` — filtre visibility='public'
+- [x] 26 tests passants (couvre : basic CRUD, custom, visibilité, max 20, isolation, auth)
 
-### B7-03 — Intégration profil coach
-- [ ] Inclure social_links dans CoachProfileResponse
-- [ ] Inclure dans GET /coaches/search (liste des liens)
+### B7-03 — Intégration profil coach (à faire)
+- [ ] Inclure `social_links` dans `CoachProfileResponse` (champ optionnel)
+- [ ] Inclure dans `GET /coaches/search` (au moins les 3 premiers liens)
+
+### B7-04 — Évolution liste plateformes (futur)
+- [ ] Table `social_platforms` (admin CRUD) — slug, label, icon_url, active
+- [ ] Endpoint `GET /social-platforms` — liste publique des plateformes actives
+- [ ] Android : charger dynamiquement la liste depuis l'API
