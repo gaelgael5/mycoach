@@ -80,3 +80,9 @@ docker-compose.override.yml
 logs/
 .venv/
 backend/.venv/
+
+# Virtual env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
