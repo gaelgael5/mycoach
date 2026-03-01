@@ -38,8 +38,27 @@ class _MyCoachTextFieldState extends State<MyCoachTextField> {
   }
 
   @override
+  void didUpdateWidget(covariant MyCoachTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.obscureText != widget.obscureText) {
+      _obscured = widget.obscureText;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final showToggle = widget.obscureText;
+    // Show built-in toggle only when obscureText is true AND no custom suffixIcon
+    final showAutoToggle = widget.obscureText && widget.suffixIcon == null;
+
+    Widget? effectiveSuffix;
+    if (showAutoToggle) {
+      effectiveSuffix = IconButton(
+        icon: Icon(_obscured ? Icons.visibility_off : Icons.visibility),
+        onPressed: () => setState(() => _obscured = !_obscured),
+      );
+    } else if (widget.suffixIcon != null) {
+      effectiveSuffix = widget.suffixIcon;
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,21 +67,14 @@ class _MyCoachTextFieldState extends State<MyCoachTextField> {
         const SizedBox(height: 8),
         TextFormField(
           controller: widget.controller,
-          obscureText: _obscured,
+          obscureText: widget.suffixIcon != null ? widget.obscureText : _obscured,
           keyboardType: widget.keyboardType,
           validator: widget.validator,
           maxLines: widget.maxLines,
           decoration: InputDecoration(
             hintText: widget.hint,
             prefixIcon: widget.prefixIcon,
-            suffixIcon: showToggle
-                ? IconButton(
-                    icon: Icon(
-                      _obscured ? Icons.visibility_off : Icons.visibility,
-                    ),
-                    onPressed: () => setState(() => _obscured = !_obscured),
-                  )
-                : widget.suffixIcon,
+            suffixIcon: effectiveSuffix,
           ),
         ),
       ],

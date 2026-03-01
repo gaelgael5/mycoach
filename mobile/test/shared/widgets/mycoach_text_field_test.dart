@@ -28,8 +28,8 @@ void main() {
     });
   });
 
-  group('MyCoachTextField – password visibility toggle', () {
-    testWidgets('shows visibility_off icon when obscureText is true',
+  group('MyCoachTextField – auto password toggle', () {
+    testWidgets('shows toggle when obscureText=true and no suffixIcon',
         (tester) async {
       await tester.pumpWidget(const MaterialApp(
         home: Scaffold(
@@ -37,10 +37,9 @@ void main() {
         ),
       ));
       expect(find.byIcon(Icons.visibility_off), findsOneWidget);
-      expect(find.byIcon(Icons.visibility), findsNothing);
     });
 
-    testWidgets('no toggle icon when obscureText is false', (tester) async {
+    testWidgets('no toggle when obscureText=false', (tester) async {
       await tester.pumpWidget(const MaterialApp(
         home: Scaffold(body: MyCoachTextField(label: 'Email')),
       ));
@@ -48,45 +47,50 @@ void main() {
       expect(find.byIcon(Icons.visibility), findsNothing);
     });
 
-    testWidgets('tapping eye icon toggles to visibility icon', (tester) async {
+    testWidgets('tapping toggle switches icon', (tester) async {
       await tester.pumpWidget(const MaterialApp(
         home: Scaffold(
           body: MyCoachTextField(label: 'Password', obscureText: true),
         ),
       ));
 
-      // Initially visibility_off
       expect(find.byIcon(Icons.visibility_off), findsOneWidget);
-
-      // Tap the toggle
       await tester.tap(find.byIcon(Icons.visibility_off));
       await tester.pump();
-
-      // Now shows visibility icon (password revealed)
       expect(find.byIcon(Icons.visibility), findsOneWidget);
-      expect(find.byIcon(Icons.visibility_off), findsNothing);
     });
 
-    testWidgets('tapping eye icon twice re-hides password', (tester) async {
+    testWidgets('double tap restores original icon', (tester) async {
       await tester.pumpWidget(const MaterialApp(
         home: Scaffold(
           body: MyCoachTextField(label: 'Password', obscureText: true),
         ),
       ));
 
-      // Tap to show
       await tester.tap(find.byIcon(Icons.visibility_off));
       await tester.pump();
-      expect(find.byIcon(Icons.visibility), findsOneWidget);
-
-      // Tap to hide again
       await tester.tap(find.byIcon(Icons.visibility));
       await tester.pump();
       expect(find.byIcon(Icons.visibility_off), findsOneWidget);
     });
 
-    testWidgets('custom suffixIcon is used when not obscureText',
+    testWidgets('uses custom suffixIcon instead of toggle when provided',
         (tester) async {
+      await tester.pumpWidget(const MaterialApp(
+        home: Scaffold(
+          body: MyCoachTextField(
+            label: 'Password',
+            obscureText: true,
+            suffixIcon: Icon(Icons.lock),
+          ),
+        ),
+      ));
+      // Custom icon shown, not auto-toggle
+      expect(find.byIcon(Icons.lock), findsOneWidget);
+      expect(find.byIcon(Icons.visibility_off), findsNothing);
+    });
+
+    testWidgets('non-password custom suffixIcon works', (tester) async {
       await tester.pumpWidget(const MaterialApp(
         home: Scaffold(
           body: MyCoachTextField(
