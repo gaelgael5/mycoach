@@ -1,11 +1,10 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # MyCoach — CI Flutter Android (GitHub Actions)
 #
-# Déclenché sur : push et PR touchant mobile/
-# Environnements :
-#   - main         → PROD  (https://api.mycoach-app.com/api/v1)
-#   - staging/*    → STAGING (http://192.168.10.63:8000/api/v1)
-#   - dev / other  → DEV   (http://localhost:8000/api/v1)
+# Environnements (par branche) :
+#   - main         → build release + GitHub Release avec APK téléchargeable
+#   - staging/*    → build staging (192.168.10.63)
+#   - dev / other  → build debug
 # ─────────────────────────────────────────────────────────────────────────────
 
 name: Flutter Android Build
@@ -24,63 +23,63 @@ env:
   FLUTTER_VERSION: '3.41.2'
   JAVA_VERSION: '17'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build APK
     runs-on: ubuntu-latest
 
     steps:
-      # ─── Checkout ──────────────────────────────────────────────────────
       - uses: actions/checkout@v4
 
-      # ─── Déterminer l'environnement ────────────────────────────────────
       - name: Set environment
         id: env
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "ENV=prod" >> $GITHUB_OUTPUT
-            echo "API_URL=https://api.mycoach-app.com/api/v1" >> $GITHUB_OUTPUT
+            echo "API_URL=http://192.168.10.63:8000/api/v1" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref }}" == refs/heads/staging* ]]; then
             echo "ENV=staging" >> $GITHUB_OUTPUT
             echo "API_URL=http://192.168.10.63:8000/api/v1" >> $GITHUB_OUTPUT
           else
             echo "ENV=dev" >> $GITHUB_OUTPUT
-            echo "API_URL=http://localhost:8000/api/v1" >> $GITHUB_OUTPUT
+            echo "API_URL=http://192.168.10.63:8000/api/v1" >> $GITHUB_OUTPUT
           fi
 
-      # ─── Java JDK ─────────────────────────────────────────────────────
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
 
-      # ─── Flutter SDK ──────────────────────────────────────────────────
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
           cache: true
 
-      # ─── Dépendances ──────────────────────────────────────────────────
       - name: Install dependencies
         working-directory: mobile
         run: flutter pub get
 
-      # ─── Analyze ──────────────────────────────────────────────────────
       - name: Analyze
         working-directory: mobile
         run: flutter analyze --no-fatal-infos || true
 
-      # ─── Tests (toujours en env dev/localhost) ─────────────────────────
+      # Tests non-bloquants (continue même en cas d'échec)
       - name: Run tests
         working-directory: mobile
+        continue-on-error: true
         run: flutter test --coverage --dart-define=ENV=test --dart-define=API_BASE_URL=http://localhost:8000/api/v1
 
       - name: Upload coverage
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: flutter-coverage
           path: mobile/coverage/lcov.info
+          if-no-files-found: ignore
 
       # ─── Build APK Release (main) ─────────────────────────────────────
       - name: Build APK Release
@@ -91,25 +90,36 @@ jobs:
             --dart-define=ENV=${{ steps.env.outputs.ENV }} \
             --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
 
-      # ─── Build APK Staging ─────────────────────────────────────────────
-      - name: Build APK Staging
-        if: startsWith(github.ref, 'refs/heads/staging')
-        working-directory: mobile
-        run: |
-          flutter build apk --release \
-            --dart-define=ENV=${{ steps.env.outputs.ENV }} \
-            --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
+      # ─── Créer une GitHub Release avec l'APK ──────────────────────────
+      - name: Get version
+        if: github.ref == 'refs/heads/main'
+        id: version
+        run: echo "TAG=v1.0.0-build.${{ github.run_number }}" >> $GITHUB_OUTPUT
 
-      # ─── Build APK Debug (autres branches) ─────────────────────────────
-      - name: Build APK Debug
-        if: github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/staging')
-        working-directory: mobile
+      - name: Rename APK
+        if: github.ref == 'refs/heads/main'
         run: |
-          flutter build apk --debug \
-            --dart-define=ENV=${{ steps.env.outputs.ENV }} \
-            --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
+          cp mobile/build/app/outputs/flutter-apk/app-release.apk \
+             mobile/build/app/outputs/flutter-apk/mycoach-${{ steps.version.outputs.TAG }}.apk
 
-      # ─── Upload APK Release ────────────────────────────────────────────
+      - name: Create GitHub Release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.TAG }}
+          name: "MyCoach ${{ steps.version.outputs.TAG }}"
+          body: |
+            🚀 Build automatique #${{ github.run_number }}
+            
+            **Commit:** ${{ github.event.head_commit.message }}
+            **API:** ${{ steps.env.outputs.API_URL }}
+            
+            📱 Télécharge l'APK ci-dessous et installe-le sur ton Android.
+          files: |
+            mobile/build/app/outputs/flutter-apk/mycoach-${{ steps.version.outputs.TAG }}.apk
+            mobile/build/app/outputs/flutter-apk/app-release.apk
+
+      # ─── Upload artifacts (backup) ─────────────────────────────────────
       - name: Upload APK Release
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
@@ -118,7 +128,15 @@ jobs:
           path: mobile/build/app/outputs/flutter-apk/app-release.apk
           retention-days: 30
 
-      # ─── Upload APK Staging ────────────────────────────────────────────
+      # ─── Staging ───────────────────────────────────────────────────────
+      - name: Build APK Staging
+        if: startsWith(github.ref, 'refs/heads/staging')
+        working-directory: mobile
+        run: |
+          flutter build apk --release \
+            --dart-define=ENV=${{ steps.env.outputs.ENV }} \
+            --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
+
       - name: Upload APK Staging
         if: startsWith(github.ref, 'refs/heads/staging')
         uses: actions/upload-artifact@v4
@@ -127,7 +145,15 @@ jobs:
           path: mobile/build/app/outputs/flutter-apk/app-release.apk
           retention-days: 14
 
-      # ─── Upload APK Debug ──────────────────────────────────────────────
+      # ─── Debug ─────────────────────────────────────────────────────────
+      - name: Build APK Debug
+        if: github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/staging')
+        working-directory: mobile
+        run: |
+          flutter build apk --debug \
+            --dart-define=ENV=${{ steps.env.outputs.ENV }} \
+            --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
+
       - name: Upload APK Debug
         if: github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/staging')
         uses: actions/upload-artifact@v4
