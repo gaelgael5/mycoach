@@ -8,6 +8,12 @@ import '../../features/clients/presentation/screens/clients_list_screen.dart';
 import '../../features/clients/presentation/screens/client_detail_screen.dart';
 import '../../features/messages/presentation/screens/messages_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
+import '../../features/programs/presentation/screens/programs_list_screen.dart';
+import '../../features/programs/presentation/screens/create_program_screen.dart';
+import '../../features/programs/presentation/screens/program_detail_screen.dart';
+import '../../features/tracking/presentation/screens/client_program_screen.dart';
+import '../../features/tracking/presentation/screens/metrics_screen.dart';
+import '../../features/tracking/presentation/screens/progression_dashboard_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -36,6 +42,19 @@ final appRouter = GoRouter(
           ),
         ]),
         StatefulShellBranch(routes: [
+          GoRoute(
+            path: '/programs',
+            builder: (_, __) => const ProgramsListScreen(),
+            routes: [
+              GoRoute(path: 'create', builder: (_, __) => const CreateProgramScreen()),
+              GoRoute(
+                path: ':id',
+                builder: (_, state) => ProgramDetailScreen(programId: state.pathParameters['id']!),
+              ),
+            ],
+          ),
+        ]),
+        StatefulShellBranch(routes: [
           GoRoute(path: '/messages', builder: (_, __) => const MessagesScreen()),
         ]),
         StatefulShellBranch(routes: [
@@ -43,5 +62,12 @@ final appRouter = GoRouter(
         ]),
       ],
     ),
+    // Standalone routes (not in shell)
+    GoRoute(
+      path: '/tracking/program/:id',
+      builder: (_, state) => ClientProgramScreen(programId: state.pathParameters['id']!),
+    ),
+    GoRoute(path: '/tracking/metrics', builder: (_, __) => const MetricsScreen()),
+    GoRoute(path: '/tracking/progression', builder: (_, __) => const ProgressionDashboardScreen()),
   ],
 );
