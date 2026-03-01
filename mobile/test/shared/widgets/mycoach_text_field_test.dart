@@ -27,4 +27,80 @@ void main() {
       expect(find.text('Type here'), findsOneWidget);
     });
   });
+
+  group('MyCoachTextField – password visibility toggle', () {
+    testWidgets('shows visibility_off icon when obscureText is true',
+        (tester) async {
+      await tester.pumpWidget(const MaterialApp(
+        home: Scaffold(
+          body: MyCoachTextField(label: 'Password', obscureText: true),
+        ),
+      ));
+      expect(find.byIcon(Icons.visibility_off), findsOneWidget);
+      expect(find.byIcon(Icons.visibility), findsNothing);
+    });
+
+    testWidgets('no toggle icon when obscureText is false', (tester) async {
+      await tester.pumpWidget(const MaterialApp(
+        home: Scaffold(body: MyCoachTextField(label: 'Email')),
+      ));
+      expect(find.byIcon(Icons.visibility_off), findsNothing);
+      expect(find.byIcon(Icons.visibility), findsNothing);
+    });
+
+    testWidgets('tapping eye icon reveals password', (tester) async {
+      final ctrl = TextEditingController(text: 'secret');
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: MyCoachTextField(
+              label: 'Password', obscureText: true, controller: ctrl),
+        ),
+      ));
+
+      // Initially obscured
+      final textFieldBefore = tester.widget<TextFormField>(find.byType(TextFormField));
+      expect(textFieldBefore.obscureText, isTrue);
+
+      // Tap the toggle
+      await tester.tap(find.byIcon(Icons.visibility_off));
+      await tester.pump();
+
+      // Now visible
+      expect(find.byIcon(Icons.visibility), findsOneWidget);
+      expect(find.byIcon(Icons.visibility_off), findsNothing);
+      final textFieldAfter = tester.widget<TextFormField>(find.byType(TextFormField));
+      expect(textFieldAfter.obscureText, isFalse);
+    });
+
+    testWidgets('tapping eye icon twice re-hides password', (tester) async {
+      await tester.pumpWidget(const MaterialApp(
+        home: Scaffold(
+          body: MyCoachTextField(label: 'Password', obscureText: true),
+        ),
+      ));
+
+      // Tap to show
+      await tester.tap(find.byIcon(Icons.visibility_off));
+      await tester.pump();
+      expect(find.byIcon(Icons.visibility), findsOneWidget);
+
+      // Tap to hide again
+      await tester.tap(find.byIcon(Icons.visibility));
+      await tester.pump();
+      expect(find.byIcon(Icons.visibility_off), findsOneWidget);
+    });
+
+    testWidgets('custom suffixIcon is used when not obscureText',
+        (tester) async {
+      await tester.pumpWidget(const MaterialApp(
+        home: Scaffold(
+          body: MyCoachTextField(
+            label: 'Search',
+            suffixIcon: Icon(Icons.search),
+          ),
+        ),
+      ));
+      expect(find.byIcon(Icons.search), findsOneWidget);
+    });
+  });
 }

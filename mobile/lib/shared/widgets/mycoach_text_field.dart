@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MyCoachTextField extends StatelessWidget {
+class MyCoachTextField extends StatefulWidget {
   final TextEditingController? controller;
   final String label;
   final String? hint;
@@ -25,22 +25,44 @@ class MyCoachTextField extends StatelessWidget {
   });
 
   @override
+  State<MyCoachTextField> createState() => _MyCoachTextFieldState();
+}
+
+class _MyCoachTextFieldState extends State<MyCoachTextField> {
+  late bool _obscured;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscured = widget.obscureText;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final showToggle = widget.obscureText;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: Theme.of(context).textTheme.labelLarge),
+        Text(widget.label, style: Theme.of(context).textTheme.labelLarge),
         const SizedBox(height: 8),
         TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          validator: validator,
-          maxLines: maxLines,
+          controller: widget.controller,
+          obscureText: _obscured,
+          keyboardType: widget.keyboardType,
+          validator: widget.validator,
+          maxLines: widget.maxLines,
           decoration: InputDecoration(
-            hintText: hint,
-            prefixIcon: prefixIcon,
-            suffixIcon: suffixIcon,
+            hintText: widget.hint,
+            prefixIcon: widget.prefixIcon,
+            suffixIcon: showToggle
+                ? IconButton(
+                    icon: Icon(
+                      _obscured ? Icons.visibility_off : Icons.visibility,
+                    ),
+                    onPressed: () => setState(() => _obscured = !_obscured),
+                  )
+                : widget.suffixIcon,
           ),
         ),
       ],
