@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "552200590101",
+    "project_id": "mycoach-c4690",
+    "storage_bucket": "mycoach-c4690.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552200590101:android:90b6122ab2ba06e552cf1c",
+        "android_client_info": {
+          "package_name": "com.mycoach.mycoach_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3VEaxb4TDkAT8KeweTDLyKsrvF37837M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
