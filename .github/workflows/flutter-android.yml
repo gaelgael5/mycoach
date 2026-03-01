@@ -4,7 +4,7 @@
 # Déclenché sur : push et PR touchant mobile/
 # Environnements :
 #   - main         → PROD  (https://api.mycoach-app.com/api/v1)
-#   - staging/*    → STAGING (http://192.158.10.63:8000/api/v1)
+#   - staging/*    → STAGING (http://192.168.10.63:8000/api/v1)
 #   - dev / other  → DEV   (http://localhost:8000/api/v1)
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -42,7 +42,7 @@ jobs:
             echo "API_URL=https://api.mycoach-app.com/api/v1" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref }}" == refs/heads/staging* ]]; then
             echo "ENV=staging" >> $GITHUB_OUTPUT
-            echo "API_URL=http://192.158.10.63:8000/api/v1" >> $GITHUB_OUTPUT
+            echo "API_URL=http://192.168.10.63:8000/api/v1" >> $GITHUB_OUTPUT
           else
             echo "ENV=dev" >> $GITHUB_OUTPUT
             echo "API_URL=http://localhost:8000/api/v1" >> $GITHUB_OUTPUT

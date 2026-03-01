@@ -5,10 +5,10 @@ ENV=${1:-dev}
 
 case $ENV in
   dev)
-    API_URL="http://192.158.10.63:8000/api/v1"
+    API_URL="http://192.168.10.63:8000/api/v1"
     ;;
   staging)
-    API_URL="http://192.158.10.63:8000/api/v1"
+    API_URL="http://192.168.10.63:8000/api/v1"
     ;;
   prod)
     API_URL="https://api.mycoach-app.com/api/v1"
