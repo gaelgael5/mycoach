@@ -1,12 +1,3 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# MyCoach — CI Flutter Android (GitHub Actions)
-#
-# Environnements (par branche) :
-#   - main         → build release + GitHub Release avec APK téléchargeable
-#   - staging/*    → build staging (192.168.10.63)
-#   - dev / other  → build debug
-# ─────────────────────────────────────────────────────────────────────────────
-
 name: Flutter Android Build
 
 on:
@@ -67,7 +58,6 @@ jobs:
         working-directory: mobile
         run: flutter analyze --no-fatal-infos || true
 
-      # Tests non-bloquants (continue même en cas d'échec)
       - name: Run tests
         working-directory: mobile
         continue-on-error: true
@@ -90,7 +80,7 @@ jobs:
             --dart-define=ENV=${{ steps.env.outputs.ENV }} \
             --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
 
-      # ─── Créer une GitHub Release avec l'APK ──────────────────────────
+      # ─── GitHub Release ────────────────────────────────────────────────
       - name: Get version
         if: github.ref == 'refs/heads/main'
         id: version
@@ -110,16 +100,23 @@ jobs:
           name: "MyCoach ${{ steps.version.outputs.TAG }}"
           body: |
             🚀 Build automatique #${{ github.run_number }}
-            
-            **Commit:** ${{ github.event.head_commit.message }}
-            **API:** ${{ steps.env.outputs.API_URL }}
-            
-            📱 Télécharge l'APK ci-dessous et installe-le sur ton Android.
+            📱 Télécharge l'APK et installe-le sur Android.
           files: |
             mobile/build/app/outputs/flutter-apk/mycoach-${{ steps.version.outputs.TAG }}.apk
             mobile/build/app/outputs/flutter-apk/app-release.apk
 
-      # ─── Upload artifacts (backup) ─────────────────────────────────────
+      # ─── Firebase App Distribution ─────────────────────────────────────
+      - name: Upload to Firebase App Distribution
+        if: github.ref == 'refs/heads/main'
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: "1:552200590101:android:90b6122ab2ba06e552cf1c"
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: testers
+          file: mobile/build/app/outputs/flutter-apk/app-release.apk
+          releaseNotes: "Build #${{ github.run_number }} — ${{ github.event.head_commit.message }}"
+
+      # ─── Artifacts backup ──────────────────────────────────────────────
       - name: Upload APK Release
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
@@ -128,7 +125,7 @@ jobs:
           path: mobile/build/app/outputs/flutter-apk/app-release.apk
           retention-days: 30
 
-      # ─── Staging ───────────────────────────────────────────────────────
+      # ─── Staging / Debug ───────────────────────────────────────────────
       - name: Build APK Staging
         if: startsWith(github.ref, 'refs/heads/staging')
         working-directory: mobile
@@ -137,15 +134,6 @@ jobs:
             --dart-define=ENV=${{ steps.env.outputs.ENV }} \
             --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
 
-      - name: Upload APK Staging
-        if: startsWith(github.ref, 'refs/heads/staging')
-        uses: actions/upload-artifact@v4
-        with:
-          name: mycoach-staging-apk
-          path: mobile/build/app/outputs/flutter-apk/app-release.apk
-          retention-days: 14
-
-      # ─── Debug ─────────────────────────────────────────────────────────
       - name: Build APK Debug
         if: github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/staging')
         working-directory: mobile
@@ -153,11 +141,3 @@ jobs:
           flutter build apk --debug \
             --dart-define=ENV=${{ steps.env.outputs.ENV }} \
             --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
-
-      - name: Upload APK Debug
-        if: github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/staging')
-        uses: actions/upload-artifact@v4
-        with:
-          name: mycoach-debug-apk
-          path: mobile/build/app/outputs/flutter-apk/app-debug.apk
-          retention-days: 7
