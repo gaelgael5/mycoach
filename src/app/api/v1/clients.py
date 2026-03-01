@@ -15,6 +15,7 @@ from app.schemas.client import (
     ClientInvite, ClientInviteResponse, ClientRegisterViaToken,
 )
 from app.services.auth import hash_password
+from app.api.v1.conversations import ensure_conversation
 
 router = APIRouter(prefix="/clients", tags=["clients"])
 settings = get_settings()
@@ -58,6 +59,8 @@ async def create_client(
     db.add(client)
     await db.flush()
     await db.refresh(client)
+    # Auto-create conversation for this client
+    await ensure_conversation(db, coach.id, client.id)
     return client
 
 
