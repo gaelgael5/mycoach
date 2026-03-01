@@ -8,15 +8,17 @@ void main() {
         child: MaterialApp(home: RegisterScreen()),
       );
 
+  // Field order in RegisterScreen:
+  // 0: Prénom, 1: Nom, 2: Email, 3: Téléphone, 4: Mot de passe, 5: Confirmer
+  final passwordField = find.byType(TextFormField).at(4);
+  final confirmField = find.byType(TextFormField).at(5);
+
   group('RegisterScreen – password validation', () {
     testWidgets('shows error when passwords do not match', (tester) async {
       await tester.pumpWidget(buildApp());
 
-      await tester.enterText(
-          find.widgetWithText(TextFormField, 'Mot de passe'), 'abc123');
-      await tester.enterText(
-          find.widgetWithText(TextFormField, 'Confirmer le mot de passe'),
-          'xyz789');
+      await tester.enterText(passwordField, 'abc123');
+      await tester.enterText(confirmField, 'xyz789');
 
       await tester.tap(find.text("S'inscrire"));
       await tester.pump();
@@ -28,11 +30,8 @@ void main() {
     testWidgets('no mismatch error when passwords match', (tester) async {
       await tester.pumpWidget(buildApp());
 
-      await tester.enterText(
-          find.widgetWithText(TextFormField, 'Mot de passe'), 'abc123');
-      await tester.enterText(
-          find.widgetWithText(TextFormField, 'Confirmer le mot de passe'),
-          'abc123');
+      await tester.enterText(passwordField, 'abc123');
+      await tester.enterText(confirmField, 'abc123');
 
       await tester.tap(find.text("S'inscrire"));
       await tester.pump();
@@ -44,11 +43,8 @@ void main() {
     testWidgets('shows error when password is too short', (tester) async {
       await tester.pumpWidget(buildApp());
 
-      await tester.enterText(
-          find.widgetWithText(TextFormField, 'Mot de passe'), '123');
-      await tester.enterText(
-          find.widgetWithText(TextFormField, 'Confirmer le mot de passe'),
-          '123');
+      await tester.enterText(passwordField, '123');
+      await tester.enterText(confirmField, '123');
 
       await tester.tap(find.text("S'inscrire"));
       await tester.pump();
@@ -59,8 +55,7 @@ void main() {
     testWidgets('shows error when confirm password is empty', (tester) async {
       await tester.pumpWidget(buildApp());
 
-      await tester.enterText(
-          find.widgetWithText(TextFormField, 'Mot de passe'), 'abc123');
+      await tester.enterText(passwordField, 'abc123');
 
       await tester.tap(find.text("S'inscrire"));
       await tester.pump();
@@ -79,25 +74,13 @@ void main() {
       expect(find.text('Email invalide'), findsOneWidget);
       expect(find.text('Min. 6 caractères'), findsOneWidget);
     });
-  });
-}
 
-// Regression test: copy-paste with trailing whitespace
-void registerScreenWhitespaceTests() {
-  Widget buildApp() => const ProviderScope(
-        child: MaterialApp(home: RegisterScreen()),
-      );
-
-  group('RegisterScreen – whitespace handling', () {
     testWidgets('passwords match even with trailing spaces from paste',
         (tester) async {
       await tester.pumpWidget(buildApp());
 
-      await tester.enterText(
-          find.widgetWithText(TextFormField, 'Mot de passe'), 'abc123');
-      await tester.enterText(
-          find.widgetWithText(TextFormField, 'Confirmer le mot de passe'),
-          'abc123 ');
+      await tester.enterText(passwordField, 'abc123');
+      await tester.enterText(confirmField, 'abc123 ');
 
       await tester.tap(find.text("S'inscrire"));
       await tester.pump();
