@@ -1,21 +1,35 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# MyCoach — CI/CD Backend
-# Pipeline : Tests → Build Docker → Push Docker Hub
+# MyCoach — CI/CD Backend (appveyor.yml)
+# ─────────────────────────────────────────────────────────────────────────────
 #
-# Variables à configurer dans AppVeyor UI (Settings → Environment variables) :
-#   DOCKER_USER          = blackbeardteam           (cocher "Encrypt value")
-#   DOCKER_PASS          = dckr_pat_xxx…            (cocher "Encrypt value")
-#   FIELD_ENCRYPTION_KEY = clé Fernet               (cocher "Encrypt value")
-#   TOKEN_ENCRYPTION_KEY = clé Fernet               (cocher "Encrypt value")
-#   API_KEY_SALT         = hex 16 bytes             (cocher "Encrypt value")
-#   SECRET_KEY           = hex 32 bytes             (cocher "Encrypt value")
+# STRATÉGIE DE BRANCHE (mars 2025) :
 #
-# Variables gérées dans ce fichier (non secrètes, spécifiques CI) :
-#   DATABASE_URL  — toujours localhost en CI
-#   APP_ENV       — "test"
+#   TOUTES les branches :
+#     → lint (ruff) + typecheck (mypy) + pytest
+#     → docker build (sans push) — vérifie que l'image compile
 #
-# Variables dans l'UI uniquement (secrètes) :
-#   GOOGLE_CLIENT_ID = ci_placeholder
+#   main uniquement (hors PR) :
+#     → push Docker Hub : blackbeardteam/mycoach-api:latest, :build-N, :sha
+#     → C'est l'image de PRODUCTION
+#
+#   backend/* et dev (hors PR) :
+#     → push Docker Hub : blackbeardteam/mycoach-api:dev, :branch-name
+#     → Image de développement séparée, jamais :latest
+#
+# POURQUOI :
+#   - Toutes les branches valident le build Docker → pas de surprise au merge
+#   - :latest = toujours main = toujours prod-ready
+#   - :dev = branche active de développement, utile pour staging/preview
+#   - Les tags :branch-name permettent de tester une branche spécifique
+#
+# VARIABLES (AppVeyor UI, Settings → Environment, cocher "Encrypt value") :
+#   DOCKER_USER          = blackbeardteam
+#   DOCKER_PASS          = dckr_pat_xxx…
+#   FIELD_ENCRYPTION_KEY = clé Fernet
+#   TOKEN_ENCRYPTION_KEY = clé Fernet
+#   API_KEY_SALT         = hex 16 bytes
+#   SECRET_KEY           = hex 32 bytes
+#   GOOGLE_CLIENT_ID     = ci_placeholder
 # ─────────────────────────────────────────────────────────────────────────────
 
 version: "{build}"
@@ -25,11 +39,7 @@ image: Ubuntu2204
 # ─── Variables ────────────────────────────────────────────────────────────────
 environment:
   DOCKER_IMAGE: blackbeardteam/mycoach-api
-
-  # DB de test — doit correspondre exactement à pyproject.toml [tool.pytest.ini_options].env
   DATABASE_URL: "postgresql+asyncpg://mycoach:mycoach_test@localhost:5432/mycoach_test"
-
-  # Valeurs CI neutres — les vraies valeurs dans l'UI AppVeyor prennent la priorité
   APP_ENV: "test"
 
 # ─── Service PostgreSQL ───────────────────────────────────────────────────────
@@ -38,12 +48,10 @@ services:
 
 # ─── Installation ─────────────────────────────────────────────────────────────
 install:
-  # Python 3.12 (deadsnakes PPA)
   - sudo add-apt-repository -y ppa:deadsnakes/ppa
   - sudo apt-get update -q
   - sudo apt-get install -y --no-install-recommends python3.12 python3.12-venv python3.12-dev gcc libpq-dev build-essential
 
-  # PostgreSQL — démarrage + attente
   - sudo service postgresql start || true
   - |
     for i in $(seq 1 20); do
@@ -51,20 +59,18 @@ install:
       echo "Attente PostgreSQL... ($i/20)"; sleep 2
     done
 
-  # Créer user + DB + extensions (credentials = pyproject.toml)
   - sudo -u postgres psql -c "CREATE USER mycoach WITH PASSWORD 'mycoach_test';"
   - sudo -u postgres psql -c "CREATE DATABASE mycoach_test OWNER mycoach;"
   - sudo -u postgres psql -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
   - sudo -u postgres psql -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
   - sudo -u postgres psql -d mycoach_test -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
 
-  # Venv Python + dépendances
   - python3.12 -m venv backend/.venv
   - backend/.venv/bin/pip install --upgrade pip --quiet
   - backend/.venv/bin/pip install -r backend/requirements.txt --quiet
   - backend/.venv/bin/pip install -r backend/requirements-dev.txt --quiet
 
-# ─── Build (lint + typecheck, non bloquants) ──────────────────────────────────
+# ─── Build (lint + typecheck) ─────────────────────────────────────────────────
 build_script:
   - backend/.venv/bin/python -m ruff check backend/app/ --output-format=github || true
   - backend/.venv/bin/python -m mypy backend/app/ --ignore-missing-imports --no-error-summary || true
@@ -78,40 +84,73 @@ artifacts:
   - path: backend/coverage.xml
     name: coverage-report
 
-# ─── Deploy Docker Hub (main uniquement, après tests verts) ───────────────────
+# ─── Docker Build + Push (conditionnel par branche) ───────────────────────────
 deploy_script:
   - |
     set -e
-    if [ "$APPVEYOR_REPO_BRANCH" = "main" ] && [ -z "$APPVEYOR_PULL_REQUEST_NUMBER" ]; then
-      echo "=== Build + Push Docker Hub ==="
+    BRANCH="$APPVEYOR_REPO_BRANCH"
+    IS_PR="${APPVEYOR_PULL_REQUEST_NUMBER}"
+    SHORT_SHA="${APPVEYOR_REPO_COMMIT:0:8}"
+
+    echo "=== Docker Build (toutes branches) ==="
+    cd "$APPVEYOR_BUILD_FOLDER"
+    docker build \
+      --label "build.number=${APPVEYOR_BUILD_NUMBER}" \
+      --label "build.date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+      --label "git.commit=${SHORT_SHA}" \
+      --label "git.branch=${BRANCH}" \
+      -t "${DOCKER_IMAGE}:ci-${APPVEYOR_BUILD_NUMBER}" \
+      ./backend/
+
+    echo "✅ Docker build OK (branch: $BRANCH)"
+
+    # ── Pas de push sur les PR ──
+    if [ -n "$IS_PR" ]; then
+      echo ">>> PR détectée — pas de push Docker"
+      exit 0
+    fi
+
+    # ── Push : main → production tags ──
+    if [ "$BRANCH" = "main" ]; then
+      echo "=== Push Docker Hub (PRODUCTION) ==="
 
       if [ -z "$DOCKER_PASS" ]; then
         echo "ERREUR : DOCKER_PASS absent des settings AppVeyor"
         exit 1
       fi
-
       echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
-      TAG_LATEST="${DOCKER_IMAGE}:latest"
-      TAG_BUILD="${DOCKER_IMAGE}:build-${APPVEYOR_BUILD_NUMBER}"
-      TAG_SHA="${DOCKER_IMAGE}:${APPVEYOR_REPO_COMMIT:0:8}"
+      docker tag "${DOCKER_IMAGE}:ci-${APPVEYOR_BUILD_NUMBER}" "${DOCKER_IMAGE}:latest"
+      docker tag "${DOCKER_IMAGE}:ci-${APPVEYOR_BUILD_NUMBER}" "${DOCKER_IMAGE}:build-${APPVEYOR_BUILD_NUMBER}"
+      docker tag "${DOCKER_IMAGE}:ci-${APPVEYOR_BUILD_NUMBER}" "${DOCKER_IMAGE}:${SHORT_SHA}"
 
-      cd "$APPVEYOR_BUILD_FOLDER"
-      docker build \
-        --label "build.number=${APPVEYOR_BUILD_NUMBER}" \
-        --label "build.date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-        --label "git.commit=${APPVEYOR_REPO_COMMIT:0:8}" \
-        -t "$TAG_LATEST" -t "$TAG_BUILD" -t "$TAG_SHA" \
-        ./backend/
+      docker push "${DOCKER_IMAGE}:latest"
+      docker push "${DOCKER_IMAGE}:build-${APPVEYOR_BUILD_NUMBER}"
+      docker push "${DOCKER_IMAGE}:${SHORT_SHA}"
 
-      docker push "$TAG_LATEST"
-      docker push "$TAG_BUILD"
-      docker push "$TAG_SHA"
+      echo "✅ Images PROD publiées : :latest :build-${APPVEYOR_BUILD_NUMBER} :${SHORT_SHA}"
 
-      echo "✅ Images publiées :"
-      echo "   $TAG_LATEST"
-      echo "   $TAG_BUILD"
-      echo "   $TAG_SHA"
+    # ── Push : backend/* ou dev → dev tags ──
+    elif echo "$BRANCH" | grep -qE '^(backend/|dev$)'; then
+      echo "=== Push Docker Hub (DEV) ==="
+
+      if [ -z "$DOCKER_PASS" ]; then
+        echo "ERREUR : DOCKER_PASS absent des settings AppVeyor"
+        exit 1
+      fi
+      echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+
+      # Sanitize branch name for Docker tag (replace / with -)
+      BRANCH_TAG=$(echo "$BRANCH" | sed 's|/|-|g')
+
+      docker tag "${DOCKER_IMAGE}:ci-${APPVEYOR_BUILD_NUMBER}" "${DOCKER_IMAGE}:dev"
+      docker tag "${DOCKER_IMAGE}:ci-${APPVEYOR_BUILD_NUMBER}" "${DOCKER_IMAGE}:${BRANCH_TAG}"
+
+      docker push "${DOCKER_IMAGE}:dev"
+      docker push "${DOCKER_IMAGE}:${BRANCH_TAG}"
+
+      echo "✅ Images DEV publiées : :dev :${BRANCH_TAG}"
+
     else
-      echo ">>> Pas de push Docker (branch: $APPVEYOR_REPO_BRANCH)"
+      echo ">>> Branche '$BRANCH' — build OK, pas de push Docker"
     fi
