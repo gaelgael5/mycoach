@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/models/program.dart';
@@ -210,8 +211,17 @@ class _SessionCard extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Row(
                       children: [
-                        const Icon(Icons.circle, size: 6, color: AppColors.secondary),
-                        const SizedBox(width: 8),
+                        if (ex.hasVideo)
+                          GestureDetector(
+                            onTap: () => launchUrl(Uri.parse(ex.videoUrl!), mode: LaunchMode.externalApplication),
+                            child: const Padding(
+                              padding: EdgeInsets.only(right: 8),
+                              child: Icon(Icons.play_circle_fill, size: 22, color: AppColors.primary),
+                            ),
+                          )
+                        else
+                          const Icon(Icons.circle, size: 6, color: AppColors.secondary),
+                        if (!ex.hasVideo) const SizedBox(width: 8),
                         Expanded(child: Text(ex.name)),
                         Text(ex.summary, style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
                       ],
@@ -230,6 +240,7 @@ class _SessionCard extends ConsumerWidget {
     final repsCtrl = TextEditingController(text: '10');
     final weightCtrl = TextEditingController(text: '20');
     final restCtrl = TextEditingController(text: '60');
+    final videoCtrl = TextEditingController();
 
     showModalBottomSheet(
       context: context,
@@ -256,6 +267,8 @@ class _SessionCard extends ConsumerWidget {
               const SizedBox(width: 12),
               Expanded(child: TextField(controller: restCtrl, decoration: const InputDecoration(labelText: 'Repos (s)', border: OutlineInputBorder()), keyboardType: TextInputType.number)),
             ]),
+            const SizedBox(height: 12),
+            TextField(controller: videoCtrl, decoration: const InputDecoration(labelText: 'URL vidéo (YouTube, optionnel)', border: OutlineInputBorder(), prefixIcon: Icon(Icons.play_circle_outline)), keyboardType: TextInputType.url),
             const SizedBox(height: 24),
             FilledButton(
               onPressed: () async {
@@ -266,6 +279,7 @@ class _SessionCard extends ConsumerWidget {
                   'reps': int.tryParse(repsCtrl.text) ?? 10,
                   'weight_kg': double.tryParse(weightCtrl.text) ?? 0,
                   'rest_seconds': int.tryParse(restCtrl.text) ?? 60,
+                  if (videoCtrl.text.trim().isNotEmpty) 'video_url': videoCtrl.text.trim(),
                 });
                 ref.invalidate(programDetailProvider(programId));
                 if (ctx.mounted) Navigator.pop(ctx);

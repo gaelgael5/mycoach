@@ -27,6 +27,9 @@ dependencies:
   # Typographie
   google_fonts: ^6.1.0
 
+  # URL launcher
+  url_launcher: ^6.2.0
+
   # Charts
   fl_chart: ^0.68.0
 

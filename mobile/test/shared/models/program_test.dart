@@ -52,3 +52,41 @@ void main() {
     });
   });
 }
+
+  group('Exercise – videoUrl', () {
+    test('fromJson with video_url', () {
+      final e = Exercise.fromJson({
+        'id': 'e1', 'name': 'Bench', 'sets': 3, 'reps': 10,
+        'weight_kg': 60, 'rest_seconds': 90,
+        'video_url': 'https://youtube.com/watch?v=abc123',
+      });
+      expect(e.videoUrl, 'https://youtube.com/watch?v=abc123');
+      expect(e.hasVideo, isTrue);
+    });
+
+    test('fromJson without video_url', () {
+      final e = Exercise.fromJson({
+        'id': 'e1', 'name': 'Bench', 'sets': 3, 'reps': 10,
+        'weight_kg': 60, 'rest_seconds': 90,
+      });
+      expect(e.videoUrl, isNull);
+      expect(e.hasVideo, isFalse);
+    });
+
+    test('toJson includes video_url when present', () {
+      final e = Exercise.fromJson({
+        'id': 'e1', 'name': 'Bench', 'sets': 3, 'reps': 10,
+        'weight_kg': 60, 'rest_seconds': 90,
+        'video_url': 'https://youtube.com/watch?v=abc123',
+      });
+      expect(e.toJson()['video_url'], 'https://youtube.com/watch?v=abc123');
+    });
+
+    test('toJson excludes video_url when null', () {
+      final e = Exercise.fromJson({
+        'id': 'e1', 'name': 'Bench', 'sets': 3, 'reps': 10,
+        'weight_kg': 60, 'rest_seconds': 90,
+      });
+      expect(e.toJson().containsKey('video_url'), isFalse);
+    });
+  });

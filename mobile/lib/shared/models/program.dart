@@ -87,6 +87,7 @@ class Exercise extends Equatable {
   final int reps;
   final double weightKg;
   final int restSeconds;
+  final String? videoUrl;
 
   const Exercise({
     required this.id,
@@ -95,9 +96,12 @@ class Exercise extends Equatable {
     required this.reps,
     required this.weightKg,
     required this.restSeconds,
+    this.videoUrl,
   });
 
   String get summary => '${sets}×$reps — ${weightKg}kg';
+
+  bool get hasVideo => videoUrl != null && videoUrl!.isNotEmpty;
 
   factory Exercise.fromJson(Map<String, dynamic> json) => Exercise(
         id: json['id'] as String,
@@ -106,6 +110,7 @@ class Exercise extends Equatable {
         reps: json['reps'] as int,
         weightKg: (json['weight_kg'] as num).toDouble(),
         restSeconds: json['rest_seconds'] as int? ?? 60,
+        videoUrl: json['video_url'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -114,8 +119,9 @@ class Exercise extends Equatable {
         'reps': reps,
         'weight_kg': weightKg,
         'rest_seconds': restSeconds,
+        if (videoUrl != null) 'video_url': videoUrl,
       };
 
   @override
-  List<Object?> get props => [id, name, sets, reps, weightKg, restSeconds];
+  List<Object?> get props => [id, name, sets, reps, weightKg, restSeconds, videoUrl];
 }
