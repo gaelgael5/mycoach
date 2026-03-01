@@ -1,0 +1,79 @@
+# MyCoach — Docker Compose DEV (machine de développement)
+# Utilise les images :dev poussées par la CI depuis les branches de dev
+#
+# Usage :
+#   cp .env.dev.example .env.dev
+#   nano .env.dev
+#   docker compose -f docker-compose.dev.yml --env-file .env.dev up -d
+
+services:
+
+  # ─── Base de données PostgreSQL ──────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: mycoach-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-mycoach_dev}
+      POSTGRES_USER: ${POSTGRES_USER:-mycoach}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mycoach_dev}
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    networks:
+      - mycoach-dev
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-mycoach} -d ${POSTGRES_DB:-mycoach_dev}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ─── API FastAPI (image :dev) ─────────────────────────────────────────────
+  api:
+    image: blackbeardteam/mycoach-api:dev
+    container_name: mycoach-api-dev
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://${POSTGRES_USER:-mycoach}:${POSTGRES_PASSWORD:-mycoach_dev}@postgres:5432/${POSTGRES_DB:-mycoach_dev}"
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-key-change-me}
+      APP_ENV: development
+      APP_DEBUG: "true"
+      CORS_ORIGINS: '["*"]'
+      UPLOAD_DIR: /app/uploads
+    ports:
+      - "8000:8000"
+    networks:
+      - mycoach-dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  # ─── Watchtower — Auto-update image :dev ──────────────────────────────────
+  watchtower:
+    image: containrrr/watchtower
+    container_name: mycoach-watchtower-dev
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_POLL_INTERVAL: 120
+      WATCHTOWER_LABEL_ENABLE: "true"
+    networks:
+      - mycoach-dev
+
+volumes:
+  postgres_data_dev:
+    driver: local
+
+networks:
+  mycoach-dev:
+    driver: bridge
