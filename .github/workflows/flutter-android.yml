@@ -56,6 +56,17 @@ jobs:
         working-directory: mobile
         run: flutter analyze --no-fatal-infos || true
 
+      # ─── Tests ────────────────────────────────────────────────────────
+      - name: Run tests
+        working-directory: mobile
+        run: flutter test --coverage
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-coverage
+          path: mobile/coverage/lcov.info
+
       # ─── Build APK Release (main) ─────────────────────────────────────
       - name: Build APK Release
         if: github.ref == 'refs/heads/main'
