@@ -82,7 +82,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 const SizedBox(height: 16),
                 MyCoachTextField(controller: _passwordCtrl, label: 'Mot de passe', obscureText: true, prefixIcon: const Icon(Icons.lock_outline), validator: (v) => v == null || v.length < 6 ? 'Min. 6 caractères' : null),
                 const SizedBox(height: 16),
-                MyCoachTextField(controller: _confirmCtrl, label: 'Confirmer le mot de passe', obscureText: true, prefixIcon: const Icon(Icons.lock_outline), validator: (v) => v != _passwordCtrl.text ? 'Les mots de passe ne correspondent pas' : null),
+                MyCoachTextField(controller: _confirmCtrl, label: 'Confirmer le mot de passe', obscureText: true, prefixIcon: const Icon(Icons.lock_outline), validator: (v) => v?.trim() != _passwordCtrl.text.trim() ? 'Les mots de passe ne correspondent pas' : null),
                 const SizedBox(height: 32),
                 LoadingButton(onPressed: _submit, label: "S'inscrire", isLoading: authState.isLoading),
                 const SizedBox(height: 16),

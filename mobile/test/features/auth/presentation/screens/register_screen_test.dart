@@ -81,3 +81,29 @@ void main() {
     });
   });
 }
+
+// Regression test: copy-paste with trailing whitespace
+void registerScreenWhitespaceTests() {
+  Widget buildApp() => const ProviderScope(
+        child: MaterialApp(home: RegisterScreen()),
+      );
+
+  group('RegisterScreen – whitespace handling', () {
+    testWidgets('passwords match even with trailing spaces from paste',
+        (tester) async {
+      await tester.pumpWidget(buildApp());
+
+      await tester.enterText(
+          find.widgetWithText(TextFormField, 'Mot de passe'), 'abc123');
+      await tester.enterText(
+          find.widgetWithText(TextFormField, 'Confirmer le mot de passe'),
+          'abc123 ');
+
+      await tester.tap(find.text("S'inscrire"));
+      await tester.pump();
+
+      expect(find.text('Les mots de passe ne correspondent pas'),
+          findsNothing);
+    });
+  });
+}
