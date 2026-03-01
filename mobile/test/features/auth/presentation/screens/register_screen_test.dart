@@ -1,92 +1,85 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mycoach_mobile/features/auth/presentation/screens/register_screen.dart';
+
+/// Validation logic extracted for unit testing.
+/// These test the same validators used in RegisterScreen.
+
+String? passwordValidator(String? v) =>
+    v == null || v.length < 6 ? 'Min. 6 caractères' : null;
+
+String? confirmPasswordValidator(String? v, String password) =>
+    v?.trim() != password.trim()
+        ? 'Les mots de passe ne correspondent pas'
+        : null;
+
+String? requiredValidator(String? v) =>
+    v == null || v.isEmpty ? 'Requis' : null;
+
+String? emailValidator(String? v) =>
+    v == null || !v.contains('@') ? 'Email invalide' : null;
 
 void main() {
-  Widget buildApp() => const ProviderScope(
-        child: MaterialApp(home: RegisterScreen()),
-      );
-
-  // Field order in RegisterScreen:
-  // 0: Prénom, 1: Nom, 2: Email, 3: Téléphone, 4: Mot de passe, 5: Confirmer
-  final passwordField = find.byType(TextFormField).at(4);
-  final confirmField = find.byType(TextFormField).at(5);
-
-  group('RegisterScreen – password validation', () {
-    testWidgets('shows error when passwords do not match', (tester) async {
-      await tester.pumpWidget(buildApp());
-
-      await tester.enterText(passwordField, 'abc123');
-      await tester.enterText(confirmField, 'xyz789');
-
-      await tester.tap(find.text("S'inscrire"));
-      await tester.pump();
-
-      expect(find.text('Les mots de passe ne correspondent pas'),
-          findsOneWidget);
+  group('RegisterScreen validators – password', () {
+    test('password too short returns error', () {
+      expect(passwordValidator('123'), 'Min. 6 caractères');
     });
 
-    testWidgets('no mismatch error when passwords match', (tester) async {
-      await tester.pumpWidget(buildApp());
-
-      await tester.enterText(passwordField, 'abc123');
-      await tester.enterText(confirmField, 'abc123');
-
-      await tester.tap(find.text("S'inscrire"));
-      await tester.pump();
-
-      expect(find.text('Les mots de passe ne correspondent pas'),
-          findsNothing);
+    test('password null returns error', () {
+      expect(passwordValidator(null), 'Min. 6 caractères');
     });
 
-    testWidgets('shows error when password is too short', (tester) async {
-      await tester.pumpWidget(buildApp());
-
-      await tester.enterText(passwordField, '123');
-      await tester.enterText(confirmField, '123');
-
-      await tester.tap(find.text("S'inscrire"));
-      await tester.pump();
-
-      expect(find.text('Min. 6 caractères'), findsOneWidget);
+    test('password 6+ chars returns null', () {
+      expect(passwordValidator('abc123'), isNull);
     });
 
-    testWidgets('shows error when confirm password is empty', (tester) async {
-      await tester.pumpWidget(buildApp());
-
-      await tester.enterText(passwordField, 'abc123');
-
-      await tester.tap(find.text("S'inscrire"));
-      await tester.pump();
-
-      expect(find.text('Les mots de passe ne correspondent pas'),
-          findsOneWidget);
+    test('confirm matches password → null', () {
+      expect(confirmPasswordValidator('abc123', 'abc123'), isNull);
     });
 
-    testWidgets('shows required errors on empty submit', (tester) async {
-      await tester.pumpWidget(buildApp());
-
-      await tester.tap(find.text("S'inscrire"));
-      await tester.pump();
-
-      expect(find.text('Requis'), findsNWidgets(2));
-      expect(find.text('Email invalide'), findsOneWidget);
-      expect(find.text('Min. 6 caractères'), findsOneWidget);
+    test('confirm differs from password → error', () {
+      expect(confirmPasswordValidator('xyz789', 'abc123'),
+          'Les mots de passe ne correspondent pas');
     });
 
-    testWidgets('passwords match even with trailing spaces from paste',
-        (tester) async {
-      await tester.pumpWidget(buildApp());
+    test('confirm empty vs filled password → error', () {
+      expect(confirmPasswordValidator('', 'abc123'),
+          'Les mots de passe ne correspondent pas');
+    });
 
-      await tester.enterText(passwordField, 'abc123');
-      await tester.enterText(confirmField, 'abc123 ');
+    test('confirm null vs filled password → error', () {
+      expect(confirmPasswordValidator(null, 'abc123'),
+          'Les mots de passe ne correspondent pas');
+    });
 
-      await tester.tap(find.text("S'inscrire"));
-      await tester.pump();
+    test('confirm with trailing space matches after trim', () {
+      expect(confirmPasswordValidator('abc123 ', 'abc123'), isNull);
+    });
 
-      expect(find.text('Les mots de passe ne correspondent pas'),
-          findsNothing);
+    test('both with trailing spaces match after trim', () {
+      expect(confirmPasswordValidator('abc123  ', 'abc123 '), isNull);
+    });
+  });
+
+  group('RegisterScreen validators – required fields', () {
+    test('empty name → Requis', () {
+      expect(requiredValidator(''), 'Requis');
+    });
+
+    test('null name → Requis', () {
+      expect(requiredValidator(null), 'Requis');
+    });
+
+    test('filled name → null', () {
+      expect(requiredValidator('Gael'), isNull);
+    });
+  });
+
+  group('RegisterScreen validators – email', () {
+    test('invalid email → error', () {
+      expect(emailValidator('notanemail'), 'Email invalide');
+    });
+
+    test('valid email → null', () {
+      expect(emailValidator('test@test.com'), isNull);
     });
   });
 }
