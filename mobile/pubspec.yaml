@@ -1,0 +1,41 @@
+name: mycoach_mobile
+description: MyCoach — Application mobile pour coachs sportifs indépendants
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  flutter_riverpod: ^2.4.0
+
+  # Navigation
+  go_router: ^14.0.0
+
+  # HTTP & API
+  dio: ^5.3.0
+  json_annotation: ^4.8.0
+
+  # Stockage sécurisé
+  flutter_secure_storage: ^9.0.0
+
+  # Typographie
+  google_fonts: ^6.1.0
+
+  # Utilitaires
+  equatable: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  json_serializable: ^6.7.0
+  build_runner: ^2.4.6
+
+flutter:
+  uses-material-design: true
