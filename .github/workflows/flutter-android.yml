@@ -1,0 +1,98 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# MyCoach — CI Flutter Android (GitHub Actions)
+#
+# Déclenché sur : push et PR touchant mobile/
+# Logique :
+#   - Toutes branches : analyze + build APK
+#   - main : APK release uploadé en artifact
+#   - mobile/* ou dev : APK debug uploadé en artifact
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: Flutter Android Build
+
+on:
+  push:
+    paths:
+      - 'mobile/**'
+      - '.github/workflows/flutter-android.yml'
+    branches: ['**']
+  pull_request:
+    paths:
+      - 'mobile/**'
+
+env:
+  FLUTTER_VERSION: '3.41.2'
+  JAVA_VERSION: '17'
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # ─── Checkout ──────────────────────────────────────────────────────
+      - uses: actions/checkout@v4
+
+      # ─── Java JDK ─────────────────────────────────────────────────────
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      # ─── Flutter SDK ──────────────────────────────────────────────────
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      # ─── Dépendances ──────────────────────────────────────────────────
+      - name: Install dependencies
+        working-directory: mobile
+        run: flutter pub get
+
+      # ─── Analyze (non bloquant) ───────────────────────────────────────
+      - name: Analyze
+        working-directory: mobile
+        run: flutter analyze --no-fatal-infos || true
+
+      # ─── Tests ────────────────────────────────────────────────────────
+      - name: Run tests
+        working-directory: mobile
+        run: flutter test --coverage
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-coverage
+          path: mobile/coverage/lcov.info
+
+      # ─── Build APK Release (main) ─────────────────────────────────────
+      - name: Build APK Release
+        if: github.ref == 'refs/heads/main'
+        working-directory: mobile
+        run: flutter build apk --release
+
+      # ─── Build APK Debug (branches dev) ────────────────────────────────
+      - name: Build APK Debug
+        if: github.ref != 'refs/heads/main'
+        working-directory: mobile
+        run: flutter build apk --debug
+
+      # ─── Upload APK Release ────────────────────────────────────────────
+      - name: Upload APK Release
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mycoach-release-apk
+          path: mobile/build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
+
+      # ─── Upload APK Debug ──────────────────────────────────────────────
+      - name: Upload APK Debug
+        if: github.ref != 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mycoach-debug-apk
+          path: mobile/build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 7
