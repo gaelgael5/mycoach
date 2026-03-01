@@ -1,0 +1,123 @@
+# =============================================================================
+# AppVeyor CI — MyCoach Flutter Mobile (Android APK)
+# =============================================================================
+# Ce fichier configure la CI pour le projet Flutter dans mobile/.
+# Dans AppVeyor, configurer le "Custom configuration file name" à : mobile/appveyor.yml
+#
+# Logique de branche :
+#   - TOUTES les branches : analyze + build APK (vérification compilation)
+#   - main              : build APK --release + artifact
+#   - mobile/* ou dev   : build APK --debug   + artifact (pour test)
+# =============================================================================
+
+image: Ubuntu2204
+
+stack: jdk 17
+
+# -----------------------------------------------------------------------------
+# Variables d'environnement
+# -----------------------------------------------------------------------------
+environment:
+  FLUTTER_VERSION: "3.24.0"
+  FLUTTER_HOME: "/opt/flutter"
+  ANDROID_SDK_ROOT: "/opt/android-sdk"
+  JAVA_HOME: "/usr/lib/jvm/java-17-openjdk-amd64"
+
+# -----------------------------------------------------------------------------
+# Cache Flutter SDK et Android SDK entre les builds
+# -----------------------------------------------------------------------------
+cache:
+  - /opt/flutter
+  - /opt/android-sdk
+  - $HOME/.pub-cache
+
+# -----------------------------------------------------------------------------
+# Installation : Flutter SDK + Android SDK + licences
+# -----------------------------------------------------------------------------
+install:
+  # --- Flutter SDK ---
+  - sh: |
+      if [ ! -d "$FLUTTER_HOME/bin" ]; then
+        echo ">>> Installing Flutter $FLUTTER_VERSION..."
+        git clone https://github.com/flutter/flutter.git -b "$FLUTTER_VERSION" --depth 1 "$FLUTTER_HOME"
+      else
+        echo ">>> Flutter SDK found in cache"
+      fi
+  - sh: export PATH="$FLUTTER_HOME/bin:$FLUTTER_HOME/bin/cache/dart-sdk/bin:$PATH"
+
+  # --- Android SDK command-line tools ---
+  - sh: |
+      if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
+        echo ">>> Installing Android command-line tools..."
+        mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
+        cd /tmp
+        wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+        unzip -q cmdline-tools.zip
+        mv cmdline-tools "$ANDROID_SDK_ROOT/cmdline-tools/latest"
+      else
+        echo ">>> Android SDK found in cache"
+      fi
+
+  # --- Accept Android SDK licences ---
+  - sh: yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+
+  # --- Install required Android SDK packages ---
+  - sh: |
+      "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" \
+        "platform-tools" \
+        "platforms;android-34" \
+        "build-tools;34.0.0"
+
+  # --- Flutter doctor (diagnostic) ---
+  - sh: |
+      export PATH="$FLUTTER_HOME/bin:$FLUTTER_HOME/bin/cache/dart-sdk/bin:$PATH"
+      flutter doctor -v
+
+# -----------------------------------------------------------------------------
+# Build : on travaille dans le dossier mobile/
+# -----------------------------------------------------------------------------
+build_script:
+  # --- Résolution des dépendances ---
+  - sh: |
+      export PATH="$FLUTTER_HOME/bin:$FLUTTER_HOME/bin/cache/dart-sdk/bin:$PATH"
+      cd mobile && flutter pub get
+
+  # --- Analyse statique (non bloquante) ---
+  - sh: |
+      export PATH="$FLUTTER_HOME/bin:$FLUTTER_HOME/bin/cache/dart-sdk/bin:$PATH"
+      cd mobile && flutter analyze --no-fatal-infos --no-fatal-warnings || true
+
+  # --- Build APK selon la branche ---
+  - sh: |
+      export PATH="$FLUTTER_HOME/bin:$FLUTTER_HOME/bin/cache/dart-sdk/bin:$PATH"
+      cd mobile
+      BRANCH="$APPVEYOR_REPO_BRANCH"
+      echo ">>> Building on branch: $BRANCH"
+      if [ "$BRANCH" = "main" ]; then
+        echo ">>> Release build (main)"
+        flutter build apk --release
+      elif echo "$BRANCH" | grep -qE '^mobile/|^dev$'; then
+        echo ">>> Debug build (mobile/* or dev)"
+        flutter build apk --debug
+      else
+        echo ">>> Release build (branch verification)"
+        flutter build apk --release
+      fi
+
+# -----------------------------------------------------------------------------
+# Artifacts : APK uploadé sur AppVeyor
+# -----------------------------------------------------------------------------
+artifacts:
+  - path: mobile/build/app/outputs/flutter-apk/app-release.apk
+    name: MyCoach-Release-APK
+  - path: mobile/build/app/outputs/flutter-apk/app-debug.apk
+    name: MyCoach-Debug-APK
+
+# -----------------------------------------------------------------------------
+# Branches : builder sur toutes les branches
+# -----------------------------------------------------------------------------
+branches:
+  only:
+    - main
+    - dev
+    - /^mobile\/.*/
