@@ -33,6 +33,12 @@ dependencies:
   # Date
   intl: ^0.19.0
 
+  # WebSocket
+  web_socket_channel: ^2.4.0
+
+  # UX Polish
+  shimmer: ^3.0.0
+
   # Utilitaires
   equatable: ^2.0.5
 

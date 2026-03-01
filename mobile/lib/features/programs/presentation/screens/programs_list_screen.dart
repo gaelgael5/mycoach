@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/models/program.dart';
+import '../../../../shared/widgets/empty_state.dart';
+import '../../../../shared/widgets/shimmer_list.dart';
 import '../providers/programs_providers.dart';
 
 class ProgramsListScreen extends ConsumerWidget {
@@ -21,27 +23,37 @@ class ProgramsListScreen extends ConsumerWidget {
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.onPrimary,
       ),
-      body: programsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Erreur: $e')),
-        data: (programs) => programs.isEmpty
-            ? Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.fitness_center_outlined, size: 80, color: AppColors.primary.withValues(alpha: 0.3)),
-                    const SizedBox(height: 16),
-                    Text('Aucun programme', style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.textSecondary)),
-                    const SizedBox(height: 8),
-                    const Text('Créez votre premier programme d\'entraînement'),
-                  ],
-                ),
-              )
-            : ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: programs.length,
-                itemBuilder: (context, index) => _ProgramCard(program: programs[index]),
+      body: RefreshIndicator(
+        onRefresh: () async => ref.invalidate(programsProvider),
+        child: programsAsync.when(
+          loading: () => const ShimmerList(),
+          error: (e, _) => ListView(children: [
+            const SizedBox(height: 100),
+            Center(child: Text('Erreur: $e')),
+            const SizedBox(height: 12),
+            Center(
+              child: ElevatedButton(
+                onPressed: () => ref.invalidate(programsProvider),
+                child: const Text('Réessayer'),
               ),
+            ),
+          ]),
+          data: (programs) => programs.isEmpty
+              ? ListView(children: const [
+                  SizedBox(height: 80),
+                  EmptyState(
+                    icon: Icons.fitness_center_outlined,
+                    title: 'Aucun programme',
+                    subtitle: "Créez votre premier programme d'entraînement",
+                  ),
+                ])
+              : ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: programs.length,
+                  itemBuilder: (context, index) =>
+                      _ProgramCard(program: programs[index]),
+                ),
+        ),
       ),
     );
   }
@@ -79,11 +91,18 @@ class _ProgramCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(program.name, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+                    Text(program.name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w600)),
                     const SizedBox(height: 4),
                     Text(
                       '${program.sessions.length} séances · ${program.assignedClientIds.length} clients · ${program.durationWeeks} sem.',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(color: AppColors.textSecondary),
                     ),
                   ],
                 ),

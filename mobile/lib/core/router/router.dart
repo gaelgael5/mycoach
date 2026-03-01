@@ -14,17 +14,20 @@ import '../../features/programs/presentation/screens/program_detail_screen.dart'
 import '../../features/tracking/presentation/screens/client_program_screen.dart';
 import '../../features/tracking/presentation/screens/metrics_screen.dart';
 import '../../features/tracking/presentation/screens/progression_dashboard_screen.dart';
+import '../../main.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/login',
+  initialLocation: '/splash',
   routes: [
+    GoRoute(path: '/splash', builder: (_, __) => const SplashScreen()),
     GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
     GoRoute(path: '/register', builder: (_, __) => const RegisterScreen()),
     StatefulShellRoute.indexedStack(
-      builder: (_, __, navigationShell) => ShellScreen(navigationShell: navigationShell),
+      builder: (_, __, navigationShell) =>
+          ShellScreen(navigationShell: navigationShell),
       branches: [
         StatefulShellBranch(routes: [
           GoRoute(path: '/dashboard', builder: (_, __) => const DashboardScreen()),
@@ -36,7 +39,8 @@ final appRouter = GoRouter(
             routes: [
               GoRoute(
                 path: ':id',
-                builder: (_, state) => ClientDetailScreen(clientId: state.pathParameters['id']!),
+                builder: (_, state) =>
+                    ClientDetailScreen(clientId: state.pathParameters['id']!),
               ),
             ],
           ),
@@ -49,7 +53,8 @@ final appRouter = GoRouter(
               GoRoute(path: 'create', builder: (_, __) => const CreateProgramScreen()),
               GoRoute(
                 path: ':id',
-                builder: (_, state) => ProgramDetailScreen(programId: state.pathParameters['id']!),
+                builder: (_, state) =>
+                    ProgramDetailScreen(programId: state.pathParameters['id']!),
               ),
             ],
           ),
@@ -62,10 +67,10 @@ final appRouter = GoRouter(
         ]),
       ],
     ),
-    // Standalone routes (not in shell)
     GoRoute(
       path: '/tracking/program/:id',
-      builder: (_, state) => ClientProgramScreen(programId: state.pathParameters['id']!),
+      builder: (_, state) =>
+          ClientProgramScreen(programId: state.pathParameters['id']!),
     ),
     GoRoute(path: '/tracking/metrics', builder: (_, __) => const MetricsScreen()),
     GoRoute(path: '/tracking/progression', builder: (_, __) => const ProgressionDashboardScreen()),
