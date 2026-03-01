@@ -31,8 +31,8 @@ class MessagesRepository {
     final wsUrl = baseUrl
         .replaceFirst('http://', 'ws://')
         .replaceFirst('https://', 'wss://')
-        .replaceFirst('/api/v1', '');
-    final uri = Uri.parse('$wsUrl/api/v1/ws/$conversationId?token=$token');
+        .replaceFirst('http', 'ws');
+    final uri = Uri.parse('$wsUrl/ws/$conversationId?token=$token');
     return WebSocketChannel.connect(uri);
   }
 

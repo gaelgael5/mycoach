@@ -30,13 +30,13 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "ENV=prod" >> $GITHUB_OUTPUT
-            echo "API_URL=http://192.168.10.63:8000/api/v1" >> $GITHUB_OUTPUT
+            echo "API_URL=http://192.168.10.63:8200" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref }}" == refs/heads/staging* ]]; then
             echo "ENV=staging" >> $GITHUB_OUTPUT
-            echo "API_URL=http://192.168.10.63:8000/api/v1" >> $GITHUB_OUTPUT
+            echo "API_URL=http://192.168.10.63:8200" >> $GITHUB_OUTPUT
           else
             echo "ENV=dev" >> $GITHUB_OUTPUT
-            echo "API_URL=http://192.168.10.63:8000/api/v1" >> $GITHUB_OUTPUT
+            echo "API_URL=http://192.168.10.63:8200" >> $GITHUB_OUTPUT
           fi
 
       - uses: actions/setup-java@v4
