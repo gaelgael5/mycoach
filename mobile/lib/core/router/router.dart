@@ -11,7 +11,6 @@ import '../../features/messages/presentation/screens/messages_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/programs/presentation/screens/programs_list_screen.dart';
 import '../../features/programs/presentation/screens/create_program_screen.dart';
-import '../../features/programs/presentation/screens/create_program_screen.dart';
 import '../../features/programs/presentation/screens/program_detail_screen.dart';
 import '../../features/tracking/presentation/screens/client_program_screen.dart';
 import '../../features/tracking/presentation/screens/metrics_screen.dart';
@@ -27,7 +26,6 @@ final appRouter = GoRouter(
     GoRoute(path: '/splash', builder: (_, __) => const SplashScreen()),
     GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
     GoRoute(path: '/register', builder: (_, __) => const RegisterScreen()),
-    GoRoute(path: '/programs/create', builder: (_, __) => const CreateProgramScreen()),
     GoRoute(path: '/forgot-password', builder: (_, __) => const ForgotPasswordScreen()),
     StatefulShellRoute.indexedStack(
       builder: (_, __, navigationShell) =>
