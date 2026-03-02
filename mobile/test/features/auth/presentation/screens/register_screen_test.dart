@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 /// These test the same validators used in RegisterScreen.
 
 String? passwordValidator(String? v) =>
-    v == null || v.length < 6 ? 'Min. 6 caractères' : null;
+    v == null || v.length < 6 ? 'Min. 8 caractères' : null;
 
 String? confirmPasswordValidator(String? v, String password) =>
     v?.trim() != password.trim()
@@ -20,11 +20,11 @@ String? emailValidator(String? v) =>
 void main() {
   group('RegisterScreen validators – password', () {
     test('password too short returns error', () {
-      expect(passwordValidator('123'), 'Min. 6 caractères');
+      expect(passwordValidator('123'), 'Min. 8 caractères');
     });
 
     test('password null returns error', () {
-      expect(passwordValidator(null), 'Min. 6 caractères');
+      expect(passwordValidator(null), 'Min. 8 caractères');
     });
 
     test('password 6+ chars returns null', () {

@@ -85,7 +85,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
                       onPressed: () => setState(() => _obscure = !_obscure),
                     ),
-                    validator: (v) => v == null || v.length < 6 ? 'Min. 6 caractères' : null,
+                    validator: (v) => v == null || v.length < 8 ? 'Min. 8 caractères' : null,
                   ),
                   const SizedBox(height: 32),
                   LoadingButton(

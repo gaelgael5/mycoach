@@ -21,7 +21,7 @@ void main() {
       await tester.tap(find.text('Se connecter'));
       await tester.pump();
       expect(find.text('Email invalide'), findsOneWidget);
-      expect(find.text('Min. 6 caractères'), findsOneWidget);
+      expect(find.text('Min. 8 caractères'), findsOneWidget);
     });
   });
 }

@@ -12,6 +12,7 @@ class AuthRepository {
     final response = await _api.dio.post('/auth/login', data: {
       'email': email,
       'password': password,
+      'confirm_password': password,
     });
     final data = response.data as Map<String, dynamic>;
     await _storage.setToken(data['access_token'] as String);
@@ -31,6 +32,7 @@ class AuthRepository {
     final response = await _api.dio.post('/auth/register', data: {
       'email': email,
       'password': password,
+      'confirm_password': password,
       'first_name': firstName,
       'last_name': lastName,
       'phone': phone,

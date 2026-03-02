@@ -80,7 +80,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 const SizedBox(height: 16),
                 MyCoachTextField(controller: _phoneCtrl, label: 'Téléphone (optionnel)', keyboardType: TextInputType.phone, prefixIcon: const Icon(Icons.phone_outlined)),
                 const SizedBox(height: 16),
-                MyCoachTextField(controller: _passwordCtrl, label: 'Mot de passe', obscureText: true, prefixIcon: const Icon(Icons.lock_outline), validator: (v) => v == null || v.length < 6 ? 'Min. 6 caractères' : null),
+                MyCoachTextField(controller: _passwordCtrl, label: 'Mot de passe', obscureText: true, prefixIcon: const Icon(Icons.lock_outline), validator: (v) => v == null || v.length < 8 ? 'Min. 8 caractères' : null),
                 const SizedBox(height: 16),
                 MyCoachTextField(controller: _confirmCtrl, label: 'Confirmer le mot de passe', obscureText: true, prefixIcon: const Icon(Icons.lock_outline), validator: (v) => v?.trim() != _passwordCtrl.text.trim() ? 'Les mots de passe ne correspondent pas' : null),
                 const SizedBox(height: 32),
