@@ -61,7 +61,7 @@ class _ClientProgramScreenState extends ConsumerState<ClientProgramScreen> {
     );
   }
 
-  Widget _buildSessionCard(BuildContext context, Session session) {
+  Widget _buildSessionCard(BuildContext context, PlannedSession session) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -71,7 +71,7 @@ class _ClientProgramScreenState extends ConsumerState<ClientProgramScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(session.title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+            Text(session.sessionName, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
             const Divider(height: 24),
             for (final ex in session.exercises) _buildExerciseRow(ex),
             const SizedBox(height: 12),
@@ -90,8 +90,8 @@ class _ClientProgramScreenState extends ConsumerState<ClientProgramScreen> {
     );
   }
 
-  Widget _buildExerciseRow(Exercise ex) {
-    _weightControllers.putIfAbsent(ex.id, () => TextEditingController(text: ex.weightKg.toString()));
+  Widget _buildExerciseRow(PlannedExercise ex) {
+    _weightControllers.putIfAbsent(ex.id ?? ex.exerciseTypeId, () => TextEditingController(text: (ex.targetWeightKg ?? 0).toString()));
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
@@ -101,15 +101,15 @@ class _ClientProgramScreenState extends ConsumerState<ClientProgramScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(ex.name, style: const TextStyle(fontWeight: FontWeight.w500)),
-                Text('${ex.sets}×${ex.reps}', style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+                Text(ex.exerciseName ?? 'Exercice', style: const TextStyle(fontWeight: FontWeight.w500)),
+                Text('${ex.targetSets}×${ex.targetReps}', style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
               ],
             ),
           ),
           SizedBox(
             width: 80,
             child: TextField(
-              controller: _weightControllers[ex.id],
+              controller: _weightControllers[ex.id ?? ex.exerciseTypeId],
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 suffixText: 'kg',
@@ -124,16 +124,16 @@ class _ClientProgramScreenState extends ConsumerState<ClientProgramScreen> {
     );
   }
 
-  Future<void> _completeSession(Session session) async {
+  Future<void> _completeSession(PlannedSession session) async {
     final logs = session.exercises.map((ex) => ExerciseLog(
-          exerciseId: ex.id,
-          actualWeightKg: double.tryParse(_weightControllers[ex.id]?.text ?? '') ?? ex.weightKg,
-          actualReps: ex.reps,
-          actualSets: ex.sets,
+          exerciseId: ex.id ?? ex.exerciseTypeId,
+          actualWeightKg: double.tryParse(_weightControllers[ex.id ?? ex.exerciseTypeId]?.text ?? '') ?? ex.targetWeightKg ?? 0,
+          actualReps: ex.targetReps,
+          actualSets: ex.targetSets,
         ).toJson()).toList();
 
     try {
-      await ref.read(trackingRepositoryProvider).completeSession(session.id, logs);
+      await ref.read(trackingRepositoryProvider).completeSession(session.id ?? '', logs);
       ref.invalidate(trackingProvider);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

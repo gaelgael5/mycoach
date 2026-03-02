@@ -1,5 +1,3 @@
-const _levels = {'beginner': 'Débutant', 'intermediate': 'Intermédiaire', 'advanced': 'Avancé'};
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +6,9 @@ import '../../../../shared/models/program.dart';
 import '../../../../shared/widgets/empty_state.dart';
 import '../../../../shared/widgets/shimmer_list.dart';
 import '../providers/programs_providers.dart';
+
+const _levels = {'beginner': 'Débutant', 'intermediate': 'Intermédiaire', 'advanced': 'Avancé'};
+
 
 class ProgramsListScreen extends ConsumerWidget {
   const ProgramsListScreen({super.key});
