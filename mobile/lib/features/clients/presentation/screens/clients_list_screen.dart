@@ -1,3 +1,4 @@
+import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -38,6 +39,13 @@ class _ClientsListScreenState extends ConsumerState<ClientsListScreen> {
     final clientsAsync = ref.watch(clientsListProvider);
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _showInviteSheet(context, ref),
+        icon: const Icon(Icons.person_add),
+        label: const Text('Inviter'),
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+      ),
       appBar: AppBar(
         title: Row(
           children: [
@@ -168,4 +176,46 @@ class _ClientsListScreenState extends ConsumerState<ClientsListScreen> {
       ),
     );
   }
+
+  void _showInviteSheet(BuildContext context, WidgetRef ref) {
+    final labelCtrl = TextEditingController(text: 'Lien d\'invitation');
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (ctx) => Padding(
+        padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(ctx).viewInsets.bottom + 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text('Inviter un client', style: Theme.of(ctx).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text('Créez un lien d\'invitation que votre client utilisera pour rejoindre votre espace.', style: TextStyle(color: AppColors.textSecondary)),
+            const SizedBox(height: 16),
+            TextField(controller: labelCtrl, decoration: const InputDecoration(labelText: 'Nom du lien (optionnel)', border: OutlineInputBorder())),
+            const SizedBox(height: 24),
+            FilledButton.icon(
+              onPressed: () async {
+                try {
+                  final repo = ref.read(clientsRepositoryProvider);
+                  final token = await repo.createEnrollmentToken(label: labelCtrl.text.trim().isEmpty ? null : labelCtrl.text.trim());
+                  if (ctx.mounted) Navigator.pop(ctx);
+                  await SharePlus.instance.share(ShareParams(
+                    text: 'Rejoignez-moi sur MyCoach ! ${token.enrollmentLink}',
+                  ));
+                } catch (e) {
+                  if (ctx.mounted) {
+                    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Erreur: \$e'), backgroundColor: AppColors.error));
+                  }
+                }
+              },
+              icon: const Icon(Icons.link),
+              label: const Text('Créer et partager le lien'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 }

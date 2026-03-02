@@ -31,6 +31,8 @@ dependencies:
   url_launcher: ^6.2.0
   # Phone input with country picker
   intl_phone_field: ^3.2.0
+  # Share
+  share_plus: ^9.0.0
 
   # Charts
   fl_chart: ^0.68.0
