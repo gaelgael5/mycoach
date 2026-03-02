@@ -4,11 +4,8 @@ on:
   push:
     branches: [dev, uat]
     paths:
-  push:
-    paths:
       - 'mobile/**'
       - '.github/workflows/flutter-android.yml'
-    branches: ['**']
   pull_request:
     paths:
       - 'mobile/**'
@@ -18,7 +15,7 @@ env:
   JAVA_VERSION: '17'
 
 concurrency:
-  group: build-${{ github.ref }}
+  group: flutter-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -27,10 +24,7 @@ permissions:
 jobs:
   build:
     name: Build APK
-    runs-on:
-  push:
-    branches: [dev, uat]
-    paths: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -38,34 +32,22 @@ jobs:
       - name: Set environment
         id: env
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "ENV=prod" >> $GITHUB_OUTPUT
-            echo "API_URL=http://192.168.10.63:8200" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.ref }}" == refs/heads/staging* ]]; then
+          BRANCH="${GITHUB_REF_NAME}"
+          if [[ "$BRANCH" == "uat" ]]; then
             echo "ENV=staging" >> $GITHUB_OUTPUT
-            echo "API_URL=http://192.168.10.63:8200" >> $GITHUB_OUTPUT
           else
             echo "ENV=dev" >> $GITHUB_OUTPUT
-            echo "API_URL=http://192.168.10.63:8200" >> $GITHUB_OUTPUT
           fi
+          echo "API_URL=http://192.168.10.63:8200" >> $GITHUB_OUTPUT
 
       - uses: actions/setup-java@v4
         with:
-          distribution:
-  push:
-    branches: [dev, uat]
-    paths: 'temurin'
-          java-version:
-  push:
-    branches: [dev, uat]
-    paths: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version:
-  push:
-    branches: [dev, uat]
-    paths: ${{ env.FLUTTER_VERSION }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
           cache: true
 
@@ -80,7 +62,7 @@ jobs:
       - name: Run tests
         working-directory: mobile
         continue-on-error: true
-        run: flutter test --coverage --dart-define=ENV=test --dart-define=API_BASE_URL=http://localhost:8000/api/v1
+        run: flutter test --coverage --dart-define=ENV=test --dart-define=API_BASE_URL=http://localhost:8000
 
       - name: Upload coverage
         if: always()
@@ -90,83 +72,47 @@ jobs:
           path: mobile/coverage/lcov.info
           if-no-files-found: ignore
 
-      # ─── Build APK Release (main) ─────────────────────────────────────
-      - name: Build APK Release
-        if: github.ref == 'refs/heads/main'
+      # ─── Build APK ────────────────────────────────────────────────────
+      - name: Build APK
         working-directory: mobile
         run: |
-          # Auto-increment versionCode with build number
-          sed -i "s/version:
-  push:
-    branches: [dev, uat]
-    paths: 1.0.0+.*/version: 1.0.0+${{ github.run_number }}/" pubspec.yaml
-          flutter build apk --release \
-            --dart-define=ENV=${{ steps.env.outputs.ENV }} \
-            --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
+          sed -i "s/version: 1.0.0+.*/version: 1.0.0+${{ github.run_number }}/" pubspec.yaml
+          if [[ "${{ github.ref_name }}" == "uat" ]]; then
+            flutter build apk --release \
+              --dart-define=ENV=${{ steps.env.outputs.ENV }} \
+              --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
+          else
+            flutter build apk --debug \
+              --dart-define=ENV=${{ steps.env.outputs.ENV }} \
+              --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
+          fi
 
-      # ─── GitHub Release ────────────────────────────────────────────────
-      - name: Get version
-        if: github.ref == 'refs/heads/main'
-        id: version
-        run: echo "TAG=v1.0.0-build.${{ github.run_number }}" >> $GITHUB_OUTPUT
-
-      - name: Rename APK
-        if: github.ref == 'refs/heads/main'
-        run: |
-          cp mobile/build/app/outputs/flutter-apk/app-release.apk \
-             mobile/build/app/outputs/flutter-apk/mycoach-${{ steps.version.outputs.TAG }}.apk
-
-      - name: Create GitHub Release
-        if: github.ref == 'refs/heads/main'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.version.outputs.TAG }}
-          name: "MyCoach ${{ steps.version.outputs.TAG }}"
-          body: |
-            🚀 Build automatique #${{ github.run_number }}
-            📱 Télécharge l'APK et installe-le sur Android.
-          files: |
-            mobile/build/app/outputs/flutter-apk/mycoach-${{ steps.version.outputs.TAG }}.apk
-            mobile/build/app/outputs/flutter-apk/app-release.apk
-
-      # ─── Firebase App Distribution ─────────────────────────────────────
+      # ─── Firebase App Distribution (dev builds → testers) ─────────────
       - name: Upload to Firebase App Distribution
-        if: github.ref == 'refs/heads/main'
+        if: github.ref_name == 'dev'
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: "1:552200590101:android:90b6122ab2ba06e552cf1c"
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: testers
+          file: mobile/build/app/outputs/flutter-apk/app-debug.apk
+          releaseNotes: "DEV Build #${{ github.run_number }} — ${{ github.event.head_commit.message }}"
+
+      # ─── Firebase App Distribution (uat builds → testers) ──────────────
+      - name: Upload UAT to Firebase
+        if: github.ref_name == 'uat'
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: "1:552200590101:android:90b6122ab2ba06e552cf1c"
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           groups: testers
           file: mobile/build/app/outputs/flutter-apk/app-release.apk
-          releaseNotes: "Build #${{ github.run_number }} — ${{ github.event.head_commit.message }}"
+          releaseNotes: "UAT Build #${{ github.run_number }} — ${{ github.event.head_commit.message }}"
 
-      # ─── Artifacts backup ──────────────────────────────────────────────
-      - name: Upload APK Release
-        if: github.ref == 'refs/heads/main'
+      # ─── Artifacts ─────────────────────────────────────────────────────
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mycoach-release-apk
-          path: mobile/build/app/outputs/flutter-apk/app-release.apk
+          name: mycoach-${{ github.ref_name }}-${{ github.run_number }}
+          path: mobile/build/app/outputs/flutter-apk/app-*.apk
           retention-days: 30
-
-      # ─── Staging / Debug ───────────────────────────────────────────────
-      - name: Build APK Staging
-        if: startsWith(github.ref, 'refs/heads/staging')
-        working-directory: mobile
-        run: |
-          # Auto-increment versionCode with build number
-          sed -i "s/version:
-  push:
-    branches: [dev, uat]
-    paths: 1.0.0+.*/version: 1.0.0+${{ github.run_number }}/" pubspec.yaml
-          flutter build apk --release \
-            --dart-define=ENV=${{ steps.env.outputs.ENV }} \
-            --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
-
-      - name: Build APK Debug
-        if: github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/staging')
-        working-directory: mobile
-        run: |
-          flutter build apk --debug \
-            --dart-define=ENV=${{ steps.env.outputs.ENV }} \
-            --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
