@@ -56,6 +56,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     if (!value.contains(RegExp(r'[0-9]'))) return 'Au moins 1 chiffre';
     return null;
   }
+  List<String> _getMissingPasswordCriteria(String? password) {
+    final missing = <String>[];
+    if (password == null || password.isEmpty) {
+      missing.add('Le mot de passe est requis');
+      return missing;
+    }
+    if (password.length < 8) missing.add('Au moins 8 caractères');
+    if (!password.contains(RegExp(r'[A-Z]'))) missing.add('Au moins 1 majuscule (A-Z)');
+    if (!password.contains(RegExp(r'[0-9]'))) missing.add('Au moins 1 chiffre (0-9)');
+    return missing;
+  }
+
 
   Widget _buildPasswordCriteria() {
     final password = _passwordCtrl.text;
