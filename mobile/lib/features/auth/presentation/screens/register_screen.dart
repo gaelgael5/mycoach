@@ -37,7 +37,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _confirmCtrl = TextEditingController();
   String? _fullPhoneNumber;
   String? _selectedSector;
-  bool _passwordVisible = false;
 
   @override
   void dispose() {
@@ -47,45 +46,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     _passwordCtrl.dispose();
     _confirmCtrl.dispose();
     super.dispose();
-  }
-
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) return 'Requis';
-    if (value.length < 8) return 'Min. 8 caractères';
-    if (!value.contains(RegExp(r'[A-Z]'))) return 'Au moins 1 majuscule';
-    if (!value.contains(RegExp(r'[0-9]'))) return 'Au moins 1 chiffre';
-    return null;
-  }
-  List<String> _getMissingPasswordCriteria(String? password) {
-    final missing = <String>[];
-    if (password == null || password.isEmpty) {
-      missing.add('Le mot de passe est requis');
-      return missing;
-    }
-    if (password.length < 8) missing.add('Au moins 8 caractères');
-    if (!password.contains(RegExp(r'[A-Z]'))) missing.add('Au moins 1 majuscule (A-Z)');
-    if (!password.contains(RegExp(r'[0-9]'))) missing.add('Au moins 1 chiffre (0-9)');
-    return missing;
-  }
-
-
-  Widget _buildPasswordCriteria() {
-    final password = _passwordCtrl.text;
-    final hasLength = password.length >= 8;
-    final hasUpper = password.contains(RegExp(r'[A-Z]'));
-    final hasDigit = password.contains(RegExp(r'[0-9]'));
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 8),
-        Text('Le mot de passe doit contenir :', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-        const SizedBox(height: 4),
-        _PasswordCriterion('Au moins 8 caractères', hasLength),
-        _PasswordCriterion('Au moins 1 majuscule (A-Z)', hasUpper),
-        _PasswordCriterion('Au moins 1 chiffre (0-9)', hasDigit),
-      ],
-    );
   }
 
   void _submit() {
@@ -200,19 +160,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 Text('Sécurité', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
                 const SizedBox(height: 12),
 
-                MyCoachTextField(
-                  controller: _passwordCtrl,
-                  label: 'Mot de passe',
-                  obscureText: !_passwordVisible,
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: IconButton(
-                    icon: Icon(_passwordVisible ? Icons.visibility_off : Icons.visibility, size: 20),
-                    onPressed: () => setState(() => _passwordVisible = !_passwordVisible),
-                  ),
-                  onChanged: (v) => setState(() {}),
-                  validator: _validatePassword,
-                ),
-                _buildPasswordCriteria(),
+                MyCoachTextField(controller: _passwordCtrl, label: 'Mot de passe', obscureText: true, prefixIcon: const Icon(Icons.lock_outline), validator: (v) => v == null || v.length < 8 ? 'Min. 8 caractères' : !v.contains(RegExp(r'[A-Z]')) ? 'Au moins 1 majuscule' : !v.contains(RegExp(r'[0-9]')) ? 'Au moins 1 chiffre' : null),
                 const SizedBox(height: 16),
                 MyCoachTextField(controller: _confirmCtrl, label: 'Confirmer le mot de passe', obscureText: true, prefixIcon: const Icon(Icons.lock_outline), validator: (v) => v?.trim() != _passwordCtrl.text.trim() ? 'Les mots de passe ne correspondent pas' : null),
                 const SizedBox(height: 32),
@@ -225,38 +173,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _PasswordCriterion extends StatelessWidget {
-  final String text;
-  final bool valid;
-
-  const _PasswordCriterion(this.text, this.valid);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        children: [
-          Icon(
-            valid ? Icons.check_circle : Icons.radio_button_unchecked,
-            size: 16,
-            color: valid ? AppColors.secondary : AppColors.outline,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 12,
-              color: valid ? AppColors.secondary : AppColors.textSecondary,
-              fontWeight: valid ? FontWeight.w500 : FontWeight.normal,
-            ),
-          ),
-        ],
       ),
     );
   }
