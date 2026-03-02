@@ -114,7 +114,7 @@ jobs:
         with:
           appId: "1:552200590101:android:90b6122ab2ba06e552cf1c"
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          #groups: testers
+          groups: testers
           file: mobile/build/app/outputs/flutter-apk/app-release.apk
           releaseNotes: "Build #${{ github.run_number }} — ${{ github.event.head_commit.message }}"
 
