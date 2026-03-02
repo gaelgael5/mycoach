@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../providers/clients_providers.dart';
 
@@ -13,32 +12,155 @@ class ClientDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final clientAsync = ref.watch(clientDetailProvider(clientId));
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Fiche Client')),
-      body: clientAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Erreur: $e')),
-        data: (client) => SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            children: [
-              CircleAvatar(
-                radius: 48,
-                backgroundColor: AppColors.primary,
-                child: Text(client.initials, style: const TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
+    return clientAsync.when(
+      loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+      error: (e, _) => Scaffold(
+        appBar: AppBar(),
+        body: Center(child: Text('Erreur: $e')),
+      ),
+      data: (client) => Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            // Header with gradient
+            SliverAppBar(
+              expandedHeight: 200,
+              pinned: true,
+              backgroundColor: AppColors.primary,
+              iconTheme: const IconThemeData(color: Colors.white),
+              actions: [
+                IconButton(icon: const Icon(Icons.edit_outlined), onPressed: () {}),
+                PopupMenuButton<String>(
+                  icon: const Icon(Icons.more_vert),
+                  onSelected: (v) {},
+                  itemBuilder: (_) => [
+                    const PopupMenuItem(value: 'archive', child: Text('Archiver')),
+                    const PopupMenuItem(value: 'delete', child: Text('Supprimer', style: TextStyle(color: AppColors.error))),
+                  ],
+                ),
+              ],
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF2563EB), Color(0xFF1D4ED8)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: SafeArea(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Hero(
+                          tag: 'client_avatar_$clientId',
+                          child: CircleAvatar(
+                            radius: 36,
+                            backgroundColor: Colors.white,
+                            child: Text(client.initials, style: const TextStyle(fontSize: 24, color: AppColors.primary, fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(client.fullName, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.email_outlined, size: 14, color: Colors.white.withValues(alpha: 0.7)),
+                            const SizedBox(width: 4),
+                            Text(client.email, style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.7))),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(height: 16),
-              Text(client.fullName, style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 24),
-              _InfoTile(icon: Icons.email_outlined, label: 'Email', value: client.email),
-              if (client.phone != null) _InfoTile(icon: Icons.phone_outlined, label: 'Téléphone', value: client.phone!),
-              if (client.objectives != null) _InfoTile(icon: Icons.flag_outlined, label: 'Objectifs', value: client.objectives!),
-              if (client.notes != null) _InfoTile(icon: Icons.notes_outlined, label: 'Notes', value: client.notes!),
-              const SizedBox(height: 32),
-              ElevatedButton.icon(
-                onPressed: () => context.push('/clients/${client.id}/program'),
-                icon: const Icon(Icons.fitness_center),
-                label: const Text('Voir programme'),
+            ),
+
+            // Content
+            SliverPadding(
+              padding: const EdgeInsets.all(16),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  // Info card
+                  Card(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: AppColors.surfaceVariant)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          if (client.phone != null) _InfoRow(icon: Icons.phone_outlined, value: client.phone!),
+                          if (client.objectives != null) ...[
+                            const Divider(height: 24, color: AppColors.surfaceVariant),
+                            _InfoRow(icon: Icons.flag_outlined, value: client.objectives!),
+                          ],
+                          if (client.notes != null) ...[
+                            const Divider(height: 24, color: AppColors.surfaceVariant),
+                            _InfoRow(icon: Icons.notes_outlined, value: client.notes!),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Stats card
+                  Card(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: AppColors.surfaceVariant)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _StatItem(value: '0', label: 'Séances'),
+                          _StatItem(value: '–', label: 'Assiduité'),
+                          _StatItem(value: '0', label: 'Programmes'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+          ],
+        ),
+
+        // Bottom actions
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            border: Border(top: BorderSide(color: AppColors.surfaceVariant)),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.chat_bubble_outline, size: 18),
+                  label: const Text('Message'),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(0, 44),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    side: const BorderSide(color: AppColors.outline),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: FilledButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.fitness_center, size: 18),
+                  label: const Text('Programme'),
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size(0, 44),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                ),
               ),
             ],
           ),
@@ -48,34 +170,36 @@ class ClientDetailScreen extends ConsumerWidget {
   }
 }
 
-class _InfoTile extends StatelessWidget {
+class _InfoRow extends StatelessWidget {
   final IconData icon;
-  final String label;
   final String value;
-
-  const _InfoTile({required this.icon, required this.label, required this.value});
+  const _InfoRow({required this.icon, required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: AppColors.primary, size: 20),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(label, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.textSecondary)),
-                const SizedBox(height: 4),
-                Text(value, style: Theme.of(context).textTheme.bodyLarge),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: AppColors.textSecondary),
+        const SizedBox(width: 12),
+        Expanded(child: Text(value, style: Theme.of(context).textTheme.bodyMedium)),
+      ],
+    );
+  }
+}
+
+class _StatItem extends StatelessWidget {
+  final String value;
+  final String label;
+  const _StatItem({required this.value, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(value, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 4),
+        Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary)),
+      ],
     );
   }
 }
