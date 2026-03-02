@@ -12,10 +12,10 @@ class AuthRepository {
     final response = await _api.dio.post('/auth/login', data: {
       'email': email,
       'password': password,
-      'confirm_password': password,
     });
     final data = response.data as Map<String, dynamic>;
-    await _storage.setToken(data['access_token'] as String);
+    final token = (data['api_key'] ?? data['access_token']) as String;
+    await _storage.setToken(token);
     if (data['refresh_token'] != null) {
       await _storage.setRefreshToken(data['refresh_token'] as String);
     }
@@ -29,17 +29,20 @@ class AuthRepository {
     required String lastName,
     String? phone,
   }) async {
-    final response = await _api.dio.post('/auth/register', data: {
+    final body = <String, dynamic>{
       'email': email,
       'password': password,
       'confirm_password': password,
       'first_name': firstName,
       'last_name': lastName,
-      'phone': phone,
       'role': 'coach',
-    });
+    };
+    // phone is not in backend RegisterRequest schema, skip it
+
+    final response = await _api.dio.post('/auth/register', data: body);
     final data = response.data as Map<String, dynamic>;
-    await _storage.setToken(data['access_token'] as String);
+    final token = (data['api_key'] ?? data['access_token']) as String;
+    await _storage.setToken(token);
     return User.fromJson(data['user'] as Map<String, dynamic>);
   }
 
