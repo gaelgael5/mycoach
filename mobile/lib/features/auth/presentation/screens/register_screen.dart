@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/mycoach_text_field.dart';
 import '../../../../shared/widgets/loading_button.dart';
@@ -18,16 +19,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _firstNameCtrl = TextEditingController();
   final _lastNameCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
-  final _phoneCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
   final _confirmCtrl = TextEditingController();
+  String? _fullPhoneNumber;
 
   @override
   void dispose() {
     _firstNameCtrl.dispose();
     _lastNameCtrl.dispose();
     _emailCtrl.dispose();
-    _phoneCtrl.dispose();
     _passwordCtrl.dispose();
     _confirmCtrl.dispose();
     super.dispose();
@@ -40,7 +40,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           password: _passwordCtrl.text,
           firstName: _firstNameCtrl.text.trim(),
           lastName: _lastNameCtrl.text.trim(),
-          phone: _phoneCtrl.text.trim().isEmpty ? null : _phoneCtrl.text.trim(),
+          phone: _fullPhoneNumber,
         );
   }
 
@@ -61,6 +61,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       );
     });
 
+    // Detect country from device locale
+    final locale = Localizations.localeOf(context);
+    final initialCountry = locale.countryCode ?? 'FR';
+
     return Scaffold(
       appBar: AppBar(title: const Text('Créer un compte')),
       body: SafeArea(
@@ -69,6 +73,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           child: Form(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(children: [
                   Expanded(child: MyCoachTextField(controller: _firstNameCtrl, label: 'Prénom', validator: (v) => v == null || v.isEmpty ? 'Requis' : null)),
@@ -78,7 +83,26 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 const SizedBox(height: 16),
                 MyCoachTextField(controller: _emailCtrl, label: 'Email', keyboardType: TextInputType.emailAddress, prefixIcon: const Icon(Icons.email_outlined), validator: (v) => v == null || !v.contains('@') ? 'Email invalide' : null),
                 const SizedBox(height: 16),
-                MyCoachTextField(controller: _phoneCtrl, label: 'Téléphone (optionnel)', keyboardType: TextInputType.phone, prefixIcon: const Icon(Icons.phone_outlined)),
+                Text('Téléphone (optionnel)', style: Theme.of(context).textTheme.labelLarge),
+                const SizedBox(height: 8),
+                IntlPhoneField(
+                  decoration: const InputDecoration(
+                    hintText: '6 12 34 56 78',
+                    counterText: '',
+                  ),
+                  initialCountryCode: initialCountry,
+                  languageCode: locale.languageCode,
+                  disableLengthCheck: false,
+                  onChanged: (phone) {
+                    _fullPhoneNumber = phone.completeNumber;
+                  },
+                  validator: (phone) {
+                    // Optional field — only validate if user typed something
+                    if (phone == null || phone.number.isEmpty) return null;
+                    if (phone.number.length < 9) return 'Min. 9 chiffres';
+                    return null;
+                  },
+                ),
                 const SizedBox(height: 16),
                 MyCoachTextField(controller: _passwordCtrl, label: 'Mot de passe', obscureText: true, prefixIcon: const Icon(Icons.lock_outline), validator: (v) => v == null || v.length < 8 ? 'Min. 8 caractères' : null),
                 const SizedBox(height: 16),
@@ -86,7 +110,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 const SizedBox(height: 32),
                 LoadingButton(onPressed: _submit, label: "S'inscrire", isLoading: authState.isLoading),
                 const SizedBox(height: 16),
-                TextButton(onPressed: () => context.pop(), child: const Text('Déjà un compte ? Se connecter')),
+                Center(child: TextButton(onPressed: () => context.pop(), child: const Text('Déjà un compte ? Se connecter'))),
               ],
             ),
           ),
