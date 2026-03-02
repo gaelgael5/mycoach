@@ -1,3 +1,5 @@
+const _levels = {'beginner': 'Débutant', 'intermediate': 'Intermédiaire', 'advanced': 'Avancé'};
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -98,7 +100,7 @@ class _ProgramCard extends StatelessWidget {
                             ?.copyWith(fontWeight: FontWeight.w600)),
                     const SizedBox(height: 4),
                     Text(
-                      '${program.sessions.length} séances · ${program.assignedClientIds.length} clients · ${program.durationWeeks} sem.',
+                      '${program.sessions.length} séances · ${program.durationWeeks} sem. · ${_levels[program.level] ?? program.level}',
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall

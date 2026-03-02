@@ -15,22 +15,36 @@ class ProgramsRepository {
     return Program.fromJson(res.data as Map<String, dynamic>);
   }
 
-  Future<Program> createProgram(Map<String, dynamic> data) async {
-    final res = await _api.dio.post('/coaches/programs', data: data);
+  Future<Program> createProgram(Program program) async {
+    final res = await _api.dio.post('/coaches/programs', data: program.toCreateJson());
     return Program.fromJson(res.data as Map<String, dynamic>);
   }
 
-  Future<Session> addSession(String programId, Map<String, dynamic> data) async {
-    final res = await _api.dio.post('/coaches/programs/$programId/sessions', data: data);
-    return Session.fromJson(res.data as Map<String, dynamic>);
+  Future<void> archiveProgram(String id) async {
+    await _api.dio.post('/coaches/programs/$id/archive');
   }
 
-  Future<Exercise> addExercise(String sessionId, Map<String, dynamic> data) async {
-    final res = await _api.dio.post('/sessions/$sessionId/exercises', data: data);
-    return Exercise.fromJson(res.data as Map<String, dynamic>);
+  Future<Program> duplicateProgram(String id) async {
+    final res = await _api.dio.post('/coaches/programs/$id/duplicate');
+    return Program.fromJson(res.data as Map<String, dynamic>);
   }
 
-  Future<void> assignClients(String programId, List<String> clientIds) async {
-    await _api.dio.post('/coaches/programs/$programId/assign', data: {'client_ids': clientIds});
+  Future<void> assignToClient(String planId, String clientId, String startDate, {String mode = 'strict'}) async {
+    await _api.dio.post('/coaches/programs/$planId/assign', data: {
+      'client_id': clientId,
+      'start_date': startDate,
+      'mode': mode,
+    });
+  }
+
+  // Exercise library
+  Future<List<ExerciseType>> getExercises() async {
+    final res = await _api.dio.get('/exercises');
+    return (res.data as List).map((e) => ExerciseType.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
+  Future<ExerciseType> getExercise(String id) async {
+    final res = await _api.dio.get('/exercises/$id');
+    return ExerciseType.fromJson(res.data as Map<String, dynamic>);
   }
 }
