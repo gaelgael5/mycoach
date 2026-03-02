@@ -99,6 +99,11 @@ class User(Base):
         SmallInteger, nullable=True
     )  # Année de naissance ex: 1990
 
+    activity_sector: Mapped[str | None] = mapped_column(
+        String(100), nullable=True,
+        comment="Secteur d'activité du coach (fitness, yoga, crossfit…)"
+    )
+
     # -----------------------------------------------------------------------
     # Téléphone — vérification
     # -----------------------------------------------------------------------

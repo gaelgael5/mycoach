@@ -63,6 +63,10 @@ class CoachProfile(Base):
         String(11), nullable=True,
         comment="Nom alphanumérique affiché dans les SMS (max 11 chars)"
     )
+    activity_sector: Mapped[str | None] = mapped_column(
+        String(100), nullable=True,
+        comment="Secteur d'activité du coach (fitness, yoga, crossfit…)"
+    )
     onboarding_completed: Mapped[bool] = mapped_column(
         Boolean, nullable=False, default=False
     )
