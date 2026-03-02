@@ -14,7 +14,7 @@ import '../../features/programs/presentation/screens/program_detail_screen.dart'
 import '../../features/tracking/presentation/screens/client_program_screen.dart';
 import '../../features/tracking/presentation/screens/metrics_screen.dart';
 import '../../features/tracking/presentation/screens/progression_dashboard_screen.dart';
-import '../../main.dart';
+import '../../features/auth/presentation/screens/splash_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 

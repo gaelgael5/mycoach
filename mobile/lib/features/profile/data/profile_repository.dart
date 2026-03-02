@@ -49,12 +49,12 @@ class ProfileRepository {
   ProfileRepository(this._api);
 
   Future<CoachProfile> getProfile() async {
-    final response = await _api.dio.get('/coach/me');
+    final response = await _api.dio.get('/coaches/profile');
     return CoachProfile.fromJson(response.data as Map<String, dynamic>);
   }
 
   Future<CoachProfile> updateProfile(Map<String, dynamic> data) async {
-    final response = await _api.dio.patch('/coach/me', data: data);
+    final response = await _api.dio.patch('/coaches/profile', data: data);
     return CoachProfile.fromJson(response.data as Map<String, dynamic>);
   }
 }

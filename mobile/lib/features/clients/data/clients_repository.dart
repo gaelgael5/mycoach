@@ -7,13 +7,13 @@ class ClientsRepository {
   ClientsRepository(this._api);
 
   Future<List<Client>> getClients() async {
-    final response = await _api.dio.get('/clients');
+    final response = await _api.dio.get('/coaches/clients');
     final list = response.data as List<dynamic>;
     return list.map((e) => Client.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<Client> getClient(String id) async {
-    final response = await _api.dio.get('/clients/$id');
+    final response = await _api.dio.get('/coaches/clients');
     return Client.fromJson(response.data as Map<String, dynamic>);
   }
 }

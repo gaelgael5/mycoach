@@ -17,7 +17,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
-  bool _obscure = true;
 
   @override
   void dispose() {
@@ -59,44 +58,109 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.fitness_center, size: 64, color: AppColors.primary),
-                  const SizedBox(height: 16),
-                  Text('MyCoach', style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold, color: AppColors.primary)),
+                  // Logo compact
+                  Row(
+                    children: [
+                      const Icon(Icons.fitness_center, size: 40, color: AppColors.primary),
+                      const SizedBox(width: 8),
+                      Text('MyCoach', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600, color: AppColors.onSurface)),
+                    ],
+                  ),
+                  const SizedBox(height: 48),
+
+                  // Welcome text
+                  Text('Bon retour 👋', style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  Text('Connectez-vous à votre espace coach', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary)),
-                  const SizedBox(height: 40),
+                  Text('Connectez-vous pour retrouver vos clients', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary)),
+                  const SizedBox(height: 32),
+
+                  // Email
                   MyCoachTextField(
                     controller: _emailCtrl,
                     label: 'Email',
-                    hint: 'coach@example.com',
+                    hint: 'votre@email.com',
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: const Icon(Icons.email_outlined),
                     validator: (v) => v == null || !v.contains('@') ? 'Email invalide' : null,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
+
+                  // Password
                   MyCoachTextField(
                     controller: _passwordCtrl,
                     label: 'Mot de passe',
-                    obscureText: _obscure,
+                    obscureText: true,
                     prefixIcon: const Icon(Icons.lock_outline),
-                    suffixIcon: IconButton(
-                      icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
-                      onPressed: () => setState(() => _obscure = !_obscure),
-                    ),
                     validator: (v) => v == null || v.length < 8 ? 'Min. 8 caractères' : null,
                   ),
-                  const SizedBox(height: 32),
+
+                  // Forgot password
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        // TODO: navigate to forgot password
+                      },
+                      child: Text('Mot de passe oublié ?', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.primary, fontWeight: FontWeight.w500)),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Login button
                   LoadingButton(
                     onPressed: _submit,
                     label: 'Se connecter',
                     isLoading: authState.isLoading,
                   ),
+
                   const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () => context.push('/register'),
-                    child: const Text("Pas encore de compte ? S'inscrire"),
+
+                  // Divider
+                  Row(
+                    children: [
+                      const Expanded(child: Divider(color: AppColors.outline)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text('ou', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary)),
+                      ),
+                      const Expanded(child: Divider(color: AppColors.outline)),
+                    ],
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Google button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        // TODO: Google sign-in
+                      },
+                      icon: const Text('G', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      label: const Text('Continuer avec Google'),
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        side: const BorderSide(color: AppColors.outline),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Register link
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Pas encore de compte ? ', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary)),
+                      TextButton(
+                        onPressed: () => context.push('/register'),
+                        child: Text("S'inscrire", style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600)),
+                      ),
+                    ],
                   ),
                 ],
               ),
