@@ -76,6 +76,8 @@ jobs:
         if: github.ref == 'refs/heads/main'
         working-directory: mobile
         run: |
+          # Auto-increment versionCode with build number
+          sed -i "s/version: 1.0.0+.*/version: 1.0.0+${{ github.run_number }}/" pubspec.yaml
           flutter build apk --release \
             --dart-define=ENV=${{ steps.env.outputs.ENV }} \
             --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
@@ -130,6 +132,8 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/staging')
         working-directory: mobile
         run: |
+          # Auto-increment versionCode with build number
+          sed -i "s/version: 1.0.0+.*/version: 1.0.0+${{ github.run_number }}/" pubspec.yaml
           flutter build apk --release \
             --dart-define=ENV=${{ steps.env.outputs.ENV }} \
             --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
