@@ -203,7 +203,7 @@ class _ClientsListScreenState extends ConsumerState<ClientsListScreen> {
                   await Share.share('Rejoignez-moi sur MyCoach ! ${token.enrollmentLink}');
                 } catch (e) {
                   if (ctx.mounted) {
-                    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Erreur: \$e'), backgroundColor: AppColors.error));
+                    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Erreur: $e'), backgroundColor: AppColors.error));
                   }
                 }
               },
