@@ -2,6 +2,9 @@ name: Flutter Android Build
 
 on:
   push:
+    branches: [dev, uat]
+    paths:
+  push:
     paths:
       - 'mobile/**'
       - '.github/workflows/flutter-android.yml'
@@ -24,7 +27,10 @@ permissions:
 jobs:
   build:
     name: Build APK
-    runs-on: ubuntu-latest
+    runs-on:
+  push:
+    branches: [dev, uat]
+    paths: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -45,12 +51,21 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: ${{ env.JAVA_VERSION }}
+          distribution:
+  push:
+    branches: [dev, uat]
+    paths: 'temurin'
+          java-version:
+  push:
+    branches: [dev, uat]
+    paths: ${{ env.JAVA_VERSION }}
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-version:
+  push:
+    branches: [dev, uat]
+    paths: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
           cache: true
 
@@ -81,7 +96,10 @@ jobs:
         working-directory: mobile
         run: |
           # Auto-increment versionCode with build number
-          sed -i "s/version: 1.0.0+.*/version: 1.0.0+${{ github.run_number }}/" pubspec.yaml
+          sed -i "s/version:
+  push:
+    branches: [dev, uat]
+    paths: 1.0.0+.*/version: 1.0.0+${{ github.run_number }}/" pubspec.yaml
           flutter build apk --release \
             --dart-define=ENV=${{ steps.env.outputs.ENV }} \
             --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}
@@ -137,7 +155,10 @@ jobs:
         working-directory: mobile
         run: |
           # Auto-increment versionCode with build number
-          sed -i "s/version: 1.0.0+.*/version: 1.0.0+${{ github.run_number }}/" pubspec.yaml
+          sed -i "s/version:
+  push:
+    branches: [dev, uat]
+    paths: 1.0.0+.*/version: 1.0.0+${{ github.run_number }}/" pubspec.yaml
           flutter build apk --release \
             --dart-define=ENV=${{ steps.env.outputs.ENV }} \
             --dart-define=API_BASE_URL=${{ steps.env.outputs.API_URL }}

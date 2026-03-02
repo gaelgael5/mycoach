@@ -10,6 +10,7 @@ name: Backend CI/CD
 
 on:
   push:
+    branches: [dev, uat, main]
     paths:
       - 'backend/**'
       - '.github/workflows/backend-docker.yml'
