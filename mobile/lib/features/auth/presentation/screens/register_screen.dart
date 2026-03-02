@@ -7,6 +7,20 @@ import '../../../../shared/widgets/mycoach_text_field.dart';
 import '../../../../shared/widgets/loading_button.dart';
 import '../providers/auth_providers.dart';
 
+const _activitySectors = [
+  'Coach sportif',
+  'Préparateur physique',
+  'Professeur de Yoga',
+  'Professeur de Pilates',
+  'Coach bien-être',
+  'Nutritionniste',
+  'Kinésithérapeute',
+  'Professeur de danse',
+  'Coach de CrossFit',
+  'Personal trainer',
+  'Autre',
+];
+
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
@@ -22,6 +36,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _passwordCtrl = TextEditingController();
   final _confirmCtrl = TextEditingController();
   String? _fullPhoneNumber;
+  String? _selectedSector;
 
   @override
   void dispose() {
@@ -35,6 +50,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
+    if (_selectedSector == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Veuillez sélectionner votre secteur d\'activité'), backgroundColor: AppColors.error),
+      );
+      return;
+    }
     ref.read(authStateProvider.notifier).register(
           email: _emailCtrl.text.trim(),
           password: _passwordCtrl.text,
@@ -61,7 +82,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       );
     });
 
-    // Detect country from device locale
     final locale = Localizations.localeOf(context);
     final initialCountry = locale.countryCode ?? 'FR';
 
@@ -75,6 +95,35 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Header
+                Text('Rejoignez +500 professionnels', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary)),
+                const SizedBox(height: 24),
+
+                // Je suis un professionnel
+                Text('Je suis un professionnel', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+                const SizedBox(height: 12),
+
+                // Activity sector dropdown
+                DropdownButtonFormField<String>(
+                  value: _selectedSector,
+                  decoration: InputDecoration(
+                    labelText: 'Secteur d\'activité *',
+                    prefixIcon: const Icon(Icons.work_outline),
+                    filled: true,
+                    fillColor: AppColors.surfaceVariant,
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                  ),
+                  items: _activitySectors.map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
+                  onChanged: (v) => setState(() => _selectedSector = v),
+                  validator: (v) => v == null ? 'Requis' : null,
+                ),
+
+                const SizedBox(height: 24),
+
+                // Personal info
+                Text('Mes informations', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+                const SizedBox(height: 12),
+
                 Row(children: [
                   Expanded(child: MyCoachTextField(controller: _firstNameCtrl, label: 'Prénom', validator: (v) => v == null || v.isEmpty ? 'Requis' : null)),
                   const SizedBox(width: 12),
@@ -83,6 +132,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 const SizedBox(height: 16),
                 MyCoachTextField(controller: _emailCtrl, label: 'Email', keyboardType: TextInputType.emailAddress, prefixIcon: const Icon(Icons.email_outlined), validator: (v) => v == null || !v.contains('@') ? 'Email invalide' : null),
                 const SizedBox(height: 16),
+
+                // Phone
                 Text('Téléphone (optionnel)', style: Theme.of(context).textTheme.labelLarge),
                 const SizedBox(height: 8),
                 IntlPhoneField(
@@ -97,18 +148,25 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     _fullPhoneNumber = phone.completeNumber;
                   },
                   validator: (phone) {
-                    // Optional field — only validate if user typed something
                     if (phone == null || phone.number.isEmpty) return null;
                     if (phone.number.length < 9) return 'Min. 9 chiffres';
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+
+                const SizedBox(height: 24),
+
+                // Password section
+                Text('Sécurité', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+                const SizedBox(height: 12),
+
                 MyCoachTextField(controller: _passwordCtrl, label: 'Mot de passe', obscureText: true, prefixIcon: const Icon(Icons.lock_outline), validator: (v) => v == null || v.length < 8 ? 'Min. 8 caractères' : null),
                 const SizedBox(height: 16),
                 MyCoachTextField(controller: _confirmCtrl, label: 'Confirmer le mot de passe', obscureText: true, prefixIcon: const Icon(Icons.lock_outline), validator: (v) => v?.trim() != _passwordCtrl.text.trim() ? 'Les mots de passe ne correspondent pas' : null),
                 const SizedBox(height: 32),
-                LoadingButton(onPressed: _submit, label: "S'inscrire", isLoading: authState.isLoading),
+
+                // Submit
+                LoadingButton(onPressed: _submit, label: "Créer mon compte", isLoading: authState.isLoading),
                 const SizedBox(height: 16),
                 Center(child: TextButton(onPressed: () => context.pop(), child: const Text('Déjà un compte ? Se connecter'))),
               ],
