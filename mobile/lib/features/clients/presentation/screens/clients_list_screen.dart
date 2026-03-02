@@ -200,9 +200,7 @@ class _ClientsListScreenState extends ConsumerState<ClientsListScreen> {
                   final repo = ref.read(clientsRepositoryProvider);
                   final token = await repo.createEnrollmentToken(label: labelCtrl.text.trim().isEmpty ? null : labelCtrl.text.trim());
                   if (ctx.mounted) Navigator.pop(ctx);
-                  await SharePlus.instance.share(ShareParams(
-                    text: 'Rejoignez-moi sur MyCoach ! ${token.enrollmentLink}',
-                  ));
+                  await Share.share('Rejoignez-moi sur MyCoach ! ${token.enrollmentLink}');
                 } catch (e) {
                   if (ctx.mounted) {
                     ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Erreur: \$e'), backgroundColor: AppColors.error));
