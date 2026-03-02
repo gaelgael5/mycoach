@@ -125,10 +125,13 @@ jobs:
           elif [ "$BRANCH" = "main" ]; then
             echo "push=true" >> $GITHUB_OUTPUT
             echo "tags=blackbeardteam/mycoach-api:latest,blackbeardteam/mycoach-api:build-$BUILD_NUM,blackbeardteam/mycoach-api:$SHORT_SHA" >> $GITHUB_OUTPUT
+          elif [ "$BRANCH" = "uat" ]; then
+            echo "push=true" >> $GITHUB_OUTPUT
+            echo "tags=blackbeardteam/mycoach-api:uat,blackbeardteam/mycoach-api:uat-build-$BUILD_NUM" >> $GITHUB_OUTPUT
           elif echo "$BRANCH" | grep -qE '^(backend/|dev$)'; then
             echo "push=true" >> $GITHUB_OUTPUT
             BRANCH_TAG=$(echo "$BRANCH" | sed 's|/|-|g')
-            echo "tags=blackbeardteam/mycoach-api:dev,blackbeardteam/mycoach-api:$BRANCH_TAG" >> $GITHUB_OUTPUT
+            echo "tags=blackbeardteam/mycoach-api:dev,blackbeardteam/mycoach-api:dev-build-$BUILD_NUM" >> $GITHUB_OUTPUT
           else
             echo "push=false" >> $GITHUB_OUTPUT
             echo "tags=blackbeardteam/mycoach-api:ci-$BUILD_NUM" >> $GITHUB_OUTPUT
